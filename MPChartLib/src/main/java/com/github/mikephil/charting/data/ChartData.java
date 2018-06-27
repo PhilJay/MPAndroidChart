@@ -23,31 +23,31 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     /**
      * maximum y-value in the value array across all axes
      */
-    protected float mYMax = -Float.MAX_VALUE;
+    protected double mYMax = -Float.MAX_VALUE;
 
     /**
      * the minimum y-value in the value array across all axes
      */
-    protected float mYMin = Float.MAX_VALUE;
+    protected double mYMin = Float.MAX_VALUE;
 
     /**
      * maximum x-value in the value array
      */
-    protected float mXMax = -Float.MAX_VALUE;
+    protected double mXMax = -Float.MAX_VALUE;
 
     /**
      * minimum x-value in the value array
      */
-    protected float mXMin = Float.MAX_VALUE;
+    protected double mXMin = Float.MAX_VALUE;
 
 
-    protected float mLeftAxisMax = -Float.MAX_VALUE;
+    protected double mLeftAxisMax = -Float.MAX_VALUE;
 
-    protected float mLeftAxisMin = Float.MAX_VALUE;
+    protected double mLeftAxisMin = Float.MAX_VALUE;
 
-    protected float mRightAxisMax = -Float.MAX_VALUE;
+    protected double mRightAxisMax = -Float.MAX_VALUE;
 
-    protected float mRightAxisMin = Float.MAX_VALUE;
+    protected double mRightAxisMin = Float.MAX_VALUE;
 
     /**
      * array that holds all DataSets the ChartData object represents
@@ -203,7 +203,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public float getYMin() {
+    public double getYMin() {
         return mYMin;
     }
 
@@ -213,7 +213,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @param axis
      * @return
      */
-    public float getYMin(AxisDependency axis) {
+    public double getYMin(AxisDependency axis) {
         if (axis == AxisDependency.LEFT) {
 
             if (mLeftAxisMin == Float.MAX_VALUE) {
@@ -233,7 +233,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public float getYMax() {
+    public double getYMax() {
         return mYMax;
     }
 
@@ -243,7 +243,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @param axis
      * @return
      */
-    public float getYMax(AxisDependency axis) {
+    public double getYMax(AxisDependency axis) {
         if (axis == AxisDependency.LEFT) {
 
             if (mLeftAxisMax == -Float.MAX_VALUE) {
@@ -263,7 +263,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public float getXMin() {
+    public double getXMin() {
         return mXMin;
     }
 
@@ -272,7 +272,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public float getXMax() {
+    public double getXMax() {
         return mXMax;
     }
 

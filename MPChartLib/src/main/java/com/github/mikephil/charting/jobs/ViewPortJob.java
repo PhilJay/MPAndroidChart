@@ -21,12 +21,12 @@ public abstract class ViewPortJob extends ObjectPool.Poolable implements Runnabl
     protected float[] pts = new float[2];
 
     protected ViewPortHandler mViewPortHandler;
-    protected float xValue = 0f;
-    protected float yValue = 0f;
+    protected double xValue = 0d;
+    protected double yValue = 0d;
     protected Transformer mTrans;
     protected View view;
 
-    public ViewPortJob(ViewPortHandler viewPortHandler, float xValue, float yValue,
+    public ViewPortJob(ViewPortHandler viewPortHandler, double xValue, double yValue,
                        Transformer trans, View v) {
 
         this.mViewPortHandler = viewPortHandler;
@@ -37,11 +37,11 @@ public abstract class ViewPortJob extends ObjectPool.Poolable implements Runnabl
 
     }
 
-    public float getXValue() {
+    public double getXValue() {
         return xValue;
     }
 
-    public float getYValue() {
+    public double getYValue() {
         return yValue;
     }
 }

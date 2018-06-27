@@ -17,7 +17,7 @@ import com.github.mikephil.charting.utils.Utils;
 public class Entry extends BaseEntry implements Parcelable {
 
     /** the x value */
-    private float x = 0f;
+    private double x = 0;
 
     public Entry() {
 
@@ -29,7 +29,7 @@ public class Entry extends BaseEntry implements Parcelable {
      * @param x the x value
      * @param y the y value (the actual value of the entry)
      */
-    public Entry(float x, float y) {
+    public Entry(double x, double y) {
         super(y);
         this.x = x;
     }
@@ -41,7 +41,7 @@ public class Entry extends BaseEntry implements Parcelable {
      * @param y the y value (the actual value of the entry)
      * @param data Spot for additional data this Entry represents.
      */
-    public Entry(float x, float y, Object data) {
+    public Entry(double x, double y, Object data) {
         super(y, data);
         this.x = x;
     }
@@ -53,7 +53,7 @@ public class Entry extends BaseEntry implements Parcelable {
      * @param y the y value (the actual value of the entry)
      * @param icon icon image
      */
-    public Entry(float x, float y, Drawable icon) {
+    public Entry(double x, double y, Drawable icon) {
         super(y, icon);
         this.x = x;
     }
@@ -66,18 +66,27 @@ public class Entry extends BaseEntry implements Parcelable {
      * @param icon icon image
      * @param data Spot for additional data this Entry represents.
      */
-    public Entry(float x, float y, Drawable icon, Object data) {
+    public Entry(double x, double y, Drawable icon, Object data) {
         super(y, icon, data);
         this.x = x;
     }
 
     /**
      * Returns the x-value of this Entry object.
-     * 
+     *
      * @return
      */
-    public float getX() {
+    public double getX() {
         return x;
+    }
+
+    /**
+     * Returns the x-value of this Entry object.
+     *
+     * @return
+     */
+    public float getFloatX() {
+        return (float)x;
     }
 
     /**
@@ -85,7 +94,7 @@ public class Entry extends BaseEntry implements Parcelable {
      * 
      * @param x
      */
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -139,8 +148,8 @@ public class Entry extends BaseEntry implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeFloat(this.x);
-        dest.writeFloat(this.getY());
+        dest.writeDouble(this.x);
+        dest.writeDouble(this.getY());
         if (getData() != null) {
             if (getData() instanceof Parcelable) {
                 dest.writeInt(1);

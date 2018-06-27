@@ -111,7 +111,7 @@ public class FilledLineActivity extends DemoBase {
             set1.setDrawCircleHole(false);
             set1.setFillFormatter(new IFillFormatter() {
                 @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                public double getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
                     return mChart.getAxisLeft().getAxisMinimum();
                 }
             });
@@ -130,7 +130,7 @@ public class FilledLineActivity extends DemoBase {
             set2.setHighLightColor(Color.rgb(244, 117, 117));
             set2.setFillFormatter(new IFillFormatter() {
                 @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                public double getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
                     return mChart.getAxisLeft().getAxisMaximum();
                 }
             });

@@ -87,7 +87,7 @@ public class BarChartPositiveNegative extends DemoBase {
 
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(double value, AxisBase axis) {
                 return data.get(Math.min(Math.max((int) value, 0), data.size()-1)).xAxisValue;
             }
         });
@@ -166,7 +166,7 @@ public class BarChartPositiveNegative extends DemoBase {
         }
 
         @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+        public String getFormattedValue(double value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
             return mFormat.format(value);
         }
     }

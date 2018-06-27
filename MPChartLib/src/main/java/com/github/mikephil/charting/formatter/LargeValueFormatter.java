@@ -43,13 +43,13 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
 
     // IValueFormatter
     @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+    public String getFormattedValue(double value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
         return makePretty(value) + mText;
     }
 
     // IAxisValueFormatter
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getFormattedValue(double value, AxisBase axis) {
         return makePretty(value) + mText;
     }
 

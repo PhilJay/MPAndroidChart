@@ -164,9 +164,9 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      *
      * @return
      */
-    public float getFactor() {
+    public double getFactor() {
         RectF content = mViewPortHandler.getContentRect();
-        return Math.min(content.width() / 2f, content.height() / 2f) / mYAxis.mAxisRange;
+        return Math.min(content.width() / 2d, content.height() / 2d) / mYAxis.mAxisRange;
     }
 
     /**
@@ -339,14 +339,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     /**
      * Returns the maximum value this chart can display on it's y-axis.
      */
-    public float getYChartMax() {
+    public double getYChartMax() {
         return mYAxis.mAxisMaximum;
     }
 
     /**
      * Returns the minimum value this chart can display on it's y-axis.
      */
-    public float getYChartMin() {
+    public double getYChartMin() {
         return mYAxis.mAxisMinimum;
     }
 
@@ -355,7 +355,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      *
      * @return
      */
-    public float getYRange() {
+    public double getYRange() {
         return mYAxis.mAxisRange;
     }
 }

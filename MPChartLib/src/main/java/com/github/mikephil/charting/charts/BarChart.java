@@ -136,8 +136,8 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
             return;
         }
 
-        float y = e.getY();
-        float x = e.getX();
+        float y = e.getFloatY();
+        float x = e.getFloatX();
 
         float barWidth = mData.getBarWidth();
 

@@ -19,14 +19,14 @@ public interface ChartInterface {
      *
      * @return
      */
-    float getXChartMin();
+    double getXChartMin();
 
     /**
      * Returns the maximum x value of the chart, regardless of zoom or translation.
      *
      * @return
      */
-    float getXChartMax();
+    double getXChartMax();
 
     float getXRange();
 
@@ -35,14 +35,14 @@ public interface ChartInterface {
      *
      * @return
      */
-    float getYChartMin();
+    double getYChartMin();
 
     /**
      * Returns the maximum y value of the chart, regardless of zoom or translation.
      *
      * @return
      */
-    float getYChartMax();
+    double getYChartMax();
 
     /**
      * Returns the maximum distance in scren dp a touch can be away from an entry to cause it to get highlighted.

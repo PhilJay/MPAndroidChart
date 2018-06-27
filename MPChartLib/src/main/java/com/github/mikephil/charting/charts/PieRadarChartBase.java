@@ -454,13 +454,13 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     protected abstract float getRequiredBaseOffset();
 
     @Override
-    public float getYChartMax() {
+    public double getYChartMax() {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public float getYChartMin() {
+    public double getYChartMin() {
         // TODO Auto-generated method stub
         return 0;
     }

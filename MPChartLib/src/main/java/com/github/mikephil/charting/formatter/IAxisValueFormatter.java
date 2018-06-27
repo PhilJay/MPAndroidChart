@@ -19,5 +19,5 @@ public interface IAxisValueFormatter
      * @param axis  the axis the value belongs to
      * @return
      */
-    String getFormattedValue(float value, AxisBase axis);
+    String getFormattedValue(double value, AxisBase axis);
 }

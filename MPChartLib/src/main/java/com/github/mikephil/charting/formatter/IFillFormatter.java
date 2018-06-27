@@ -20,5 +20,5 @@ public interface IFillFormatter
      * @param dataProvider
      * @return
      */
-    float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider);
+    double getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider);
 }

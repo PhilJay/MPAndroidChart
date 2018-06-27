@@ -34,7 +34,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
      * @param yMax - the maximum y-value in the data object for this axis
      */
     @Override
-    public void computeAxis(float yMin, float yMax, boolean inverted) {
+    public void computeAxis(double yMin, double yMax, boolean inverted) {
 
         // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
@@ -160,7 +160,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill x values, y values are not needed for x-labels
-            positions[i] = mYAxis.mEntries[i / 2];
+            positions[i] = (float)mYAxis.mEntries[i / 2];
         }
 
         mTrans.pointValuesToPixel(positions);

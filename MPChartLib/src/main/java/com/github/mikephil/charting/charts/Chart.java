@@ -372,9 +372,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * Calculates the required number of digits for the values that might be
      * drawn in the chart (if enabled), and creates the default-value-formatter
      */
-    protected void setupDefaultFormatter(float min, float max) {
+    protected void setupDefaultFormatter(double min, double max) {
 
-        float reference = 0f;
+        double reference = 0;
 
         if (mData == null || mData.getEntryCount() < 2) {
 
@@ -1052,7 +1052,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @return
      */
-    public float getYMax() {
+    public double getYMax() {
         return mData.getYMax();
     }
 
@@ -1061,17 +1061,17 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @return
      */
-    public float getYMin() {
+    public double getYMin() {
         return mData.getYMin();
     }
 
     @Override
-    public float getXChartMax() {
+    public double getXChartMax() {
         return mXAxis.mAxisMaximum;
     }
 
     @Override
-    public float getXChartMin() {
+    public double getXChartMin() {
         return mXAxis.mAxisMinimum;
     }
 

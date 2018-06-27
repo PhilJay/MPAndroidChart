@@ -86,7 +86,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         // calculate the factor that is needed for transforming the value to
         // pixels
-        float factor = mChart.getFactor();
+        double factor = mChart.getFactor();
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
@@ -156,7 +156,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         // calculate the factor that is needed for transforming the value to
         // pixels
-        float factor = mChart.getFactor();
+        double factor = mChart.getFactor();
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
@@ -242,7 +242,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         // calculate the factor that is needed for transforming the value to
         // pixels
-        float factor = mChart.getFactor();
+        double factor = mChart.getFactor();
         float rotationangle = mChart.getRotationAngle();
 
         MPPointF center = mChart.getCenterOffsets();
@@ -281,7 +281,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
             for (int i = 0; i < mChart.getData().getEntryCount(); i++) {
 
-                float r = (mChart.getYAxis().mEntries[j] - mChart.getYChartMin()) * factor;
+                double r = (mChart.getYAxis().mEntries[j] - mChart.getYChartMin()) * factor;
 
                 Utils.getPosition(center, r, sliceangle * i + rotationangle, p1out);
                 Utils.getPosition(center, r, sliceangle * (i + 1) + rotationangle, p2out);
@@ -302,7 +302,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         // calculate the factor that is needed for transforming the value to
         // pixels
-        float factor = mChart.getFactor();
+        double factor = mChart.getFactor();
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
@@ -321,7 +321,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
             if (!isInBoundsX(e, set))
                 continue;
 
-            float y = (e.getY() - mChart.getYChartMin());
+            double y = (e.getY() - mChart.getYChartMin());
 
             Utils.getPosition(center,
                     y * factor * mAnimator.getPhaseY(),

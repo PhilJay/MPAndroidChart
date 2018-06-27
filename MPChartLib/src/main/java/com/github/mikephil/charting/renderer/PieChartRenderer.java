@@ -206,7 +206,7 @@ public class PieChartRenderer extends DataRenderer {
             return dataSet.getSliceSpace();
 
         float spaceSizeRatio = dataSet.getSliceSpace() / mViewPortHandler.getSmallestContentExtension();
-        float minValueRatio = dataSet.getYMin() / mChart.getData().getYValueSum() * 2;
+        float minValueRatio = (float)(dataSet.getYMin() / mChart.getData().getYValueSum() * 2);
 
         float sliceSpace = spaceSizeRatio > minValueRatio ? 0f : dataSet.getSliceSpace();
 
@@ -409,7 +409,7 @@ public class PieChartRenderer extends DataRenderer {
         PieData data = mChart.getData();
         List<IPieDataSet> dataSets = data.getDataSets();
 
-        float yValueSum = data.getYValueSum();
+        double yValueSum = data.getYValueSum();
 
         boolean drawEntryLabels = mChart.isDrawEntryLabelsEnabled();
 
@@ -470,7 +470,7 @@ public class PieChartRenderer extends DataRenderer {
 
                 final float transformedAngle = rotationAngle + angle * phaseY;
 
-                float value = mChart.isUsePercentValuesEnabled() ? entry.getY()
+                double value = mChart.isUsePercentValuesEnabled() ? entry.getY()
                         / yValueSum * 100f : entry.getY();
 
                 final float sliceXBase = (float) Math.cos(transformedAngle * Utils.FDEG2RAD);

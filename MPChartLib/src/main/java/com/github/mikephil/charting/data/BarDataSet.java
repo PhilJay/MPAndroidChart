@@ -81,7 +81,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
         for (int i = 0; i < yVals.size(); i++) {
 
-            float[] vals = yVals.get(i).getYVals();
+            double[] vals = yVals.get(i).getYVals();
 
             if (vals == null)
                 mEntryCountStacks++;
@@ -98,7 +98,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
         for (int i = 0; i < yVals.size(); i++) {
 
-            float[] vals = yVals.get(i).getYVals();
+            double[] vals = yVals.get(i).getYVals();
 
             if (vals != null && vals.length > mStackSize)
                 mStackSize = vals.length;
@@ -108,7 +108,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     @Override
     protected void calcMinMax(BarEntry e) {
 
-        if (e != null && !Float.isNaN(e.getY())) {
+        if (e != null && !Double.isNaN(e.getY())) {
 
             if (e.getYVals() == null) {
 

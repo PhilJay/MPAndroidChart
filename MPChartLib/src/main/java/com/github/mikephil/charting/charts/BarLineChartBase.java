@@ -939,7 +939,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param duration the duration of the animation in milliseconds
      */
     @TargetApi(11)
-    public void centerViewToAnimated(float xValue, float yValue, AxisDependency axis, long duration) {
+    public void centerViewToAnimated(double xValue, double yValue, AxisDependency axis, long duration) {
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
 
@@ -949,7 +949,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             float xInView = getXAxis().mAxisRange / mViewPortHandler.getScaleX();
 
             Runnable job = AnimatedMoveViewJob.getInstance(mViewPortHandler,
-                    xValue - xInView / 2f, yValue + yInView / 2f,
+                    xValue - xInView / 2d, yValue + yInView / 2d,
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
             addViewportJob(job);
@@ -1053,8 +1053,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (e == null)
             return null;
 
-        mGetPositionBuffer[0] = e.getX();
-        mGetPositionBuffer[1] = e.getY();
+        mGetPositionBuffer[0] = e.getFloatX();
+        mGetPositionBuffer[1] = e.getFloatY();
 
         getTransformer(axis).pointValuesToPixel(mGetPositionBuffer);
 
@@ -1563,12 +1563,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     @Override
-    public float getYChartMax() {
+    public double getYChartMax() {
         return Math.max(mAxisLeft.mAxisMaximum, mAxisRight.mAxisMaximum);
     }
 
     @Override
-    public float getYChartMin() {
+    public double getYChartMin() {
         return Math.min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum);
     }
 

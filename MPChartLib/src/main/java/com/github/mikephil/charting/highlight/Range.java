@@ -6,10 +6,10 @@ package com.github.mikephil.charting.highlight;
  */
 public final class Range {
 
-	public float from;
-	public float to;
+	public double from;
+	public double to;
 
-	public Range(float from, float to) {
+	public Range(double from, double to) {
 		this.from = from;
 		this.to = to;
 	}

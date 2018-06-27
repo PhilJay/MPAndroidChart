@@ -32,12 +32,12 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
         this.mInverted = inverted;
     }
 
-    protected void addBar(float left, float top, float right, float bottom) {
+    protected void addBar(double left, double top, double right, double bottom) {
 
-        buffer[index++] = left;
-        buffer[index++] = top;
-        buffer[index++] = right;
-        buffer[index++] = bottom;
+        buffer[index++] = (float)left;
+        buffer[index++] = (float)top;
+        buffer[index++] = (float)right;
+        buffer[index++] = (float)bottom;
     }
 
     @Override
@@ -53,15 +53,15 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
             if(e == null)
                 continue;
 
-            float x = e.getX();
-            float y = e.getY();
-            float[] vals = e.getYVals();
+            double x = e.getX();
+            double y = e.getY();
+            double[] vals = e.getYVals();
 
             if (!mContainsStacks || vals == null) {
 
-                float left = x - barWidthHalf;
-                float right = x + barWidthHalf;
-                float bottom, top;
+                double left = x - barWidthHalf;
+                double right = x + barWidthHalf;
+                double bottom, top;
 
                 if (mInverted) {
                     bottom = y >= 0 ? y : 0;
@@ -81,14 +81,14 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
             } else {
 
-                float posY = 0f;
+                double posY = 0;
                 float negY = -e.getNegativeSum();
-                float yStart = 0f;
+                double yStart = 0;
 
                 // fill the stack
                 for (int k = 0; k < vals.length; k++) {
 
-                    float value = vals[k];
+                    double value = vals[k];
 
                     if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
                         // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
@@ -104,9 +104,9 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
                         negY += Math.abs(value);
                     }
 
-                    float left = x - barWidthHalf;
-                    float right = x + barWidthHalf;
-                    float bottom, top;
+                    double left = x - barWidthHalf;
+                    double right = x + barWidthHalf;
+                    double bottom, top;
 
                     if (mInverted) {
                         bottom = y >= yStart ? y : yStart;

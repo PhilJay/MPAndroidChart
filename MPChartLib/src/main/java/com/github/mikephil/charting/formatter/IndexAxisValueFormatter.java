@@ -44,8 +44,8 @@ public class IndexAxisValueFormatter implements IAxisValueFormatter
             setValues(values.toArray(new String[values.size()]));
     }
 
-    public String getFormattedValue(float value, AxisBase axis) {
-        int index = Math.round(value);
+    public String getFormattedValue(double value, AxisBase axis) {
+        int index = (int)Math.round(value);
 
         if (index < 0 || index >= mValueCount || index != (int)value)
             return "";

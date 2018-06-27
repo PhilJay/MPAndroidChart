@@ -81,7 +81,7 @@ public class CombinedChartActivity extends DemoBase {
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(double value, AxisBase axis) {
                 return mMonths[(int) value % mMonths.length];
             }
         });
@@ -95,7 +95,7 @@ public class CombinedChartActivity extends DemoBase {
         data.setData(generateCandleData());
         data.setValueTypeface(mTfLight);
 
-        xAxis.setAxisMaximum(data.getXMax() + 0.25f);
+        xAxis.setAxisMaximum(data.getXMax() + 0.25d);
 
         mChart.setData(data);
         mChart.invalidate();
@@ -136,7 +136,7 @@ public class CombinedChartActivity extends DemoBase {
             entries1.add(new BarEntry(0, getRandom(25, 25)));
 
             // stacked
-            entries2.add(new BarEntry(0, new float[]{getRandom(13, 12), getRandom(13, 12)}));
+            entries2.add(new BarEntry(0, new double[]{getRandom(13, 12), getRandom(13, 12)}));
         }
 
         BarDataSet set1 = new BarDataSet(entries1, "Bar 1");

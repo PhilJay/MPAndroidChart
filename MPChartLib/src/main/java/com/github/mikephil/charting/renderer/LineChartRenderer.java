@@ -146,20 +146,20 @@ public class LineChartRenderer extends LineRadarRenderer {
             Entry cur = prev;
 
             // let the spline start
-            cubicPath.moveTo(cur.getX(), cur.getY() * phaseY);
+            cubicPath.moveTo(cur.getFloatX(), cur.getFloatY() * phaseY);
 
             for (int j = mXBounds.min + 1; j <= mXBounds.range + mXBounds.min; j++) {
 
                 prev = cur;
                 cur = dataSet.getEntryForIndex(j);
 
-                final float cpx = (prev.getX())
-                        + (cur.getX() - prev.getX()) / 2.0f;
+                final float cpx = (prev.getFloatX())
+                        + (cur.getFloatX() - prev.getFloatX()) / 2.0f;
 
                 cubicPath.cubicTo(
-                        cpx, prev.getY() * phaseY,
-                        cpx, cur.getY() * phaseY,
-                        cur.getX(), cur.getY() * phaseY);
+                        cpx, prev.getFloatY() * phaseY,
+                        cpx, cur.getFloatY() * phaseY,
+                        cur.getFloatX(), cur.getFloatY() * phaseY);
             }
         }
 
@@ -220,7 +220,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             if (cur == null) return;
 
             // let the spline start
-            cubicPath.moveTo(cur.getX(), cur.getY() * phaseY);
+            cubicPath.moveTo(cur.getFloatX(), cur.getFloatY() * phaseY);
 
             for (int j = mXBounds.min + 1; j <= mXBounds.range + mXBounds.min; j++) {
 
@@ -231,14 +231,14 @@ public class LineChartRenderer extends LineRadarRenderer {
                 nextIndex = j + 1 < dataSet.getEntryCount() ? j + 1 : j;
                 next = dataSet.getEntryForIndex(nextIndex);
 
-                prevDx = (cur.getX() - prevPrev.getX()) * intensity;
-                prevDy = (cur.getY() - prevPrev.getY()) * intensity;
-                curDx = (next.getX() - prev.getX()) * intensity;
-                curDy = (next.getY() - prev.getY()) * intensity;
+                prevDx = (cur.getFloatX() - prevPrev.getFloatX()) * intensity;
+                prevDy = (cur.getFloatY() - prevPrev.getFloatY()) * intensity;
+                curDx = (next.getFloatX() - prev.getFloatX()) * intensity;
+                curDy = (next.getFloatY() - prev.getFloatY()) * intensity;
 
-                cubicPath.cubicTo(prev.getX() + prevDx, (prev.getY() + prevDy) * phaseY,
-                        cur.getX() - curDx,
-                        (cur.getY() - curDy) * phaseY, cur.getX(), cur.getY() * phaseY);
+                cubicPath.cubicTo(prev.getFloatX() + prevDx, (prev.getFloatY() + prevDy) * phaseY,
+                        cur.getFloatX() - curDx,
+                        (cur.getFloatY() - curDy) * phaseY, cur.getFloatX(), cur.getFloatY() * phaseY);
             }
         }
 
@@ -264,11 +264,11 @@ public class LineChartRenderer extends LineRadarRenderer {
 
     protected void drawCubicFill(Canvas c, ILineDataSet dataSet, Path spline, Transformer trans, XBounds bounds) {
 
-        float fillMin = dataSet.getFillFormatter()
+        float fillMin = (float)dataSet.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart);
 
-        spline.lineTo(dataSet.getEntryForIndex(bounds.min + bounds.range).getX(), fillMin);
-        spline.lineTo(dataSet.getEntryForIndex(bounds.min).getX(), fillMin);
+        spline.lineTo(dataSet.getEntryForIndex(bounds.min + bounds.range).getFloatX(), fillMin);
+        spline.lineTo(dataSet.getEntryForIndex(bounds.min).getFloatX(), fillMin);
         spline.close();
 
         trans.pathValueToPixel(spline);
@@ -331,8 +331,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                 Entry e = dataSet.getEntryForIndex(j);
                 if (e == null) continue;
 
-                mLineBuffer[0] = e.getX();
-                mLineBuffer[1] = e.getY() * phaseY;
+                mLineBuffer[0] = e.getFloatX();
+                mLineBuffer[1] = e.getFloatY() * phaseY;
 
                 if (j < mXBounds.max) {
 
@@ -341,15 +341,15 @@ public class LineChartRenderer extends LineRadarRenderer {
                     if (e == null) break;
 
                     if (isDrawSteppedEnabled) {
-                        mLineBuffer[2] = e.getX();
+                        mLineBuffer[2] = e.getFloatX();
                         mLineBuffer[3] = mLineBuffer[1];
                         mLineBuffer[4] = mLineBuffer[2];
                         mLineBuffer[5] = mLineBuffer[3];
-                        mLineBuffer[6] = e.getX();
-                        mLineBuffer[7] = e.getY() * phaseY;
+                        mLineBuffer[6] = e.getFloatX();
+                        mLineBuffer[7] = e.getFloatY() * phaseY;
                     } else {
-                        mLineBuffer[2] = e.getX();
-                        mLineBuffer[3] = e.getY() * phaseY;
+                        mLineBuffer[2] = e.getFloatX();
+                        mLineBuffer[3] = e.getFloatY() * phaseY;
                     }
 
                 } else {
@@ -394,18 +394,18 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                     if (e1 == null || e2 == null) continue;
 
-                    mLineBuffer[j++] = e1.getX();
-                    mLineBuffer[j++] = e1.getY() * phaseY;
+                    mLineBuffer[j++] = e1.getFloatX();
+                    mLineBuffer[j++] = e1.getFloatY() * phaseY;
 
                     if (isDrawSteppedEnabled) {
-                        mLineBuffer[j++] = e2.getX();
-                        mLineBuffer[j++] = e1.getY() * phaseY;
-                        mLineBuffer[j++] = e2.getX();
-                        mLineBuffer[j++] = e1.getY() * phaseY;
+                        mLineBuffer[j++] = e2.getFloatX();
+                        mLineBuffer[j++] = e1.getFloatY() * phaseY;
+                        mLineBuffer[j++] = e2.getFloatX();
+                        mLineBuffer[j++] = e1.getFloatY() * phaseY;
                     }
 
-                    mLineBuffer[j++] = e2.getX();
-                    mLineBuffer[j++] = e2.getY() * phaseY;
+                    mLineBuffer[j++] = e2.getFloatX();
+                    mLineBuffer[j++] = e2.getFloatY() * phaseY;
                 }
 
                 if (j > 0) {
@@ -483,7 +483,7 @@ public class LineChartRenderer extends LineRadarRenderer {
      */
     private void generateFilledPath(final ILineDataSet dataSet, final int startIndex, final int endIndex, final Path outputPath) {
 
-        final float fillMin = dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
+        final float fillMin = (float)dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
         final float phaseY = mAnimator.getPhaseY();
         final boolean isDrawSteppedEnabled = dataSet.getMode() == LineDataSet.Mode.STEPPED;
 
@@ -492,8 +492,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         final Entry entry = dataSet.getEntryForIndex(startIndex);
 
-        filled.moveTo(entry.getX(), fillMin);
-        filled.lineTo(entry.getX(), entry.getY() * phaseY);
+        filled.moveTo(entry.getFloatX(), fillMin);
+        filled.lineTo(entry.getFloatX(), entry.getFloatY() * phaseY);
 
         // create a new path
         Entry currentEntry = null;
@@ -503,17 +503,17 @@ public class LineChartRenderer extends LineRadarRenderer {
             currentEntry = dataSet.getEntryForIndex(x);
 
             if (isDrawSteppedEnabled && previousEntry != null) {
-                filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
+                filled.lineTo(currentEntry.getFloatX(), previousEntry.getFloatY() * phaseY);
             }
 
-            filled.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
+            filled.lineTo(currentEntry.getFloatX(), currentEntry.getFloatY() * phaseY);
 
             previousEntry = currentEntry;
         }
 
         // close up
         if (currentEntry != null) {
-            filled.lineTo(currentEntry.getX(), fillMin);
+            filled.lineTo(currentEntry.getFloatX(), fillMin);
         }
 
         filled.close();
@@ -662,8 +662,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                 if (e == null) break;
 
-                mCirclesBuffer[0] = e.getX();
-                mCirclesBuffer[1] = e.getY() * phaseY;
+                mCirclesBuffer[0] = e.getFloatX();
+                mCirclesBuffer[1] = e.getFloatY() * phaseY;
 
                 trans.pointValuesToPixel(mCirclesBuffer);
 

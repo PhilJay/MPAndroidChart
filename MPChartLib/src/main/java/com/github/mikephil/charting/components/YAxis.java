@@ -397,10 +397,10 @@ public class YAxis extends AxisBase {
 
 
     @Override
-    public void calculate(float dataMin, float dataMax) {
+    public void calculate(double dataMin, double dataMax) {
 
-        float min = dataMin;
-        float max = dataMax;
+        double min = dataMin;
+        double max = dataMax;
 
         // if custom, use value as is, else use data value
         if( mCustomAxisMin ) {
@@ -420,7 +420,7 @@ public class YAxis extends AxisBase {
         }
 
         // temporary range (before calculations)
-        float range = Math.abs(max - min);
+        double range = Math.abs(max - min);
 
         // in case all values are equal
         if (range == 0f) {
@@ -428,13 +428,13 @@ public class YAxis extends AxisBase {
             min = min - 1f;
         }
 
-        float bottomSpace = range / 100f * getSpaceBottom();
+        double bottomSpace = range / 100f * getSpaceBottom();
         this.mAxisMinimum = (min - bottomSpace);
-            
-        float topSpace = range / 100f * getSpaceTop();
+
+        double topSpace = range / 100f * getSpaceTop();
         this.mAxisMaximum = (max + topSpace);
 
         // calc actual range
-        this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
+        this.mAxisRange = (float)Math.abs(this.mAxisMaximum - this.mAxisMinimum);
     }
 }

@@ -41,7 +41,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     @Override
-    public void computeAxis(float min, float max, boolean inverted) {
+    public void computeAxis(double min, double max, boolean inverted) {
 
         // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
@@ -68,7 +68,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     @Override
-    protected void computeAxisValues(float min, float max) {
+    protected void computeAxisValues(double min, double max) {
         super.computeAxisValues(min, max);
 
         computeSize();
@@ -188,9 +188,9 @@ public class XAxisRenderer extends AxisRenderer {
 
             // only fill x values
             if (centeringEnabled) {
-                positions[i] = mXAxis.mCenteredEntries[i / 2];
+                positions[i] = (float)mXAxis.mCenteredEntries[i / 2];
             } else {
-                positions[i] = mXAxis.mEntries[i / 2];
+                positions[i] = (float)mXAxis.mEntries[i / 2];
             }
         }
 
@@ -247,8 +247,8 @@ public class XAxisRenderer extends AxisRenderer {
         float[] positions = mRenderGridLinesBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
-            positions[i] = mXAxis.mEntries[i / 2];
-            positions[i + 1] = mXAxis.mEntries[i / 2];
+            positions[i] = (float)mXAxis.mEntries[i / 2];
+            positions[i + 1] = (float)mXAxis.mEntries[i / 2];
         }
 
         mTrans.pointValuesToPixel(positions);

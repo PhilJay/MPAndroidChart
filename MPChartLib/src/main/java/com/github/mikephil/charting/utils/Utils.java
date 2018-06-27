@@ -252,7 +252,7 @@ public abstract class Utils {
      * @param separateThousands set this to true to separate thousands values
      * @return
      */
-    public static String formatNumber(float number, int digitCount, boolean separateThousands) {
+    public static String formatNumber(double number, int digitCount, boolean separateThousands) {
         return formatNumber(number, digitCount, separateThousands, '.');
     }
 
@@ -266,7 +266,7 @@ public abstract class Utils {
      * @param separateChar      a caracter to be paced between the "thousands"
      * @return
      */
-    public static String formatNumber(float number, int digitCount, boolean separateThousands,
+    public static String formatNumber(double number, int digitCount, boolean separateThousands,
                                       char separateChar) {
 
         char[] out = new char[35];
@@ -372,11 +372,11 @@ public abstract class Utils {
      * @param number
      * @return
      */
-    public static int getDecimals(float number) {
+    public static int getDecimals(double number) {
 
-        float i = roundToNextSignificant(number);
+        double i = roundToNextSignificant(number);
         
-        if (Float.isInfinite(i))
+        if (Double.isInfinite(i))
             return 0;
         
         return (int) Math.ceil(-Math.log10(i)) + 2;
@@ -462,7 +462,7 @@ public abstract class Utils {
         return p;
     }
 
-    public static void getPosition(MPPointF center, float dist, float angle, MPPointF outputPoint){
+    public static void getPosition(MPPointF center, double dist, double angle, MPPointF outputPoint){
         outputPoint.x = (float) (center.x + dist * Math.cos(Math.toRadians(angle)));
         outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
     }

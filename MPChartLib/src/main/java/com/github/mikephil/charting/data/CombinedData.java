@@ -192,7 +192,7 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
                 .getEntriesForXValue(highlight.getX());
         for (Entry entry : entries)
             if (entry.getY() == highlight.getY() ||
-                    Float.isNaN(highlight.getY()))
+                    Double.isNaN(highlight.getY()))
                 return entry;
 
         return null;

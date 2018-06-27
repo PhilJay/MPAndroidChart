@@ -289,10 +289,10 @@ public class ViewPortHandler {
         return save;
     }
 
-    public void setZoom(float scaleX, float scaleY, Matrix outputMatrix) {
+    public void setZoom(double scaleX, double scaleY, Matrix outputMatrix) {
         outputMatrix.reset();
         outputMatrix.set(mMatrixTouch);
-        outputMatrix.setScale(scaleX, scaleY);
+        outputMatrix.setScale((float)scaleX, (float)scaleY);
     }
 
     /**
