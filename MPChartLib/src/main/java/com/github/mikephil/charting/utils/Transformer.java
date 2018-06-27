@@ -423,7 +423,7 @@ public class Transformer {
     public MPPointD getPixelForValues(double x, double y) {
 
         ptsBuffer[0] = (float)x;
-        ptsBuffer[1] = (float) y;
+        ptsBuffer[1] = (float)y;
 
         pointValuesToPixel(ptsBuffer);
 

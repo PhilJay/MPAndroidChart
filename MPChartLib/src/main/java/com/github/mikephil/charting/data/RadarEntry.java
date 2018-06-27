@@ -8,12 +8,12 @@ import android.annotation.SuppressLint;
 @SuppressLint("ParcelCreator")
 public class RadarEntry extends Entry {
 
-    public RadarEntry(float value) {
-        super(0f, value);
+    public RadarEntry(double value) {
+        super(0d, value);
     }
 
     public RadarEntry(double value, Object data) {
-        super(0f, value, data);
+        super(0d, value, data);
     }
 
     /**

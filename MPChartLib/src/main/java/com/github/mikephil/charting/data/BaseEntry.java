@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 public abstract class BaseEntry {
 
     /** the y value */
-    private double y = 0;
+    private double y = 0d;
 
     /** optional spot for additional data this Entry represents */
     private Object mData = null;

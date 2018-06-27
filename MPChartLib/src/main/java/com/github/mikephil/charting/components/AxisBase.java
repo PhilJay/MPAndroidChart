@@ -140,12 +140,12 @@ public abstract class AxisBase extends ComponentBase {
     /**
      * don't touch this direclty, use setter
      */
-    public double mAxisMaximum = 0;
+    public double mAxisMaximum = 0d;
 
     /**
      * don't touch this directly, use setter
      */
-    public double mAxisMinimum = 0;
+    public double mAxisMinimum = 0d;
 
     /**
      * the total range of values this axis covers

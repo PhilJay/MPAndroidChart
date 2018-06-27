@@ -81,9 +81,9 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
             } else {
 
-                double posY = 0;
+                double posY = 0d;
                 float negY = -e.getNegativeSum();
-                double yStart = 0;
+                double yStart = 0d;
 
                 // fill the stack
                 for (int k = 0; k < vals.length; k++) {

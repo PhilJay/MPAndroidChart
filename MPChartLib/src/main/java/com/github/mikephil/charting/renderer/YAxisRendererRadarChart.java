@@ -130,7 +130,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
                 mAxis.mCenteredEntries = new double[n];
             }
 
-            double offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2f;
+            double offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2d;
 
             for (int i = 0; i < n; i++) {
                 mAxis.mCenteredEntries[i] = mAxis.mEntries[i] + offset;

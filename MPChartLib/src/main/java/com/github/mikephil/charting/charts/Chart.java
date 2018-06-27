@@ -374,7 +374,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     protected void setupDefaultFormatter(double min, double max) {
 
-        double reference = 0;
+        double reference = 0d;
 
         if (mData == null || mData.getEntryCount() < 2) {
 

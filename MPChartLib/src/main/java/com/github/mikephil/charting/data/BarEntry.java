@@ -272,7 +272,7 @@ public class BarEntry extends Entry {
         if (vals == null)
             return 0f;
 
-        double sum = 0f;
+        double sum = 0d;
 
         for (double d : vals)
             sum += d;

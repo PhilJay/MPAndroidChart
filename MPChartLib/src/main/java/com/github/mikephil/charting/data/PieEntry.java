@@ -13,7 +13,7 @@ public class PieEntry extends Entry {
     private String label;
 
     public PieEntry(double value) {
-        super(0f, value);
+        super(0d, value);
     }
 
     public PieEntry(double value, Object data) {
@@ -29,22 +29,22 @@ public class PieEntry extends Entry {
     }
 
     public PieEntry(double value, String label) {
-        super(0f, value);
+        super(0d, value);
         this.label = label;
     }
 
     public PieEntry(double value, String label, Object data) {
-        super(0f, value, data);
+        super(0d, value, data);
         this.label = label;
     }
 
     public PieEntry(double value, String label, Drawable icon) {
-        super(0f, value, icon);
+        super(0d, value, icon);
         this.label = label;
     }
 
     public PieEntry(double value, String label, Drawable icon, Object data) {
-        super(0f, value, icon, data);
+        super(0d, value, icon, data);
         this.label = label;
     }
 

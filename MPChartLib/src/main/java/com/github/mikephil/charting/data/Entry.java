@@ -17,7 +17,7 @@ import com.github.mikephil.charting.utils.Utils;
 public class Entry extends BaseEntry implements Parcelable {
 
     /** the x value */
-    private double x = 0;
+    private double x = 0d;
 
     public Entry() {
 

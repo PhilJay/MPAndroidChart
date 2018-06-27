@@ -471,7 +471,7 @@ public class PieChartRenderer extends DataRenderer {
                 final float transformedAngle = rotationAngle + angle * phaseY;
 
                 double value = mChart.isUsePercentValuesEnabled() ? entry.getY()
-                        / yValueSum * 100f : entry.getY();
+                        / yValueSum * 100d : entry.getY();
 
                 final float sliceXBase = (float) Math.cos(transformedAngle * Utils.FDEG2RAD);
                 final float sliceYBase = (float) Math.sin(transformedAngle * Utils.FDEG2RAD);

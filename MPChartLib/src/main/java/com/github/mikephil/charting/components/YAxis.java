@@ -423,15 +423,15 @@ public class YAxis extends AxisBase {
         double range = Math.abs(max - min);
 
         // in case all values are equal
-        if (range == 0f) {
-            max = max + 1f;
-            min = min - 1f;
+        if (range == 0d) {
+            max = max + 1d;
+            min = min - 1d;
         }
 
-        double bottomSpace = range / 100f * getSpaceBottom();
+        double bottomSpace = range / 100d * getSpaceBottom();
         this.mAxisMinimum = (min - bottomSpace);
 
-        double topSpace = range / 100f * getSpaceTop();
+        double topSpace = range / 100d * getSpaceTop();
         this.mAxisMaximum = (max + topSpace);
 
         // calc actual range
