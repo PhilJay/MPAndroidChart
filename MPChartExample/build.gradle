@@ -62,4 +62,5 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     //compile 'io.realm:realm-android:0.87.5' // dependency for realm-database API (http://realm.io)
     //compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 }

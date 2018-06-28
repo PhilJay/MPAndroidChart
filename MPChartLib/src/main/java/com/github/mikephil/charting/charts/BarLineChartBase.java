@@ -188,7 +188,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
 	private void initializeAttributes(Context context, AttributeSet attrs) {
 
-		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Chart, 0, 0);
+		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BarLineChartBase, 0, 0);
 
 		mMaxVisibleCount = a.getInt(R.styleable.BarLineChartBase_maxVisibleCount, DEFAULT_VISIBLE_COUNT);
 		mAutoScaleMinMaxEnabled = a.getBoolean(R.styleable.BarLineChartBase_autoScaleMinMaxEnabled, false);
@@ -204,6 +204,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		mClipValuesToContent = a.getBoolean(R.styleable.BarLineChartBase_clipValuesToContent, false);
 		mMinOffset = a.getFloat(R.styleable.BarLineChartBase_minOffset, DEFAULT_MIN_OFFSET);
 		mKeepPositionOnRotation = a.getBoolean(R.styleable.BarLineChartBase_keepPositionOnRotation, false);
+
 	}
 
 	// for performance tracking

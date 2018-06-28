@@ -34,16 +34,4 @@
 		<attr name="axisLeftEnabled" format="boolean" />
 	</declare-styleable>
 
-
-
-	<!--<declare-styleable name="LineChart">
-		<attr name="" format="" />
-		<attr name="" format="" />
-		<attr name="" format="" />
-		<attr name="" format="" />
-		<attr name="" format="" />
-		<attr name="" format="" />
-		<attr name="" format="" />
-	</declare-styleable>-->
-
 </resources>
