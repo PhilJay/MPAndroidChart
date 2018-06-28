@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<declare-styleable name="Chart">
+		<attr name="logEnabled" format="boolean" />
+		<attr name="highlightPerTabEnabled" format="boolean" />
+		<attr name="dragDecelerationEnabled" format="boolean" />
+		<attr name="dragDecelrationFrictionCoef" format="float" />
+		<attr name="touchEnabled" format="boolean" />
+		<attr name="extraTopOffset" fromat="float" />
+		<attr name="extraRightOffset" fromat="float" />
+		<attr name="extraBottomOffset" fromat="float" />
+		<attr name="extraLeftOffset" fromat="float" />
+		<attr name="descritpionText" format="reference"/>
+
+	</declare-styleable>
+
+	<declare-styleable name="BarLineChartBase">
+		<attr name="maxVisibleCount" format="integer" />
+		<attr name="autoScaleMinMaxEnabled" format="boolean" />
+		<attr name="pinchZoomEnabled" format="boolean" />
+		<attr name="doubleTapZoomEnabled" format="boolean" />
+		<attr name="highlightPerDragEnabled" format="boolean" />
+		<attr name="dragXEnabled" format="boolean" />
+		<attr name="dragYEnabled" format="boolean" />
+		<attr name="scaleXEnabled" format="boolean"/>
+		<attr name="scaleYEnabled" format="boolean"/>
+		<attr name="drawGridBackground" format="boolean" />
+		<attr name="drawBorders" format="boolean" />
+		<attr name="clipValuesToContent" format="boolean" />
+		<attr name="minOffset" format="float" />
+		<attr name="keepPositionOnRotation" format="boolean" />
+		<attr name="axisRightEnabled" format="boolean" />
+		<attr name="axisLeftEnabled" format="boolean" />
+	</declare-styleable>
+
+
+
+	<!--<declare-styleable name="LineChart">
+		<attr name="" format="" />
+		<attr name="" format="" />
+		<attr name="" format="" />
+		<attr name="" format="" />
+		<attr name="" format="" />
+		<attr name="" format="" />
+		<attr name="" format="" />
+	</declare-styleable>-->
+
+</resources>
