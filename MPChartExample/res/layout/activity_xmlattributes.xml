@@ -19,6 +19,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
+			android:padding="10dp"
 			>
 
 		<com.github.mikephil.charting.charts.LineChart
@@ -33,12 +34,15 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
+			android:padding="10dp"
 		>
 
 			<com.github.mikephil.charting.charts.LineChart
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:id="@+id/line_chart2"
+				app:drawGridBackground="true"
+				app:descritpionText="@string/test_description"
 				/>
 
 		</LinearLayout>
