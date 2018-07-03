@@ -11,22 +11,23 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
-		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintBottom_toBottomOf="parent"
-		>
+		app:layout_constraintTop_toTopOf="parent">
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:padding="10dp"
-			>
+			android:padding="10dp">
 
-		<com.github.mikephil.charting.charts.LineChart
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/line_chart"
-			/>
+			<com.github.mikephil.charting.charts.LineChart
+				android:id="@+id/line_chart"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:xAxisDrawAxisLine="true"
+				app:xAxisDrawGridLines="true"
+				app:xAxisGridLineWidth="3"
+				/>
 
 		</LinearLayout>
 
@@ -34,16 +35,29 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:padding="10dp"
-		>
+			android:padding="10dp">
 
 			<com.github.mikephil.charting.charts.LineChart
+				android:id="@+id/line_chart2"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:id="@+id/line_chart2"
-				app:drawGridBackground="true"
+				app:axisLeftGridColor="@color/baby_blue"
+				app:axisLeftGridLineWidth="5"
+				app:axisRightGridColor="@color/green"
+				app:axisRightGridLineWidth="5"
+				app:clipValuesToContent="true"
 				app:descritpionText="@string/test_description"
-				/>
+				app:doubleTapZoomEnabled="false"
+				app:dragXEnabled="false"
+				app:dragYEnabled="false"
+				app:drawBorders="true"
+				app:drawGridBackground="true"
+				app:pinchZoomEnabled="true"
+				app:scaleXEnabled="false"
+				app:scaleYEnabled="false"
+				app:xAxisGridColor="@color/green"
+				app:xAxisGridLineWidth="3"
+				app:xAxisLineColor="@color/green" />
 
 		</LinearLayout>
 

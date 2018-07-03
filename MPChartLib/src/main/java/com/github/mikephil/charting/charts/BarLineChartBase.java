@@ -143,12 +143,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
 	public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		initializeAttributes(context, attrs);
+		initializeChartBaseAttributes(context, attrs);
+		initializeXAxisAttributes(context, attrs);
+		initializeYAxisAttributesLeft(context, attrs);
+		initializeYAxisAttributesRight(context, attrs);
 	}
 
 	public BarLineChartBase(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		initializeAttributes(context, attrs);
+		initializeChartBaseAttributes(context, attrs);
+		initializeXAxisAttributes(context, attrs);
+		initializeYAxisAttributesLeft(context, attrs);
+		initializeYAxisAttributesRight(context, attrs);
 	}
 
 	public BarLineChartBase(Context context) {
@@ -186,7 +192,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
 	}
 
-	private void initializeAttributes(Context context, AttributeSet attrs) {
+	private void initializeChartBaseAttributes(Context context, AttributeSet attrs) {
 
 		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BarLineChartBase, 0, 0);
 
@@ -204,6 +210,63 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		mClipValuesToContent = a.getBoolean(R.styleable.BarLineChartBase_clipValuesToContent, false);
 		mMinOffset = a.getFloat(R.styleable.BarLineChartBase_minOffset, DEFAULT_MIN_OFFSET);
 		mKeepPositionOnRotation = a.getBoolean(R.styleable.BarLineChartBase_keepPositionOnRotation, false);
+
+	}
+
+	private void initializeXAxisAttributes(Context context, AttributeSet attrs) {
+
+		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.XAxis, 0, 0);
+
+		mXAxis.setGridColor(a.getColor(R.styleable.XAxis_xAxisGridColor, Color.GRAY));
+
+		//if i don't pass in 0f here lines become thicker than default.
+		mXAxis.setGridLineWidth(a.getFloat(R.styleable.XAxis_xAxisGridLineWidth, 0f));
+		mXAxis.setAxisLineColor(a.getColor(R.styleable.XAxis_xAxisLineColor, Color.GRAY));
+		mXAxis.setLabelCount(a.getInt(R.styleable.XAxis_xAxisLabelCount, 6));
+		mXAxis.setDrawGridLines(a.getBoolean(R.styleable.XAxis_xAxisDrawGridLines, true));
+		mXAxis.setDrawAxisLine(a.getBoolean(R.styleable.XAxis_xAxisDrawAxisLine, true));
+		mXAxis.setDrawLabels(a.getBoolean(R.styleable.XAxis_xAxisDrawLabels, true));
+		mXAxis.setCenterAxisLabels(a.getBoolean(R.styleable.XAxis_xAxisCenterAxisLabels, false));
+		mXAxis.setDrawLimitLinesBehindData(a.getBoolean(R.styleable.XAxis_xAxisDrawLimitLinesBehindData, false));
+		mXAxis.setDrawGridLinesBehindData(a.getBoolean(R.styleable.XAxis_xAxisDrawGridLinesBehindData, true));
+		mXAxis.setSpaceMin(a.getFloat(R.styleable.XAxis_xAxisSpaceMin, 0.f));
+		mXAxis.setSpaceMax(a.getFloat(R.styleable.XAxis_xAxisSpaceMax, 0.f));
+	}
+
+	private void initializeYAxisAttributesLeft(Context context, AttributeSet attrs) {
+
+		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.AxisLeft, 0, 0);
+
+		mAxisLeft.setGridColor(a.getColor(R.styleable.AxisLeft_axisLeftGridColor, Color.GRAY));
+		mAxisLeft.setGridLineWidth(a.getFloat(R.styleable.AxisLeft_axisLeftGridLineWidth, 0f));
+		mAxisLeft.setAxisLineColor(a.getColor(R.styleable.AxisLeft_axisLeftLineColor, Color.GRAY));
+		mAxisLeft.setLabelCount(a.getInt(R.styleable.AxisLeft_axisLeftLabelCount, 6));
+		mAxisLeft.setDrawGridLines(a.getBoolean(R.styleable.AxisLeft_axisLeftDrawGridLines, true));
+		mAxisLeft.setDrawAxisLine(a.getBoolean(R.styleable.AxisLeft_axisLeftDrawAxisLine, true));
+		mAxisLeft.setDrawLabels(a.getBoolean(R.styleable.AxisLeft_axisLeftDrawLabels, true));
+		mAxisLeft.setCenterAxisLabels(a.getBoolean(R.styleable.AxisLeft_axisLeftCenterAxisLabels, false));
+		mAxisLeft.setDrawLimitLinesBehindData(a.getBoolean(R.styleable.AxisLeft_axisLeftDrawLimitLinesBehindData, false));
+		mAxisLeft.setDrawGridLinesBehindData(a.getBoolean(R.styleable.AxisLeft_axisLeftDrawGridLinesBehindData, true));
+		mAxisLeft.setSpaceMin(a.getFloat(R.styleable.AxisLeft_axisLeftSpaceMin, 0.f));
+		mAxisLeft.setSpaceMax(a.getFloat(R.styleable.AxisLeft_axisLeftSpaceMax, 0.f));
+	}
+
+	private void initializeYAxisAttributesRight(Context context, AttributeSet attrs) {
+
+		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.AxisRight, 0, 0);
+
+		mAxisRight.setGridColor(a.getColor(R.styleable.AxisRight_axisRightGridColor, Color.GRAY));
+		mAxisRight.setGridLineWidth(a.getFloat(R.styleable.AxisRight_axisRightGridLineWidth, 0f));
+		mAxisRight.setAxisLineColor(a.getColor(R.styleable.AxisRight_axisRightLineColor, Color.GRAY));
+		mAxisRight.setLabelCount(a.getInt(R.styleable.AxisRight_axisRightLabelCount, 6));
+		mAxisRight.setDrawGridLines(a.getBoolean(R.styleable.AxisRight_axisRightDrawGridLines, true));
+		mAxisRight.setDrawAxisLine(a.getBoolean(R.styleable.AxisRight_axisRightDrawAxisLine, true));
+		mAxisRight.setDrawLabels(a.getBoolean(R.styleable.AxisRight_axisRightDrawLabels, true));
+		mAxisRight.setCenterAxisLabels(a.getBoolean(R.styleable.AxisRight_axisRightCenterAxisLabels, false));
+		mAxisRight.setDrawLimitLinesBehindData(a.getBoolean(R.styleable.AxisRight_axisRightDrawLimitLinesBehindData, false));
+		mAxisRight.setDrawGridLinesBehindData(a.getBoolean(R.styleable.AxisRight_axisRightDrawGridLinesBehindData, true));
+		mAxisRight.setSpaceMin(a.getFloat(R.styleable.AxisRight_axisRightSpaceMin, 0.f));
+		mAxisRight.setSpaceMax(a.getFloat(R.styleable.AxisRight_axisRightSpaceMax, 0.f));
 
 	}
 

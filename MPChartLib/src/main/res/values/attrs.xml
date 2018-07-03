@@ -11,7 +11,7 @@
 		<attr name="extraRightOffset" fromat="float" />
 		<attr name="extraBottomOffset" fromat="float" />
 		<attr name="extraLeftOffset" fromat="float" />
-		<attr name="descritpionText" format="reference"/>
+		<attr name="descritpionText" format="reference" />
 
 	</declare-styleable>
 
@@ -23,8 +23,8 @@
 		<attr name="highlightPerDragEnabled" format="boolean" />
 		<attr name="dragXEnabled" format="boolean" />
 		<attr name="dragYEnabled" format="boolean" />
-		<attr name="scaleXEnabled" format="boolean"/>
-		<attr name="scaleYEnabled" format="boolean"/>
+		<attr name="scaleXEnabled" format="boolean" />
+		<attr name="scaleYEnabled" format="boolean" />
 		<attr name="drawGridBackground" format="boolean" />
 		<attr name="drawBorders" format="boolean" />
 		<attr name="clipValuesToContent" format="boolean" />
@@ -32,6 +32,51 @@
 		<attr name="keepPositionOnRotation" format="boolean" />
 		<attr name="axisRightEnabled" format="boolean" />
 		<attr name="axisLeftEnabled" format="boolean" />
+	</declare-styleable>
+
+	<declare-styleable name="AxisLeft">
+		<attr name="axisLeftGridColor" format="reference" />
+		<attr name="axisLeftGridLineWidth" format="float" />
+		<attr name="axisLeftLineColor" format="reference" />
+		<attr name="axisLeftLabelCount" format="integer" />
+		<attr name="axisLeftDrawGridLines" format="boolean" />
+		<attr name="axisLeftDrawAxisLine" format="boolean" />
+		<attr name="axisLeftDrawLabels" format="boolean" />
+		<attr name="axisLeftCenterAxisLabels" format="boolean" />
+		<attr name="axisLeftDrawLimitLinesBehindData" format="boolean" />
+		<attr name="axisLeftDrawGridLinesBehindData" format="boolean" />
+		<attr name="axisLeftSpaceMin" format="float" />
+		<attr name="axisLeftSpaceMax" format="float" />
+	</declare-styleable>
+
+	<declare-styleable name="AxisRight">
+		<attr name="axisRightGridColor" format="reference" />
+		<attr name="axisRightGridLineWidth" format="float" />
+		<attr name="axisRightLineColor" format="reference" />
+		<attr name="axisRightLabelCount" format="integer" />
+		<attr name="axisRightDrawGridLines" format="boolean" />
+		<attr name="axisRightDrawAxisLine" format="boolean" />
+		<attr name="axisRightDrawLabels" format="boolean" />
+		<attr name="axisRightCenterAxisLabels" format="boolean" />
+		<attr name="axisRightDrawLimitLinesBehindData" format="boolean" />
+		<attr name="axisRightDrawGridLinesBehindData" format="boolean" />
+		<attr name="axisRightSpaceMin" format="float" />
+		<attr name="axisRightSpaceMax" format="float" />
+	</declare-styleable>
+
+	<declare-styleable name="XAxis">
+		<attr name="xAxisGridColor" format="reference" />
+		<attr name="xAxisGridLineWidth" format="float" />
+		<attr name="xAxisLineColor" format="reference" />
+		<attr name="xAxisLabelCount" format="integer" />
+		<attr name="xAxisDrawGridLines" format="boolean" />
+		<attr name="xAxisDrawAxisLine" format="boolean" />
+		<attr name="xAxisDrawLabels" format="boolean" />
+		<attr name="xAxisCenterAxisLabels" format="boolean" />
+		<attr name="xAxisDrawLimitLinesBehindData" format="boolean" />
+		<attr name="xAxisDrawGridLinesBehindData" format="boolean" />
+		<attr name="xAxisSpaceMin" format="float" />
+		<attr name="xAxisSpaceMax" format="float" />
 	</declare-styleable>
 
 </resources>
