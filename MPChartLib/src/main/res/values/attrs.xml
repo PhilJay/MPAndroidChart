@@ -5,13 +5,13 @@
 		<attr name="logEnabled" format="boolean" />
 		<attr name="highlightPerTabEnabled" format="boolean" />
 		<attr name="dragDecelerationEnabled" format="boolean" />
-		<attr name="dragDecelrationFrictionCoef" format="float" />
+		<attr name="dragDecelerationFrictionCoef" format="float" />
 		<attr name="touchEnabled" format="boolean" />
 		<attr name="extraTopOffset" fromat="float" />
 		<attr name="extraRightOffset" fromat="float" />
 		<attr name="extraBottomOffset" fromat="float" />
 		<attr name="extraLeftOffset" fromat="float" />
-		<attr name="descritpionText" format="reference" />
+		<attr name="descriptionText" format="reference" />
 
 	</declare-styleable>
 
@@ -47,6 +47,20 @@
 		<attr name="axisLeftDrawGridLinesBehindData" format="boolean" />
 		<attr name="axisLeftSpaceMin" format="float" />
 		<attr name="axisLeftSpaceMax" format="float" />
+		<attr name="axisLeftYAxisPosition" format="integer">
+			<flag name="outsideChart" value="0" />
+			<flag name="insideChart" value="1" />
+		</attr>
+		<attr name="axisLeftDrawTopYLabelEntry" format="boolean" />
+		<attr name="axisLeftInverted" format="boolean" />
+		<attr name="axisLeftDrawZeroLine" format="boolean" />
+		<attr name="axisLeftUseAutoScaleRestrictionMin" format="boolean" />
+		<attr name="axisLeftUseAutoScaleRestrictionMax" format="boolean" />
+		<attr name="axisLeftZeroLineColor" format="reference" />
+		<attr name="axisLeftZeroLineWidth" format="dimension" />
+		<attr name="axisLeftSpacePercentBottom" format="float" />
+		<attr name="axisLeftSpacePercentTop" format="float" />
+
 	</declare-styleable>
 
 	<declare-styleable name="AxisRight">
@@ -62,6 +76,19 @@
 		<attr name="axisRightDrawGridLinesBehindData" format="boolean" />
 		<attr name="axisRightSpaceMin" format="float" />
 		<attr name="axisRightSpaceMax" format="float" />
+		<attr name="axisRightYAxisPosition" format="integer">
+			<flag name="outsideChart" value="0" />
+			<flag name="insideChart" value="1" />
+		</attr>
+		<attr name="axisRightDrawTopYLabelEntry" format="boolean" />
+		<attr name="axisRightInverted" format="boolean" />
+		<attr name="axisRightDrawZeroLine" format="boolean" />
+		<attr name="axisRightUseAutoScaleRestrictionMin" format="boolean" />
+		<attr name="axisRightUseAutoScaleRestrictionMax" format="boolean" />
+		<attr name="axisRightZeroLineColor" format="reference" />
+		<attr name="axisRightZeroLineWidth" format="dimension" />
+		<attr name="axisRightSpacePercentBottom" format="float" />
+		<attr name="axisRightSpacePercentTop" format="float" />
 	</declare-styleable>
 
 	<declare-styleable name="XAxis">
@@ -77,6 +104,17 @@
 		<attr name="xAxisDrawGridLinesBehindData" format="boolean" />
 		<attr name="xAxisSpaceMin" format="float" />
 		<attr name="xAxisSpaceMax" format="float" />
+		<attr name="xAxisPosition" format="integer">
+			<flag name="top" value="0" />
+			<flag name="bottom" value="1" />
+			<flag name="bothSided" value="2" />
+			<flag name="topInside" value="3" />
+			<flag name="bottomInside" value="4" />
+		</attr>
+		<attr name="xAxisLabelRotationAngle" format="float" />
+		<attr name="xAxisAvoidFirstLastClipping" format="boolean" />
+
 	</declare-styleable>
+
 
 </resources>

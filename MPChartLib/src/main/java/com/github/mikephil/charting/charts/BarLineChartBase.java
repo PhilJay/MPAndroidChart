@@ -211,6 +211,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		mMinOffset = a.getFloat(R.styleable.BarLineChartBase_minOffset, DEFAULT_MIN_OFFSET);
 		mKeepPositionOnRotation = a.getBoolean(R.styleable.BarLineChartBase_keepPositionOnRotation, false);
 
+
 	}
 
 	private void initializeXAxisAttributes(Context context, AttributeSet attrs) {
@@ -218,8 +219,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.XAxis, 0, 0);
 
 		mXAxis.setGridColor(a.getColor(R.styleable.XAxis_xAxisGridColor, Color.GRAY));
-
-		//if i don't pass in 0f here lines become thicker than default.
 		mXAxis.setGridLineWidth(a.getFloat(R.styleable.XAxis_xAxisGridLineWidth, 0f));
 		mXAxis.setAxisLineColor(a.getColor(R.styleable.XAxis_xAxisLineColor, Color.GRAY));
 		mXAxis.setLabelCount(a.getInt(R.styleable.XAxis_xAxisLabelCount, 6));
@@ -231,6 +230,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		mXAxis.setDrawGridLinesBehindData(a.getBoolean(R.styleable.XAxis_xAxisDrawGridLinesBehindData, true));
 		mXAxis.setSpaceMin(a.getFloat(R.styleable.XAxis_xAxisSpaceMin, 0.f));
 		mXAxis.setSpaceMax(a.getFloat(R.styleable.XAxis_xAxisSpaceMax, 0.f));
+		mXAxis.setPosition(XAxisPosition.getPosition(a.getInteger(R.styleable.XAxis_xAxisPosition, 0)));
+		mXAxis.setLabelRotationAngle(a.getFloat(R.styleable.XAxis_xAxisLabelRotationAngle, 0f));
+		mXAxis.setAvoidFirstLastClipping(a.getBoolean(R.styleable.XAxis_xAxisAvoidFirstLastClipping, false));
 	}
 
 	private void initializeYAxisAttributesLeft(Context context, AttributeSet attrs) {
@@ -249,6 +251,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		mAxisLeft.setDrawGridLinesBehindData(a.getBoolean(R.styleable.AxisLeft_axisLeftDrawGridLinesBehindData, true));
 		mAxisLeft.setSpaceMin(a.getFloat(R.styleable.AxisLeft_axisLeftSpaceMin, 0.f));
 		mAxisLeft.setSpaceMax(a.getFloat(R.styleable.AxisLeft_axisLeftSpaceMax, 0.f));
+		mAxisLeft.setPosition(YAxis.YAxisLabelPosition.getPosition(a.getInt(R.styleable.AxisLeft_axisLeftYAxisPosition, 0)));
+		mAxisLeft.setInverted(a.getBoolean(R.styleable.AxisLeft_axisLeftInverted, false));
+		mAxisLeft.setDrawTopYLabelEntry(a.getBoolean(R.styleable.AxisLeft_axisLeftDrawTopYLabelEntry, true));
+		mAxisLeft.setDrawZeroLine(a.getBoolean(R.styleable.AxisLeft_axisLeftDrawZeroLine, false));
+		mAxisLeft.setUseAutoScaleMinRestriction(a.getBoolean(R.styleable.AxisLeft_axisLeftUseAutoScaleRestrictionMin, false));
+		mAxisLeft.setUseAutoScaleMaxRestriction(a.getBoolean(R.styleable.AxisLeft_axisLeftUseAutoScaleRestrictionMax, false));
+		mAxisLeft.setZeroLineColor(a.getColor(R.styleable.AxisLeft_axisLeftZeroLineColor, Color.GRAY));
+		mAxisLeft.setZeroLineWidth(Utils.convertPixelsToDp(a.getDimension(R.styleable.AxisLeft_axisLeftZeroLineWidth, 1f)));
+		mAxisLeft.setSpaceBottom(a.getFloat(R.styleable.AxisLeft_axisLeftSpacePercentBottom, 10f));
+		mAxisLeft.setSpaceTop(a.getFloat(R.styleable.AxisLeft_axisLeftSpacePercentTop, 10f));
 	}
 
 	private void initializeYAxisAttributesRight(Context context, AttributeSet attrs) {
@@ -267,7 +279,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		mAxisRight.setDrawGridLinesBehindData(a.getBoolean(R.styleable.AxisRight_axisRightDrawGridLinesBehindData, true));
 		mAxisRight.setSpaceMin(a.getFloat(R.styleable.AxisRight_axisRightSpaceMin, 0.f));
 		mAxisRight.setSpaceMax(a.getFloat(R.styleable.AxisRight_axisRightSpaceMax, 0.f));
-
+		mAxisRight.setPosition(YAxis.YAxisLabelPosition.getPosition(a.getInt(R.styleable.AxisRight_axisRightYAxisPosition, 0)));
+		mAxisRight.setInverted(a.getBoolean(R.styleable.AxisRight_axisRightInverted, false));
+		mAxisRight.setDrawTopYLabelEntry(a.getBoolean(R.styleable.AxisRight_axisRightDrawTopYLabelEntry, true));
+		mAxisRight.setDrawZeroLine(a.getBoolean(R.styleable.AxisRight_axisRightDrawZeroLine, false));
+		mAxisRight.setUseAutoScaleMinRestriction(a.getBoolean(R.styleable.AxisRight_axisRightUseAutoScaleRestrictionMin, false));
+		mAxisRight.setUseAutoScaleMaxRestriction(a.getBoolean(R.styleable.AxisRight_axisRightUseAutoScaleRestrictionMax, false));
+		mAxisRight.setZeroLineColor(a.getColor(R.styleable.AxisRight_axisRightZeroLineColor, Color.GRAY));
+		mAxisRight.setZeroLineWidth(Utils.convertPixelsToDp(a.getDimension(R.styleable.AxisRight_axisRightZeroLineWidth, 1f)));
+		mAxisRight.setSpaceBottom(a.getFloat(R.styleable.AxisRight_axisRightSpacePercentBottom, 10f));
+		mAxisRight.setSpaceTop(a.getFloat(R.styleable.AxisRight_axisRightSpacePercentTop, 10f));
 	}
 
 	// for performance tracking

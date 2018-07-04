@@ -261,13 +261,13 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 		mLogEnabled = a.getBoolean(R.styleable.Chart_logEnabled, false);
 		mHighLightPerTapEnabled = a.getBoolean(R.styleable.Chart_highlightPerTabEnabled, true);
 		mDragDecelerationEnabled = a.getBoolean(R.styleable.Chart_dragDecelerationEnabled, true);
-		mDragDecelerationFrictionCoef = a.getFloat(R.styleable.Chart_dragDecelrationFrictionCoef, DEFAULT_DRAG_COEF);
+		mDragDecelerationFrictionCoef = a.getFloat(R.styleable.Chart_dragDecelerationFrictionCoef, DEFAULT_DRAG_COEF);
 		mTouchEnabled = a.getBoolean(R.styleable.Chart_touchEnabled, true);
 		mExtraTopOffset = a.getFloat(R.styleable.Chart_extraTopOffset, DEFAULT_OFFSET);
 		mExtraRightOffset = a.getFloat(R.styleable.Chart_extraRightOffset, DEFAULT_OFFSET);
 		mExtraBottomOffset = a.getFloat(R.styleable.Chart_extraBottomOffset, DEFAULT_OFFSET);
 		mExtraLeftOffset = a.getFloat(R.styleable.Chart_extraLeftOffset, DEFAULT_OFFSET);
-		mDescription.setText(context.getString(a.getResourceId(R.styleable.Chart_descritpionText, R.string.default_description)));
+		mDescription.setText(context.getString(a.getResourceId(R.styleable.Chart_descriptionText, R.string.default_description)));
 	}
 
 	// public void initWithDummyData() {
