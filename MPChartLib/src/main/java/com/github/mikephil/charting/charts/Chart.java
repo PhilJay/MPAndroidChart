@@ -1476,7 +1476,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @param highlighter
      */
-    public void setHighlighter(ChartHighlighter highlighter) {
+    public void setHighlighter(IHighlighter highlighter) {
         mHighlighter = highlighter;
     }
 
