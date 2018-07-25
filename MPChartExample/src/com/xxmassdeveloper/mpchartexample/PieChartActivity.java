@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -67,13 +66,14 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setCenterText(generateCenterSpannableText());
 
         mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
+        mChart.setHoleColor(Color.TRANSPARENT);
 
-        mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
+        mChart.setTransparentCircleColor(Color.DKGRAY);
+        mChart.setTransparentCircleAlpha(255);
+        mChart.setDrawArcColorsInverted(true);
 
         mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
+        mChart.setTransparentCircleRadius(65f);
 
         mChart.setDrawCenterText(true);
 

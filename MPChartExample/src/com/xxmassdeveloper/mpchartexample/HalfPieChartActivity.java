@@ -55,7 +55,7 @@ public class HalfPieChartActivity extends DemoBase {
         mChart.setTransparentCircleAlpha(110);
 
         mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
+        mChart.setTransparentCircleRadius(65f);
 
         mChart.setDrawCenterText(true);
 
