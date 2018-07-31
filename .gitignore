@@ -32,7 +32,12 @@ proguard/
 *.iml
 *.ipr
 *.iws
-.idea/
+
+# ecerything except code format settings
+!.idea/
+.idea/*
+!codeStyleSettings.xml
+!/.idea/runConfigurations
 
 .directory
 
