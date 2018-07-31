@@ -17,7 +17,7 @@ public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implement
     /**
      * buffer for storing previously highlighted values
      */
-    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
+    protected List<Highlight> mHighlightBuffer = new ArrayList<>();
 
     public PieRadarHighlighter(T chart) {
         this.mChart = chart;

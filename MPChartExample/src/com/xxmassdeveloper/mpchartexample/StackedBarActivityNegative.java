@@ -97,7 +97,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         l.setXEntrySpace(6f);
 
         // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
-        ArrayList<BarEntry> yValues = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yValues = new ArrayList<>();
         yValues.add(new BarEntry(5, new float[]{ -10, 10 }));
         yValues.add(new BarEntry(15, new float[]{ -12, 13 }));
         yValues.add(new BarEntry(25, new float[]{ -15, 15 }));

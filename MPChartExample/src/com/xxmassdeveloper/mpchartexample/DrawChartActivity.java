@@ -75,7 +75,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
     private void initWithDummyData() {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> yVals = new ArrayList<>();
 
         // create a dataset and give it a type (0)
         LineDataSet set1 = new LineDataSet(yVals, "DataSet");

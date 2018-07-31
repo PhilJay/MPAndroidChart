@@ -79,7 +79,7 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
 
     @Override
     public DataSet<CandleEntry> copy() {
-        List<CandleEntry> entries = new ArrayList<CandleEntry>();
+        List<CandleEntry> entries = new ArrayList<>();
         for (int i = 0; i < mValues.size(); i++) {
             entries.add(mValues.get(i).copy());
         }
@@ -181,16 +181,16 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     }
 
     // TODO
-    /**
-     * It is necessary to implement ColorsList class that will encapsulate
-     * colors list functionality, because It's wrong to copy paste setColor,
-     * addColor, ... resetColors for each time when we want to add a coloring
-     * options for one of objects
-     *
-     * @author Mesrop
+    /*
+      It is necessary to implement ColorsList class that will encapsulate
+      colors list functionality, because It's wrong to copy paste setColor,
+      addColor, ... resetColors for each time when we want to add a coloring
+      options for one of objects
+
+      @author Mesrop
      */
 
-    /** BELOW THIS COLOR HANDLING */
+    /* BELOW THIS COLOR HANDLING */
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when

@@ -199,7 +199,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
     private void setData(int count) {
 
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             entries.add(mSinusData.get(i));

@@ -107,7 +107,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             int count = (data.getDataSetCount() + 1);
 
-            ArrayList<Entry> yVals = new ArrayList<Entry>();
+            ArrayList<Entry> yVals = new ArrayList<>();
 
             for (int i = 0; i < data.getEntryCount(); i++) {
                 yVals.add(new Entry(i, (float) (Math.random() * 50f) + 50f * count));

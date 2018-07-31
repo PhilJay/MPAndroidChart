@@ -97,8 +97,8 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * Default constructor.
      */
     public BaseDataSet() {
-        mColors = new ArrayList<Integer>();
-        mValueColors = new ArrayList<Integer>();
+        mColors = new ArrayList<>();
+        mValueColors = new ArrayList<>();
 
         // default color
         mColors.add(Color.rgb(140, 234, 255));
@@ -221,7 +221,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     public void addColor(int color) {
         if (mColors == null)
-            mColors = new ArrayList<Integer>();
+            mColors = new ArrayList<>();
         mColors.add(color);
     }
 
@@ -283,7 +283,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     public void resetColors() {
         if (mColors == null) {
-            mColors = new ArrayList<Integer>();
+            mColors = new ArrayList<>();
         }
         mColors.clear();
     }

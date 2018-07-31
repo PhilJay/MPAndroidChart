@@ -53,7 +53,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         this.mValues = values;
 
         if (mValues == null)
-            mValues = new ArrayList<T>();
+            mValues = new ArrayList<>();
 
         calcMinMax();
     }
@@ -215,7 +215,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             return;
 
         if (mValues == null) {
-            mValues = new ArrayList<T>();
+            mValues = new ArrayList<>();
         }
 
         calcMinMax(e);
@@ -242,7 +242,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
         List<T> values = getValues();
         if (values == null) {
-            values = new ArrayList<T>();
+            values = new ArrayList<>();
         }
 
         calcMinMax(e);
@@ -382,7 +382,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     @Override
     public List<T> getEntriesForXValue(float xValue) {
 
-        List<T> entries = new ArrayList<T>();
+        List<T> entries = new ArrayList<>();
 
         int low = 0;
         int high = mValues.size() - 1;

@@ -154,7 +154,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<>();
 
         for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
@@ -175,7 +175,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
             set1.setDrawValues(false);
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
 
             BarData data = new BarData(dataSets);

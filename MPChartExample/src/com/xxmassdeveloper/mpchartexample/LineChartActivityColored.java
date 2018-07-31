@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class LineChartActivityColored extends DemoBase {
 
     private LineChart[] mCharts = new LineChart[4];
-    private Typeface mTf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class LineChartActivityColored extends DemoBase {
         mCharts[2] = findViewById(R.id.chart3);
         mCharts[3] = findViewById(R.id.chart4);
 
-        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
+        Typeface mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
 
         for (int i = 0; i < mCharts.length; i++) {
 
@@ -44,9 +43,9 @@ public class LineChartActivityColored extends DemoBase {
         }
     }
 
-    private int[] mColors = new int[] {
-            Color.rgb(137, 230, 81), 
-            Color.rgb(240, 240, 30), 
+    private int[] mColors = new int[]{
+            Color.rgb(137, 230, 81),
+            Color.rgb(240, 240, 30),
             Color.rgb(89, 199, 250),
             Color.rgb(250, 104, 104)
     };
@@ -57,7 +56,7 @@ public class LineChartActivityColored extends DemoBase {
 
         // no description text
         chart.getDescription().setEnabled(false);
-        
+
         // mChart.setDrawHorizontalGrid(false);
         //
         // enable / disable grid background
@@ -75,7 +74,7 @@ public class LineChartActivityColored extends DemoBase {
         chart.setPinchZoom(false);
 
         chart.setBackgroundColor(color);
-        
+
         // set custom chart offsets (automatic offset calculation is hereby disabled)
         chart.setViewPortOffsets(10, 0, 10, 0);
 
@@ -96,10 +95,10 @@ public class LineChartActivityColored extends DemoBase {
         // animate calls invalidate()...
         chart.animateX(2500);
     }
-    
+
     private LineData getData(int count, float range) {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> yVals = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range) + 3;
@@ -120,8 +119,7 @@ public class LineChartActivityColored extends DemoBase {
         set1.setDrawValues(false);
 
         // create a data object with the datasets
-        LineData data = new LineData(set1);
 
-        return data;
+        return new LineData(set1);
     }
 }

@@ -249,12 +249,11 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
-
     }
 
     private void setData(int count, float range) {
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<Entry> entries = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             float xVal = (float) (Math.random() * range);

@@ -24,14 +24,14 @@ public class ChartDataTest {
     @Test
     public void testDynamicChartData() {
 
-        List<Entry> entries1 = new ArrayList<Entry>();
+        List<Entry> entries1 = new ArrayList<>();
         entries1.add(new Entry(10, 10));
         entries1.add(new Entry(15, -2));
         entries1.add(new Entry(21, 50));
 
         ScatterDataSet set1 = new ScatterDataSet(entries1, "");
 
-        List<Entry> entries2 = new ArrayList<Entry>();
+        List<Entry> entries2 = new ArrayList<>();
         entries2.add(new Entry(-1, 10));
         entries2.add(new Entry(10, 2));
         entries2.add(new Entry(20, 5));
@@ -78,7 +78,7 @@ public class ChartDataTest {
         assertEquals(-100, data.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
         assertEquals(100f, data.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
 
-        List<Entry> entries3 = new ArrayList<Entry>();
+        List<Entry> entries3 = new ArrayList<>();
         entries3.add(new Entry(0, 200));
         entries3.add(new Entry(0, -50));
 
@@ -108,7 +108,7 @@ public class ChartDataTest {
 
         assertEquals(0, lineData.getDataSetCount());
 
-        List<Entry> lineEntries1 = new ArrayList<Entry>();
+        List<Entry> lineEntries1 = new ArrayList<>();
         lineEntries1.add(new Entry(10, 90));
         lineEntries1.add(new Entry(1000, 1000));
 
@@ -132,7 +132,7 @@ public class ChartDataTest {
         assertEquals(90, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
         assertEquals(1000, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
 
-        List<Entry> lineEntries2 = new ArrayList<Entry>();
+        List<Entry> lineEntries2 = new ArrayList<>();
         lineEntries2.add(new Entry(-1000, 2000));
         lineEntries2.add(new Entry(2000, -3000));
 

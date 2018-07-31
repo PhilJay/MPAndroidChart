@@ -34,7 +34,7 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
 
         setTitle("Realm.io Examples");
 
-        ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
+        ArrayList<ContentItem> objects = new ArrayList<>();
 
         objects.add(new ContentItem("Line Chart", "Creating a LineChart with Realm.io database"));
         objects.add(new ContentItem("Bar Chart",

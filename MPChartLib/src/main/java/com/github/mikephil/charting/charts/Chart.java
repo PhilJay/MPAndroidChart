@@ -1648,7 +1648,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * tasks to be done after the view is setup
      */
-    protected ArrayList<Runnable> mJobs = new ArrayList<Runnable>();
+    protected ArrayList<Runnable> mJobs = new ArrayList<>();
 
     public void removeViewportJob(Runnable job) {
         mJobs.remove(job);

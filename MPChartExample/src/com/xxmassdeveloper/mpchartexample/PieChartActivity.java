@@ -199,7 +199,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         float mult = range;
 
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> entries = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
@@ -219,7 +219,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // add a lot of colors
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
+        ArrayList<Integer> colors = new ArrayList<>();
 
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);

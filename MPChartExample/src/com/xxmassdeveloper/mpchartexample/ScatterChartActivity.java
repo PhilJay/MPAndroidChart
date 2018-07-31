@@ -160,9 +160,9 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-        ArrayList<Entry> yVals3 = new ArrayList<Entry>();
+        ArrayList<Entry> yVals1 = new ArrayList<>();
+        ArrayList<Entry> yVals2 = new ArrayList<>();
+        ArrayList<Entry> yVals3 = new ArrayList<>();
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
@@ -196,7 +196,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         set2.setScatterShapeSize(8f);
         set3.setScatterShapeSize(8f);
 
-        ArrayList<IScatterDataSet> dataSets = new ArrayList<IScatterDataSet>();
+        ArrayList<IScatterDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the datasets
         dataSets.add(set2);
         dataSets.add(set3);

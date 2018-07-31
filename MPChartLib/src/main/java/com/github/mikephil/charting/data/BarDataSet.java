@@ -53,7 +53,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     @Override
     public DataSet<BarEntry> copy() {
-        List<BarEntry> entries = new ArrayList<BarEntry>();
+        List<BarEntry> entries = new ArrayList<>();
         for (int i = 0; i < mValues.size(); i++) {
             entries.add(mValues.get(i).copy());
         }

@@ -97,8 +97,8 @@ public class BarChartPositiveNegative extends DemoBase {
 
     private void setData(List<Data> dataList) {
 
-        ArrayList<BarEntry> values = new ArrayList<BarEntry>();
-        List<Integer> colors = new ArrayList<Integer>();
+        ArrayList<BarEntry> values = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
 
         int green = Color.rgb(110, 190, 102);
         int red = Color.rgb(211, 74, 88);

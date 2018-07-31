@@ -32,7 +32,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.model.GradientColor;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
@@ -216,13 +215,14 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         return true;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 2));
-        tvY.setText("" + (mSeekBarY.getProgress()));
+        tvX.setText(Integer.toString(mSeekBarX.getProgress() + 2));
+        tvY.setText(Integer.toString(mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress() + 1 , mSeekBarY.getProgress());
+        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
         mChart.invalidate();
     }
 
@@ -240,7 +240,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         float start = 1f;
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<>();
 
         for (int i = (int) start; i < start + count + 1; i++) {
             float mult = (range + 1);
@@ -292,7 +292,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
             set1.setGradientColors(gradientColors);
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
 
             BarData data = new BarData(dataSets);
@@ -328,5 +328,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     }
 
     @Override
-    public void onNothingSelected() { }
+    public void onNothingSelected() {
+    }
 }

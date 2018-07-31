@@ -105,7 +105,7 @@ public class CombinedChartActivity extends DemoBase {
 
         LineData d = new LineData();
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<Entry> entries = new ArrayList<>();
 
         for (int index = 0; index < itemcount; index++)
             entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
@@ -129,8 +129,8 @@ public class CombinedChartActivity extends DemoBase {
 
     private BarData generateBarData() {
 
-        ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> entries2 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> entries1 = new ArrayList<>();
+        ArrayList<BarEntry> entries2 = new ArrayList<>();
 
         for (int index = 0; index < itemcount; index++) {
             entries1.add(new BarEntry(0, getRandom(25, 25)));
@@ -170,7 +170,7 @@ public class CombinedChartActivity extends DemoBase {
 
         ScatterData d = new ScatterData();
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<Entry> entries = new ArrayList<>();
 
         for (float index = 0; index < itemcount; index += 0.5f)
             entries.add(new Entry(index + 0.25f, getRandom(10, 55)));
@@ -189,7 +189,7 @@ public class CombinedChartActivity extends DemoBase {
 
         CandleData d = new CandleData();
 
-        ArrayList<CandleEntry> entries = new ArrayList<CandleEntry>();
+        ArrayList<CandleEntry> entries = new ArrayList<>();
 
         for (int index = 0; index < itemcount; index += 2)
             entries.add(new CandleEntry(index + 1f, 90, 70, 85, 75f));
@@ -209,7 +209,7 @@ public class CombinedChartActivity extends DemoBase {
 
         BubbleData bd = new BubbleData();
 
-        ArrayList<BubbleEntry> entries = new ArrayList<BubbleEntry>();
+        ArrayList<BubbleEntry> entries = new ArrayList<>();
 
         for (int index = 0; index < itemcount; index++) {
             float y = getRandom(10, 105);

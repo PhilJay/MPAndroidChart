@@ -53,7 +53,7 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<RealmDemoData>(result, "yValue", "label");
+        RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<>(result, "yValue", "label");
         set.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set.setLabel("Example market share");
         set.setSliceSpace(2);

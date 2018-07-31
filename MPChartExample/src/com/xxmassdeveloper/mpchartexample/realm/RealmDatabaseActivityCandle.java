@@ -53,7 +53,7 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        RealmCandleDataSet<RealmDemoData> set = new RealmCandleDataSet<RealmDemoData>(result, "xValue", "high", "low", "open", "close");
+        RealmCandleDataSet<RealmDemoData> set = new RealmCandleDataSet<>(result, "xValue", "high", "low", "open", "close");
         set.setLabel("Realm CandleDataSet");
         set.setShadowColor(Color.DKGRAY);
         set.setShadowWidth(0.7f);
@@ -63,7 +63,7 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
         set.setIncreasingPaintStyle(Paint.Style.STROKE);
         set.setNeutralColor(Color.BLUE);
 
-        ArrayList<ICandleDataSet> dataSets = new ArrayList<ICandleDataSet>();
+        ArrayList<ICandleDataSet> dataSets = new ArrayList<>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list

@@ -99,7 +99,7 @@ public class ColorTemplate {
      */
     public static List<Integer> createColors(Resources r, int[] colors) {
 
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
 
         for (int i : colors) {
             result.add(r.getColor(i));
@@ -117,7 +117,7 @@ public class ColorTemplate {
      */
     public static List<Integer> createColors(int[] colors) {
 
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
 
         for (int i : colors) {
             result.add(i);

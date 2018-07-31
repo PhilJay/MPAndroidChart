@@ -64,7 +64,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // initialize the utilities
         Utils.init(this);
 
-        ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
+        ArrayList<ContentItem> objects = new ArrayList<>();
 
         objects.add(new ContentItem("Line Chart", "A simple demonstration of the linechart."));
         objects.add(new ContentItem("Line Chart (Dual YAxis)",

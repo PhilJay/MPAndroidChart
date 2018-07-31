@@ -87,7 +87,7 @@ public class HalfPieChartActivity extends DemoBase {
 
     private void setData(int count, float range) {
 
-        ArrayList<PieEntry> values = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             values.add(new PieEntry((float) ((Math.random() * range) + range / 5), mParties[i % mParties.length]));

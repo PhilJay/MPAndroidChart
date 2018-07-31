@@ -72,7 +72,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         // mLineWidth = Utils.convertDpToPixel(1f);
 
         if (mCircleColors == null) {
-            mCircleColors = new ArrayList<Integer>();
+            mCircleColors = new ArrayList<>();
         }
         mCircleColors.clear();
 
@@ -84,7 +84,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
     @Override
     public DataSet<Entry> copy() {
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < mValues.size(); i++) {
             entries.add(mValues.get(i).copy());
         }
@@ -356,7 +356,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
      */
     public void resetCircleColors() {
         if (mCircleColors == null) {
-            mCircleColors = new ArrayList<Integer>();
+            mCircleColors = new ArrayList<>();
         }
         mCircleColors.clear();
     }

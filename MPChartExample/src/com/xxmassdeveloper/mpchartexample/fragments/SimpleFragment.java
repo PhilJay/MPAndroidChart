@@ -44,11 +44,11 @@ public abstract class SimpleFragment extends Fragment {
 
     protected BarData generateBarData(int dataSets, float range, int count) {
         
-        ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
+        ArrayList<IBarDataSet> sets = new ArrayList<>();
         
         for(int i = 0; i < dataSets; i++) {
            
-            ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+            ArrayList<BarEntry> entries = new ArrayList<>();
             
 //            entries = FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "stacked_bars.txt");
             
@@ -68,13 +68,13 @@ public abstract class SimpleFragment extends Fragment {
     
     protected ScatterData generateScatterData(int dataSets, float range, int count) {
         
-        ArrayList<IScatterDataSet> sets = new ArrayList<IScatterDataSet>();
+        ArrayList<IScatterDataSet> sets = new ArrayList<>();
         
         ScatterChart.ScatterShape[] shapes = ScatterChart.ScatterShape.getAllDefaultShapes();
         
         for(int i = 0; i < dataSets; i++) {
            
-            ArrayList<Entry> entries = new ArrayList<Entry>();
+            ArrayList<Entry> entries = new ArrayList<>();
             
             for(int j = 0; j < count; j++) {        
                 entries.add(new Entry(j, (float) (Math.random() * range) + range / 4));
@@ -101,7 +101,7 @@ public abstract class SimpleFragment extends Fragment {
         
         int count = 4;
         
-        ArrayList<PieEntry> entries1 = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> entries1 = new ArrayList<>();
         
         for(int i = 0; i < count; i++) {
             entries1.add(new PieEntry((float) ((Math.random() * 60) + 40), "Quarter " + (i+1)));
@@ -121,7 +121,7 @@ public abstract class SimpleFragment extends Fragment {
     
     protected LineData generateLineData() {
         
-        ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
         
         LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "sine.txt"), "Sine function");
         LineDataSet ds2 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "cosine.txt"), "Cosine function");
@@ -146,7 +146,7 @@ public abstract class SimpleFragment extends Fragment {
     
     protected LineData getComplexity() {
         
-        ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
         
         LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "n.txt"), "O(n)");
         LineDataSet ds2 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "nlogn.txt"), "O(nlogn)");

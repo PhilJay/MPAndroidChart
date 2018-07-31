@@ -189,10 +189,10 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         tvX.setText(startYear + "-" + endYear);
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> yVals4 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<>();
+        ArrayList<BarEntry> yVals2 = new ArrayList<>();
+        ArrayList<BarEntry> yVals3 = new ArrayList<>();
+        ArrayList<BarEntry> yVals4 = new ArrayList<>();
 
         float randomMultiplier = mSeekBarY.getProgress() * 100000f;
 

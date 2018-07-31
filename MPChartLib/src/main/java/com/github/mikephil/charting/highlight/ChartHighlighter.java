@@ -25,7 +25,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     /**
      * buffer for storing previously highlighted values
      */
-    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
+    protected List<Highlight> mHighlightBuffer = new ArrayList<>();
 
     public ChartHighlighter(T chart) {
         this.mChart = chart;

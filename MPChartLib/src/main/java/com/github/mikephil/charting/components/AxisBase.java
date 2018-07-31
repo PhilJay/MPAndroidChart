@@ -159,7 +159,7 @@ public abstract class AxisBase extends ComponentBase {
         this.mTextSize = Utils.convertDpToPixel(10f);
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(5f);
-        this.mLimitLines = new ArrayList<LimitLine>();
+        this.mLimitLines = new ArrayList<>();
     }
 
     /**

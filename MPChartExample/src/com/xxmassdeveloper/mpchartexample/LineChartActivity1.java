@@ -350,7 +350,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
     private void setData(int count, float range) {
 
-        ArrayList<Entry> values = new ArrayList<Entry>();
+        ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
 
@@ -395,7 +395,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 set1.setFillColor(Color.BLACK);
             }
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1); // add the datasets
 
             // create a data object with the datasets

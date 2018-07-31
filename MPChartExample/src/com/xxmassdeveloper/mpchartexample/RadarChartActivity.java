@@ -203,8 +203,8 @@ public class RadarChartActivity extends DemoBase {
         float min = 20;
         int cnt = 5;
 
-        ArrayList<RadarEntry> entries1 = new ArrayList<RadarEntry>();
-        ArrayList<RadarEntry> entries2 = new ArrayList<RadarEntry>();
+        ArrayList<RadarEntry> entries1 = new ArrayList<>();
+        ArrayList<RadarEntry> entries2 = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
@@ -234,7 +234,7 @@ public class RadarChartActivity extends DemoBase {
         set2.setDrawHighlightCircleEnabled(true);
         set2.setDrawHighlightIndicators(false);
 
-        ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
+        ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(set1);
         sets.add(set2);
 

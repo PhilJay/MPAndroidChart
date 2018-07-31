@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -131,7 +130,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
                 for (IBarDataSet iSet : sets) {
 
-                    IBarDataSet set = (BarDataSet) iSet;
+                    IBarDataSet set = iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
                 }
 
@@ -144,7 +143,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
                 for (IBarDataSet iSet : sets) {
 
-                    IBarDataSet set = (BarDataSet) iSet;
+                    IBarDataSet set = iSet;
                     set.setDrawIcons(!set.isDrawIconsEnabled());
                 }
 
@@ -152,7 +151,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -174,7 +173,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             }
             case R.id.actionToggleBarBorders: {
                 for (IBarDataSet set : mChart.getData().getDataSets())
-                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
 
                 mChart.invalidate();
                 break;
@@ -232,7 +231,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         float barWidth = 9f;
         float spaceForBar = 10f;
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range);
@@ -244,7 +243,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
             set1.setValues(yVals1);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
@@ -253,7 +252,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
             set1.setDrawIcons(false);
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
 
             BarData data = new BarData(dataSets);
@@ -265,6 +264,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
     }
 
     protected RectF mOnValueSelectedRectF = new RectF();
+
     @SuppressLint("NewApi")
     @Override
     public void onValueSelected(Entry e, Highlight h) {
@@ -286,5 +286,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
     @Override
     public void onNothingSelected() {
-    };
+    }
+
 }

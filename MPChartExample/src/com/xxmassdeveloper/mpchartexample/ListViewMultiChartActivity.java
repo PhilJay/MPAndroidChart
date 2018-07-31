@@ -47,7 +47,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         
         ListView lv = findViewById(R.id.listView1);
 
-        ArrayList<ChartItem> list = new ArrayList<ChartItem>();
+        ArrayList<ChartItem> list = new ArrayList<>();
 
         // 30 items
         for (int i = 0; i < 30; i++) {
@@ -96,7 +96,7 @@ public class ListViewMultiChartActivity extends DemoBase {
      */
     private LineData generateDataLine(int cnt) {
 
-        ArrayList<Entry> e1 = new ArrayList<Entry>();
+        ArrayList<Entry> e1 = new ArrayList<>();
 
         for (int i = 0; i < 12; i++) {
             e1.add(new Entry(i, (int) (Math.random() * 65) + 40));
@@ -108,7 +108,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         d1.setHighLightColor(Color.rgb(244, 117, 117));
         d1.setDrawValues(false);
         
-        ArrayList<Entry> e2 = new ArrayList<Entry>();
+        ArrayList<Entry> e2 = new ArrayList<>();
 
         for (int i = 0; i < 12; i++) {
             e2.add(new Entry(i, e1.get(i).getY() - 30));
@@ -122,7 +122,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
         d2.setDrawValues(false);
         
-        ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
         sets.add(d1);
         sets.add(d2);
         
@@ -137,7 +137,7 @@ public class ListViewMultiChartActivity extends DemoBase {
      */
     private BarData generateDataBar(int cnt) {
 
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < 12; i++) {
             entries.add(new BarEntry(i, (int) (Math.random() * 70) + 30));
@@ -159,7 +159,7 @@ public class ListViewMultiChartActivity extends DemoBase {
      */
     private PieData generateDataPie(int cnt) {
 
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
             entries.add(new PieEntry((float) ((Math.random() * 70) + 30), "Quarter " + (i+1)));

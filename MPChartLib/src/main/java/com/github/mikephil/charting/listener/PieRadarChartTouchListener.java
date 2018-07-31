@@ -28,7 +28,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
      */
     private float mStartAngle = 0f;
 
-    private ArrayList<AngularVelocitySample> _velocitySamples = new ArrayList<AngularVelocitySample>();
+    private ArrayList<AngularVelocitySample> _velocitySamples = new ArrayList<>();
 
     private long mDecelerationLastTime = 0;
     private float mDecelerationAngularVelocity = 0.f;

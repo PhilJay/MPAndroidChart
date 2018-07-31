@@ -172,7 +172,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         
         mChart.resetTracking();
 
-        ArrayList<CandleEntry> yVals1 = new ArrayList<CandleEntry>();
+        ArrayList<CandleEntry> yVals1 = new ArrayList<>();
 
         for (int i = 0; i < prog; i++) {
             float mult = (mSeekBarY.getProgress() + 1);

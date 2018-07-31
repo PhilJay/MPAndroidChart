@@ -58,7 +58,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * Default constructor.
      */
     public ChartData() {
-        mDataSets = new ArrayList<T>();
+        mDataSets = new ArrayList<>();
     }
 
     /**

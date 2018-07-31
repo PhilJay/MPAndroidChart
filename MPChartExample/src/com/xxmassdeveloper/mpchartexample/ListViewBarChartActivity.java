@@ -3,8 +3,8 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Demonstrates the use of charts inside a ListView. IMPORTANT: provide a
  * specific height attribute for the chart inside your listview-item
- * 
+ *
  * @author Philipp Jahoda
  */
 public class ListViewBarChartActivity extends DemoBase {
@@ -40,10 +40,10 @@ public class ListViewBarChartActivity extends DemoBase {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_listview_chart);
-        
+
         ListView lv = findViewById(R.id.listView1);
 
-        ArrayList<BarData> list = new ArrayList<BarData>();
+        ArrayList<BarData> list = new ArrayList<>();
 
         // 20 items
         for (int i = 0; i < 20; i++) {
@@ -56,23 +56,23 @@ public class ListViewBarChartActivity extends DemoBase {
 
     private class ChartDataAdapter extends ArrayAdapter<BarData> {
 
-        public ChartDataAdapter(Context context, List<BarData> objects) {
+        ChartDataAdapter(Context context, List<BarData> objects) {
             super(context, 0, objects);
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
             BarData data = getItem(position);
 
-            ViewHolder holder = null;
+            ViewHolder holder;
 
             if (convertView == null) {
 
                 holder = new ViewHolder();
 
-                convertView = LayoutInflater.from(getContext()).inflate(
-                        R.layout.list_item_barchart, null);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_barchart, null);
                 holder.chart = convertView.findViewById(R.id.chart);
 
                 convertView.setTag(holder);
@@ -91,12 +91,12 @@ public class ListViewBarChartActivity extends DemoBase {
             xAxis.setPosition(XAxisPosition.BOTTOM);
             xAxis.setTypeface(mTfLight);
             xAxis.setDrawGridLines(false);
-            
+
             YAxis leftAxis = holder.chart.getAxisLeft();
             leftAxis.setTypeface(mTfLight);
             leftAxis.setLabelCount(5, false);
             leftAxis.setSpaceTop(15f);
-            
+
             YAxis rightAxis = holder.chart.getAxisRight();
             rightAxis.setTypeface(mTfLight);
             rightAxis.setLabelCount(5, false);
@@ -105,7 +105,7 @@ public class ListViewBarChartActivity extends DemoBase {
             // set data
             holder.chart.setData(data);
             holder.chart.setFitBars(true);
-            
+
             // do not forget to refresh the chart
 //            holder.chart.invalidate();
             holder.chart.animateY(700);
@@ -121,12 +121,12 @@ public class ListViewBarChartActivity extends DemoBase {
 
     /**
      * generates a random ChartData object with just one DataSet
-     * 
+     *
      * @return
      */
     private BarData generateData(int cnt) {
 
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < 12; i++) {
             entries.add(new BarEntry(i, (float) (Math.random() * 70) + 30));
@@ -135,10 +135,10 @@ public class ListViewBarChartActivity extends DemoBase {
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setBarShadowColor(Color.rgb(203, 203, 203));
-        
-        ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
+
+        ArrayList<IBarDataSet> sets = new ArrayList<>();
         sets.add(d);
-        
+
         BarData cd = new BarData(sets);
         cd.setBarWidth(0.9f);
         return cd;

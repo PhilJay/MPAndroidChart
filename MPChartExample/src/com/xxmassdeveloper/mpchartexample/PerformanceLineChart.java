@@ -91,7 +91,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
 
     private void setData(int count, float range) {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> yVals = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);

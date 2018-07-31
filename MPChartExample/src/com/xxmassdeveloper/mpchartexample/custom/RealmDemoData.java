@@ -49,7 +49,7 @@ public class RealmDemoData extends RealmObject {
      */
     public RealmDemoData(float xValue, float[] stackValues) {
         this.xValue = xValue;
-        this.stackValues = new RealmList<RealmFloat>();
+        this.stackValues = new RealmList<>();
 
         for (float val : stackValues) {
             this.stackValues.add(new RealmFloat(val));

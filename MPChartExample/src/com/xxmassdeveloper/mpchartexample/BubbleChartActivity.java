@@ -167,9 +167,9 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         tvX.setText("" + count);
         tvY.setText("" + range);
 
-        ArrayList<BubbleEntry> yVals1 = new ArrayList<BubbleEntry>();
-        ArrayList<BubbleEntry> yVals2 = new ArrayList<BubbleEntry>();
-        ArrayList<BubbleEntry> yVals3 = new ArrayList<BubbleEntry>();
+        ArrayList<BubbleEntry> yVals1 = new ArrayList<>();
+        ArrayList<BubbleEntry> yVals2 = new ArrayList<>();
+        ArrayList<BubbleEntry> yVals3 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range);
@@ -208,7 +208,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2], 130);
         set3.setDrawValues(true);
 
-        ArrayList<IBubbleDataSet> dataSets = new ArrayList<IBubbleDataSet>();
+        ArrayList<IBubbleDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the datasets
         dataSets.add(set2);
         dataSets.add(set3);

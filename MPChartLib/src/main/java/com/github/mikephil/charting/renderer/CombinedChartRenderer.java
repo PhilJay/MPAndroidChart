@@ -24,7 +24,7 @@ public class CombinedChartRenderer extends DataRenderer {
     /**
      * all rederers for the different kinds of data this combined-renderer can draw
      */
-    protected List<DataRenderer> mRenderers = new ArrayList<DataRenderer>(5);
+    protected List<DataRenderer> mRenderers = new ArrayList<>(5);
 
     protected WeakReference<Chart> mChart;
 
@@ -103,7 +103,7 @@ public class CombinedChartRenderer extends DataRenderer {
             renderer.drawExtras(c);
     }
 
-    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
+    protected List<Highlight> mHighlightBuffer = new ArrayList<>();
 
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {

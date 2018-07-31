@@ -183,14 +183,12 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
 
     private void setData(int count, float range) {
 
-        float mult = range;
-
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> entries = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
+            entries.add(new PieEntry((float) (Math.random() * range) + range / 5, mParties[i % mParties.length]));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
@@ -199,7 +197,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
 
         // add a lot of colors
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
+        ArrayList<Integer> colors = new ArrayList<>();
 
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);

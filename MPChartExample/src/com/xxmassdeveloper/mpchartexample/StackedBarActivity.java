@@ -193,7 +193,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<>();
 
         for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
@@ -221,7 +221,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             set1.setColors(getColors());
             set1.setStackLabels(new String[]{"Births", "Divorces", "Marriages"});
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
 
             BarData data = new BarData(dataSets);
