@@ -26,7 +26,7 @@ All MPAndroidChart users are entitled to a special **discount of 5%** off the <a
 
 ## [Daily Coding Newsletter](philjay.substack.com)
 
-Sign up for my [daily coding newsletter](philjay.substack.com) to get quick updates on Kotlin and Android developent related topics.
+Sign up for my [daily coding newsletter](philjay.substack.com) to get quick updates on Kotlin and Android development related topics.
 
 ## Usage :chart_with_upwards_trend:
 
