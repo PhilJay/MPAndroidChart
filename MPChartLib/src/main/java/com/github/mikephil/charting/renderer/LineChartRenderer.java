@@ -490,7 +490,12 @@ public class LineChartRenderer extends LineRadarRenderer {
         final Path filled = outputPath;
         filled.reset();
 
-        final Entry entry = dataSet.getEntryForIndex(startIndex);
+        // Semirke: we must skip Float.NaNs first
+        int sIdx = startIndex;
+        while(Float.isNaN(dataSet.getEntryForIndex(sIdx).getY())
+            && sIdx < endIndex ) sIdx++;
+
+        final Entry entry = dataSet.getEntryForIndex(sIdx);
 
         filled.moveTo(entry.getX(), fillMin);
         filled.lineTo(entry.getX(), entry.getY() * phaseY);
@@ -498,10 +503,11 @@ public class LineChartRenderer extends LineRadarRenderer {
         // create a new path
         Entry currentEntry = null;
         Entry previousEntry = null;
-        for (int x = startIndex + 1; x <= endIndex; x++) {
+        for (int x = sIdx + 1; x <= endIndex; x++) {
+            // Leave float.NaNs out
+            if(Float.isNaN(dataSet.getEntryForIndex(x).getY())) continue;
 
             currentEntry = dataSet.getEntryForIndex(x);
-
             if (isDrawSteppedEnabled && previousEntry != null) {
                 filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
             }
@@ -512,7 +518,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         }
 
         // close up
-        if (currentEntry != null) {
+        if (currentEntry != null && !Float.isNaN(currentEntry.getY())) {
             filled.lineTo(currentEntry.getX(), fillMin);
         }
 
