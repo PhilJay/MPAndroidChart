@@ -88,6 +88,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
 
+        mChart.useGradient(true);
+
         setData(4, 100);
 
         mChart.animateY(1400, Easing.EaseInOutQuad);

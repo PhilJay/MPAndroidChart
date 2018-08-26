@@ -719,6 +719,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
         this.mMaxAngle = maxangle;
     }
 
+    public void useGradient(boolean enabled) {
+        ((PieChartRenderer) mRenderer).useGradient(enabled);
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
