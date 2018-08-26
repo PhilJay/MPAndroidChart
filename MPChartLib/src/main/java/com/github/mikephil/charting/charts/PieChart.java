@@ -94,6 +94,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     protected float mMaxAngle = 360f;
 
+    private boolean mDrawArcColorsInverted = false;
+
     public PieChart(Context context) {
         super(context);
     }
@@ -679,6 +681,24 @@ public class PieChart extends PieRadarChartBase<PieData> {
     public boolean isUsePercentValuesEnabled() {
         return mUsePercentValues;
     }
+
+    /**
+     * Set if we should invert arc colors with @mTransParentCircleColors
+     *
+     */
+    public void setDrawArcColorsInverted(boolean shouldDrawArcColorsInverted) {
+        mDrawArcColorsInverted = shouldDrawArcColorsInverted;
+    }
+
+    /**
+     * Returns true if we should invert arc colors with @mTransParentCircleColors
+     *
+     * @return
+     */
+    public boolean isDrawArcColorsInverted() {
+        return mDrawArcColorsInverted;
+    }
+
 
     /**
      * the rectangular radius of the bounding box for the center text, as a percentage of the pie

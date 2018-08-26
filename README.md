@@ -1,3 +1,12 @@
+
+
+This is a fork of [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), modified to provide slightly differences regarding PieCharts,
+allowing for example to invert colors & inner circle colors & drawing real slice for the `TransparentCircle`
+ ![alt tag](https://rawgit.com/cadicetienne/MPAndroidChart/master/screenshots/simpledesign_piechart2.png)
+
+Description of former project below :
+
+
 ![banner](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic_smaller.png)
 
 [![Release](https://img.shields.io/github/release/PhilJay/MPAndroidChart.svg?style=flat)](https://jitpack.io/#PhilJay/MPAndroidChart)
