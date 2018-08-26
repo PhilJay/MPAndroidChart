@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".XMLAttributesActivity">
+
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:padding="10dp">
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:id="@+id/line_chart"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:xAxisAvoidFirstLastClipping="true"
+				app:xAxisDrawAxisLine="true"
+				app:xAxisDrawGridLines="false"
+				app:xAxisGridLineWidth="2"
+				app:xAxisLabelRotationAngle="45"
+				app:xAxisPosition="bottom"
+				app:axisLeftYAxisPosition="insideChart"
+				app:axisRightYAxisPosition="outsideChart"
+				app:axisLeftDrawTopYLabelEntry="false"
+				app:axisLeftInverted="false"
+				app:axisRightInverted="false"
+				app:axisLeftDrawZeroLine="true"
+				app:axisRightDrawZeroLine="true"
+				app:axisRightZeroLineColor="@color/hot_pink"
+				app:axisLeftZeroLineColor="@color/hot_pink"
+				app:axisLeftSpacePercentTop="30"
+				app:axisLeftSpacePercentBottom="30"
+				/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:padding="10dp">
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:id="@+id/line_chart2"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:axisLeftGridColor="@color/baby_blue"
+				app:axisLeftGridLineWidth="1"
+				app:axisRightGridColor="@color/green"
+				app:axisRightGridLineWidth="1"
+				app:clipValuesToContent="true"
+				app:descriptionText="@string/test_description"
+				app:doubleTapZoomEnabled="false"
+				app:dragXEnabled="false"
+				app:dragYEnabled="false"
+				app:drawBorders="true"
+				app:drawGridBackground="true"
+				app:pinchZoomEnabled="true"
+				app:scaleXEnabled="false"
+				app:scaleYEnabled="false"
+				app:xAxisGridColor="@color/green"
+				app:xAxisGridLineWidth="1"
+				app:xAxisLineColor="@color/green" />
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

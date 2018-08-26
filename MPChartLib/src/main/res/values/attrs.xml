@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<declare-styleable name="Chart">
+		<attr name="logEnabled" format="boolean" />
+		<attr name="highlightPerTabEnabled" format="boolean" />
+		<attr name="dragDecelerationEnabled" format="boolean" />
+		<attr name="dragDecelerationFrictionCoef" format="float" />
+		<attr name="touchEnabled" format="boolean" />
+		<attr name="extraTopOffset" fromat="float" />
+		<attr name="extraRightOffset" fromat="float" />
+		<attr name="extraBottomOffset" fromat="float" />
+		<attr name="extraLeftOffset" fromat="float" />
+		<attr name="descriptionText" format="reference" />
+
+	</declare-styleable>
+
+	<declare-styleable name="BarLineChartBase">
+		<attr name="maxVisibleCount" format="integer" />
+		<attr name="autoScaleMinMaxEnabled" format="boolean" />
+		<attr name="pinchZoomEnabled" format="boolean" />
+		<attr name="doubleTapZoomEnabled" format="boolean" />
+		<attr name="highlightPerDragEnabled" format="boolean" />
+		<attr name="dragXEnabled" format="boolean" />
+		<attr name="dragYEnabled" format="boolean" />
+		<attr name="scaleXEnabled" format="boolean" />
+		<attr name="scaleYEnabled" format="boolean" />
+		<attr name="drawGridBackground" format="boolean" />
+		<attr name="drawBorders" format="boolean" />
+		<attr name="clipValuesToContent" format="boolean" />
+		<attr name="minOffset" format="float" />
+		<attr name="keepPositionOnRotation" format="boolean" />
+		<attr name="axisRightEnabled" format="boolean" />
+		<attr name="axisLeftEnabled" format="boolean" />
+	</declare-styleable>
+
+	<declare-styleable name="AxisLeft">
+		<attr name="axisLeftGridColor" format="reference" />
+		<attr name="axisLeftGridLineWidth" format="float" />
+		<attr name="axisLeftLineColor" format="reference" />
+		<attr name="axisLeftLabelCount" format="integer" />
+		<attr name="axisLeftDrawGridLines" format="boolean" />
+		<attr name="axisLeftDrawAxisLine" format="boolean" />
+		<attr name="axisLeftDrawLabels" format="boolean" />
+		<attr name="axisLeftCenterAxisLabels" format="boolean" />
+		<attr name="axisLeftDrawLimitLinesBehindData" format="boolean" />
+		<attr name="axisLeftDrawGridLinesBehindData" format="boolean" />
+		<attr name="axisLeftSpaceMin" format="float" />
+		<attr name="axisLeftSpaceMax" format="float" />
+		<attr name="axisLeftYAxisPosition" format="integer">
+			<flag name="outsideChart" value="0" />
+			<flag name="insideChart" value="1" />
+		</attr>
+		<attr name="axisLeftDrawTopYLabelEntry" format="boolean" />
+		<attr name="axisLeftInverted" format="boolean" />
+		<attr name="axisLeftDrawZeroLine" format="boolean" />
+		<attr name="axisLeftUseAutoScaleRestrictionMin" format="boolean" />
+		<attr name="axisLeftUseAutoScaleRestrictionMax" format="boolean" />
+		<attr name="axisLeftZeroLineColor" format="reference" />
+		<attr name="axisLeftZeroLineWidth" format="dimension" />
+		<attr name="axisLeftSpacePercentBottom" format="float" />
+		<attr name="axisLeftSpacePercentTop" format="float" />
+
+	</declare-styleable>
+
+	<declare-styleable name="AxisRight">
+		<attr name="axisRightGridColor" format="reference" />
+		<attr name="axisRightGridLineWidth" format="float" />
+		<attr name="axisRightLineColor" format="reference" />
+		<attr name="axisRightLabelCount" format="integer" />
+		<attr name="axisRightDrawGridLines" format="boolean" />
+		<attr name="axisRightDrawAxisLine" format="boolean" />
+		<attr name="axisRightDrawLabels" format="boolean" />
+		<attr name="axisRightCenterAxisLabels" format="boolean" />
+		<attr name="axisRightDrawLimitLinesBehindData" format="boolean" />
+		<attr name="axisRightDrawGridLinesBehindData" format="boolean" />
+		<attr name="axisRightSpaceMin" format="float" />
+		<attr name="axisRightSpaceMax" format="float" />
+		<attr name="axisRightYAxisPosition" format="integer">
+			<flag name="outsideChart" value="0" />
+			<flag name="insideChart" value="1" />
+		</attr>
+		<attr name="axisRightDrawTopYLabelEntry" format="boolean" />
+		<attr name="axisRightInverted" format="boolean" />
+		<attr name="axisRightDrawZeroLine" format="boolean" />
+		<attr name="axisRightUseAutoScaleRestrictionMin" format="boolean" />
+		<attr name="axisRightUseAutoScaleRestrictionMax" format="boolean" />
+		<attr name="axisRightZeroLineColor" format="reference" />
+		<attr name="axisRightZeroLineWidth" format="dimension" />
+		<attr name="axisRightSpacePercentBottom" format="float" />
+		<attr name="axisRightSpacePercentTop" format="float" />
+	</declare-styleable>
+
+	<declare-styleable name="XAxis">
+		<attr name="xAxisGridColor" format="reference" />
+		<attr name="xAxisGridLineWidth" format="float" />
+		<attr name="xAxisLineColor" format="reference" />
+		<attr name="xAxisLabelCount" format="integer" />
+		<attr name="xAxisDrawGridLines" format="boolean" />
+		<attr name="xAxisDrawAxisLine" format="boolean" />
+		<attr name="xAxisDrawLabels" format="boolean" />
+		<attr name="xAxisCenterAxisLabels" format="boolean" />
+		<attr name="xAxisDrawLimitLinesBehindData" format="boolean" />
+		<attr name="xAxisDrawGridLinesBehindData" format="boolean" />
+		<attr name="xAxisSpaceMin" format="float" />
+		<attr name="xAxisSpaceMax" format="float" />
+		<attr name="xAxisPosition" format="integer">
+			<flag name="top" value="0" />
+			<flag name="bottom" value="1" />
+			<flag name="bothSided" value="2" />
+			<flag name="topInside" value="3" />
+			<flag name="bottomInside" value="4" />
+		</attr>
+		<attr name="xAxisLabelRotationAngle" format="float" />
+		<attr name="xAxisAvoidFirstLastClipping" format="boolean" />
+
+	</declare-styleable>
+
+
+</resources>

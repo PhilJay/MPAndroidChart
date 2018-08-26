@@ -45,6 +45,7 @@ import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivityNegative;
+import com.xxmassdeveloper.mpchartexample.XMLAttributesActivity;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
 import com.xxmassdeveloper.mpchartexample.realm.RealmMainActivity;
 
@@ -146,6 +147,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Half PieChart",
                 "This demonstrates how to create a 180 degree PieChart."));
+        objects.add(new ContentItem("Attribute Usage LineChart",
+				"demonstrates xml attributes feature"));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -289,6 +292,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 i = new Intent(this, HalfPieChartActivity.class);
                 startActivity(i);
                 break;
+			case 32:
+				i = new Intent(this, XMLAttributesActivity.class);
+				startActivity(i);
+				break;
 
         }
 
