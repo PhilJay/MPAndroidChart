@@ -33,15 +33,15 @@ public class MoveViewJob extends ViewPortJob {
         pool.recycle(instance);
     }
 
-    public MoveViewJob(ViewPortHandler viewPortHandler, float xValue, float yValue, Transformer trans, View v) {
+    public MoveViewJob(ViewPortHandler viewPortHandler, double xValue, double yValue, Transformer trans, View v) {
         super(viewPortHandler, xValue, yValue, trans, v);
     }
 
     @Override
     public void run() {
 
-        pts[0] = xValue;
-        pts[1] = yValue;
+        pts[0] = (float)xValue;
+        pts[1] = (float)yValue;
 
         mTrans.pointValuesToPixel(pts);
         mViewPortHandler.centerViewPort(pts, view);

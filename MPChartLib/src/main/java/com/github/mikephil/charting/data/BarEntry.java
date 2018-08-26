@@ -16,7 +16,7 @@ public class BarEntry extends Entry {
     /**
      * the values the stacked barchart holds
      */
-    private float[] mYVals;
+    private double[] mYVals;
 
     /**
      * the ranges for the individual stack values - automatically calculated
@@ -39,7 +39,7 @@ public class BarEntry extends Entry {
      * @param x
      * @param y
      */
-    public BarEntry(float x, float y) {
+    public BarEntry(double x, double y) {
         super(x, y);
     }
 
@@ -50,7 +50,7 @@ public class BarEntry extends Entry {
      * @param y
      * @param data - Spot for additional data this Entry represents.
      */
-    public BarEntry(float x, float y, Object data) {
+    public BarEntry(double x, double y, Object data) {
         super(x, y, data);
     }
 
@@ -61,7 +61,7 @@ public class BarEntry extends Entry {
      * @param y
      * @param icon - icon image
      */
-    public BarEntry(float x, float y, Drawable icon) {
+    public BarEntry(double x, double y, Drawable icon) {
         super(x, y, icon);
     }
 
@@ -73,7 +73,7 @@ public class BarEntry extends Entry {
      * @param icon - icon image
      * @param data - Spot for additional data this Entry represents.
      */
-    public BarEntry(float x, float y, Drawable icon, Object data) {
+    public BarEntry(double x, double y, Drawable icon, Object data) {
         super(x, y, icon, data);
     }
 
@@ -83,7 +83,7 @@ public class BarEntry extends Entry {
      * @param x
      * @param vals - the stack values, use at least 2
      */
-    public BarEntry(float x, float[] vals) {
+    public BarEntry(double x, double[] vals) {
         super(x, calcSum(vals));
 
         this.mYVals = vals;
@@ -98,7 +98,7 @@ public class BarEntry extends Entry {
      * @param vals - the stack values, use at least 2
      * @param data - Spot for additional data this Entry represents.
      */
-    public BarEntry(float x, float[] vals, Object data) {
+    public BarEntry(double x, double[] vals, Object data) {
         super(x, calcSum(vals), data);
 
         this.mYVals = vals;
@@ -113,7 +113,7 @@ public class BarEntry extends Entry {
      * @param vals - the stack values, use at least 2
      * @param icon - icon image
      */
-    public BarEntry(float x, float[] vals, Drawable icon) {
+    public BarEntry(float x, double[] vals, Drawable icon) {
         super(x, calcSum(vals), icon);
 
         this.mYVals = vals;
@@ -129,7 +129,7 @@ public class BarEntry extends Entry {
      * @param icon - icon image
      * @param data - Spot for additional data this Entry represents.
      */
-    public BarEntry(float x, float[] vals, Drawable icon, Object data) {
+    public BarEntry(double x, double[] vals, Drawable icon, Object data) {
         super(x, calcSum(vals), icon, data);
 
         this.mYVals = vals;
@@ -153,7 +153,7 @@ public class BarEntry extends Entry {
      *
      * @return
      */
-    public float[] getYVals() {
+    public double[] getYVals() {
         return mYVals;
     }
 
@@ -162,7 +162,7 @@ public class BarEntry extends Entry {
      *
      * @param vals
      */
-    public void setVals(float[] vals) {
+    public void setVals(double[] vals) {
         setY(calcSum(vals));
         mYVals = vals;
         calcPosNegSum();
@@ -175,7 +175,7 @@ public class BarEntry extends Entry {
      * @return
      */
     @Override
-    public float getY() {
+    public double getY() {
         return super.getY();
     }
 
@@ -250,11 +250,11 @@ public class BarEntry extends Entry {
         float sumNeg = 0f;
         float sumPos = 0f;
 
-        for (float f : mYVals) {
-            if (f <= 0f)
-                sumNeg += Math.abs(f);
+        for (double d : mYVals) {
+            if (d <= 0)
+                sumNeg += Math.abs(d);
             else
-                sumPos += f;
+                sumPos += d;
         }
 
         mNegativeSum = sumNeg;
@@ -267,22 +267,22 @@ public class BarEntry extends Entry {
      * @param vals
      * @return
      */
-    private static float calcSum(float[] vals) {
+    private static double calcSum(double[] vals) {
 
         if (vals == null)
             return 0f;
 
-        float sum = 0f;
+        double sum = 0d;
 
-        for (float f : vals)
-            sum += f;
+        for (double d : vals)
+            sum += d;
 
         return sum;
     }
 
     protected void calcRanges() {
 
-        float[] values = getYVals();
+        double[] values = getYVals();
 
         if (values == null || values.length == 0)
             return;
@@ -294,7 +294,7 @@ public class BarEntry extends Entry {
 
         for (int i = 0; i < mRanges.length; i++) {
 
-            float value = values[i];
+            double value = values[i];
 
             if (value < 0) {
                 mRanges[i] = new Range(negRemain, negRemain - value);

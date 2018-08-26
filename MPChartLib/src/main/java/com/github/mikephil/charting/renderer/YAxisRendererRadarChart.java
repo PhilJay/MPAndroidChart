@@ -24,17 +24,17 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
     }
 
     @Override
-    protected void computeAxisValues(float min, float max) {
+    protected void computeAxisValues(double min, double max) {
 
-        float yMin = min;
-        float yMax = max;
+        double yMin = min;
+        double yMax = max;
 
         int labelCount = mAxis.getLabelCount();
         double range = Math.abs(yMax - yMin);
 
         if (labelCount == 0 || range <= 0 || Double.isInfinite(range)) {
-            mAxis.mEntries = new float[]{};
-            mAxis.mCenteredEntries = new float[]{};
+            mAxis.mEntries = new double[]{};
+            mAxis.mCenteredEntries = new double[]{};
             mAxis.mEntryCount = 0;
             return;
         }
@@ -68,10 +68,10 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             if (mAxis.mEntries.length < labelCount) {
                 // Ensure stops contains at least numStops elements.
-                mAxis.mEntries = new float[labelCount];
+                mAxis.mEntries = new double[labelCount];
             }
 
-            float v = min;
+            double v = min;
 
             for (int i = 0; i < labelCount; i++) {
                 mAxis.mEntries[i] = v;
@@ -105,7 +105,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             if (mAxis.mEntries.length < n) {
                 // Ensure stops contains at least numStops elements.
-                mAxis.mEntries = new float[n];
+                mAxis.mEntries = new double[n];
             }
 
             for (f = first, i = 0; i < n; f += interval, ++i) {
@@ -113,7 +113,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
                 if (f == 0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
                     f = 0.0;
 
-                mAxis.mEntries[i] = (float) f;
+                mAxis.mEntries[i] = f;
             }
         }
 
@@ -127,10 +127,10 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         if (centeringEnabled) {
 
             if (mAxis.mCenteredEntries.length < n) {
-                mAxis.mCenteredEntries = new float[n];
+                mAxis.mCenteredEntries = new double[n];
             }
 
-            float offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2f;
+            double offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2d;
 
             for (int i = 0; i < n; i++) {
                 mAxis.mCenteredEntries[i] = mAxis.mEntries[i] + offset;
@@ -139,7 +139,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         mAxis.mAxisMinimum = mAxis.mEntries[0];
         mAxis.mAxisMaximum = mAxis.mEntries[n-1];
-        mAxis.mAxisRange = Math.abs(mAxis.mAxisMaximum - mAxis.mAxisMinimum);
+        mAxis.mAxisRange = (float)Math.abs(mAxis.mAxisMaximum - mAxis.mAxisMinimum);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
-        float factor = mChart.getFactor();
+        double factor = mChart.getFactor();
 
         final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
         final int to = mYAxis.isDrawTopYLabelEntryEnabled()
@@ -163,7 +163,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         for (int j = from; j < to; j++) {
 
-            float r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
+            double r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
 
             Utils.getPosition(center, r, mChart.getRotationAngle(), pOut);
 
@@ -188,7 +188,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         // calculate the factor that is needed for transforming the value to
         // pixels
-        float factor = mChart.getFactor();
+        double factor = mChart.getFactor();
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
@@ -203,7 +203,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
             mLimitLinePaint.setPathEffect(l.getDashPathEffect());
             mLimitLinePaint.setStrokeWidth(l.getLineWidth());
 
-            float r = (l.getLimit() - mChart.getYChartMin()) * factor;
+            double r = (l.getLimit() - mChart.getYChartMin()) * factor;
 
             Path limitPath = mRenderLimitLinesPathBuffer;
             limitPath.reset();

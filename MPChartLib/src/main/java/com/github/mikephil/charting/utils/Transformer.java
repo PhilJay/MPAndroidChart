@@ -47,7 +47,7 @@ public class Transformer {
      * @param deltaY
      * @param yChartMin
      */
-    public void prepareMatrixValuePx(float xChartMin, float deltaX, float deltaY, float yChartMin) {
+    public void prepareMatrixValuePx(double xChartMin, double deltaX, double deltaY, double yChartMin) {
 
         float scaleX = (float) ((mViewPortHandler.contentWidth()) / deltaX);
         float scaleY = (float) ((mViewPortHandler.contentHeight()) / deltaY);
@@ -61,7 +61,7 @@ public class Transformer {
 
         // setup all matrices
         mMatrixValueToPx.reset();
-        mMatrixValueToPx.postTranslate(-xChartMin, -yChartMin);
+        mMatrixValueToPx.postTranslate((float)-xChartMin, (float)-yChartMin);
         mMatrixValueToPx.postScale(scaleX, -scaleY);
     }
 
@@ -110,8 +110,8 @@ public class Transformer {
             Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
-                valuePoints[j] = e.getX();
-                valuePoints[j + 1] = e.getY() * phaseY;
+                valuePoints[j] = e.getFloatX();
+                valuePoints[j + 1] = e.getFloatY() * phaseY;
             } else {
                 valuePoints[j] = 0;
                 valuePoints[j + 1] = 0;
@@ -146,8 +146,8 @@ public class Transformer {
             Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
-                valuePoints[j] = e.getX();
-                valuePoints[j + 1] = e.getY() * phaseY;
+                valuePoints[j] = e.getFloatX();
+                valuePoints[j + 1] = e.getFloatY() * phaseY;
             } else {
                 valuePoints[j] = 0;
                 valuePoints[j + 1] = 0;
@@ -184,8 +184,8 @@ public class Transformer {
             Entry e = data.getEntryForIndex(j / 2 + min);
 
             if (e != null) {
-                valuePoints[j] = e.getX();
-                valuePoints[j + 1] = e.getY() * phaseY;
+                valuePoints[j] = e.getFloatX();
+                valuePoints[j + 1] = e.getFloatY() * phaseY;
             } else {
                 valuePoints[j] = 0;
                 valuePoints[j + 1] = 0;
@@ -221,7 +221,7 @@ public class Transformer {
             CandleEntry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
-                valuePoints[j] = e.getX();
+                valuePoints[j] = e.getFloatX();
                 valuePoints[j + 1] = e.getHigh() * phaseY;
             } else {
                 valuePoints[j] = 0;
@@ -420,10 +420,10 @@ public class Transformer {
      * @param y
      * @return
      */
-    public MPPointD getPixelForValues(float x, float y) {
+    public MPPointD getPixelForValues(double x, double y) {
 
-        ptsBuffer[0] = x;
-        ptsBuffer[1] = y;
+        ptsBuffer[0] = (float)x;
+        ptsBuffer[1] = (float)y;
 
         pointValuesToPixel(ptsBuffer);
 

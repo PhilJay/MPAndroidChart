@@ -33,13 +33,13 @@ public class PercentFormatter implements IValueFormatter, IAxisValueFormatter
 
     // IValueFormatter
     @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+    public String getFormattedValue(double value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
         return mFormat.format(value) + " %";
     }
 
     // IAxisValueFormatter
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getFormattedValue(double value, AxisBase axis) {
         return mFormat.format(value) + " %";
     }
 

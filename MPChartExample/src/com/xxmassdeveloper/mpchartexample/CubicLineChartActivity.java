@@ -296,7 +296,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
             set1.setDrawHorizontalHighlightIndicator(false);
             set1.setFillFormatter(new IFillFormatter() {
                 @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                public double getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
                     return -10;
                 }
             });

@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 public abstract class BaseEntry {
 
     /** the y value */
-    private float y = 0f;
+    private double y = 0d;
 
     /** optional spot for additional data this Entry represents */
     private Object mData = null;
@@ -20,21 +20,21 @@ public abstract class BaseEntry {
 
     }
 
-    public BaseEntry(float y) {
+    public BaseEntry(double y) {
         this.y = y;
     }
 
-    public BaseEntry(float y, Object data) {
+    public BaseEntry(double y, Object data) {
         this(y);
         this.mData = data;
     }
 
-    public BaseEntry(float y, Drawable icon) {
+    public BaseEntry(double y, Drawable icon) {
         this(y);
         this.mIcon = icon;
     }
 
-    public BaseEntry(float y, Drawable icon, Object data) {
+    public BaseEntry(double y, Drawable icon, Object data) {
         this(y);
         this.mIcon = icon;
         this.mData = data;
@@ -45,8 +45,17 @@ public abstract class BaseEntry {
      *
      * @return
      */
-    public float getY() {
+    public double getY() {
         return y;
+    }
+
+    /**
+     * Returns the y value of this Entry.
+     *
+     * @return
+     */
+    public float getFloatY() {
+        return (float)y;
     }
 
     /**
@@ -72,7 +81,7 @@ public abstract class BaseEntry {
      *
      * @param y
      */
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
     }
 

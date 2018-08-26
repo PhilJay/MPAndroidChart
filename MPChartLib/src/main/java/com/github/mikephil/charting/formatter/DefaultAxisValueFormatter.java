@@ -40,7 +40,7 @@ public class DefaultAxisValueFormatter implements IAxisValueFormatter
     }
 
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getFormattedValue(double value, AxisBase axis) {
         // avoid memory allocations here (for performance)
         return mFormat.format(value);
     }

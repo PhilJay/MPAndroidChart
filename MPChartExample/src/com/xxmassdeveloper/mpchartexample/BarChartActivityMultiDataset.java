@@ -93,7 +93,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         xAxis.setCenterAxisLabels(true);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(double value, AxisBase axis) {
                 return String.valueOf((int) value);
             }
         });

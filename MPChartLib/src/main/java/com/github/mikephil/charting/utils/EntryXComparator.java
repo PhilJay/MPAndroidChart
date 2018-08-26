@@ -11,11 +11,11 @@ import java.util.Comparator;
 public class EntryXComparator implements Comparator<Entry> {
     @Override
     public int compare(Entry entry1, Entry entry2) {
-        float diff = entry1.getX() - entry2.getX();
+        double diff = entry1.getX() - entry2.getX();
 
-        if (diff == 0f) return 0;
+        if (diff == 0d) return 0;
         else {
-            if (diff > 0f) return 1;
+            if (diff > 0d) return 1;
             else return -1;
         }
     }

@@ -33,7 +33,7 @@ public class CandleEntry extends Entry {
      * @param open The open value
      * @param close The close value
      */
-    public CandleEntry(float x, float shadowH, float shadowL, float open, float close) {
+    public CandleEntry(double x, float shadowH, float shadowL, float open, float close) {
         super(x, (shadowH + shadowL) / 2f);
 
         this.mShadowHigh = shadowH;
@@ -52,7 +52,7 @@ public class CandleEntry extends Entry {
      * @param close
      * @param data Spot for additional data this Entry represents
      */
-    public CandleEntry(float x, float shadowH, float shadowL, float open, float close,
+    public CandleEntry(double x, float shadowH, float shadowL, float open, float close,
                        Object data) {
         super(x, (shadowH + shadowL) / 2f, data);
 
@@ -72,7 +72,7 @@ public class CandleEntry extends Entry {
      * @param close
      * @param icon Icon image
      */
-    public CandleEntry(float x, float shadowH, float shadowL, float open, float close,
+    public CandleEntry(double x, float shadowH, float shadowL, float open, float close,
                        Drawable icon) {
         super(x, (shadowH + shadowL) / 2f, icon);
 
@@ -93,7 +93,7 @@ public class CandleEntry extends Entry {
      * @param icon Icon image
      * @param data Spot for additional data this Entry represents
      */
-    public CandleEntry(float x, float shadowH, float shadowL, float open, float close,
+    public CandleEntry(double x, float shadowH, float shadowL, float open, float close,
                        Drawable icon, Object data) {
         super(x, (shadowH + shadowL) / 2f, icon, data);
 
@@ -127,7 +127,7 @@ public class CandleEntry extends Entry {
      * low)
      */
     @Override
-    public float getY() {
+    public double getY() {
         return super.getY();
     }
 

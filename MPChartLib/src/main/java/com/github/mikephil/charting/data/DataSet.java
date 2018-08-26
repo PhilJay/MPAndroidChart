@@ -22,22 +22,22 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     /**
      * maximum y-value in the value array
      */
-    protected float mYMax = -Float.MAX_VALUE;
+    protected double mYMax = -Float.MAX_VALUE;
 
     /**
      * minimum y-value in the value array
      */
-    protected float mYMin = Float.MAX_VALUE;
+    protected double mYMin = Float.MAX_VALUE;
 
     /**
      * maximum x-value in the value array
      */
-    protected float mXMax = -Float.MAX_VALUE;
+    protected double mXMax = -Float.MAX_VALUE;
 
     /**
      * minimum x-value in the value array
      */
-    protected float mXMin = Float.MAX_VALUE;
+    protected double mXMin = Float.MAX_VALUE;
 
 
     /**
@@ -189,22 +189,22 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public float getYMin() {
+    public double getYMin() {
         return mYMin;
     }
 
     @Override
-    public float getYMax() {
+    public double getYMax() {
         return mYMax;
     }
 
     @Override
-    public float getXMin() {
+    public double getXMin() {
         return mXMin;
     }
 
     @Override
-    public float getXMax() {
+    public double getXMax() {
         return mXMax;
     }
 
@@ -276,7 +276,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public T getEntryForXValue(float xValue, float closestToY, Rounding rounding) {
+    public T getEntryForXValue(double xValue, double closestToY, Rounding rounding) {
 
         int index = getEntryIndex(xValue, closestToY, rounding);
         if (index > -1)
@@ -285,7 +285,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public T getEntryForXValue(float xValue, float closestToY) {
+    public T getEntryForXValue(double xValue, double closestToY) {
         return getEntryForXValue(xValue, closestToY, Rounding.CLOSEST);
     }
 
@@ -295,7 +295,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public int getEntryIndex(float xValue, float closestToY, Rounding rounding) {
+    public int getEntryIndex(double xValue, double closestToY, Rounding rounding) {
 
         if (mValues == null || mValues.isEmpty())
             return -1;
@@ -307,7 +307,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         while (low < high) {
             int m = (low + high) / 2;
 
-            final float d1 = mValues.get(m).getX() - xValue,
+            final double d1 = mValues.get(m).getX() - xValue,
                     d2 = mValues.get(m + 1).getX() - xValue,
                     ad1 = Math.abs(d1), ad2 = Math.abs(d2);
 
@@ -335,7 +335,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         }
 
         if (closest != -1) {
-            float closestXValue = mValues.get(closest).getX();
+            double closestXValue = mValues.get(closest).getX();
             if (rounding == Rounding.UP) {
                 // If rounding up, and found x-value is lower than specified x, and we can go upper...
                 if (closestXValue < xValue && closest < mValues.size() - 1) {
@@ -349,11 +349,11 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             }
 
             // Search by closest to y-value
-            if (!Float.isNaN(closestToY)) {
+            if (!Double.isNaN(closestToY)) {
                 while (closest > 0 && mValues.get(closest - 1).getX() == closestXValue)
                     closest -= 1;
 
-                float closestYValue = mValues.get(closest).getY();
+                double closestYValue = mValues.get(closest).getY();
                 int closestYIndex = closest;
 
                 while (true) {
@@ -380,7 +380,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public List<T> getEntriesForXValue(float xValue) {
+    public List<T> getEntriesForXValue(double xValue) {
 
         List<T> entries = new ArrayList<T>();
 
@@ -422,7 +422,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     /**
      * Determines how to round DataSet index values for
-     * {@link DataSet#getEntryIndex(float, float, Rounding)} DataSet.getEntryIndex()}
+     * {@link DataSet#getEntryIndex(double, double, Rounding)} DataSet.getEntryIndex()}
      * when an exact x-index is not found.
      */
     public enum Rounding {

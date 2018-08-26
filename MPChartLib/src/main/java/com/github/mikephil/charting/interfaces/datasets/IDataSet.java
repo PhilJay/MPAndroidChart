@@ -26,28 +26,28 @@ public interface IDataSet<T extends Entry> {
      *
      * @return
      */
-    float getYMin();
+    double getYMin();
 
     /**
      * returns the maximum y-value this DataSet holds
      *
      * @return
      */
-    float getYMax();
+    double getYMax();
 
     /**
      * returns the minimum x-value this DataSet holds
      *
      * @return
      */
-    float getXMin();
+    double getXMin();
 
     /**
      * returns the maximum x-value this DataSet holds
      *
      * @return
      */
-    float getXMax();
+    double getXMax();
 
     /**
      * Returns the number of y-values this DataSet represents -> the size of the y-values array
@@ -87,7 +87,7 @@ public interface IDataSet<T extends Entry> {
      *
      *
      */
-    T getEntryForXValue(float xValue, float closestToY, DataSet.Rounding rounding);
+    T getEntryForXValue(double xValue, double closestToY, DataSet.Rounding rounding);
 
     /**
      * Returns the first Entry object found at the given x-value with binary
@@ -102,7 +102,7 @@ public interface IDataSet<T extends Entry> {
      * @param closestToY If there are multiple y-values for the specified x-value,
      * @return
      */
-    T getEntryForXValue(float xValue, float closestToY);
+    T getEntryForXValue(double xValue, double closestToY);
 
     /**
      * Returns all Entry objects found at the given x-value with binary
@@ -113,7 +113,7 @@ public interface IDataSet<T extends Entry> {
      * @param xValue
      * @return
      */
-    List<T> getEntriesForXValue(float xValue);
+    List<T> getEntriesForXValue(double xValue);
 
     /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.
@@ -137,7 +137,7 @@ public interface IDataSet<T extends Entry> {
      *                 if there is no Entry matching the provided x-value
      * @return
      */
-    int getEntryIndex(float xValue, float closestToY, DataSet.Rounding rounding);
+    int getEntryIndex(double xValue, double closestToY, DataSet.Rounding rounding);
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.

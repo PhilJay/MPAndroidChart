@@ -14,26 +14,26 @@ public class DefaultFillFormatter implements IFillFormatter
 {
 
     @Override
-    public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+    public double getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
 
-        float fillMin = 0f;
-        float chartMaxY = dataProvider.getYChartMax();
-        float chartMinY = dataProvider.getYChartMin();
+        double fillMin = 0d;
+        double chartMaxY = dataProvider.getYChartMax();
+        double chartMinY = dataProvider.getYChartMin();
 
         LineData data = dataProvider.getLineData();
 
         if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
-            fillMin = 0f;
+            fillMin = 0d;
         } else {
 
-            float max, min;
+            double max, min;
 
             if (data.getYMax() > 0)
-                max = 0f;
+                max = 0d;
             else
                 max = chartMaxY;
             if (data.getYMin() < 0)
-                min = 0f;
+                min = 0d;
             else
                 min = chartMinY;
 

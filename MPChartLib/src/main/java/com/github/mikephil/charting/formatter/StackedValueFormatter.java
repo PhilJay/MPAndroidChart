@@ -49,12 +49,12 @@ public class StackedValueFormatter implements IValueFormatter
     }
 
     @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+    public String getFormattedValue(double value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
         if (!mDrawWholeStack && entry instanceof BarEntry) {
 
             BarEntry barEntry = (BarEntry) entry;
-            float[] vals = barEntry.getYVals();
+            double[] vals = barEntry.getYVals();
 
             if (vals != null) {
 

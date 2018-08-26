@@ -35,12 +35,12 @@ public abstract class AxisBase extends ComponentBase {
     /**
      * the actual array of entries
      */
-    public float[] mEntries = new float[]{};
+    public double[] mEntries = new double[]{};
 
     /**
      * axis label entries only used for centered labels
      */
-    public float[] mCenteredEntries = new float[]{};
+    public double[] mCenteredEntries = new double[]{};
 
     /**
      * the number of entries the legend contains
@@ -140,12 +140,12 @@ public abstract class AxisBase extends ComponentBase {
     /**
      * don't touch this direclty, use setter
      */
-    public float mAxisMaximum = 0f;
+    public double mAxisMaximum = 0d;
 
     /**
      * don't touch this directly, use setter
      */
-    public float mAxisMinimum = 0f;
+    public double mAxisMinimum = 0d;
 
     /**
      * the total range of values this axis covers
@@ -628,11 +628,11 @@ public abstract class AxisBase extends ComponentBase {
      * ###### BELOW CODE RELATED TO CUSTOM AXIS VALUES ######
      */
 
-    public float getAxisMaximum() {
+    public double getAxisMaximum() {
         return mAxisMaximum;
     }
 
-    public float getAxisMinimum() {
+    public double getAxisMinimum() {
         return mAxisMinimum;
     }
 
@@ -684,7 +684,7 @@ public abstract class AxisBase extends ComponentBase {
     public void setAxisMinimum(float min) {
         mCustomAxisMin = true;
         mAxisMinimum = min;
-        this.mAxisRange = Math.abs(mAxisMaximum - min);
+        this.mAxisRange = (float)Math.abs(mAxisMaximum - min);
     }
 
     /**
@@ -704,10 +704,10 @@ public abstract class AxisBase extends ComponentBase {
      *
      * @param max
      */
-    public void setAxisMaximum(float max) {
+    public void setAxisMaximum(double max) {
         mCustomAxisMax = true;
         mAxisMaximum = max;
-        this.mAxisRange = Math.abs(max - mAxisMinimum);
+        this.mAxisRange = (float)Math.abs(max - mAxisMinimum);
     }
 
     /**
@@ -727,14 +727,14 @@ public abstract class AxisBase extends ComponentBase {
      * @param dataMin the min value according to chart data
      * @param dataMax the max value according to chart data
      */
-    public void calculate(float dataMin, float dataMax) {
+    public void calculate(double dataMin, double dataMax) {
 
         // if custom, use value as is, else use data value
-        float min = mCustomAxisMin ? mAxisMinimum : (dataMin - mSpaceMin);
-        float max = mCustomAxisMax ? mAxisMaximum : (dataMax + mSpaceMax);
+        double min = mCustomAxisMin ? mAxisMinimum : (dataMin - mSpaceMin);
+        double max = mCustomAxisMax ? mAxisMaximum : (dataMax + mSpaceMax);
 
         // temporary range (before calculations)
-        float range = Math.abs(max - min);
+        double range = Math.abs(max - min);
 
         // in case all values are equal
         if (range == 0f) {
@@ -746,7 +746,7 @@ public abstract class AxisBase extends ComponentBase {
         this.mAxisMaximum = max;
 
         // actual range
-        this.mAxisRange = Math.abs(max - min);
+        this.mAxisRange = (float)Math.abs(max - min);
     }
 
     /**

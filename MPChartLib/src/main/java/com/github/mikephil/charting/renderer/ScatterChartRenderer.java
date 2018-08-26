@@ -69,8 +69,8 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
             Entry e = dataSet.getEntryForIndex(i);
 
-            mPixelBuffer[0] = e.getX();
-            mPixelBuffer[1] = e.getY() * phaseY;
+            mPixelBuffer[0] = e.getFloatX();
+            mPixelBuffer[1] = e.getFloatY() * phaseY;
 
             trans.pointValuesToPixel(mPixelBuffer);
 

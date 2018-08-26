@@ -52,7 +52,7 @@ public class DefaultValueFormatter implements IValueFormatter
     }
 
     @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+    public String getFormattedValue(double value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
         // put more logic here ...
         // avoid memory allocations here (for performance reasons)

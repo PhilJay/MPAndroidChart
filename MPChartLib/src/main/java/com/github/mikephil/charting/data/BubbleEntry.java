@@ -24,7 +24,7 @@ public class BubbleEntry extends Entry {
      * @param y The value on the y-axis.
      * @param size The size of the bubble.
      */
-    public BubbleEntry(float x, float y, float size) {
+    public BubbleEntry(double x, double y, float size) {
         super(x, y);
         this.mSize = size;
     }
@@ -37,7 +37,7 @@ public class BubbleEntry extends Entry {
      * @param size The size of the bubble.
      * @param data Spot for additional data this Entry represents.
      */
-    public BubbleEntry(float x, float y, float size, Object data) {
+    public BubbleEntry(double x, double y, float size, Object data) {
         super(x, y, data);
         this.mSize = size;
     }
@@ -50,7 +50,7 @@ public class BubbleEntry extends Entry {
      * @param size The size of the bubble.
      * @param icon Icon image
      */
-    public BubbleEntry(float x, float y, float size, Drawable icon) {
+    public BubbleEntry(double x, double y, float size, Drawable icon) {
         super(x, y, icon);
         this.mSize = size;
     }
@@ -64,7 +64,7 @@ public class BubbleEntry extends Entry {
      * @param icon Icon image
      * @param data Spot for additional data this Entry represents.
      */
-    public BubbleEntry(float x, float y, float size, Drawable icon, Object data) {
+    public BubbleEntry(double x, double y, float size, Drawable icon, Object data) {
         super(x, y, icon, data);
         this.mSize = size;
     }

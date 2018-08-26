@@ -25,5 +25,5 @@ public interface IValueFormatter
      * @param viewPortHandler provides information about the current chart state (scale, translation, ...)
      * @return the formatted label ready for being drawn
      */
-    String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler);
+    String getFormattedValue(double value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler);
 }

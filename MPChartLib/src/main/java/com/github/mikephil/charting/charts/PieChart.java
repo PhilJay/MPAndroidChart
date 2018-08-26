@@ -188,7 +188,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         int entryIndex = (int) highlight.getX();
 
         // offset needed to center the drawn text in the slice
-        float offset = mDrawAngles[entryIndex] / 2;
+        double offset = mDrawAngles[entryIndex] / 2;
 
         // calculate the text position
         float x = (float) (r
@@ -224,7 +224,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
             }
         }
 
-        float yValueSum = mData.getYValueSum();
+        double yValueSum = mData.getYValueSum();
 
         List<IPieDataSet> dataSets = mData.getDataSets();
 
@@ -277,7 +277,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @param value
      * @return
      */
-    private float calcAngle(float value) {
+    private double calcAngle(double value) {
         return calcAngle(value, mData.getYValueSum());
     }
 
@@ -288,8 +288,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @param yValueSum
      * @return
      */
-    private float calcAngle(float value, float yValueSum) {
-        return value / yValueSum * mMaxAngle;
+    private float calcAngle(double value, double yValueSum) {
+        return (float)(value / yValueSum * mMaxAngle);
     }
 
     /**

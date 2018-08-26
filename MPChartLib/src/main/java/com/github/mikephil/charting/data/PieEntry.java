@@ -12,39 +12,39 @@ public class PieEntry extends Entry {
 
     private String label;
 
-    public PieEntry(float value) {
-        super(0f, value);
+    public PieEntry(double value) {
+        super(0d, value);
     }
 
-    public PieEntry(float value, Object data) {
-        super(0f, value, data);
+    public PieEntry(double value, Object data) {
+        super(0, value, data);
     }
 
-    public PieEntry(float value, Drawable icon) {
-        super(0f, value, icon);
+    public PieEntry(double value, Drawable icon) {
+        super(0, value, icon);
     }
 
-    public PieEntry(float value, Drawable icon, Object data) {
-        super(0f, value, icon, data);
+    public PieEntry(double value, Drawable icon, Object data) {
+        super(0, value, icon, data);
     }
 
-    public PieEntry(float value, String label) {
-        super(0f, value);
+    public PieEntry(double value, String label) {
+        super(0d, value);
         this.label = label;
     }
 
-    public PieEntry(float value, String label, Object data) {
-        super(0f, value, data);
+    public PieEntry(double value, String label, Object data) {
+        super(0d, value, data);
         this.label = label;
     }
 
-    public PieEntry(float value, String label, Drawable icon) {
-        super(0f, value, icon);
+    public PieEntry(double value, String label, Drawable icon) {
+        super(0d, value, icon);
         this.label = label;
     }
 
-    public PieEntry(float value, String label, Drawable icon, Object data) {
-        super(0f, value, icon, data);
+    public PieEntry(double value, String label, Drawable icon, Object data) {
+        super(0d, value, icon, data);
         this.label = label;
     }
 
@@ -53,7 +53,7 @@ public class PieEntry extends Entry {
      *
      * @return
      */
-    public float getValue() {
+    public double getValue() {
         return getY();
     }
 
@@ -67,14 +67,14 @@ public class PieEntry extends Entry {
 
     @Deprecated
     @Override
-    public void setX(float x) {
+    public void setX(double x) {
         super.setX(x);
         Log.i("DEPRECATED", "Pie entries do not have x values");
     }
 
     @Deprecated
     @Override
-    public float getX() {
+    public double getX() {
         Log.i("DEPRECATED", "Pie entries do not have x values");
         return super.getX();
     }

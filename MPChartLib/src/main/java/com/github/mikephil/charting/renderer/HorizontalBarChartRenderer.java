@@ -81,7 +81,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                 BarEntry e = dataSet.getEntryForIndex(i);
 
-                x = e.getX();
+                x = e.getFloatX();
 
                 mBarShadowRectBuffer.top = x - barWidthHalf;
                 mBarShadowRectBuffer.bottom = x + barWidthHalf;
@@ -195,7 +195,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             continue;
 
                         BarEntry entry = dataSet.getEntryForIndex(j / 4);
-                        float val = entry.getY();
+                        double val = entry.getY();
                         String formattedValue = formatter.getFormattedValue(val, entry, i, mViewPortHandler);
 
                         // calculate the correct offset depending on the draw position of the value
@@ -249,7 +249,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         BarEntry entry = dataSet.getEntryForIndex(index);
 
                         int color = dataSet.getValueTextColor(index);
-                        float[] vals = entry.getYVals();
+                        double[] vals = entry.getYVals();
 
                         // we still draw stacked bars, but there is one
                         // non-stacked
@@ -265,7 +265,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[bufferIndex + 1]))
                                 continue;
 
-                            float val = entry.getY();
+                            double val = entry.getY();
                             String formattedValue = formatter.getFormattedValue(val,
                                     entry, i, mViewPortHandler);
 
@@ -315,12 +315,12 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                             for (int k = 0, idx = 0; k < transformed.length; k += 2, idx++) {
 
-                                float value = vals[idx];
+                                double value = vals[idx];
                                 float y;
 
                                 if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
                                     // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
-                                    y = value;
+                                    y = (float)value;
                                 } else if (value >= 0.0f) {
                                     posY += value;
                                     y = posY;
@@ -336,7 +336,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
-                                final float val = vals[k / 2];
+                                final double val = vals[k / 2];
                                 String formattedValue = formatter.getFormattedValue(val,
                                         entry, i, mViewPortHandler);
 
@@ -402,12 +402,12 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    protected void prepareBarHighlight(float x, float y1, float y2, float barWidthHalf, Transformer trans) {
+    protected void prepareBarHighlight(double x, double y1, double y2, float barWidthHalf, Transformer trans) {
 
-        float top = x - barWidthHalf;
-        float bottom = x + barWidthHalf;
-        float left = y1;
-        float right = y2;
+        float top = (float)x - barWidthHalf;
+        float bottom = (float)x + barWidthHalf;
+        float left = (float)y1;
+        float right = (float)y2;
 
         mBarRect.set(left, top, right, bottom);
 

@@ -55,10 +55,10 @@ public class FileUtils {
                     entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
                 } else {
 
-                    float[] vals = new float[split.length - 1];
+                    double[] vals = new double[split.length - 1];
 
                     for (int i = 0; i < vals.length; i++) {
-                        vals[i] = Float.parseFloat(split[i]);
+                        vals[i] = Double.parseDouble(split[i]);
                     }
 
                     entries.add(new BarEntry(Integer.parseInt(split[split.length - 1]), vals));
@@ -125,10 +125,10 @@ public class FileUtils {
                     entries.add(new Entry(Float.parseFloat(split[1]), Float.parseFloat(split[0])));
                 } else {
 
-                    float[] vals = new float[split.length - 1];
+                    double[] vals = new double[split.length - 1];
 
                     for (int i = 0; i < vals.length; i++) {
-                        vals[i] = Float.parseFloat(split[i]);
+                        vals[i] = Double.parseDouble(split[i]);
                     }
 
                     entries.add(new BarEntry(Integer.parseInt(split[split.length - 1]), vals));

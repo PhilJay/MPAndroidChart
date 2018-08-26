@@ -22,16 +22,16 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
 
         List<Highlight> highlights = getHighlightsAtIndex(index);
 
-        float distanceToCenter = mChart.distanceToCenter(x, y) / mChart.getFactor();
+        double distanceToCenter = mChart.distanceToCenter(x, y) / mChart.getFactor();
 
         Highlight closest = null;
-        float distance = Float.MAX_VALUE;
+        double distance = Float.MAX_VALUE;
 
         for (int i = 0; i < highlights.size(); i++) {
 
             Highlight high = highlights.get(i);
 
-            float cdistance = Math.abs(high.getY() - distanceToCenter);
+            double cdistance = Math.abs(high.getY() - distanceToCenter);
             if (cdistance < distance) {
                 closest = high;
                 distance = cdistance;
@@ -56,7 +56,7 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
         float phaseX = mChart.getAnimator().getPhaseX();
         float phaseY = mChart.getAnimator().getPhaseY();
         float sliceangle = mChart.getSliceAngle();
-        float factor = mChart.getFactor();
+        double factor = mChart.getFactor();
 
         MPPointF pOut = MPPointF.getInstance(0,0);
         for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
@@ -65,7 +65,7 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
 
             final Entry entry = dataSet.getEntryForIndex(index);
 
-            float y = (entry.getY() - mChart.getYChartMin());
+            double y = (entry.getY() - mChart.getYChartMin());
 
             Utils.getPosition(
                     mChart.getCenterOffsets(), y * factor * phaseY,

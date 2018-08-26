@@ -37,7 +37,7 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
 
         // calculate the factor that is needed for transforming the value to
         // pixels
-        float factor = mChart.getFactor();
+        double factor = mChart.getFactor();
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);

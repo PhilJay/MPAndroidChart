@@ -114,7 +114,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                 BarEntry e = dataSet.getEntryForIndex(i);
 
-                x = e.getX();
+                x = e.getFloatX();
 
                 mBarShadowRectBuffer.left = x - barWidthHalf;
                 mBarShadowRectBuffer.right = x + barWidthHalf;
@@ -201,12 +201,12 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         }
     }
 
-    protected void prepareBarHighlight(float x, float y1, float y2, float barWidthHalf, Transformer trans) {
+    protected void prepareBarHighlight(double x, double y1, double y2, float barWidthHalf, Transformer trans) {
 
-        float left = x - barWidthHalf;
-        float right = x + barWidthHalf;
-        float top = y1;
-        float bottom = y2;
+        float left = (float)x - barWidthHalf;
+        float right = (float)x + barWidthHalf;
+        float top = (float)y1;
+        float bottom = (float)y2;
 
         mBarRect.set(left, top, right, bottom);
 
@@ -273,7 +273,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                             continue;
 
                         BarEntry entry = dataSet.getEntryForIndex(j / 4);
-                        float val = entry.getY();
+                        double val = entry.getY();
 
                         if (dataSet.isDrawValuesEnabled()) {
                             drawValue(c, dataSet.getValueFormatter(), val, entry, i, x,
@@ -317,7 +317,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                         BarEntry entry = dataSet.getEntryForIndex(index);
 
-                        float[] vals = entry.getYVals();
+                        double[] vals = entry.getYVals();
                         float x = (buffer.buffer[bufferIndex] + buffer.buffer[bufferIndex + 2]) / 2f;
 
                         int color = dataSet.getValueTextColor(index);
@@ -371,7 +371,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                             for (int k = 0, idx = 0; k < transformed.length; k += 2, idx++) {
 
-                                float value = vals[idx];
+                                float value = (float)vals[idx];
                                 float y;
 
                                 if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
@@ -392,7 +392,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
-                                final float val = vals[k / 2];
+                                final double val = vals[k / 2];
                                 final boolean drawBelow =
                                         (val == 0.0f && negY == 0.0f && posY > 0.0f) ||
                                                 val < 0.0f;
@@ -466,8 +466,8 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
             boolean isStack = (high.getStackIndex() >= 0  && e.isStacked()) ? true : false;
 
-            final float y1;
-            final float y2;
+            final double y1;
+            final double y2;
 
             if (isStack) {
 

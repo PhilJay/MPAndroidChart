@@ -89,8 +89,8 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
             final BubbleEntry entry = dataSet.getEntryForIndex(j);
 
-            pointBuffer[0] = entry.getX();
-            pointBuffer[1] = (entry.getY()) * phaseY;
+            pointBuffer[0] = entry.getFloatX();
+            pointBuffer[1] = (entry.getFloatY()) * phaseY;
             trans.pointValuesToPixel(pointBuffer);
 
             float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize, normalizeSize) / 2f;
@@ -235,8 +235,8 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
                     mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
             final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-            pointBuffer[0] = entry.getX();
-            pointBuffer[1] = (entry.getY()) * phaseY;
+            pointBuffer[0] = entry.getFloatX();
+            pointBuffer[1] = (entry.getFloatY()) * phaseY;
             trans.pointValuesToPixel(pointBuffer);
 
             high.setDraw(pointBuffer[0], pointBuffer[1]);

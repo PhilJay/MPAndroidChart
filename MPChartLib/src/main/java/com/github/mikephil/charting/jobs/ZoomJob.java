@@ -66,8 +66,8 @@ public class ZoomJob extends ViewPortJob {
         float yValsInView = ((BarLineChartBase) view).getAxis(axisDependency).mAxisRange / mViewPortHandler.getScaleY();
         float xValsInView = ((BarLineChartBase) view).getXAxis().mAxisRange / mViewPortHandler.getScaleX();
 
-        pts[0] = xValue - xValsInView / 2f;
-        pts[1] = yValue + yValsInView / 2f;
+        pts[0] = (float)xValue - xValsInView / 2f;
+        pts[1] = (float)yValue + yValsInView / 2f;
 
         mTrans.pointValuesToPixel(pts);
 

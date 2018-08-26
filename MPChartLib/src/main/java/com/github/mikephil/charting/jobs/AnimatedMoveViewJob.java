@@ -21,7 +21,7 @@ public class AnimatedMoveViewJob extends AnimatedViewPortJob {
         pool.setReplenishPercentage(0.5f);
     }
 
-    public static AnimatedMoveViewJob getInstance(ViewPortHandler viewPortHandler, float xValue, float yValue, Transformer trans, View v, float xOrigin, float yOrigin, long duration){
+    public static AnimatedMoveViewJob getInstance(ViewPortHandler viewPortHandler, double xValue, double yValue, Transformer trans, View v, float xOrigin, float yOrigin, long duration){
         AnimatedMoveViewJob result = pool.get();
         result.mViewPortHandler = viewPortHandler;
         result.xValue = xValue;
@@ -47,8 +47,8 @@ public class AnimatedMoveViewJob extends AnimatedViewPortJob {
     @Override
     public void onAnimationUpdate(ValueAnimator animation) {
 
-        pts[0] = xOrigin + (xValue - xOrigin) * phase;
-        pts[1] = yOrigin + (yValue - yOrigin) * phase;
+        pts[0] = xOrigin + ((float)xValue - xOrigin) * phase;
+        pts[1] = yOrigin + ((float)yValue - yOrigin) * phase;
 
         mTrans.pointValuesToPixel(pts);
         mViewPortHandler.centerViewPort(pts, view);

@@ -17,7 +17,7 @@ public class MyFillFormatter implements IFillFormatter
     }
 
     @Override
-    public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+    public double getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
         // your logic could be here
         return mFillPos;
     }

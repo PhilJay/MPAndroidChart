@@ -75,7 +75,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             if (e == null)
                 continue;
 
-            final float xPos = e.getX();
+            final float xPos = e.getFloatX();
 
             final float open = e.getOpen();
             final float close = e.getClose();

@@ -23,9 +23,9 @@ public class HorizontalBarBuffer extends BarBuffer {
             if(e == null)
                 continue;
 
-            float x = e.getX();
-            float y = e.getY();
-            float[] vals = e.getYVals();
+            float x = e.getFloatX();
+            float y = e.getFloatY();
+            double[] vals = e.getYVals();
 
             if (!mContainsStacks || vals == null) {
 
@@ -57,7 +57,7 @@ public class HorizontalBarBuffer extends BarBuffer {
                 // fill the stack
                 for (int k = 0; k < vals.length; k++) {
 
-                    float value = vals[k];
+                    float value = (float)vals[k];
 
                     if (value >= 0f) {
                         y = posY;
