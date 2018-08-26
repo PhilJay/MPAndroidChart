@@ -117,9 +117,7 @@ If you like this library, please tell others about it :two_hearts: :two_hearts:
 [![Share on Google+](https://github.com/PhilJay/MPAndroidChart/blob/master/design/googleplus_icon.png)](https://plus.google.com/share?url=https://github.com/PhilJay/MPAndroidChart)
 [![Share on Facebook](https://github.com/PhilJay/MPAndroidChart/blob/master/design/facebook_icon.png)](https://www.facebook.com/sharer/sharer.php?u=https://github.com/PhilJay/MPAndroidChart)
 
-You can follow the creator on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJahoda)
-
-Philipp is also on [StackOverflow](http://stackoverflow.com/users/1590502/philipp-jahoda)
+You can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJahoda) or sign up for my [**daily coding newsletter**](https://philjay.substack.com).
 
 <br/>
 
