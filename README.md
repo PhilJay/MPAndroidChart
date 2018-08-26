@@ -26,7 +26,7 @@ All MPAndroidChart users are entitled to a special **discount of 5%** off the <a
 
 ## [Daily Coding Newsletter](philjay.substack.com)
 
-Sign up for my [daily coding newsletter](philjay.substack.com) to get quick updates on Kotlin and Android development related topics.
+Sign up for my [daily coding newsletter](https://philjay.substack.com/subscribe) to get quick updates on Kotlin and Android development related topics.
 
 ## Usage :chart_with_upwards_trend:
 
@@ -120,7 +120,7 @@ If you like this library, please tell others about it :two_hearts: :two_hearts:
 [![Share on Google+](https://github.com/PhilJay/MPAndroidChart/blob/master/design/googleplus_icon.png)](https://plus.google.com/share?url=https://github.com/PhilJay/MPAndroidChart)
 [![Share on Facebook](https://github.com/PhilJay/MPAndroidChart/blob/master/design/facebook_icon.png)](https://www.facebook.com/sharer/sharer.php?u=https://github.com/PhilJay/MPAndroidChart)
 
-You can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJahoda) or sign up for my [**daily coding newsletter**](https://philjay.substack.com).
+You can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJahoda) or sign up for my [**daily coding newsletter**](https://philjay.substack.com/subscribe).
 
 <br/>
 
