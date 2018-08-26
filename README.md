@@ -24,7 +24,7 @@ All MPAndroidChart users are entitled to a special **discount of 5%** off the <a
 
 <br/>
 
-## [Daily Coding Newsletter](philjay.substack.com)
+## [Daily Coding Newsletter](https://philjay.substack.com/subscribe)
 
 Sign up for my [daily coding newsletter](https://philjay.substack.com/subscribe) to get quick updates on Kotlin and Android development related topics.
 
