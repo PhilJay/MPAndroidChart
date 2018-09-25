@@ -4,13 +4,13 @@ apply plugin: 'maven'
 //apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
     // resourcePrefix 'mpcht'
     defaultConfig {
         //noinspection MinSdkTooLow
         minSdkVersion 9
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 3
         versionName '3.0.3'
     }
