@@ -2,7 +2,6 @@ package com.xxmassdeveloper.mpchartexample.fragments;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -12,8 +11,9 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.xxmassdeveloper.mpchartexample.R;
+
+import androidx.fragment.app.Fragment;
 
 
 public class PieChartFrag extends SimpleFragment {

@@ -3,11 +3,11 @@ package com.xxmassdeveloper.mpchartexample.notimportant;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.renderscript.Type;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 
 import com.xxmassdeveloper.mpchartexample.R;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * Baseclass of all Activities of the Demo Application.

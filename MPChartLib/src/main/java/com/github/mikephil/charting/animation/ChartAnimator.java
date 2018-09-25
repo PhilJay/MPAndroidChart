@@ -3,9 +3,10 @@ package com.github.mikephil.charting.animation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.support.annotation.RequiresApi;
 
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Object responsible for all animations in the Chart. Animations require API level 11.
