@@ -46,7 +46,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         setTitle("Age Distribution Austria");
 
-        mChart = (HorizontalBarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setDrawGridBackground(false);
         mChart.getDescription().setEnabled(false);

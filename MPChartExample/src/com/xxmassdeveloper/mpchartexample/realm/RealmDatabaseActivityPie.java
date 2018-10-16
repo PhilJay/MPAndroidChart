@@ -32,7 +32,7 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_piechart_noseekbar);
 
-        mChart = (PieChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         setup(mChart);
 
         mChart.setCenterText(generateCenterSpannableText());

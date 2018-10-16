@@ -30,7 +30,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_radarchart_noseekbar);
 
-        mChart = (RadarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         setup(mChart);
 
         mChart.getYAxis().setEnabled(false);

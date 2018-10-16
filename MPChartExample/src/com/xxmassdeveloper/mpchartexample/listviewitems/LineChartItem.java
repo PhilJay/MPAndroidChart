@@ -40,7 +40,7 @@ public class LineChartItem extends ChartItem {
 
             convertView = LayoutInflater.from(c).inflate(
                     R.layout.list_item_linechart, null);
-            holder.chart = (LineChart) convertView.findViewById(R.id.chart);
+            holder.chart = convertView.findViewById(R.id.chart);
 
             convertView.setTag(holder);
 

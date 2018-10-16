@@ -27,10 +27,10 @@ public class LineChartActivityColored extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_colored_lines);
 
-        mCharts[0] = (LineChart) findViewById(R.id.chart1);
-        mCharts[1] = (LineChart) findViewById(R.id.chart2);
-        mCharts[2] = (LineChart) findViewById(R.id.chart3);
-        mCharts[3] = (LineChart) findViewById(R.id.chart4);
+        mCharts[0] = findViewById(R.id.chart1);
+        mCharts[1] = findViewById(R.id.chart2);
+        mCharts[2] = findViewById(R.id.chart3);
+        mCharts[3] = findViewById(R.id.chart4);
 
         mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
 
@@ -53,7 +53,7 @@ public class LineChartActivityColored extends DemoBase {
 
     private void setupChart(LineChart chart, LineData data, int color) {
 
-        ((LineDataSet) data.getDataSetByIndex(0)).setCircleColorHole(color);
+        ((LineDataSet) data.getDataSetByIndex(0)).setCircleHoleColor(color);
 
         // no description text
         chart.getDescription().setEnabled(false);
