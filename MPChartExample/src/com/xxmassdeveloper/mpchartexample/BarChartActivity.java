@@ -1,10 +1,13 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -32,7 +34,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.model.GradientColor;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
@@ -45,8 +46,8 @@ import java.util.List;
 public class BarChartActivity extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
 
-    protected BarChart mChart;
-    private SeekBar mSeekBarX, mSeekBarY;
+    private BarChart chart;
+    private SeekBar seekBarX, seekBarY;
     private TextView tvX, tvY;
 
     @Override
@@ -56,35 +57,40 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barchart);
 
+        setTitle("BarChartActivity");
+
         tvX = findViewById(R.id.tvXMax);
         tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = findViewById(R.id.seekBar1);
-        mSeekBarY = findViewById(R.id.seekBar2);
+        seekBarX = findViewById(R.id.seekBar1);
+        seekBarY = findViewById(R.id.seekBar2);
 
-        mChart = findViewById(R.id.chart1);
-        mChart.setOnChartValueSelectedListener(this);
+        seekBarY.setOnSeekBarChangeListener(this);
+        seekBarX.setOnSeekBarChangeListener(this);
 
-        mChart.setDrawBarShadow(false);
-        mChart.setDrawValueAboveBar(true);
+        chart = findViewById(R.id.chart1);
+        chart.setOnChartValueSelectedListener(this);
 
-        mChart.getDescription().setEnabled(false);
+        chart.setDrawBarShadow(false);
+        chart.setDrawValueAboveBar(true);
+
+        chart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        mChart.setMaxVisibleValueCount(60);
+        chart.setMaxVisibleValueCount(60);
 
         // scaling can now only be done on x- and y-axis separately
-        mChart.setPinchZoom(false);
+        chart.setPinchZoom(false);
 
-        mChart.setDrawGridBackground(false);
-        // mChart.setDrawYLabels(false);
+        chart.setDrawGridBackground(false);
+        // chart.setDrawYLabels(false);
 
-        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
+        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);
 
-        XAxis xAxis = mChart.getXAxis();
+        XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTfLight);
+        xAxis.setTypeface(tfLight);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(7);
@@ -92,23 +98,23 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         IAxisValueFormatter custom = new MyAxisValueFormatter();
 
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(mTfLight);
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setTypeface(tfLight);
         leftAxis.setLabelCount(8, false);
         leftAxis.setValueFormatter(custom);
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        YAxis rightAxis = mChart.getAxisRight();
+        YAxis rightAxis = chart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTfLight);
+        rightAxis.setTypeface(tfLight);
         rightAxis.setLabelCount(8, false);
         rightAxis.setValueFormatter(custom);
         rightAxis.setSpaceTop(15f);
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -117,152 +123,46 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         l.setFormSize(9f);
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
-        // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
-        // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
 
         XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
-        mv.setChartView(mChart); // For bounds control
-        mChart.setMarker(mv); // Set the marker to the chart
-
-        setData(12, 50);
+        mv.setChartView(chart); // For bounds control
+        chart.setMarker(mv); // Set the marker to the chart
 
         // setting data
-        mSeekBarY.setProgress(50);
-        mSeekBarX.setProgress(12);
+        seekBarY.setProgress(50);
+        seekBarX.setProgress(12);
+        setData(12, 50);
 
-        mSeekBarY.setOnSeekBarChangeListener(this);
-        mSeekBarX.setOnSeekBarChangeListener(this);
-
-        // mChart.setDrawLegend(false);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
-                for (IDataSet set : mChart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleIcons: {
-                for (IDataSet set : mChart.getData().getDataSets())
-                    set.setDrawIcons(!set.isDrawIconsEnabled());
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleHighlight: {
-                if (mChart.getData() != null) {
-                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
-                    mChart.invalidate();
-                }
-                break;
-            }
-            case R.id.actionTogglePinch: {
-                if (mChart.isPinchZoomEnabled())
-                    mChart.setPinchZoom(false);
-                else
-                    mChart.setPinchZoom(true);
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleAutoScaleMinMax: {
-                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
-                mChart.notifyDataSetChanged();
-                break;
-            }
-            case R.id.actionToggleBarBorders: {
-                for (IBarDataSet set : mChart.getData().getDataSets())
-                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.animateX: {
-                mChart.animateX(3000);
-                break;
-            }
-            case R.id.animateY: {
-                mChart.animateY(3000);
-                break;
-            }
-            case R.id.animateXY: {
-
-                mChart.animateXY(3000, 3000);
-                break;
-            }
-            case R.id.actionSave: {
-                if (mChart.saveToGallery("title" + System.currentTimeMillis(), 50)) {
-                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
-                            Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
-                            .show();
-                break;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-        tvX.setText("" + (mSeekBarX.getProgress() + 2));
-        tvY.setText("" + (mSeekBarY.getProgress()));
-
-        setData(mSeekBarX.getProgress() + 1 , mSeekBarY.getProgress());
-        mChart.invalidate();
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
+        // chart.setDrawLegend(false);
     }
 
     private void setData(int count, float range) {
 
         float start = 1f;
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> values = new ArrayList<>();
 
-        for (int i = (int) start; i < start + count + 1; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult);
+        for (int i = (int) start; i < start + count; i++) {
+            float val = (float) (Math.random() * (range + 1));
 
             if (Math.random() * 100 < 25) {
-                yVals1.add(new BarEntry(i, val, getResources().getDrawable(R.drawable.star)));
+                values.add(new BarEntry(i, val, getResources().getDrawable(R.drawable.star)));
             } else {
-                yVals1.add(new BarEntry(i, val));
+                values.add(new BarEntry(i, val));
             }
         }
 
         BarDataSet set1;
 
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
-            set1.setValues(yVals1);
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+
         } else {
-            set1 = new BarDataSet(yVals1, "The year 2017");
+            set1 = new BarDataSet(values, "The year 2017");
 
             set1.setDrawIcons(false);
 
@@ -292,37 +192,139 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
             set1.setGradientColors(gradientColors);
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
 
             BarData data = new BarData(dataSets);
             data.setValueTextSize(10f);
-            data.setValueTypeface(mTfLight);
+            data.setValueTypeface(tfLight);
             data.setBarWidth(0.9f);
 
-            mChart.setData(data);
+            chart.setData(data);
         }
     }
 
-    protected RectF mOnValueSelectedRectF = new RectF();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bar, menu);
+        return true;
+    }
 
-    @SuppressLint("NewApi")
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivity.java"));
+                startActivity(i);
+                break;
+            }
+            case R.id.actionToggleValues: {
+                for (IDataSet set : chart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                for (IDataSet set : chart.getData().getDataSets())
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
+
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHighlight: {
+                if (chart.getData() != null) {
+                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
+                    chart.invalidate();
+                }
+                break;
+            }
+            case R.id.actionTogglePinch: {
+                if (chart.isPinchZoomEnabled())
+                    chart.setPinchZoom(false);
+                else
+                    chart.setPinchZoom(true);
+
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionToggleAutoScaleMinMax: {
+                chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
+                chart.notifyDataSetChanged();
+                break;
+            }
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : chart.getData().getDataSets())
+                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
+                chart.invalidate();
+                break;
+            }
+            case R.id.animateX: {
+                chart.animateX(2000);
+                break;
+            }
+            case R.id.animateY: {
+                chart.animateY(2000);
+                break;
+            }
+            case R.id.animateXY: {
+                chart.animateXY(2000, 2000);
+                break;
+            }
+            case R.id.actionSave: {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    saveToGallery();
+                } else {
+                    requestStoragePermission(chart);
+                }
+                break;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+        tvX.setText(String.valueOf(seekBarX.getProgress()));
+        tvY.setText(String.valueOf(seekBarY.getProgress()));
+
+        setData(seekBarX.getProgress(), seekBarY.getProgress());
+        chart.invalidate();
+    }
+
+    @Override
+    public void saveToGallery() {
+        saveToGallery(chart, "BarChartActivity");
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {}
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    private RectF onValueSelectedRectF = new RectF();
+
     @Override
     public void onValueSelected(Entry e, Highlight h) {
 
         if (e == null)
             return;
 
-        RectF bounds = mOnValueSelectedRectF;
-        mChart.getBarBounds((BarEntry) e, bounds);
-        MPPointF position = mChart.getPosition(e, AxisDependency.LEFT);
+        RectF bounds = onValueSelectedRectF;
+        chart.getBarBounds((BarEntry) e, bounds);
+        MPPointF position = chart.getPosition(e, AxisDependency.LEFT);
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
 
         Log.i("x-index",
-                "low: " + mChart.getLowestVisibleX() + ", high: "
-                        + mChart.getHighestVisibleX());
+                "low: " + chart.getLowestVisibleX() + ", high: "
+                        + chart.getHighestVisibleX());
 
         MPPointF.recycleInstance(position);
     }

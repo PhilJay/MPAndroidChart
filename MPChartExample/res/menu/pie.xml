@@ -2,48 +2,52 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/viewGithub"
+        android:title="@string/viewGithub">
+    </item>
+    <item
         android:id="@+id/actionToggleValues"
-        android:title="Toggle Y-Values">
+        android:title="@string/actionToggleYValues">
+    </item>
+    <item
+        android:id="@+id/actionToggleXValues"
+        android:title="@string/actionToggleXValues">
     </item>
     <item
         android:id="@+id/actionToggleIcons"
-        android:title="Toggle Icons">
-    </item>
-    <item
-        android:id="@+id/actionToggleXVals"
-        android:title="Toggle X-Values">
+        android:title="@string/actionToggleIcons">
     </item>
     <item
         android:id="@+id/actionTogglePercent"
-        android:title="Toggle Percent">
+        android:title="@string/actionTogglePercent">
     </item>
     <item
         android:id="@+id/actionToggleHole"
-        android:title="Toggle Hole">
-    </item>
-    <item
-        android:id="@+id/animateX"
-        android:title="Animate X">
-    </item>
-    <item
-        android:id="@+id/animateY"
-        android:title="Animate Y">
-    </item>
-        <item
-        android:id="@+id/animateXY"
-        android:title="Animate XY">
+        android:title="@string/actionToggleHole">
     </item>
     <item
         android:id="@+id/actionDrawCenter"
-        android:title="Draw CenterText">
-    </item>
-    <item
-        android:id="@+id/actionSave"
-        android:title="Save to Gallery">
+        android:title="@string/actionDrawCenterText">
     </item>
     <item
         android:id="@+id/actionToggleSpin"
-        android:title="Spin Animation">
+        android:title="@string/actionToggleSpin">
+    </item>
+    <item
+        android:id="@+id/animateX"
+        android:title="@string/animateX">
+    </item>
+    <item
+        android:id="@+id/animateY"
+        android:title="@string/animateY">
+    </item>
+        <item
+        android:id="@+id/animateXY"
+        android:title="@string/animateXY">
+    </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="@string/actionSave">
     </item>
 
 </menu>

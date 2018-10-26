@@ -264,7 +264,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 ICandleDataSet dataSet = dataSets.get(i);
 
-                if (!shouldDrawValues(dataSet))
+                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1)
                     continue;
 
                 // apply the text-styling defined by the DataSet

@@ -1,7 +1,8 @@
 package com.xxmassdeveloper.mpchartexample.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,38 +16,40 @@ import com.xxmassdeveloper.mpchartexample.R;
 
 public class ComplexityFragment extends SimpleFragment {
 
+    @NonNull
     public static Fragment newInstance() {
         return new ComplexityFragment();
     }
 
-    private LineChart mChart;
-    
+    @SuppressWarnings("FieldCanBeLocal")
+    private LineChart chart;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_simple_line, container, false);
-        
-        mChart = v.findViewById(R.id.lineChart1);
 
-        mChart.getDescription().setEnabled(false);
+        chart = v.findViewById(R.id.lineChart1);
 
-        mChart.setDrawGridBackground(false);
-        
-        mChart.setData(getComplexity());
-        mChart.animateX(3000);
-        
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
-        
-        Legend l = mChart.getLegend();
+        chart.getDescription().setEnabled(false);
+
+        chart.setDrawGridBackground(false);
+
+        chart.setData(getComplexity());
+        chart.animateX(3000);
+
+        Typeface tf = Typeface.createFromAsset(context.getAssets(), "OpenSans-Light.ttf");
+
+        Legend l = chart.getLegend();
         l.setTypeface(tf);
-        
-        YAxis leftAxis = mChart.getAxisLeft();
+
+        YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setTypeface(tf);
-        
-        mChart.getAxisRight().setEnabled(false);
-        
-        XAxis xAxis = mChart.getXAxis();
+
+        chart.getAxisRight().setEnabled(false);
+
+        XAxis xAxis = chart.getXAxis();
         xAxis.setEnabled(false);
-        
+
         return v;
     }
 }

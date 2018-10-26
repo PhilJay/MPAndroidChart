@@ -1,5 +1,6 @@
 package com.xxmassdeveloper.mpchartexample.realm;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import android.widget.ListView;
 
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.notimportant.ContentItem;
-import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import com.xxmassdeveloper.mpchartexample.notimportant.MyAdapter;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import io.realm.RealmConfiguration;
 /**
  * Created by Philipp Jahoda on 07/12/15.
  */
-public class RealmMainActivity extends DemoBase implements AdapterView.OnItemClickListener {
+public class RealmMainActivity extends Activity implements AdapterView.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
 
         setTitle("Realm.io Examples");
 
-        ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
+        ArrayList<ContentItem> objects = new ArrayList<>();
 
         objects.add(new ContentItem("Line Chart", "Creating a LineChart with Realm.io database"));
         objects.add(new ContentItem("Bar Chart",

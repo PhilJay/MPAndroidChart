@@ -25,7 +25,7 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="500"
+        android:text="@string/dash"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="10dp"
         android:gravity="right"

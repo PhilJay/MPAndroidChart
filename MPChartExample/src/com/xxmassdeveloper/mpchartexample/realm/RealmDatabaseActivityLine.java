@@ -55,7 +55,7 @@ public class RealmDatabaseActivityLine extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result, "xValue", "yValue");
+        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<>(result, "xValue", "yValue");
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         set.setLabel("Realm LineDataSet");
         set.setDrawCircleHole(false);
@@ -64,7 +64,7 @@ public class RealmDatabaseActivityLine extends RealmBaseActivity {
         set.setLineWidth(1.8f);
         set.setCircleRadius(3.6f);
 
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list

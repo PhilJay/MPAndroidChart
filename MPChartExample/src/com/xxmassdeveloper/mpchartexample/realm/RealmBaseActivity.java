@@ -19,6 +19,7 @@ import io.realm.RealmConfiguration;
 /**
  * Created by Philipp Jahoda on 05/11/15.
  */
+@SuppressWarnings("SameParameterValue")
 public abstract class RealmBaseActivity extends DemoBase {
 
     protected Realm mRealm;
@@ -139,8 +140,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         for (int i = 0; i < objectCount; i++) {
 
-            float mult = 50;
-            float val = (float) (Math.random() * 40) + mult;
+            float val = (float) (Math.random() * 40) + 50f;
 
             float high = (float) (Math.random() * 9) + 8f;
             float low = (float) (Math.random() * 9) + 8f;
@@ -199,4 +199,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         mRealm.commitTransaction();
     }
+
+    @Override
+    public void saveToGallery() { /* Intentionally left empty */ }
 }

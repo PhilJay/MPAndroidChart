@@ -1,7 +1,10 @@
 package com.xxmassdeveloper.mpchartexample.notimportant;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import androidx.annotation.NonNull;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,36 +30,40 @@ public class MyAdapter extends ArrayAdapter<ContentItem> {
         mTypeFaceRegular = Typeface.createFromAsset(context.getAssets(), "OpenSans-Regular.ttf");
     }
 
+    @SuppressLint("InflateParams")
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         ContentItem c = getItem(position);
 
-        ViewHolder holder = null;
+        ViewHolder holder;
 
-        if (convertView == null) {
+        holder = new ViewHolder();
 
-            holder = new ViewHolder();
-
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
-            holder.tvName = convertView.findViewById(R.id.tvName);
-            holder.tvDesc = convertView.findViewById(R.id.tvDesc);
-            holder.tvNew = convertView.findViewById(R.id.tvNew);
-
-            convertView.setTag(holder);
-
+        if (c != null && c.isSection) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_section, null);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
         }
 
+        holder.tvName = convertView.findViewById(R.id.tvName);
+        holder.tvDesc = convertView.findViewById(R.id.tvDesc);
+        holder.tvNew = convertView.findViewById(R.id.tvNew);
+
+        convertView.setTag(holder);
+
         holder.tvNew.setTypeface(mTypeFaceRegular);
-        holder.tvName.setTypeface(mTypeFaceLight);
+        if (c != null && c.isSection)
+            holder.tvName.setTypeface(mTypeFaceRegular);
+        else
+            holder.tvName.setTypeface(mTypeFaceLight);
         holder.tvDesc.setTypeface(mTypeFaceLight);
 
-        holder.tvName.setText(c.name);
-        holder.tvDesc.setText(c.desc);
+        holder.tvName.setText(c != null ? c.name : null);
+        holder.tvDesc.setText(c != null ? c.desc : null);
 
-        if(c.isNew)
+        if(c != null && c.isNew)
             holder.tvNew.setVisibility(View.VISIBLE);
         else
             holder.tvNew.setVisibility(View.GONE);

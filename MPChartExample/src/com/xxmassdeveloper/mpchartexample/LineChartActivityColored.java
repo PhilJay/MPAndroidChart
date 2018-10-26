@@ -1,9 +1,13 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -15,10 +19,10 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("SameParameterValue")
 public class LineChartActivityColored extends DemoBase {
 
-    private LineChart[] mCharts = new LineChart[4];
-    private Typeface mTf;
+    private LineChart[] charts = new LineChart[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,26 +31,28 @@ public class LineChartActivityColored extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_colored_lines);
 
-        mCharts[0] = findViewById(R.id.chart1);
-        mCharts[1] = findViewById(R.id.chart2);
-        mCharts[2] = findViewById(R.id.chart3);
-        mCharts[3] = findViewById(R.id.chart4);
+        setTitle("LineChartActivityColored");
 
-        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
+        charts[0] = findViewById(R.id.chart1);
+        charts[1] = findViewById(R.id.chart2);
+        charts[2] = findViewById(R.id.chart3);
+        charts[3] = findViewById(R.id.chart4);
 
-        for (int i = 0; i < mCharts.length; i++) {
+        Typeface mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
+
+        for (int i = 0; i < charts.length; i++) {
 
             LineData data = getData(36, 100);
             data.setValueTypeface(mTf);
 
             // add some transparency to the color with "& 0x90FFFFFF"
-            setupChart(mCharts[i], data, mColors[i % mColors.length]);
+            setupChart(charts[i], data, colors[i % colors.length]);
         }
     }
 
-    private int[] mColors = new int[] {
-            Color.rgb(137, 230, 81), 
-            Color.rgb(240, 240, 30), 
+    private final int[] colors = new int[] {
+            Color.rgb(137, 230, 81),
+            Color.rgb(240, 240, 30),
             Color.rgb(89, 199, 250),
             Color.rgb(250, 104, 104)
     };
@@ -57,8 +63,8 @@ public class LineChartActivityColored extends DemoBase {
 
         // no description text
         chart.getDescription().setEnabled(false);
-        
-        // mChart.setDrawHorizontalGrid(false);
+
+        // chart.setDrawHorizontalGrid(false);
         //
         // enable / disable grid background
         chart.setDrawGridBackground(false);
@@ -75,7 +81,7 @@ public class LineChartActivityColored extends DemoBase {
         chart.setPinchZoom(false);
 
         chart.setBackgroundColor(color);
-        
+
         // set custom chart offsets (automatic offset calculation is hereby disabled)
         chart.setViewPortOffsets(10, 0, 10, 0);
 
@@ -96,18 +102,18 @@ public class LineChartActivityColored extends DemoBase {
         // animate calls invalidate()...
         chart.animateX(2500);
     }
-    
+
     private LineData getData(int count, float range) {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range) + 3;
-            yVals.add(new Entry(i, val));
+            values.add(new Entry(i, val));
         }
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(values, "DataSet 1");
         // set1.setFillAlpha(110);
         // set1.setFillColor(Color.RED);
 
@@ -119,9 +125,31 @@ public class LineChartActivityColored extends DemoBase {
         set1.setHighLightColor(Color.WHITE);
         set1.setDrawValues(false);
 
-        // create a data object with the datasets
-        LineData data = new LineData(set1);
-
-        return data;
+        // create a data object with the data sets
+        return new LineData(set1);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.only_github, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivityColored.java"));
+                startActivity(i);
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void saveToGallery() { /* Intentionally left empty */ }
 }

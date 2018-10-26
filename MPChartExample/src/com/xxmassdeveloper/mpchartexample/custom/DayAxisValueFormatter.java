@@ -10,7 +10,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 public class DayAxisValueFormatter implements IAxisValueFormatter
 {
 
-    protected String[] mMonths = new String[]{
+    private final String[] mMonths = new String[]{
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     };
 

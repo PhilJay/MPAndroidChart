@@ -6,16 +6,16 @@ import io.realm.RealmObject;
 /**
  * our data object
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class Score extends RealmObject {
 
-    private float totalScore;
+    public float totalScore;
 
-    private float scoreNr;
+    public float scoreNr;
 
-    private String playerName;
+    public String playerName;
 
-    public Score() {
-    }
+    public Score() {}
 
     public Score(float totalScore, float scoreNr, String playerName) {
         this.scoreNr = scoreNr;
@@ -23,29 +23,4 @@ public class Score extends RealmObject {
         this.totalScore = totalScore;
     }
 
-    // all getters and setters...
-
-    public float getTotalScore() {
-        return totalScore;
-    }
-
-    public void setTotalScore(float totalScore) {
-        this.totalScore = totalScore;
-    }
-
-    public float getScoreNr() {
-        return scoreNr;
-    }
-
-    public void setScoreNr(float scoreNr) {
-        this.scoreNr = scoreNr;
-    }
-
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
 }

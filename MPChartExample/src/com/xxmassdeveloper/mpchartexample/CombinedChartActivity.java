@@ -1,7 +1,9 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,8 +40,8 @@ import java.util.ArrayList;
 
 public class CombinedChartActivity extends DemoBase {
 
-    private CombinedChart mChart;
-    private final int itemcount = 12;
+    private CombinedChart chart;
+    private final int count = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,41 +50,43 @@ public class CombinedChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_combined);
 
-        mChart = findViewById(R.id.chart1);
-        mChart.getDescription().setEnabled(false);
-        mChart.setBackgroundColor(Color.WHITE);
-        mChart.setDrawGridBackground(false);
-        mChart.setDrawBarShadow(false);
-        mChart.setHighlightFullBarEnabled(false);
+        setTitle("CombinedChartActivity");
+
+        chart = findViewById(R.id.chart1);
+        chart.getDescription().setEnabled(false);
+        chart.setBackgroundColor(Color.WHITE);
+        chart.setDrawGridBackground(false);
+        chart.setDrawBarShadow(false);
+        chart.setHighlightFullBarEnabled(false);
 
         // draw bars behind lines
-        mChart.setDrawOrder(new DrawOrder[]{
+        chart.setDrawOrder(new DrawOrder[]{
                 DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         });
 
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
         l.setWordWrapEnabled(true);
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
 
-        YAxis rightAxis = mChart.getAxisRight();
+        YAxis rightAxis = chart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        YAxis leftAxis = mChart.getAxisLeft();
+        YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setDrawGridLines(false);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        XAxis xAxis = mChart.getXAxis();
+        XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return mMonths[(int) value % mMonths.length];
+                return months[(int) value % months.length];
             }
         });
 
@@ -93,21 +97,21 @@ public class CombinedChartActivity extends DemoBase {
         data.setData(generateBubbleData());
         data.setData(generateScatterData());
         data.setData(generateCandleData());
-        data.setValueTypeface(mTfLight);
+        data.setValueTypeface(tfLight);
 
         xAxis.setAxisMaximum(data.getXMax() + 0.25f);
 
-        mChart.setData(data);
-        mChart.invalidate();
+        chart.setData(data);
+        chart.invalidate();
     }
 
     private LineData generateLineData() {
 
         LineData d = new LineData();
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<Entry> entries = new ArrayList<>();
 
-        for (int index = 0; index < itemcount; index++)
+        for (int index = 0; index < count; index++)
             entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
 
         LineDataSet set = new LineDataSet(entries, "Line DataSet");
@@ -129,10 +133,10 @@ public class CombinedChartActivity extends DemoBase {
 
     private BarData generateBarData() {
 
-        ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> entries2 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> entries1 = new ArrayList<>();
+        ArrayList<BarEntry> entries2 = new ArrayList<>();
 
-        for (int index = 0; index < itemcount; index++) {
+        for (int index = 0; index < count; index++) {
             entries1.add(new BarEntry(0, getRandom(25, 25)));
 
             // stacked
@@ -147,7 +151,7 @@ public class CombinedChartActivity extends DemoBase {
 
         BarDataSet set2 = new BarDataSet(entries2, "");
         set2.setStackLabels(new String[]{"Stack 1", "Stack 2"});
-        set2.setColors(new int[]{Color.rgb(61, 165, 255), Color.rgb(23, 197, 255)});
+        set2.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255));
         set2.setValueTextColor(Color.rgb(61, 165, 255));
         set2.setValueTextSize(10f);
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -166,13 +170,13 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    protected ScatterData generateScatterData() {
+    ScatterData generateScatterData() {
 
         ScatterData d = new ScatterData();
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<Entry> entries = new ArrayList<>();
 
-        for (float index = 0; index < itemcount; index += 0.5f)
+        for (float index = 0; index < count; index += 0.5f)
             entries.add(new Entry(index + 0.25f, getRandom(10, 55)));
 
         ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
@@ -185,13 +189,13 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    protected CandleData generateCandleData() {
+    CandleData generateCandleData() {
 
         CandleData d = new CandleData();
 
-        ArrayList<CandleEntry> entries = new ArrayList<CandleEntry>();
+        ArrayList<CandleEntry> entries = new ArrayList<>();
 
-        for (int index = 0; index < itemcount; index += 2)
+        for (int index = 0; index < count; index += 2)
             entries.add(new CandleEntry(index + 1f, 90, 70, 85, 75f));
 
         CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
@@ -205,13 +209,13 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    protected BubbleData generateBubbleData() {
+    BubbleData generateBubbleData() {
 
         BubbleData bd = new BubbleData();
 
-        ArrayList<BubbleEntry> entries = new ArrayList<BubbleEntry>();
+        ArrayList<BubbleEntry> entries = new ArrayList<>();
 
-        for (int index = 0; index < itemcount; index++) {
+        for (int index = 0; index < count; index++) {
             float y = getRandom(10, 105);
             float size = getRandom(100, 105);
             entries.add(new BubbleEntry(index + 0.5f, y, size));
@@ -237,34 +241,42 @@ public class CombinedChartActivity extends DemoBase {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/CombinedChartActivity.java"));
+                startActivity(i);
+                break;
+            }
             case R.id.actionToggleLineValues: {
-                for (IDataSet set : mChart.getData().getDataSets()) {
+                for (IDataSet set : chart.getData().getDataSets()) {
                     if (set instanceof LineDataSet)
                         set.setDrawValues(!set.isDrawValuesEnabled());
                 }
 
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleBarValues: {
-                for (IDataSet set : mChart.getData().getDataSets()) {
+                for (IDataSet set : chart.getData().getDataSets()) {
                     if (set instanceof BarDataSet)
                         set.setDrawValues(!set.isDrawValuesEnabled());
                 }
 
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionRemoveDataSet: {
-
-                int rnd = (int) getRandom(mChart.getData().getDataSetCount(), 0);
-                mChart.getData().removeDataSet(mChart.getData().getDataSetByIndex(rnd));
-                mChart.getData().notifyDataChanged();
-                mChart.notifyDataSetChanged();
-                mChart.invalidate();
+                int rnd = (int) getRandom(chart.getData().getDataSetCount(), 0);
+                chart.getData().removeDataSet(chart.getData().getDataSetByIndex(rnd));
+                chart.getData().notifyDataChanged();
+                chart.notifyDataSetChanged();
+                chart.invalidate();
                 break;
             }
         }
         return true;
     }
+
+    @Override
+    public void saveToGallery() { /* Intentionally left empty */ }
 }

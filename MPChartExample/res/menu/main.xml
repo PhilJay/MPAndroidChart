@@ -3,19 +3,15 @@
 
     <item
         android:id="@+id/viewGithub"
-        android:title="View on GitHub">
+        android:title="@string/viewGithub">
     </item>
     <item
         android:id="@+id/report"
-        android:title="Problem Report">
-    </item>
-    <item
-        android:id="@+id/blog"
-        android:title="Developer Blog">
+        android:title="@string/reportProblem">
     </item>
     <item
         android:id="@+id/website"
-        android:title="Developer Website">
+        android:title="@string/viewWebsite">
     </item>
 
 </menu>

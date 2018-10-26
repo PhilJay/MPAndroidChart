@@ -1,8 +1,13 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +32,7 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 public class RealtimeLineChartActivity extends DemoBase implements
         OnChartValueSelectedListener {
 
-    private LineChart mChart;
+    private LineChart chart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,89 +41,64 @@ public class RealtimeLineChartActivity extends DemoBase implements
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_realtime_linechart);
 
-        mChart = findViewById(R.id.chart1);
-        mChart.setOnChartValueSelectedListener(this);
+        setTitle("RealtimeLineChartActivity");
+
+        chart = findViewById(R.id.chart1);
+        chart.setOnChartValueSelectedListener(this);
 
         // enable description text
-        mChart.getDescription().setEnabled(true);
+        chart.getDescription().setEnabled(true);
 
         // enable touch gestures
-        mChart.setTouchEnabled(true);
+        chart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        mChart.setDrawGridBackground(false);
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        chart.setDrawGridBackground(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
+        chart.setPinchZoom(true);
 
         // set an alternative background color
-        mChart.setBackgroundColor(Color.LTGRAY);
+        chart.setBackgroundColor(Color.LTGRAY);
 
         LineData data = new LineData();
         data.setValueTextColor(Color.WHITE);
 
         // add empty data
-        mChart.setData(data);
+        chart.setData(data);
 
         // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
 
         // modify the legend ...
         l.setForm(LegendForm.LINE);
-        l.setTypeface(mTfLight);
+        l.setTypeface(tfLight);
         l.setTextColor(Color.WHITE);
 
-        XAxis xl = mChart.getXAxis();
-        xl.setTypeface(mTfLight);
+        XAxis xl = chart.getXAxis();
+        xl.setTypeface(tfLight);
         xl.setTextColor(Color.WHITE);
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
 
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(mTfLight);
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setTypeface(tfLight);
         leftAxis.setTextColor(Color.WHITE);
         leftAxis.setAxisMaximum(100f);
         leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawGridLines(true);
 
-        YAxis rightAxis = mChart.getAxisRight();
+        YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.realtime, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.actionAdd: {
-                addEntry();
-                break;
-            }
-            case R.id.actionClear: {
-                mChart.clearValues();
-                Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.actionFeedMultiple: {
-                feedMultiple();
-                break;
-            }
-        }
-        return true;
-    }
-
     private void addEntry() {
 
-        LineData data = mChart.getData();
+        LineData data = chart.getData();
 
         if (data != null) {
 
@@ -134,17 +114,17 @@ public class RealtimeLineChartActivity extends DemoBase implements
             data.notifyDataChanged();
 
             // let the chart know it's data has changed
-            mChart.notifyDataSetChanged();
+            chart.notifyDataSetChanged();
 
             // limit the number of visible entries
-            mChart.setVisibleXRangeMaximum(120);
-            // mChart.setVisibleYRange(30, AxisDependency.LEFT);
+            chart.setVisibleXRangeMaximum(120);
+            // chart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry
-            mChart.moveViewToX(data.getEntryCount());
+            chart.moveViewToX(data.getEntryCount());
 
             // this automatically refreshes the chart (calls invalidate())
-            // mChart.moveViewTo(data.getXValCount()-7, 55f,
+            // chart.moveViewTo(data.getXValCount()-7, 55f,
             // AxisDependency.LEFT);
         }
     }
@@ -193,7 +173,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
                     try {
                         Thread.sleep(25);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -201,6 +180,52 @@ public class RealtimeLineChartActivity extends DemoBase implements
         });
 
         thread.start();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.realtime, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/RealtimeLineChartActivity.java"));
+                startActivity(i);
+                break;
+            }
+            case R.id.actionAdd: {
+                addEntry();
+                break;
+            }
+            case R.id.actionClear: {
+                chart.clearValues();
+                Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.actionFeedMultiple: {
+                feedMultiple();
+                break;
+            }
+            case R.id.actionSave: {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    saveToGallery();
+                } else {
+                    requestStoragePermission(chart);
+                }
+                break;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void saveToGallery() {
+        saveToGallery(chart, "RealtimeLineChartActivity");
     }
 
     @Override

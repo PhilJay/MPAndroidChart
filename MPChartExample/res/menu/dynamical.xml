@@ -2,32 +2,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/actionAddEntry"
-        android:title="Add Entry">
+        android:id="@+id/viewGithub"
+        android:title="@string/viewGithub">
     </item>
-    
+    <item
+        android:id="@+id/actionAddEntry"
+        android:title="@string/actionAddEntry">
+    </item>
     <item
         android:id="@+id/actionRemoveEntry"
-        android:title="Remove Entry">
+        android:title="@string/actionRemoveEntry">
     </item>
-    
-        <item
+    <item
         android:id="@+id/actionAddDataSet"
-        android:title="Add DataSet">
+        android:title="@string/actionAddDataSet">
     </item>
-    
     <item
         android:id="@+id/actionRemoveDataSet"
-        android:title="Remove DataSet">
+        android:title="@string/actionRemoveDataSet">
     </item>
-    
-    <item
-        android:id="@+id/actionAddEmptyLineData"
-        android:title="Add empty LineData">
-    </item>
-    
     <item
         android:id="@+id/actionClear"
-        android:title="Clear chart">
+        android:title="@string/actionClearChart">
     </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="@string/actionSave">
+    </item>
+
 </menu>

@@ -3,7 +3,7 @@ package com.github.mikephil.charting.animation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
 

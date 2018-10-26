@@ -8,7 +8,10 @@ import java.text.DecimalFormat;
 
 /**
  * Created by Philipp Jahoda on 14/09/15.
+ *
+ * @deprecated The {@link MyAxisValueFormatter} does exactly the same thing and is more functional.
  */
+@Deprecated
 public class MyCustomXAxisValueFormatter implements IAxisValueFormatter
 {
 

@@ -2,30 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp" >
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="4dp"
-        android:text="Medium Text"
-        android:textSize="16sp"/>
+        android:layout_centerHorizontal="true"
+        android:text="Large Text"
+        android:textSize="21sp" />
 
     <TextView
         android:id="@+id/tvDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvName"
         android:layout_below="@+id/tvName"
-        android:layout_marginTop="3dp"
+        android:layout_centerHorizontal="true"
         android:text="Small Text"
         android:textSize="12sp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/tvNew"
-        android:layout_toStartOf="@+id/tvNew" />
+        android:visibility="gone" />
 
     <TextView
         android:padding="7dp"
@@ -40,6 +36,7 @@
         android:layout_marginRight="5dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -17,7 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -1527,6 +1527,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public boolean saveToPath(String title, String pathOnSD) {
 
+
+
         Bitmap b = getChartBitmap();
 
         OutputStream stream = null;
@@ -1642,7 +1644,18 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @return returns true if saving was successful, false if not
      */
     public boolean saveToGallery(String fileName, int quality) {
-        return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.JPEG, quality);
+        return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.PNG, quality);
+    }
+
+    /**
+     * Saves the current state of the chart to the gallery as a PNG image.
+     * NOTE: Needs permission WRITE_EXTERNAL_STORAGE
+     *
+     * @param fileName e.g. "my_image"
+     * @return returns true if saving was successful, false if not
+     */
+    public boolean saveToGallery(String fileName) {
+        return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.PNG, 40);
     }
 
     /**

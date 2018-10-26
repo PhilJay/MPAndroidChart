@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/seekbarValues"
         android:layout_alignParentRight="true"
-        android:text="0"
+        android:text="@string/dash"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="10dp"
         android:gravity="right"

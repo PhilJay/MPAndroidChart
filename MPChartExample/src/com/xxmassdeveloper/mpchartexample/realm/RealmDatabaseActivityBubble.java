@@ -53,11 +53,11 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        RealmBubbleDataSet<RealmDemoData> set = new RealmBubbleDataSet<RealmDemoData>(result, "xValue", "yValue", "bubbleSize");
+        RealmBubbleDataSet<RealmDemoData> set = new RealmBubbleDataSet<>(result, "xValue", "yValue", "bubbleSize");
         set.setLabel("Realm BubbleDataSet");
         set.setColors(ColorTemplate.COLORFUL_COLORS, 110);
 
-        ArrayList<IBubbleDataSet> dataSets = new ArrayList<IBubbleDataSet>();
+        ArrayList<IBubbleDataSet> dataSets = new ArrayList<>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list

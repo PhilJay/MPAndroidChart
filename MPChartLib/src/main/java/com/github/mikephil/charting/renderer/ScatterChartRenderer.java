@@ -49,6 +49,9 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected void drawDataSet(Canvas c, IScatterDataSet dataSet) {
 
+        if (dataSet.getEntryCount() < 1)
+            return;
+
         ViewPortHandler viewPortHandler = mViewPortHandler;
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
@@ -101,7 +104,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                 IScatterDataSet dataSet = dataSets.get(i);
 
-                if (!shouldDrawValues(dataSet))
+                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1)
                     continue;
 
                 // apply the text-styling defined by the DataSet

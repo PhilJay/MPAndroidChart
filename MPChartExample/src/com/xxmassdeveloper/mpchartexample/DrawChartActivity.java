@@ -1,8 +1,10 @@
-
+// TODO: Finish and add to main activity list
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Typeface;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,13 +30,13 @@ import java.util.List;
 /**
  * This Activity demonstrates drawing into the Chart with the finger. Both line,
  * bar and scatter charts can be used for drawing.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class DrawChartActivity extends DemoBase implements OnChartValueSelectedListener,
         OnDrawListener {
 
-    private LineChart mChart;
+    private LineChart chart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,49 +45,49 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_draw_chart);
 
-        mChart = findViewById(R.id.chart1);
+        setTitle("DrawChartActivity");
+
+        chart = findViewById(R.id.chart1);
 
         // listener for selecting and drawing
-        mChart.setOnChartValueSelectedListener(this);
-        mChart.setOnDrawListener(this);
+        chart.setOnChartValueSelectedListener(this);
+        chart.setOnDrawListener(this);
 
-        // if disabled, drawn datasets with the finger will not be automatically
+        // if disabled, drawn data sets with the finger will not be automatically
         // finished
-        // mChart.setAutoFinish(true);
-        mChart.setDrawGridBackground(false);
+        // chart.setAutoFinish(true);
+        chart.setDrawGridBackground(false);
 
         // add dummy-data to the chart
         initWithDummyData();
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
-        XAxis xl = mChart.getXAxis();
-        xl.setTypeface(tf);
+        XAxis xl = chart.getXAxis();
+        xl.setTypeface(tfRegular);
         xl.setAvoidFirstLastClipping(true);
 
-        YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
+        YAxis yl = chart.getAxisLeft();
+        yl.setTypeface(tfRegular);
 
-        mChart.getLegend().setEnabled(false);
+        chart.getLegend().setEnabled(false);
 
-        // mChart.setYRange(-40f, 40f, true);
+        // chart.setYRange(-40f, 40f, true);
         // call this to reset the changed y-range
-        // mChart.resetYRange(true);
+        // chart.resetYRange(true);
     }
 
     private void initWithDummyData() {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> values = new ArrayList<>();
 
         // create a dataset and give it a type (0)
-        LineDataSet set1 = new LineDataSet(yVals, "DataSet");
+        LineDataSet set1 = new LineDataSet(values, "DataSet");
         set1.setLineWidth(3f);
         set1.setCircleRadius(5f);
 
-        // create a data object with the datasets
+        // create a data object with the data sets
         LineData data = new LineData(set1);
 
-        mChart.setData(data);
+        chart.setData(data);
     }
 
     @Override
@@ -99,7 +101,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                List<ILineDataSet> sets = mChart.getData()
+                List<ILineDataSet> sets = chart.getData()
                         .getDataSets();
 
                 for (ILineDataSet iSet : sets) {
@@ -108,37 +110,45 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                     set.setDrawValues(!set.isDrawValuesEnabled());
                 }
 
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
-                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
-                    mChart.invalidate();
+                if(chart.getData() != null) {
+                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
+                    chart.invalidate();
                 }
                 break;
             }
             case R.id.actionTogglePinch: {
-                if (mChart.isPinchZoomEnabled())
-                    mChart.setPinchZoom(false);
+                if (chart.isPinchZoomEnabled())
+                    chart.setPinchZoom(false);
                 else
-                    mChart.setPinchZoom(true);
+                    chart.setPinchZoom(true);
 
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleAutoScaleMinMax: {
-                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
-                mChart.notifyDataSetChanged();
+                chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
+                chart.notifyDataSetChanged();
                 break;
             }
             case R.id.actionSave: {
-                // mChart.saveToGallery("title"+System.currentTimeMillis());
-                mChart.saveToPath("title" + System.currentTimeMillis(), "");
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    saveToGallery();
+                } else {
+                    requestStoragePermission(chart);
+                }
                 break;
             }
         }
         return true;
+    }
+
+    @Override
+    public void saveToGallery() {
+        saveToGallery(chart, "DrawChartActivity");
     }
 
     @Override
@@ -164,7 +174,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString());
 
         // prepare the legend again
-        mChart.getLegendRenderer().computeLegend(mChart.getData());
+        chart.getLegendRenderer().computeLegend(chart.getData());
     }
 
     @Override

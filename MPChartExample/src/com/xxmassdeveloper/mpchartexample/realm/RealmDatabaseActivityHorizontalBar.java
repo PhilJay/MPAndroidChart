@@ -53,13 +53,13 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "xValue", "stackValues", "floatValue"); // stacked entries
-        set.setColors(new int[]{ColorTemplate.rgb("#8BC34A"), ColorTemplate.rgb("#FFC107"), ColorTemplate.rgb("#9E9E9E")});
+        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<>(result, "stackValues", "xIndex"); // normal entries
+        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<>(result, "xValue", "stackValues", "floatValue"); // stacked entries
+        set.setColors(ColorTemplate.rgb("#8BC34A"), ColorTemplate.rgb("#FFC107"), ColorTemplate.rgb("#9E9E9E"));
         set.setLabel("Mobile OS distribution");
         set.setStackLabels(new String[]{"iOS", "Android", "Other"});
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list

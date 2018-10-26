@@ -1,8 +1,12 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -19,10 +23,19 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
+/**
+ * This works by inverting the background and desired "fill" color. First, we draw the fill color
+ * that we want between the lines as the actual background of the chart. Then, we fill the area
+ * above the highest line and the area under the lowest line with the desired background color.
+ *
+ * This method makes it look like we filled the area between the lines, but really we are filling
+ * the area OUTSIDE the lines!
+ */
+@SuppressWarnings("SameParameterValue")
 public class FilledLineActivity extends DemoBase {
 
-    private LineChart mChart;
-    private int mFillColor = Color.argb(150, 51, 181, 229);
+    private LineChart chart;
+    private final int fillColor = Color.argb(150, 51, 181, 229);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,73 +44,71 @@ public class FilledLineActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart_noseekbar);
 
-        mChart = findViewById(R.id.chart1);
-        mChart.setBackgroundColor(Color.WHITE);
-        mChart.setGridBackgroundColor(mFillColor);
-        mChart.setDrawGridBackground(true);
+        setTitle("FilledLineActivity");
 
-        mChart.setDrawBorders(true);
+        chart = findViewById(R.id.chart1);
+        chart.setBackgroundColor(Color.WHITE);
+        chart.setGridBackgroundColor(fillColor);
+        chart.setDrawGridBackground(true);
+
+        chart.setDrawBorders(true);
 
         // no description text
-        mChart.getDescription().setEnabled(false);
+        chart.getDescription().setEnabled(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(false);
+        chart.setPinchZoom(false);
 
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
         l.setEnabled(false);
 
-        XAxis xAxis = mChart.getXAxis();
+        XAxis xAxis = chart.getXAxis();
         xAxis.setEnabled(false);
 
-        YAxis leftAxis = mChart.getAxisLeft();
+        YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setAxisMaximum(900f);
         leftAxis.setAxisMinimum(-250f);
         leftAxis.setDrawAxisLine(false);
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawGridLines(false);
 
-        mChart.getAxisRight().setEnabled(false);
+        chart.getAxisRight().setEnabled(false);
 
         // add data
         setData(100, 60);
 
-        mChart.invalidate();
+        chart.invalidate();
     }
 
     private void setData(int count, float range) {
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        ArrayList<Entry> values1 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 50;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals1.add(new Entry(i, val));
+            float val = (float) (Math.random() * range) + 50;
+            values1.add(new Entry(i, val));
         }
 
-        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
+        ArrayList<Entry> values2 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 450;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals2.add(new Entry(i, val));
+            float val = (float) (Math.random() * range) + 450;
+            values2.add(new Entry(i, val));
         }
 
         LineDataSet set1, set2;
 
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set2 = (LineDataSet)mChart.getData().getDataSetByIndex(1);
-            set1.setValues(yVals1);
-            set2.setValues(yVals2);
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+            set2 = (LineDataSet) chart.getData().getDataSetByIndex(1);
+            set1.setValues(values1);
+            set2.setValues(values2);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(yVals1, "DataSet 1");
+            set1 = new LineDataSet(values1, "DataSet 1");
 
             set1.setAxisDependency(YAxis.AxisDependency.LEFT);
             set1.setColor(Color.rgb(255, 241, 46));
@@ -112,12 +123,14 @@ public class FilledLineActivity extends DemoBase {
             set1.setFillFormatter(new IFillFormatter() {
                 @Override
                 public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return mChart.getAxisLeft().getAxisMinimum();
+                    // change the return value here to better understand the effect
+                    // return 0;
+                    return chart.getAxisLeft().getAxisMinimum();
                 }
             });
 
             // create a dataset and give it a type
-            set2 = new LineDataSet(yVals2, "DataSet 2");
+            set2 = new LineDataSet(values2, "DataSet 2");
             set2.setAxisDependency(YAxis.AxisDependency.LEFT);
             set2.setColor(Color.rgb(255, 241, 46));
             set2.setDrawCircles(false);
@@ -131,20 +144,46 @@ public class FilledLineActivity extends DemoBase {
             set2.setFillFormatter(new IFillFormatter() {
                 @Override
                 public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return mChart.getAxisLeft().getAxisMaximum();
+                    // change the return value here to better understand the effect
+                    // return 600;
+                    return chart.getAxisLeft().getAxisMaximum();
                 }
             });
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set1); // add the datasets
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1); // add the data sets
             dataSets.add(set2);
 
-            // create a data object with the datasets
+            // create a data object with the data sets
             LineData data = new LineData(dataSets);
             data.setDrawValues(false);
 
             // set data
-            mChart.setData(data);
+            chart.setData(data);
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.only_github, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/FilledLineActivity.java"));
+                startActivity(i);
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void saveToGallery() { /* Intentionally left empty */ }
 }

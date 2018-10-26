@@ -1,8 +1,12 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -17,11 +21,12 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("SameParameterValue")
 public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeListener {
 
-    private LineChart mChart;
-    private SeekBar mSeekBarValues;
-    private TextView mTvCount;
+    private LineChart chart;
+    private SeekBar seekBarValues;
+    private TextView tvCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,80 +35,51 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_performance_linechart);
 
-        mTvCount = findViewById(R.id.tvValueCount);
-        mSeekBarValues = findViewById(R.id.seekbarValues);
-        mTvCount.setText("500");
+        setTitle("PerformanceLineChart");
 
-        mSeekBarValues.setProgress(500);
-        
-        mSeekBarValues.setOnSeekBarChangeListener(this);
+        tvCount = findViewById(R.id.tvValueCount);
+        seekBarValues = findViewById(R.id.seekbarValues);
+        seekBarValues.setOnSeekBarChangeListener(this);
 
-        mChart = findViewById(R.id.chart1);
-        mChart.setDrawGridBackground(false);
+        chart = findViewById(R.id.chart1);
+        chart.setDrawGridBackground(false);
 
         // no description text
-        mChart.getDescription().setEnabled(false);
+        chart.getDescription().setEnabled(false);
 
         // enable touch gestures
-        mChart.setTouchEnabled(true);
+        chart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(false);
-              
-        mChart.getAxisLeft().setDrawGridLines(false);
-        mChart.getAxisRight().setEnabled(false);
-        mChart.getXAxis().setDrawGridLines(true);
-        mChart.getXAxis().setDrawAxisLine(false);
+        chart.setPinchZoom(false);
 
-        // dont forget to refresh the drawing
-        mChart.invalidate();
-    }
+        chart.getAxisLeft().setDrawGridLines(false);
+        chart.getAxisRight().setEnabled(false);
+        chart.getXAxis().setDrawGridLines(true);
+        chart.getXAxis().setDrawAxisLine(false);
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        seekBarValues.setProgress(9000);
 
-        int count = mSeekBarValues.getProgress() + 1000;
-        mTvCount.setText("" + count);
-        
-        mChart.resetTracking();
-
-        setData(count, 500f);
-       
-        // redraw
-        mChart.invalidate();
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
+        // don't forget to refresh the drawing
+        chart.invalidate();
     }
 
     private void setData(int count, float range) {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
-                                                           // ((mult *
-                                                           // 0.1) / 10);
-            yVals.add(new Entry(i * 0.001f, val));
+            float val = (float) (Math.random() * (range + 1)) + 3;
+            values.add(new Entry(i * 0.001f, val));
         }
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
-        
+        LineDataSet set1 = new LineDataSet(values, "DataSet 1");
+
         set1.setColor(Color.BLACK);
         set1.setLineWidth(0.5f);
         set1.setDrawValues(false);
@@ -111,14 +87,58 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
         set1.setMode(LineDataSet.Mode.LINEAR);
         set1.setDrawFilled(false);
 
-        // create a data object with the datasets
+        // create a data object with the data sets
         LineData data = new LineData(set1);
 
         // set data
-        mChart.setData(data);
-        
+        chart.setData(data);
+
         // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
         l.setEnabled(false);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.only_github, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/PerformanceLineChart.java"));
+                startActivity(i);
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+        int count = seekBarValues.getProgress() + 1000;
+        tvCount.setText(String.valueOf(count));
+
+        chart.resetTracking();
+
+        setData(count, 500f);
+
+        // redraw
+        chart.invalidate();
+    }
+
+    @Override
+    public void saveToGallery() { /* Intentionally left empty */ }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {}
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {}
 }

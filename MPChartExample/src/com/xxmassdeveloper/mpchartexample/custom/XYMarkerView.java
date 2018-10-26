@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample.custom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import java.text.DecimalFormat;
  *
  * @author Philipp Jahoda
  */
+@SuppressLint("ViewConstructor")
 public class XYMarkerView extends MarkerView {
 
     private TextView tvContent;
@@ -33,12 +35,12 @@ public class XYMarkerView extends MarkerView {
         format = new DecimalFormat("###.0");
     }
 
-    // callbacks everytime the MarkerView is redrawn, can be used to update the
+    // runs every time the MarkerView is redrawn, can be used to update the
     // content (user-interface)
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
-        tvContent.setText("x: " + xAxisValueFormatter.getFormattedValue(e.getX(), null) + ", y: " + format.format(e.getY()));
+        tvContent.setText(String.format("x: %s, y: %s", xAxisValueFormatter.getFormattedValue(e.getX(), null), format.format(e.getY())));
 
         super.refreshContent(e, highlight);
     }

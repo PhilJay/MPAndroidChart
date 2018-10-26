@@ -7,18 +7,19 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 /**
  * Created by Philipp Jahoda on 12/09/15.
  */
+@SuppressWarnings("unused")
 public class MyFillFormatter implements IFillFormatter
 {
 
-    private float mFillPos = 0f;
+    private float fillPos;
 
-    public MyFillFormatter(float fillpos) {
-        this.mFillPos = fillpos;
+    public MyFillFormatter(float fillPos) {
+        this.fillPos = fillPos;
     }
 
     @Override
     public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
         // your logic could be here
-        return mFillPos;
+        return fillPos;
     }
 }

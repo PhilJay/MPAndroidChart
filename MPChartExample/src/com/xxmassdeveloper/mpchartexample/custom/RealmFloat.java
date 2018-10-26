@@ -5,6 +5,7 @@ import io.realm.RealmObject;
 /**
  * Created by Philipp Jahoda on 09/11/15.
  */
+@SuppressWarnings("unused")
 public class RealmFloat extends RealmObject {
 
     private float floatValue;

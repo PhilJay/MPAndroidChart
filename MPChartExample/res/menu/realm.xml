@@ -2,7 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/viewRealm"
-        android:title="realm.io website">
+        android:id="@+id/viewGithub"
+        android:title="@string/viewGithub">
     </item>
+    <item
+        android:id="@+id/viewRealm"
+        android:title="@string/realmIOWebsite">
+    </item>
+
 </menu>

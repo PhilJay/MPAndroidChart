@@ -88,14 +88,15 @@ public class RealmWikiExample extends RealmBaseActivity {
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return results.get((int) value).getPlayerName();
+                Score result = results.get((int) value);
+                return result != null ? result.playerName : "";
             }
         };
 
         lineChart.getXAxis().setValueFormatter(formatter);
         barChart.getXAxis().setValueFormatter(formatter);
 
-        RealmLineDataSet<Score> lineDataSet = new RealmLineDataSet<Score>(results, "scoreNr", "totalScore");
+        RealmLineDataSet<Score> lineDataSet = new RealmLineDataSet<>(results, "scoreNr", "totalScore");
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet.setLabel("Result Scores");
         lineDataSet.setDrawCircleHole(false);
@@ -104,7 +105,7 @@ public class RealmWikiExample extends RealmBaseActivity {
         lineDataSet.setLineWidth(1.8f);
         lineDataSet.setCircleRadius(3.6f);
 
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
 
         LineData lineData = new LineData(dataSets);
@@ -116,11 +117,11 @@ public class RealmWikiExample extends RealmBaseActivity {
 
 
         // BAR-CHART
-        RealmBarDataSet<Score> barDataSet = new RealmBarDataSet<Score>(results, "scoreNr", "totalScore");
-        barDataSet.setColors(new int[]{ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
+        RealmBarDataSet<Score> barDataSet = new RealmBarDataSet<>(results, "scoreNr", "totalScore");
+        barDataSet.setColors(ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4"));
         barDataSet.setLabel("Realm BarDataSet");
 
-        ArrayList<IBarDataSet> barDataSets = new ArrayList<IBarDataSet>();
+        ArrayList<IBarDataSet> barDataSets = new ArrayList<>();
         barDataSets.add(barDataSet);
 
         BarData barData = new BarData(barDataSets);

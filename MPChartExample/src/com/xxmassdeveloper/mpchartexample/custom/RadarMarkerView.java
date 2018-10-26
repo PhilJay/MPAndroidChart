@@ -1,25 +1,25 @@
 
 package com.xxmassdeveloper.mpchartexample.custom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
-import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.R;
 
 import java.text.DecimalFormat;
 
 /**
  * Custom implementation of the MarkerView.
- * 
+ *
  * @author Philipp Jahoda
  */
+@SuppressLint("ViewConstructor")
 public class RadarMarkerView extends MarkerView {
 
     private TextView tvContent;
@@ -32,11 +32,11 @@ public class RadarMarkerView extends MarkerView {
         tvContent.setTypeface(Typeface.createFromAsset(context.getAssets(), "OpenSans-Light.ttf"));
     }
 
-    // callbacks everytime the MarkerView is redrawn, can be used to update the
+    // runs every time the MarkerView is redrawn, can be used to update the
     // content (user-interface)
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(format.format(e.getY()) + " %");
+        tvContent.setText(String.format("%s %%", format.format(e.getY())));
 
         super.refreshContent(e, highlight);
     }

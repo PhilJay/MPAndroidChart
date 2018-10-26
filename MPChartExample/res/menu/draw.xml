@@ -3,34 +3,30 @@
 
     <item
         android:id="@+id/actionToggleValues"
-        android:title="Toggle Values">
+        android:title="@string/actionToggleValues">
     </item>
     <item
         android:id="@+id/actionToggleFilled"
-        android:title="Toggle Filled">
+        android:title="@string/actionToggleFilled">
     </item>
     <item
         android:id="@+id/actionToggleCircles"
-        android:title="Toggle Circles">
+        android:title="@string/actionToggleCircles">
     </item>
     <item
         android:id="@+id/actionToggleHighlight"
-        android:title="Toggle Highlight">
-    </item>
-    <item
-        android:id="@+id/actionToggleAdjustXLegend"
-        android:title="Toggle AdjustXLegend">
-    </item>
-    <item
-        android:id="@+id/actionSave"
-        android:title="Save to Gallery">
+        android:title="@string/actionToggleHighlight">
     </item>
 	<item
         android:id="@+id/actionTogglePinch"
-        android:title="Toggle PinchZoom">
+        android:title="@string/actionTogglePinch">
     </item>
     <item
         android:id="@+id/actionToggleAutoScaleMinMax"
-        android:title="Toggle auto scale min/max">
+        android:title="@string/actionToggleAutoScale">
+    </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="@string/actionSave">
     </item>
 </menu>

@@ -1,21 +1,22 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
@@ -28,10 +29,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
@@ -40,11 +41,17 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Example of a heavily customized {@link LineChart} with limit lines, custom line shapes, etc.
+ *
+ * @since 1.7.4
+ * @version 3.0.3
+ */
 public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListener,
-        OnChartGestureListener, OnChartValueSelectedListener {
+        OnChartValueSelectedListener {
 
-    private LineChart mChart;
-    private SeekBar mSeekBarX, mSeekBarY;
+    private LineChart chart;
+    private SeekBar seekBarX, seekBarY;
     private TextView tvX, tvY;
 
     @Override
@@ -54,117 +61,200 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart);
 
+        setTitle("LineChartActivity1");
+
         tvX = findViewById(R.id.tvXMax);
         tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = findViewById(R.id.seekBar1);
-        mSeekBarY = findViewById(R.id.seekBar2);
+        seekBarX = findViewById(R.id.seekBar1);
+        seekBarX.setOnSeekBarChangeListener(this);
 
-        mSeekBarX.setProgress(45);
-        mSeekBarY.setProgress(100);
-
-        mSeekBarY.setOnSeekBarChangeListener(this);
-        mSeekBarX.setOnSeekBarChangeListener(this);
-
-        mChart = findViewById(R.id.chart1);
-        mChart.setOnChartGestureListener(this);
-        mChart.setOnChartValueSelectedListener(this);
-        mChart.setDrawGridBackground(false);
-
-        // no description text
-        mChart.getDescription().setEnabled(false);
-
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
-
-        // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        // mChart.setScaleXEnabled(true);
-        // mChart.setScaleYEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
-
-        // set an alternative background color
-        // mChart.setBackgroundColor(Color.GRAY);
-
-        // create a custom MarkerView (extend MarkerView) and specify the layout
-        // to use for it
-        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
-        mv.setChartView(mChart); // For bounds control
-        mChart.setMarker(mv); // Set the marker to the chart
-
-        // x-axis limit line
-        LimitLine llXAxis = new LimitLine(10f, "Index 10");
-        llXAxis.setLineWidth(4f);
-        llXAxis.enableDashedLine(10f, 10f, 0f);
-        llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-        llXAxis.setTextSize(10f);
-
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.enableGridDashedLine(10f, 10f, 0f);
-        //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
-        //xAxis.addLimitLine(llXAxis); // add x-axis limit line
+        seekBarY = findViewById(R.id.seekBar2);
+        seekBarY.setMax(180);
+        seekBarY.setOnSeekBarChangeListener(this);
 
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        {   // // Chart Style // //
+            chart = findViewById(R.id.chart1);
 
-        LimitLine ll1 = new LimitLine(150f, "Upper Limit");
-        ll1.setLineWidth(4f);
-        ll1.enableDashedLine(10f, 10f, 0f);
-        ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
-        ll1.setTextSize(10f);
-        ll1.setTypeface(tf);
+            // background color
+            chart.setBackgroundColor(Color.WHITE);
 
-        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
-        ll2.setLineWidth(4f);
-        ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-        ll2.setTextSize(10f);
-        ll2.setTypeface(tf);
+            // disable description text
+            chart.getDescription().setEnabled(false);
 
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.addLimitLine(ll1);
-        leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaximum(200f);
-        leftAxis.setAxisMinimum(-50f);
-        //leftAxis.setYOffset(20f);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        leftAxis.setDrawZeroLine(false);
+            // enable touch gestures
+            chart.setTouchEnabled(true);
 
-        // limit lines are drawn behind data (and not on top)
-        leftAxis.setDrawLimitLinesBehindData(true);
+            // set listeners
+            chart.setOnChartValueSelectedListener(this);
+            chart.setDrawGridBackground(false);
 
-        mChart.getAxisRight().setEnabled(false);
+            // create marker to display box when values are selected
+            MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
 
-        //mChart.getViewPortHandler().setMaximumScaleY(2f);
-        //mChart.getViewPortHandler().setMaximumScaleX(2f);
+            // Set the marker to the chart
+            mv.setChartView(chart);
+            chart.setMarker(mv);
+
+            // enable scaling and dragging
+            chart.setDragEnabled(true);
+            chart.setScaleEnabled(true);
+            // chart.setScaleXEnabled(true);
+            // chart.setScaleYEnabled(true);
+
+            // force pinch zoom along both axis
+            chart.setPinchZoom(true);
+        }
+
+        XAxis xAxis;
+        {   // // X-Axis Style // //
+            xAxis = chart.getXAxis();
+
+            // vertical grid lines
+            xAxis.enableGridDashedLine(10f, 10f, 0f);
+        }
+
+        YAxis yAxis;
+        {   // // Y-Axis Style // //
+            yAxis = chart.getAxisLeft();
+
+            // disable dual axis (only use LEFT axis)
+            chart.getAxisRight().setEnabled(false);
+
+            // horizontal grid lines
+            yAxis.enableGridDashedLine(10f, 10f, 0f);
+
+            // axis range
+            yAxis.setAxisMaximum(200f);
+            yAxis.setAxisMinimum(-50f);
+        }
+
+
+        {   // // Create Limit Lines // //
+            LimitLine llXAxis = new LimitLine(9f, "Index 10");
+            llXAxis.setLineWidth(4f);
+            llXAxis.enableDashedLine(10f, 10f, 0f);
+            llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
+            llXAxis.setTextSize(10f);
+            llXAxis.setTypeface(tfRegular);
+
+            LimitLine ll1 = new LimitLine(150f, "Upper Limit");
+            ll1.setLineWidth(4f);
+            ll1.enableDashedLine(10f, 10f, 0f);
+            ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
+            ll1.setTextSize(10f);
+            ll1.setTypeface(tfRegular);
+
+            LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
+            ll2.setLineWidth(4f);
+            ll2.enableDashedLine(10f, 10f, 0f);
+            ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
+            ll2.setTextSize(10f);
+            ll2.setTypeface(tfRegular);
+
+            // draw limit lines behind data instead of on top
+            yAxis.setDrawLimitLinesBehindData(true);
+            xAxis.setDrawLimitLinesBehindData(true);
+
+            // add limit lines
+            yAxis.addLimitLine(ll1);
+            yAxis.addLimitLine(ll2);
+            //xAxis.addLimitLine(llXAxis);
+        }
 
         // add data
-        setData(45, 100);
+        seekBarX.setProgress(45);
+        seekBarY.setProgress(180);
+        setData(45, 180);
 
-//        mChart.setVisibleXRange(20);
-//        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
-//        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
-
-        mChart.animateX(2500);
-        //mChart.invalidate();
+        // draw points over time
+        chart.animateX(1500);
 
         // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
 
-        // modify the legend ...
+        // draw legend entries as lines
         l.setForm(LegendForm.LINE);
-
-        // // dont forget to refresh the drawing
-        // mChart.invalidate();
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
+    private void setData(int count, float range) {
+
+        ArrayList<Entry> values = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+
+            float val = (float) (Math.random() * range) - 30;
+            values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
+        }
+
+        LineDataSet set1;
+
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            set1.notifyDataSetChanged();
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+        } else {
+            // create a dataset and give it a type
+            set1 = new LineDataSet(values, "DataSet 1");
+
+            set1.setDrawIcons(false);
+
+            // draw dashed line
+            set1.enableDashedLine(10f, 5f, 0f);
+
+            // black lines and points
+            set1.setColor(Color.BLACK);
+            set1.setCircleColor(Color.BLACK);
+
+            // line thickness and point size
+            set1.setLineWidth(1f);
+            set1.setCircleRadius(3f);
+
+            // draw points as solid circles
+            set1.setDrawCircleHole(false);
+
+            // customize legend entry
+            set1.setFormLineWidth(1f);
+            set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+            set1.setFormSize(15.f);
+
+            // text size of values
+            set1.setValueTextSize(9f);
+
+            // draw selection line as dashed
+            set1.enableDashedHighlightLine(10f, 5f, 0f);
+
+            // set the filled area
+            set1.setDrawFilled(true);
+            set1.setFillFormatter(new IFillFormatter() {
+                @Override
+                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                    return chart.getAxisLeft().getAxisMinimum();
+                }
+            });
+
+            // set color of filled area
+            if (Utils.getSDKInt() >= 18) {
+                // drawables only supported on api level 18 and above
+                Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
+                set1.setFillDrawable(drawable);
+            } else {
+                set1.setFillColor(Color.BLACK);
+            }
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1); // add the data sets
+
+            // create a data object with the data sets
+            LineData data = new LineData(dataSets);
+
+            // set data
+            chart.setData(data);
+        }
     }
 
     @Override
@@ -177,8 +267,14 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java"));
+                startActivity(i);
+                break;
+            }
             case R.id.actionToggleValues: {
-                List<ILineDataSet> sets = mChart.getData()
+                List<ILineDataSet> sets = chart.getData()
                         .getDataSets();
 
                 for (ILineDataSet iSet : sets) {
@@ -187,11 +283,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                     set.setDrawValues(!set.isDrawValuesEnabled());
                 }
 
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleIcons: {
-                List<ILineDataSet> sets = mChart.getData()
+                List<ILineDataSet> sets = chart.getData()
                         .getDataSets();
 
                 for (ILineDataSet iSet : sets) {
@@ -200,19 +296,19 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                     set.setDrawIcons(!set.isDrawIconsEnabled());
                 }
 
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
-                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
-                    mChart.invalidate();
+                if(chart.getData() != null) {
+                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
+                    chart.invalidate();
                 }
                 break;
             }
             case R.id.actionToggleFilled: {
 
-                List<ILineDataSet> sets = mChart.getData()
+                List<ILineDataSet> sets = chart.getData()
                         .getDataSets();
 
                 for (ILineDataSet iSet : sets) {
@@ -223,11 +319,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                     else
                         set.setDrawFilled(true);
                 }
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleCircles: {
-                List<ILineDataSet> sets = mChart.getData()
+                List<ILineDataSet> sets = chart.getData()
                         .getDataSets();
 
                 for (ILineDataSet iSet : sets) {
@@ -238,11 +334,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                     else
                         set.setDrawCircles(true);
                 }
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleCubic: {
-                List<ILineDataSet> sets = mChart.getData()
+                List<ILineDataSet> sets = chart.getData()
                         .getDataSets();
 
                 for (ILineDataSet iSet : sets) {
@@ -252,11 +348,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                             ? LineDataSet.Mode.LINEAR
                             :  LineDataSet.Mode.CUBIC_BEZIER);
                 }
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleStepped: {
-                List<ILineDataSet> sets = mChart.getData()
+                List<ILineDataSet> sets = chart.getData()
                         .getDataSets();
 
                 for (ILineDataSet iSet : sets) {
@@ -266,11 +362,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                             ? LineDataSet.Mode.LINEAR
                             :  LineDataSet.Mode.STEPPED);
                 }
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleHorizontalCubic: {
-                List<ILineDataSet> sets = mChart.getData()
+                List<ILineDataSet> sets = chart.getData()
                         .getDataSets();
 
                 for (ILineDataSet iSet : sets) {
@@ -280,44 +376,41 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                             ? LineDataSet.Mode.LINEAR
                             :  LineDataSet.Mode.HORIZONTAL_BEZIER);
                 }
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionTogglePinch: {
-                if (mChart.isPinchZoomEnabled())
-                    mChart.setPinchZoom(false);
+                if (chart.isPinchZoomEnabled())
+                    chart.setPinchZoom(false);
                 else
-                    mChart.setPinchZoom(true);
+                    chart.setPinchZoom(true);
 
-                mChart.invalidate();
+                chart.invalidate();
                 break;
             }
             case R.id.actionToggleAutoScaleMinMax: {
-                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
-                mChart.notifyDataSetChanged();
+                chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
+                chart.notifyDataSetChanged();
                 break;
             }
             case R.id.animateX: {
-                mChart.animateX(3000);
+                chart.animateX(2000);
                 break;
             }
             case R.id.animateY: {
-                mChart.animateY(3000, Easing.EaseInCubic);
+                chart.animateY(2000, Easing.EaseInCubic);
                 break;
             }
             case R.id.animateXY: {
-                mChart.animateXY(3000, 3000);
+                chart.animateXY(2000, 2000);
                 break;
             }
             case R.id.actionSave: {
-                if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
-                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
-                            Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
-                            .show();
-
-                // mChart.saveToGallery("title"+System.currentTimeMillis())
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    saveToGallery();
+                } else {
+                    requestStoragePermission(chart);
+                }
                 break;
             }
         }
@@ -327,134 +420,31 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
-        tvY.setText("" + (mSeekBarY.getProgress()));
+        tvX.setText(String.valueOf(seekBarX.getProgress()));
+        tvY.setText(String.valueOf(seekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+        setData(seekBarX.getProgress(), seekBarY.getProgress());
 
         // redraw
-        mChart.invalidate();
+        chart.invalidate();
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
+    public void saveToGallery() {
+        saveToGallery(chart, "LineChartActivity1");
     }
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    private void setData(int count, float range) {
-
-        ArrayList<Entry> values = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-
-            float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
-        }
-
-        LineDataSet set1;
-
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(values, "DataSet 1");
-
-            set1.setDrawIcons(false);
-
-            // set the line to be drawn like this "- - - - - -"
-            set1.enableDashedLine(10f, 5f, 0f);
-            set1.enableDashedHighlightLine(10f, 5f, 0f);
-            set1.setColor(Color.BLACK);
-            set1.setCircleColor(Color.BLACK);
-            set1.setLineWidth(1f);
-            set1.setCircleRadius(3f);
-            set1.setDrawCircleHole(false);
-            set1.setValueTextSize(9f);
-            set1.setDrawFilled(true);
-            set1.setFormLineWidth(1f);
-            set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-            set1.setFormSize(15.f);
-
-            if (Utils.getSDKInt() >= 18) {
-                // fill drawable only supported on api level 18 and above
-                Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
-                set1.setFillDrawable(drawable);
-            }
-            else {
-                set1.setFillColor(Color.BLACK);
-            }
-
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set1); // add the datasets
-
-            // create a data object with the datasets
-            LineData data = new LineData(dataSets);
-
-            // set data
-            mChart.setData(data);
-        }
-    }
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.i("Gesture", "START, x: " + me.getX() + ", y: " + me.getY());
-    }
-
-    @Override
-    public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.i("Gesture", "END, lastGesture: " + lastPerformedGesture);
-
-        // un-highlight values after the gesture is finished and no single-tap
-        if(lastPerformedGesture != ChartTouchListener.ChartGesture.SINGLE_TAP)
-            mChart.highlightValues(null); // or highlightTouch(null) for callback to onNothingSelected(...)
-    }
-
-    @Override
-    public void onChartLongPressed(MotionEvent me) {
-        Log.i("LongPress", "Chart longpressed.");
-    }
-
-    @Override
-    public void onChartDoubleTapped(MotionEvent me) {
-        Log.i("DoubleTap", "Chart double-tapped.");
-    }
-
-    @Override
-    public void onChartSingleTapped(MotionEvent me) {
-        Log.i("SingleTap", "Chart single-tapped.");
-    }
-
-    @Override
-    public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
-        Log.i("Fling", "Chart flinged. VeloX: " + velocityX + ", VeloY: " + velocityY);
-    }
-
-    @Override
-    public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
-        Log.i("Scale / Zoom", "ScaleX: " + scaleX + ", ScaleY: " + scaleY);
-    }
-
-    @Override
-    public void onChartTranslate(MotionEvent me, float dX, float dY) {
-        Log.i("Translate / Move", "dX: " + dX + ", dY: " + dY);
-    }
+    public void onStopTrackingTouch(SeekBar seekBar) {}
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         Log.i("Entry selected", e.toString());
-        Log.i("LOWHIGH", "low: " + mChart.getLowestVisibleX() + ", high: " + mChart.getHighestVisibleX());
-        Log.i("MIN MAX", "xmin: " + mChart.getXChartMin() + ", xmax: " + mChart.getXChartMax() + ", ymin: " + mChart.getYChartMin() + ", ymax: " + mChart.getYChartMax());
+        Log.i("LOW HIGH", "low: " + chart.getLowestVisibleX() + ", high: " + chart.getHighestVisibleX());
+        Log.i("MIN MAX", "xMin: " + chart.getXChartMin() + ", xMax: " + chart.getXChartMax() + ", yMin: " + chart.getYChartMin() + ", yMax: " + chart.getYChartMax());
     }
 
     @Override

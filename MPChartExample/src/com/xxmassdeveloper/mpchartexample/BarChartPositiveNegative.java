@@ -1,9 +1,12 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -26,8 +29,7 @@ import java.util.List;
 
 public class BarChartPositiveNegative extends DemoBase {
 
-    protected BarChart mChart;
-    private Typeface mTf;
+    private BarChart chart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,27 +38,28 @@ public class BarChartPositiveNegative extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barchart_noseekbar);
 
-        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        mChart = findViewById(R.id.chart1);
-        mChart.setBackgroundColor(Color.WHITE);
-        mChart.setExtraTopOffset(-30f);
-        mChart.setExtraBottomOffset(10f);
-        mChart.setExtraLeftOffset(70f);
-        mChart.setExtraRightOffset(70f);
+        setTitle("BarChartPositiveNegative");
 
-        mChart.setDrawBarShadow(false);
-        mChart.setDrawValueAboveBar(true);
+        chart = findViewById(R.id.chart1);
+        chart.setBackgroundColor(Color.WHITE);
+        chart.setExtraTopOffset(-30f);
+        chart.setExtraBottomOffset(10f);
+        chart.setExtraLeftOffset(70f);
+        chart.setExtraRightOffset(70f);
 
-        mChart.getDescription().setEnabled(false);
+        chart.setDrawBarShadow(false);
+        chart.setDrawValueAboveBar(true);
+
+        chart.getDescription().setEnabled(false);
 
         // scaling can now only be done on x- and y-axis separately
-        mChart.setPinchZoom(false);
+        chart.setPinchZoom(false);
 
-        mChart.setDrawGridBackground(false);
+        chart.setDrawGridBackground(false);
 
-        XAxis xAxis = mChart.getXAxis();
+        XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
+        xAxis.setTypeface(tfRegular);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setTextColor(Color.LTGRAY);
@@ -65,7 +68,7 @@ public class BarChartPositiveNegative extends DemoBase {
         xAxis.setCenterAxisLabels(true);
         xAxis.setGranularity(1f);
 
-        YAxis left = mChart.getAxisLeft();
+        YAxis left = chart.getAxisLeft();
         left.setDrawLabels(false);
         left.setSpaceTop(25f);
         left.setSpaceBottom(25f);
@@ -74,8 +77,8 @@ public class BarChartPositiveNegative extends DemoBase {
         left.setDrawZeroLine(true); // draw a zero line
         left.setZeroLineColor(Color.GRAY);
         left.setZeroLineWidth(0.7f);
-        mChart.getAxisRight().setEnabled(false);
-        mChart.getLegend().setEnabled(false);
+        chart.getAxisRight().setEnabled(false);
+        chart.getLegend().setEnabled(false);
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
         final List<Data> data = new ArrayList<>();
@@ -97,8 +100,8 @@ public class BarChartPositiveNegative extends DemoBase {
 
     private void setData(List<Data> dataList) {
 
-        ArrayList<BarEntry> values = new ArrayList<BarEntry>();
-        List<Integer> colors = new ArrayList<Integer>();
+        ArrayList<BarEntry> values = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
 
         int green = Color.rgb(110, 190, 102);
         int red = Color.rgb(211, 74, 88);
@@ -118,12 +121,12 @@ public class BarChartPositiveNegative extends DemoBase {
 
         BarDataSet set;
 
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
+            set = (BarDataSet) chart.getData().getDataSetByIndex(0);
             set.setValues(values);
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
         } else {
             set = new BarDataSet(values, "Values");
             set.setColors(colors);
@@ -131,12 +134,12 @@ public class BarChartPositiveNegative extends DemoBase {
 
             BarData data = new BarData(set);
             data.setValueTextSize(13f);
-            data.setValueTypeface(mTf);
+            data.setValueTypeface(tfRegular);
             data.setValueFormatter(new ValueFormatter());
             data.setBarWidth(0.8f);
 
-            mChart.setData(data);
-            mChart.invalidate();
+            chart.setData(data);
+            chart.invalidate();
         }
     }
 
@@ -145,11 +148,11 @@ public class BarChartPositiveNegative extends DemoBase {
      */
     private class Data {
 
-        public String xAxisValue;
-        public float yValue;
-        public float xValue;
+        String xAxisValue;
+        float yValue;
+        float xValue;
 
-        public Data(float xValue, float yValue, String xAxisValue) {
+        Data(float xValue, float yValue, String xAxisValue) {
             this.xAxisValue = xAxisValue;
             this.yValue = yValue;
             this.xValue = xValue;
@@ -161,7 +164,7 @@ public class BarChartPositiveNegative extends DemoBase {
 
         private DecimalFormat mFormat;
 
-        public ValueFormatter() {
+        ValueFormatter() {
             mFormat = new DecimalFormat("######.0");
         }
 
@@ -170,4 +173,28 @@ public class BarChartPositiveNegative extends DemoBase {
             return mFormat.format(value);
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.only_github, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartPositiveNegative.java"));
+                startActivity(i);
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void saveToGallery() { /* Intentionally left empty */ }
 }

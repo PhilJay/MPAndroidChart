@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample.listviewitems;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,7 +13,6 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.PercentFormatter;
@@ -36,10 +36,11 @@ public class PieChartItem extends ChartItem {
         return TYPE_PIECHART;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, Context c) {
 
-        ViewHolder holder = null;
+        ViewHolder holder;
 
         if (convertView == null) {
 

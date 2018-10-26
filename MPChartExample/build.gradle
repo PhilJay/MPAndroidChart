@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
     defaultConfig {
+        applicationId "com.xxmassdeveloper.mpchartexample"
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 56
         versionName '3.0.3'
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         sourceSets {
             main {
@@ -33,17 +33,14 @@ android {
     }
 }
 
-buildscript {
-    repositories {
-        jcenter()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
-        //classpath 'io.realm:realm-gradle-plugin:0.88.2'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation 'com.google.android.material:material:1.0.0'
+    //implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    //implementation "androidx.legacy:legacy-support-v13:1.0.0"
+    //compile project(':MPChartLib-Realm') // clone "https://github.com/PhilJay/MPAndroidChart-Realm" to get this or uncomment the gradle dependency below:
+    implementation 'com.github.PhilJay:MPAndroidChart-Realm:v2.0.2@aar'
+    implementation project(':MPChartLib')
 }
 
 repositories {
@@ -51,15 +48,4 @@ repositories {
     maven { // this is for realm-db
         url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
     }
-}
-
-dependencies {
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile project(':MPChartLib-Realm') // clone "https://github.com/PhilJay/MPAndroidChart-Realm" to get this or uncomment the gradle dependency below:
-    implementation 'com.github.PhilJay:MPAndroidChart-Realm:v2.0.2@aar'
-
-    implementation project(':MPChartLib')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    //compile 'io.realm:realm-android:0.87.5' // dependency for realm-database API (http://realm.io)
-    //compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
 }

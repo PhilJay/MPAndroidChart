@@ -1,9 +1,14 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -35,8 +40,8 @@ import java.util.ArrayList;
 public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
 
-    private PieChart mChart;
-    private SeekBar mSeekBarX, mSeekBarY;
+    private PieChart chart;
+    private SeekBar seekBarX, seekBarY;
     private TextView tvX, tvY;
 
     private Typeface tf;
@@ -48,59 +53,61 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_piechart);
 
+        setTitle("PiePolylineChartActivity");
+
         tvX = findViewById(R.id.tvXMax);
         tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = findViewById(R.id.seekBar1);
-        mSeekBarY = findViewById(R.id.seekBar2);
+        seekBarX = findViewById(R.id.seekBar1);
+        seekBarY = findViewById(R.id.seekBar2);
 
-        mSeekBarY.setProgress(10);
+        seekBarX.setOnSeekBarChangeListener(this);
+        seekBarY.setOnSeekBarChangeListener(this);
 
-        mSeekBarX.setOnSeekBarChangeListener(this);
-        mSeekBarY.setOnSeekBarChangeListener(this);
+        chart = findViewById(R.id.chart1);
+        chart.setUsePercentValues(true);
+        chart.getDescription().setEnabled(false);
+        chart.setExtraOffsets(5, 10, 5, 5);
 
-        mChart = findViewById(R.id.chart1);
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 10, 5, 5);
-
-        mChart.setDragDecelerationFrictionCoef(0.95f);
+        chart.setDragDecelerationFrictionCoef(0.95f);
 
         tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-        mChart.setCenterText(generateCenterSpannableText());
+        chart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+        chart.setCenterText(generateCenterSpannableText());
 
-        mChart.setExtraOffsets(20.f, 0.f, 20.f, 0.f);
+        chart.setExtraOffsets(20.f, 0.f, 20.f, 0.f);
 
-        mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
+        chart.setDrawHoleEnabled(true);
+        chart.setHoleColor(Color.WHITE);
 
-        mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleAlpha(110);
 
-        mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
+        chart.setHoleRadius(58f);
+        chart.setTransparentCircleRadius(61f);
 
-        mChart.setDrawCenterText(true);
+        chart.setDrawCenterText(true);
 
-        mChart.setRotationAngle(0);
+        chart.setRotationAngle(0);
         // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
+        chart.setRotationEnabled(true);
+        chart.setHighlightPerTapEnabled(true);
 
-        // mChart.setUnit(" €");
-        // mChart.setDrawUnitsInChart(true);
+        // chart.setUnit(" €");
+        // chart.setDrawUnitsInChart(true);
 
         // add a selection listener
-        mChart.setOnChartValueSelectedListener(this);
+        chart.setOnChartValueSelectedListener(this);
 
+        seekBarX.setProgress(4);
+        seekBarY.setProgress(100);
         setData(4, 100);
 
-        mChart.animateY(1400, Easing.EaseInOutQuad);
-        // mChart.spin(2000, 0, 360);
+        chart.animateY(1400, Easing.EaseInOutQuad);
+        // chart.spin(2000, 0, 360);
 
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -108,89 +115,14 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         l.setEnabled(false);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.pie, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
-                for (IDataSet<?> set : mChart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleHole: {
-                if (mChart.isDrawHoleEnabled())
-                    mChart.setDrawHoleEnabled(false);
-                else
-                    mChart.setDrawHoleEnabled(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionDrawCenter: {
-                if (mChart.isDrawCenterTextEnabled())
-                    mChart.setDrawCenterText(false);
-                else
-                    mChart.setDrawCenterText(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleXVals: {
-
-                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionSave: {
-                // mChart.saveToGallery("title"+System.currentTimeMillis());
-                mChart.saveToPath("title" + System.currentTimeMillis(), "");
-                break;
-            }
-            case R.id.actionTogglePercent:
-                mChart.setUsePercentValues(!mChart.isUsePercentValuesEnabled());
-                mChart.invalidate();
-                break;
-            case R.id.animateX: {
-                mChart.animateX(1400);
-                break;
-            }
-            case R.id.animateY: {
-                mChart.animateY(1400);
-                break;
-            }
-            case R.id.animateXY: {
-                mChart.animateXY(1400, 1400);
-                break;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-        tvX.setText("" + (mSeekBarX.getProgress()));
-        tvY.setText("" + (mSeekBarY.getProgress()));
-
-        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
-    }
-
     private void setData(int count, float range) {
 
-        float mult = range;
-
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> entries = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
+            entries.add(new PieEntry((float) (Math.random() * range) + range / 5, parties[i % parties.length]));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
@@ -199,7 +131,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
 
         // add a lot of colors
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
+        ArrayList<Integer> colors = new ArrayList<>();
 
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
@@ -235,12 +167,103 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.BLACK);
         data.setValueTypeface(tf);
-        mChart.setData(data);
+        chart.setData(data);
 
         // undo all highlights
-        mChart.highlightValues(null);
+        chart.highlightValues(null);
 
-        mChart.invalidate();
+        chart.invalidate();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.pie, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/PiePolylineChartActivity.java"));
+                startActivity(i);
+                break;
+            }
+            case R.id.actionToggleValues: {
+                for (IDataSet<?> set : chart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHole: {
+                if (chart.isDrawHoleEnabled())
+                    chart.setDrawHoleEnabled(false);
+                else
+                    chart.setDrawHoleEnabled(true);
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionDrawCenter: {
+                if (chart.isDrawCenterTextEnabled())
+                    chart.setDrawCenterText(false);
+                else
+                    chart.setDrawCenterText(true);
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionToggleXValues: {
+
+                chart.setDrawEntryLabels(!chart.isDrawEntryLabelsEnabled());
+                chart.invalidate();
+                break;
+            }
+            case R.id.actionTogglePercent:
+                chart.setUsePercentValues(!chart.isUsePercentValuesEnabled());
+                chart.invalidate();
+                break;
+            case R.id.animateX: {
+                chart.animateX(1400);
+                break;
+            }
+            case R.id.animateY: {
+                chart.animateY(1400);
+                break;
+            }
+            case R.id.animateXY: {
+                chart.animateXY(1400, 1400);
+                break;
+            }
+            case R.id.actionToggleSpin: {
+                chart.spin(1000, chart.getRotationAngle(), chart.getRotationAngle() + 360, Easing.EaseInOutCubic);
+                break;
+            }
+            case R.id.actionSave: {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    saveToGallery();
+                } else {
+                    requestStoragePermission(chart);
+                }
+                break;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+        tvX.setText(String.valueOf(seekBarX.getProgress()));
+        tvY.setText(String.valueOf(seekBarY.getProgress()));
+
+        setData(seekBarX.getProgress(), seekBarY.getProgress());
+    }
+
+    @Override
+    public void saveToGallery() {
+        saveToGallery(chart, "PiePolylineChartActivity");
     }
 
     private SpannableString generateCenterSpannableText() {
@@ -271,14 +294,8 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
+    public void onStopTrackingTouch(SeekBar seekBar) {}
 }

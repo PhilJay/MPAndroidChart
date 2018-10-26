@@ -2,15 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/viewGithub"
+        android:title="@string/viewGithub">
+    </item>
+    <item
         android:id="@+id/actionAdd"
-        android:title="Feed new Entry">
+        android:title="@string/actionAddEntry">
     </item>
     <item
         android:id="@+id/actionClear"
-        android:title="Clear Values">
+        android:title="@string/actionClearChart">
     </item>
     <item
         android:id="@+id/actionFeedMultiple"
-        android:title="Fast feed multiple">
+        android:title="@string/actionFeedMultiple">
     </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="@string/actionSave">
+    </item>
+
 </menu>

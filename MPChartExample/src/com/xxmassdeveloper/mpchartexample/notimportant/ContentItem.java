@@ -8,6 +8,13 @@ public class ContentItem {
     String name;
     String desc;
     boolean isNew = false;
+    boolean isSection = false;
+
+    public ContentItem(String n) {
+        name = n;
+        desc = "";
+        isSection = true;
+    }
 
     public ContentItem(String n, String d) {
         name = n;

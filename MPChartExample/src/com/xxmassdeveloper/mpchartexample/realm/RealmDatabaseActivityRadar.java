@@ -21,23 +21,23 @@ import io.realm.RealmResults;
  */
 public class RealmDatabaseActivityRadar extends RealmBaseActivity {
 
-    private RadarChart mChart;
+    private RadarChart chart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_radarchart_noseekbar);
+        setContentView(R.layout.activity_radarchart);
 
-        mChart = findViewById(R.id.chart1);
-        setup(mChart);
+        chart = findViewById(R.id.chart1);
+        setup(chart);
 
-        mChart.getYAxis().setEnabled(false);
-        mChart.getXAxis().setEnabled(false);
-        mChart.setWebAlpha(180);
-        mChart.setWebColorInner(Color.DKGRAY);
-        mChart.setWebColor(Color.GRAY);
+        chart.getYAxis().setEnabled(false);
+        chart.getXAxis().setEnabled(false);
+        chart.setWebAlpha(180);
+        chart.setWebColorInner(Color.DKGRAY);
+        chart.setWebColor(Color.GRAY);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmRadarDataSet<RealmDemoData> set = new RealmRadarDataSet<RealmDemoData>(result, "yValue"); // stacked entries
+        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<>(result, "stackValues", "xIndex"); // normal entries
+        RealmRadarDataSet<RealmDemoData> set = new RealmRadarDataSet<>(result, "yValue"); // stacked entries
         set.setLabel("Realm RadarDataSet");
         set.setDrawFilled(true);
         set.setColor(ColorTemplate.rgb("#009688"));
@@ -64,7 +64,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
         set.setFillAlpha(130);
         set.setLineWidth(2f);
 
-        ArrayList<IRadarDataSet> dataSets = new ArrayList<IRadarDataSet>();
+        ArrayList<IRadarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
@@ -72,7 +72,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
         styleData(data);
 
         // set data
-        mChart.setData(data);
-        mChart.animateY(1400);
+        chart.setData(data);
+        chart.animateY(1400);
     }
 }

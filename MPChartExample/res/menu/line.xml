@@ -2,63 +2,64 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/viewGithub"
+        android:title="@string/viewGithub">
+    </item>
+    <item
         android:id="@+id/actionToggleValues"
-        android:title="Toggle Values">
+        android:title="@string/actionToggleValues">
     </item>
     <item
         android:id="@+id/actionToggleIcons"
-        android:title="Toggle Icons">
+        android:title="@string/actionToggleIcons">
     </item>
     <item
         android:id="@+id/actionToggleFilled"
-        android:title="Toggle Filled">
+        android:title="@string/actionToggleFilled">
     </item>
     <item
         android:id="@+id/actionToggleCircles"
-        android:title="Toggle Circles">
+        android:title="@string/actionToggleCircles">
     </item>
     <item
         android:id="@+id/actionToggleCubic"
-        android:title="Toggle Cubic">
+        android:title="@string/actionToggleCubic">
     </item>
     <item
         android:id="@+id/actionToggleStepped"
-        android:title="Toggle Stepped">
+        android:title="@string/actionToggleStepped">
     </item>
     <item
         android:id="@+id/actionToggleHorizontalCubic"
-        android:title="Toggle Horizontal Cubic">
-    </item>
-    <item
-        android:id="@+id/actionToggleHighlight"
-        android:title="Toggle Highlight">
-    </item>
-    <item
-        android:id="@+id/animateX"
-        android:title="Animate X">
-    </item>
-        <item
-        android:id="@+id/animateY"
-        android:title="Animate Y">
-    </item>
-            <item
-        android:id="@+id/animateXY"
-        android:title="Animate XY">
-    </item>
-    <item
-        android:id="@+id/actionToggleAdjustXLegend"
-        android:title="Toggle AdjustXLegend">
-    </item>
-    <item
-        android:id="@+id/actionSave"
-        android:title="Save to SD-Card">
+        android:title="@string/actionToggleHorizontalCubic">
     </item>
     <item
         android:id="@+id/actionTogglePinch"
-        android:title="Toggle PinchZoom">
+        android:title="@string/actionTogglePinch">
     </item>
     <item
         android:id="@+id/actionToggleAutoScaleMinMax"
-        android:title="Toggle auto scale min/max">
+        android:title="@string/actionToggleAutoScale">
     </item>
+    <item
+        android:id="@+id/actionToggleHighlight"
+        android:title="@string/actionToggleHighlight">
+    </item>
+    <item
+        android:id="@+id/animateX"
+        android:title="@string/animateX">
+    </item>
+        <item
+        android:id="@+id/animateY"
+        android:title="@string/animateY">
+    </item>
+            <item
+        android:id="@+id/animateXY"
+        android:title="@string/animateXY">
+    </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="@string/actionSave">
+    </item>
+
 </menu>

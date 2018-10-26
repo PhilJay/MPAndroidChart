@@ -2,7 +2,8 @@ package com.xxmassdeveloper.mpchartexample.fragments;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -12,44 +13,45 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.xxmassdeveloper.mpchartexample.R;
 
 
 public class PieChartFrag extends SimpleFragment {
 
+    @NonNull
     public static Fragment newInstance() {
         return new PieChartFrag();
     }
 
-    private PieChart mChart;
-    
+    @SuppressWarnings("FieldCanBeLocal")
+    private PieChart chart;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_simple_pie, container, false);
-        
-        mChart = v.findViewById(R.id.pieChart1);
-        mChart.getDescription().setEnabled(false);
-        
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
-        
-        mChart.setCenterTextTypeface(tf);
-        mChart.setCenterText(generateCenterText());
-        mChart.setCenterTextSize(10f);
-        mChart.setCenterTextTypeface(tf);
-         
+
+        chart = v.findViewById(R.id.pieChart1);
+        chart.getDescription().setEnabled(false);
+
+        Typeface tf = Typeface.createFromAsset(context.getAssets(), "OpenSans-Light.ttf");
+
+        chart.setCenterTextTypeface(tf);
+        chart.setCenterText(generateCenterText());
+        chart.setCenterTextSize(10f);
+        chart.setCenterTextTypeface(tf);
+
         // radius of the center hole in percent of maximum radius
-        mChart.setHoleRadius(45f);
-        mChart.setTransparentCircleRadius(50f);
-        
-        Legend l = mChart.getLegend();
+        chart.setHoleRadius(45f);
+        chart.setTransparentCircleRadius(50f);
+
+        Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(false);
-        
-        mChart.setData(generatePieData());
-        
+
+        chart.setData(generatePieData());
+
         return v;
     }
 

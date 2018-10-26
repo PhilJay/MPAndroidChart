@@ -2,7 +2,7 @@
 package com.github.mikephil.charting.animation;
 
 import android.animation.TimeInterpolator;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 /**
  * Easing options.
@@ -62,7 +62,6 @@ public class Easing {
      * @param easing EasingOption to get
      * @return EasingFunction
      */
-    @SuppressWarnings("deprecation")
     @Deprecated
     public static EasingFunction getEasingFunctionFromOption(EasingOption easing) {
         switch (easing) {

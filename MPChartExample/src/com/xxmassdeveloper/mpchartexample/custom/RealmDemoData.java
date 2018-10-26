@@ -8,6 +8,7 @@ import io.realm.RealmObject;
  * Demo class that encapsulates data stored in realm.io database.
  * This class represents data suitable for all chart-types.
  */
+@SuppressWarnings("unused")
 public class RealmDemoData extends RealmObject {
 
     private float yValue;
@@ -26,15 +27,7 @@ public class RealmDemoData extends RealmObject {
      */
     private String label;
 
-    // ofc there could me more fields here...
-
-    public RealmDemoData() {
-
-    }
-
-    public RealmDemoData(float yValue) {
-        this.yValue = yValue;
-    }
+    public RealmDemoData() {}
 
     public RealmDemoData(float xValue, float yValue) {
         this.xValue = xValue;
@@ -44,12 +37,12 @@ public class RealmDemoData extends RealmObject {
     /**
      * Constructor for stacked bars.
      *
-     * @param xValue
-     * @param stackValues
+     * @param xValue      x position for bars
+     * @param stackValues values of bars in the stack
      */
     public RealmDemoData(float xValue, float[] stackValues) {
         this.xValue = xValue;
-        this.stackValues = new RealmList<RealmFloat>();
+        this.stackValues = new RealmList<>();
 
         for (float val : stackValues) {
             this.stackValues.add(new RealmFloat(val));
@@ -59,11 +52,11 @@ public class RealmDemoData extends RealmObject {
     /**
      * Constructor for candles.
      *
-     * @param xValue
-     * @param high
-     * @param low
-     * @param open
-     * @param close
+     * @param xValue x position of candle
+     * @param high   high value for candle
+     * @param low    low value for candle
+     * @param open   open value for candle
+     * @param close  close value for candle
      */
     public RealmDemoData(float xValue, float high, float low, float open, float close) {
         this.yValue = (high + low) / 2f;
@@ -77,9 +70,9 @@ public class RealmDemoData extends RealmObject {
     /**
      * Constructor for bubbles.
      *
-     * @param xValue
-     * @param yValue
-     * @param bubbleSize
+     * @param xValue     x position of bubble
+     * @param yValue     y position of bubble
+     * @param bubbleSize size of bubble
      */
     public RealmDemoData(float xValue, float yValue, float bubbleSize) {
         this.xValue = xValue;
@@ -90,27 +83,27 @@ public class RealmDemoData extends RealmObject {
     /**
      * Constructor for pie chart.
      *
-     * @param yValue
-     * @param label
+     * @param yValue size of pie slice
+     * @param label  label for pie slice
      */
     public RealmDemoData(float yValue, String label) {
         this.yValue = yValue;
         this.label = label;
     }
 
-    public float getyValue() {
+    public float getYValue() {
         return yValue;
     }
 
-    public void setyValue(float yValue) {
+    public void setYValue(float yValue) {
         this.yValue = yValue;
     }
 
-    public float getxValue() {
+    public float getXValue() {
         return xValue;
     }
 
-    public void setxValue(float xValue) {
+    public void setXValue(float xValue) {
         this.xValue = xValue;
     }
 

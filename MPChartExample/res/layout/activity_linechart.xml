@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/seekBar1" />
-    
+
     <SeekBar
         android:id="@+id/seekBar2"
         android:layout_width="match_parent"
@@ -30,7 +31,7 @@
         android:layout_marginBottom="35dp"
         android:layout_toLeftOf="@+id/tvXMax"
         android:layout_marginRight="5dp"
-        android:max="1500"
+        android:max="500"
         android:paddingBottom="12dp" />
 
     <TextView
@@ -39,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/seekBar1"
         android:layout_alignParentRight="true"
-        android:text="500"
+        android:text="@string/dash"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="10dp"
         android:gravity="right"
@@ -51,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/seekBar2"
         android:layout_alignParentRight="true"
-        android:text="500"
+        android:text="@string/dash"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="10dp"
         android:gravity="right"

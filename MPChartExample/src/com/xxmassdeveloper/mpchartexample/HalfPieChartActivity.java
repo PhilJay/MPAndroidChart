@@ -1,22 +1,24 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.view.Display;
+import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -26,9 +28,10 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("SameParameterValue")
 public class HalfPieChartActivity extends DemoBase {
 
-    private PieChart mChart;
+    private PieChart chart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,40 +40,42 @@ public class HalfPieChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_piechart_half);
 
-        mChart = findViewById(R.id.chart1);
-        mChart.setBackgroundColor(Color.WHITE);
+        setTitle("HalfPieChartActivity");
+
+        chart = findViewById(R.id.chart1);
+        chart.setBackgroundColor(Color.WHITE);
 
         moveOffScreen();
 
-        mChart.setUsePercentValues(true);
-        mChart.getDescription().setEnabled(false);
+        chart.setUsePercentValues(true);
+        chart.getDescription().setEnabled(false);
 
-        mChart.setCenterTextTypeface(mTfLight);
-        mChart.setCenterText(generateCenterSpannableText());
+        chart.setCenterTextTypeface(tfLight);
+        chart.setCenterText(generateCenterSpannableText());
 
-        mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColor(Color.WHITE);
+        chart.setDrawHoleEnabled(true);
+        chart.setHoleColor(Color.WHITE);
 
-        mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleAlpha(110);
 
-        mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
+        chart.setHoleRadius(58f);
+        chart.setTransparentCircleRadius(61f);
 
-        mChart.setDrawCenterText(true);
+        chart.setDrawCenterText(true);
 
-        mChart.setRotationEnabled(false);
-        mChart.setHighlightPerTapEnabled(true);
+        chart.setRotationEnabled(false);
+        chart.setHighlightPerTapEnabled(true);
 
-        mChart.setMaxAngle(180f); // HALF CHART
-        mChart.setRotationAngle(180f);
-        mChart.setCenterTextOffset(0, -20);
+        chart.setMaxAngle(180f); // HALF CHART
+        chart.setRotationAngle(180f);
+        chart.setCenterTextOffset(0, -20);
 
         setData(4, 100);
 
-        mChart.animateY(1400, Easing.EaseInOutQuad);
+        chart.animateY(1400, Easing.EaseInOutQuad);
 
-        Legend l = mChart.getLegend();
+        Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -80,17 +85,17 @@ public class HalfPieChartActivity extends DemoBase {
         l.setYOffset(0f);
 
         // entry label styling
-        mChart.setEntryLabelColor(Color.WHITE);
-        mChart.setEntryLabelTypeface(mTfRegular);
-        mChart.setEntryLabelTextSize(12f);
+        chart.setEntryLabelColor(Color.WHITE);
+        chart.setEntryLabelTypeface(tfRegular);
+        chart.setEntryLabelTextSize(12f);
     }
 
     private void setData(int count, float range) {
 
-        ArrayList<PieEntry> values = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            values.add(new PieEntry((float) ((Math.random() * range) + range / 5), mParties[i % mParties.length]));
+            values.add(new PieEntry((float) ((Math.random() * range) + range / 5), parties[i % parties.length]));
         }
 
         PieDataSet dataSet = new PieDataSet(values, "Election Results");
@@ -104,10 +109,10 @@ public class HalfPieChartActivity extends DemoBase {
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
-        data.setValueTypeface(mTfLight);
-        mChart.setData(data);
+        data.setValueTypeface(tfLight);
+        chart.setData(data);
 
-        mChart.invalidate();
+        chart.invalidate();
     }
 
     private SpannableString generateCenterSpannableText() {
@@ -124,14 +129,40 @@ public class HalfPieChartActivity extends DemoBase {
 
     private void moveOffScreen() {
 
-        Display display = getWindowManager().getDefaultDisplay();
-        int height = display.getHeight();  // deprecated
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int height = displayMetrics.heightPixels;
 
         int offset = (int)(height * 0.65); /* percent to move */
 
         RelativeLayout.LayoutParams rlParams =
-                (RelativeLayout.LayoutParams)mChart.getLayoutParams();
+                (RelativeLayout.LayoutParams) chart.getLayoutParams();
         rlParams.setMargins(0, 0, 0, -offset);
-        mChart.setLayoutParams(rlParams);
+        chart.setLayoutParams(rlParams);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.only_github, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.viewGithub: {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/HalfPieChartActivity.java"));
+                startActivity(i);
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void saveToGallery() { /* Intentionally left empty */ }
 }

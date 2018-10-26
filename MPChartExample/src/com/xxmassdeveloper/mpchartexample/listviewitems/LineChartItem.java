@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample.listviewitems;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -29,10 +30,11 @@ public class LineChartItem extends ChartItem {
         return TYPE_LINECHART;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, Context c) {
 
-        ViewHolder holder = null;
+        ViewHolder holder;
 
         if (convertView == null) {
 
@@ -63,7 +65,7 @@ public class LineChartItem extends ChartItem {
         leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(5, false);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-        
+
         YAxis rightAxis = holder.chart.getAxisRight();
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(5, false);

@@ -53,13 +53,13 @@ public class RealmDatabaseActivityScatter extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        RealmScatterDataSet<RealmDemoData> set = new RealmScatterDataSet<RealmDemoData>(result, "xValue", "yValue");
+        RealmScatterDataSet<RealmDemoData> set = new RealmScatterDataSet<>(result, "xValue", "yValue");
         set.setLabel("Realm ScatterDataSet");
         set.setScatterShapeSize(9f);
         set.setColor(ColorTemplate.rgb("#CDDC39"));
         set.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
 
-        ArrayList<IScatterDataSet> dataSets = new ArrayList<IScatterDataSet>();
+        ArrayList<IScatterDataSet> dataSets = new ArrayList<>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
