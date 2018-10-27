@@ -45,5 +45,10 @@
         android:id="@+id/actionSave"
         android:title="@string/actionSave">
     </item>
+    <item
+        android:id="@+id/actionRotateXAxisLabelsBy45Deg"
+        android:title="rotate X Axis labels">
+
+    </item>
 
 </menu>
