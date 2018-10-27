@@ -225,7 +225,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "ScatterChartActivity");
     }
 

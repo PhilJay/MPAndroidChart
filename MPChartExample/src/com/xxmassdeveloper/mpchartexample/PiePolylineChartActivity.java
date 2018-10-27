@@ -262,7 +262,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "PiePolylineChartActivity");
     }
 

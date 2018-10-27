@@ -50,6 +50,5 @@
     <string name="dash">-</string>
     <string name="scrollViewStart">START OF SCROLLVIEW</string>
     <string name="scrollViewEnd">END OF SCROLLVIEW</string>
-    <string name="textNew">NEW</string>
 
 </resources>

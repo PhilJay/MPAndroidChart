@@ -22,10 +22,10 @@ import java.text.DecimalFormat;
 @SuppressLint("ViewConstructor")
 public class XYMarkerView extends MarkerView {
 
-    private TextView tvContent;
-    private IAxisValueFormatter xAxisValueFormatter;
+    private final TextView tvContent;
+    private final IAxisValueFormatter xAxisValueFormatter;
 
-    private DecimalFormat format;
+    private final DecimalFormat format;
 
     public XYMarkerView(Context context, IAxisValueFormatter xAxisValueFormatter) {
         super(context, R.layout.custom_marker_view);

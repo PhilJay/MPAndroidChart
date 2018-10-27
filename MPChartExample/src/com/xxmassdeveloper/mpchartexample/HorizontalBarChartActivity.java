@@ -257,7 +257,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "HorizontalBarChartActivity");
     }
 
@@ -267,7 +267,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
 
-    private RectF mOnValueSelectedRectF = new RectF();
+    private final RectF mOnValueSelectedRectF = new RectF();
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {

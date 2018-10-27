@@ -381,7 +381,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "LineChartActivity2");
     }
 

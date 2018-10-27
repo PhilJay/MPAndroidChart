@@ -147,7 +147,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "DrawChartActivity");
     }
 

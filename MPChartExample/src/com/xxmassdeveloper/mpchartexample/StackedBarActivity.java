@@ -248,7 +248,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "StackedBarActivity");
     }
 

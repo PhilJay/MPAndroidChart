@@ -82,7 +82,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         xAxis.setGranularity(10f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            private DecimalFormat format = new DecimalFormat("###");
+            private final DecimalFormat format = new DecimalFormat("###");
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -226,7 +226,7 @@ public class StackedBarActivityNegative extends DemoBase implements
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "StackedBarActivityNegative");
     }
 
@@ -244,7 +244,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
     private class CustomFormatter implements IValueFormatter, IAxisValueFormatter {
 
-        private DecimalFormat mFormat;
+        private final DecimalFormat mFormat;
 
         CustomFormatter() {
             mFormat = new DecimalFormat("###");

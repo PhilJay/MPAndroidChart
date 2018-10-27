@@ -23,23 +23,6 @@
         android:layout_marginTop="3dp"
         android:text="Small Text"
         android:textSize="12sp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/tvNew"
-        android:layout_toStartOf="@+id/tvNew" />
-
-    <TextView
-        android:padding="7dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/textNew"
-        android:background="@drawable/new_background"
-        android:textColor="@android:color/white"
-        android:id="@+id/tvNew"
-        android:textSize="12sp"
-        android:layout_marginRight="5dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginRight="10dp" />
 
 </RelativeLayout>

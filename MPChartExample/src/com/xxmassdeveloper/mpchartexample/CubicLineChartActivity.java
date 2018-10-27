@@ -309,7 +309,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "CubicLineChartActivity");
     }
 

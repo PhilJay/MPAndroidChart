@@ -16,7 +16,7 @@ import com.xxmassdeveloper.mpchartexample.R;
 
 public class BarChartItem extends ChartItem {
 
-    private Typeface mTf;
+    private final Typeface mTf;
 
     public BarChartItem(ChartData<?> cd, Context c) {
         super(cd);

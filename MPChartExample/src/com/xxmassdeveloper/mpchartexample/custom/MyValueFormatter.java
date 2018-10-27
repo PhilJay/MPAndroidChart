@@ -9,8 +9,8 @@ import java.text.DecimalFormat;
 public class MyValueFormatter implements IValueFormatter
 {
 
-    private DecimalFormat mFormat;
-    
+    private final DecimalFormat mFormat;
+
     public MyValueFormatter() {
         mFormat = new DecimalFormat("###,###,###,##0.0");
     }

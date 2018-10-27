@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @SuppressWarnings("SameParameterValue")
 public class LineChartActivityColored extends DemoBase {
 
-    private LineChart[] charts = new LineChart[4];
+    private final LineChart[] charts = new LineChart[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -288,7 +288,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "MultiLineChartActivity");
     }
 

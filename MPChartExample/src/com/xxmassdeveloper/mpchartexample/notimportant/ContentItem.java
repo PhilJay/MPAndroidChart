@@ -5,9 +5,8 @@ package com.xxmassdeveloper.mpchartexample.notimportant;
  */
 public class ContentItem {
 
-    String name;
-    String desc;
-    boolean isNew = false;
+    final String name;
+    final String desc;
     boolean isSection = false;
 
     public ContentItem(String n) {

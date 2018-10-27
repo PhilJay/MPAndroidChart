@@ -96,7 +96,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setGranularity(1f); // one hour
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH);
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH);
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -308,7 +308,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "LineChartTime");
     }
 

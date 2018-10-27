@@ -226,7 +226,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "CandleStickChartActivity");
     }
 

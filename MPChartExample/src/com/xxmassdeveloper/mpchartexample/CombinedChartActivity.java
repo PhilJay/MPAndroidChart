@@ -170,7 +170,7 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    ScatterData generateScatterData() {
+    private ScatterData generateScatterData() {
 
         ScatterData d = new ScatterData();
 
@@ -189,7 +189,7 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    CandleData generateCandleData() {
+    private CandleData generateCandleData() {
 
         CandleData d = new CandleData();
 
@@ -209,7 +209,7 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    BubbleData generateBubbleData() {
+    private BubbleData generateBubbleData() {
 
         BubbleData bd = new BubbleData();
 

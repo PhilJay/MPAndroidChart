@@ -95,5 +95,5 @@ public abstract class DemoBase extends AppCompatActivity implements ActivityComp
                     .show();
     }
 
-    abstract public void saveToGallery();
+    protected abstract void saveToGallery();
 }

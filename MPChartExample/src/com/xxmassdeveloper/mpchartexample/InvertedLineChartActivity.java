@@ -263,7 +263,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "InvertedLineChartActivity");
     }
 

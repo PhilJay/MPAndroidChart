@@ -148,9 +148,9 @@ public class BarChartPositiveNegative extends DemoBase {
      */
     private class Data {
 
-        String xAxisValue;
-        float yValue;
-        float xValue;
+        final String xAxisValue;
+        final float yValue;
+        final float xValue;
 
         Data(float xValue, float yValue, String xAxisValue) {
             this.xAxisValue = xAxisValue;
@@ -162,7 +162,7 @@ public class BarChartPositiveNegative extends DemoBase {
     private class ValueFormatter implements IValueFormatter
     {
 
-        private DecimalFormat mFormat;
+        private final DecimalFormat mFormat;
 
         ValueFormatter() {
             mFormat = new DecimalFormat("######.0");

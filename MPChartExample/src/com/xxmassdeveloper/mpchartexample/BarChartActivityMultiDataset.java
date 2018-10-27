@@ -266,7 +266,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "BarChartActivityMultiDataset");
     }
 

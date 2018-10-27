@@ -17,7 +17,7 @@ import com.xxmassdeveloper.mpchartexample.R;
 
 public class LineChartItem extends ChartItem {
 
-    private Typeface mTf;
+    private final Typeface mTf;
 
     public LineChartItem(ChartData<?> cd, Context c) {
         super(cd);

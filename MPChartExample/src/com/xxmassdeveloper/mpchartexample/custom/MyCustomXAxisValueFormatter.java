@@ -15,8 +15,8 @@ import java.text.DecimalFormat;
 public class MyCustomXAxisValueFormatter implements IAxisValueFormatter
 {
 
-    private DecimalFormat mFormat;
-    private ViewPortHandler mViewPortHandler;
+    private final DecimalFormat mFormat;
+    private final ViewPortHandler mViewPortHandler;
 
     public MyCustomXAxisValueFormatter(ViewPortHandler viewPortHandler) {
         mViewPortHandler = viewPortHandler;

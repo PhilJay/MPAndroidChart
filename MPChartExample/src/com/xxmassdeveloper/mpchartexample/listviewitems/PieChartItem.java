@@ -21,8 +21,8 @@ import com.xxmassdeveloper.mpchartexample.R;
 
 public class PieChartItem extends ChartItem {
 
-    private Typeface mTf;
-    private SpannableString mCenterText;
+    private final Typeface mTf;
+    private final SpannableString mCenterText;
 
     public PieChartItem(ChartData<?> cd, Context c) {
         super(cd);

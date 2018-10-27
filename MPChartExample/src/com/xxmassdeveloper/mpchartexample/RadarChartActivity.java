@@ -254,7 +254,7 @@ public class RadarChartActivity extends DemoBase {
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "RadarChartActivity");
     }
 }

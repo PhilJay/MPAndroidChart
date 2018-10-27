@@ -297,7 +297,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "BarChartActivity");
     }
 
@@ -307,7 +307,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
 
-    private RectF onValueSelectedRectF = new RectF();
+    private final RectF onValueSelectedRectF = new RectF();
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {

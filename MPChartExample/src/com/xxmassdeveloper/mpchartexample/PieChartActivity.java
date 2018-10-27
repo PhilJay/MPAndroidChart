@@ -267,7 +267,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "PieChartActivity");
     }
 

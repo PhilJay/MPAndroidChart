@@ -226,7 +226,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "BarChartActivitySinus");
     }
 

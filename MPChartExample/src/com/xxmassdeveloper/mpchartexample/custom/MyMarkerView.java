@@ -21,7 +21,7 @@ import com.xxmassdeveloper.mpchartexample.R;
 @SuppressLint("ViewConstructor")
 public class MyMarkerView extends MarkerView {
 
-    private TextView tvContent;
+    private final TextView tvContent;
 
     public MyMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);

@@ -226,7 +226,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "BubbleChartActivity");
     }
 

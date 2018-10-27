@@ -224,7 +224,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "RealtimeLineChartActivity");
     }
 

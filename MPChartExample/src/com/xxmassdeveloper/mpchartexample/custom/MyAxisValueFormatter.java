@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
 public class MyAxisValueFormatter implements IAxisValueFormatter
 {
 
-    private DecimalFormat mFormat;
+    private final DecimalFormat mFormat;
 
     public MyAxisValueFormatter() {
         mFormat = new DecimalFormat("###,###,###,##0.0");

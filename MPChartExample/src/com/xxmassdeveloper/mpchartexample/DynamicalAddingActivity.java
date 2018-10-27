@@ -236,7 +236,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
     }
 
     @Override
-    public void saveToGallery() {
+    protected void saveToGallery() {
         saveToGallery(chart, "DynamicalAddingActivity");
     }
 }

@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class MyAdapter extends ArrayAdapter<ContentItem> {
 
-    private Typeface mTypeFaceLight;
-    private Typeface mTypeFaceRegular;
+    private final Typeface mTypeFaceLight;
+    private final Typeface mTypeFaceRegular;
 
     public MyAdapter(Context context, List<ContentItem> objects) {
         super(context, 0, objects);
@@ -49,11 +49,9 @@ public class MyAdapter extends ArrayAdapter<ContentItem> {
 
         holder.tvName = convertView.findViewById(R.id.tvName);
         holder.tvDesc = convertView.findViewById(R.id.tvDesc);
-        holder.tvNew = convertView.findViewById(R.id.tvNew);
 
         convertView.setTag(holder);
 
-        holder.tvNew.setTypeface(mTypeFaceRegular);
         if (c != null && c.isSection)
             holder.tvName.setTypeface(mTypeFaceRegular);
         else
@@ -63,17 +61,11 @@ public class MyAdapter extends ArrayAdapter<ContentItem> {
         holder.tvName.setText(c != null ? c.name : null);
         holder.tvDesc.setText(c != null ? c.desc : null);
 
-        if(c != null && c.isNew)
-            holder.tvNew.setVisibility(View.VISIBLE);
-        else
-            holder.tvNew.setVisibility(View.GONE);
-
         return convertView;
     }
 
     private class ViewHolder {
 
         TextView tvName, tvDesc;
-        TextView tvNew;
     }
 }

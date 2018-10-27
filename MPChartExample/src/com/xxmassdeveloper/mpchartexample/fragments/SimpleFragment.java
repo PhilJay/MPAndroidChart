@@ -30,7 +30,7 @@ import com.github.mikephil.charting.utils.FileUtils;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("SameParameterValue")
+@SuppressWarnings({"SameParameterValue", "WeakerAccess"})
 public abstract class SimpleFragment extends Fragment {
 
     private Typeface tf;
