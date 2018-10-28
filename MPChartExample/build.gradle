@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 28
@@ -10,15 +9,6 @@ android {
         versionCode 56
         versionName '3.0.3'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        sourceSets {
-            main {
-                java.srcDirs = ['src']
-                res.srcDirs = ['res']
-                assets.srcDirs = ['assets']
-                manifest.srcFile 'AndroidManifest.xml'
-            }
-        }
     }
 
     buildTypes {
@@ -27,25 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    lintOptions {
-        abortOnError false
-    }
 }
 
 dependencies {
     implementation "androidx.appcompat:appcompat:1.0.0"
     implementation 'com.google.android.material:material:1.0.0'
-    //implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    //implementation "androidx.legacy:legacy-support-v13:1.0.0"
-    //compile project(':MPChartLib-Realm') // clone "https://github.com/PhilJay/MPAndroidChart-Realm" to get this or uncomment the gradle dependency below:
-    implementation 'com.github.PhilJay:MPAndroidChart-Realm:v2.0.2@aar'
     implementation project(':MPChartLib')
-}
-
-repositories {
-    maven { url "https://jitpack.io" }
-    maven { // this is for realm-db
-        url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
-    }
 }
