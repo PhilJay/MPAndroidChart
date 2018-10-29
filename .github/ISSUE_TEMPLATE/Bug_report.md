@@ -33,10 +33,10 @@ support questions here. We will close your issue without a response.
 **Device (please complete the following information):**
  - Device: [e.g. Google Pixel]
  - Android Version [e.g. 7.0]
- - Library Version (e.g. 3.0.3)
+ - Library Version (e.g. 3.1.0-alpha)
 
 **Additional Context**
 <!-- Add any other context about the problem here.
-If you have source code demonstrating this bug, create a Gist: 
+If you have source code demonstrating this bug, create a Gist:
   https://help.github.com/articles/creating-gists/
 and link to it here. -->

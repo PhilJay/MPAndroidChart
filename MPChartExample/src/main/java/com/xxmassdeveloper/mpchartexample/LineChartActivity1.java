@@ -45,7 +45,7 @@ import java.util.List;
  * Example of a heavily customized {@link LineChart} with limit lines, custom line shapes, etc.
  *
  * @since 1.7.4
- * @version 3.0.3
+ * @version 3.1.0
  */
 public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {

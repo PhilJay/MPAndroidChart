@@ -38,7 +38,7 @@ import java.util.List;
  * Example of a dual axis {@link LineChart} with multiple data sets.
  *
  * @since 1.7.4
- * @version 3.0.3
+ * @version 3.1.0
  */
 public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
