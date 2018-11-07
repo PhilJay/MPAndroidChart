@@ -1,9 +1,4 @@
-
 package com.github.mikephil.charting.formatter;
-
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 
@@ -17,7 +12,7 @@ import java.text.DecimalFormat;
  * @author Philipp Jahoda
  * @author Oleksandr Tyshkovets <olexandr.tyshkovets@gmail.com>
  */
-public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
+public class LargeValueFormatter extends ValueFormatter
 {
 
     private String[] mSuffix = new String[]{
@@ -41,15 +36,8 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
         mText = appendix;
     }
 
-    // IValueFormatter
     @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        return makePretty(value) + mText;
-    }
-
-    // IAxisValueFormatter
-    @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getFormattedValue(float value) {
         return makePretty(value) + mText;
     }
 

@@ -1,13 +1,13 @@
 package com.xxmassdeveloper.mpchartexample.custom;
 
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 /**
  * Created by Philipp Jahoda on 14/09/15.
  */
 @SuppressWarnings("unused")
-public class YearXAxisFormatter implements IAxisValueFormatter
+public class YearXAxisFormatter extends ValueFormatter
 {
 
     private final String[] mMonths = new String[]{
@@ -19,7 +19,7 @@ public class YearXAxisFormatter implements IAxisValueFormatter
     }
 
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getAxisLabel(float value, AxisBase axis) {
 
         float percent = value / axis.mAxisRange;
         return mMonths[(int) (mMonths.length * percent)];

@@ -1,7 +1,6 @@
 package com.xxmassdeveloper.mpchartexample.custom;
 
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
@@ -12,7 +11,7 @@ import java.text.DecimalFormat;
  * @deprecated The {@link MyAxisValueFormatter} does exactly the same thing and is more functional.
  */
 @Deprecated
-public class MyCustomXAxisValueFormatter implements IAxisValueFormatter
+public class MyCustomXAxisValueFormatter extends ValueFormatter
 {
 
     private final DecimalFormat mFormat;
@@ -25,7 +24,7 @@ public class MyCustomXAxisValueFormatter implements IAxisValueFormatter
     }
 
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getFormattedValue(float value) {
 
         //Log.i("TRANS", "x: " + viewPortHandler.getTransX() + ", y: " + viewPortHandler.getTransY());
 
