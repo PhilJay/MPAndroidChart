@@ -1,10 +1,8 @@
-
 package com.github.mikephil.charting.components;
 
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Utils;
@@ -214,11 +212,6 @@ public class Legend extends ComponentBase {
         mEntries = entries.toArray(new LegendEntry[entries.size()]);
     }
 
-    @Deprecated
-    public Legend(List<Integer> colors, List<String> labels) {
-        this(Utils.convertIntegers(colors), Utils.convertStrings(labels));
-    }
-
     /**
      * This method sets the automatically computed colors for the legend. Use setCustom(...) to set custom colors.
      *
@@ -421,109 +414,6 @@ public class Legend extends ComponentBase {
      */
     public boolean isLegendCustom() {
         return mIsLegendCustom;
-    }
-
-    /**
-     * This property is deprecated - Use `horizontalAlignment`, `verticalAlignment`, `orientation`, `drawInside`,
-     * `direction`.
-     */
-    @Deprecated
-    public LegendPosition getPosition() {
-
-        if (mOrientation == LegendOrientation.VERTICAL
-                && mHorizontalAlignment == LegendHorizontalAlignment.CENTER
-                && mVerticalAlignment == LegendVerticalAlignment.CENTER) {
-            return LegendPosition.PIECHART_CENTER;
-        } else if (mOrientation == LegendOrientation.HORIZONTAL) {
-            if (mVerticalAlignment == LegendVerticalAlignment.TOP)
-                return mHorizontalAlignment == LegendHorizontalAlignment.LEFT
-                        ? LegendPosition.ABOVE_CHART_LEFT
-                        : (mHorizontalAlignment == LegendHorizontalAlignment.RIGHT
-                        ? LegendPosition.ABOVE_CHART_RIGHT
-                        : LegendPosition.ABOVE_CHART_CENTER);
-            else
-                return mHorizontalAlignment == LegendHorizontalAlignment.LEFT
-                        ? LegendPosition.BELOW_CHART_LEFT
-                        : (mHorizontalAlignment == LegendHorizontalAlignment.RIGHT
-                        ? LegendPosition.BELOW_CHART_RIGHT
-                        : LegendPosition.BELOW_CHART_CENTER);
-        } else {
-            if (mHorizontalAlignment == LegendHorizontalAlignment.LEFT)
-                return mVerticalAlignment == LegendVerticalAlignment.TOP && mDrawInside
-                        ? LegendPosition.LEFT_OF_CHART_INSIDE
-                        : (mVerticalAlignment == LegendVerticalAlignment.CENTER
-                        ? LegendPosition.LEFT_OF_CHART_CENTER
-                        : LegendPosition.LEFT_OF_CHART);
-            else
-                return mVerticalAlignment == LegendVerticalAlignment.TOP && mDrawInside
-                        ? LegendPosition.RIGHT_OF_CHART_INSIDE
-                        : (mVerticalAlignment == LegendVerticalAlignment.CENTER
-                        ? LegendPosition.RIGHT_OF_CHART_CENTER
-                        : LegendPosition.RIGHT_OF_CHART);
-        }
-    }
-
-    /**
-     * This property is deprecated - Use `horizontalAlignment`, `verticalAlignment`, `orientation`, `drawInside`,
-     * `direction`.
-     */
-    @Deprecated
-    public void setPosition(LegendPosition newValue) {
-
-        switch (newValue) {
-            case LEFT_OF_CHART:
-            case LEFT_OF_CHART_INSIDE:
-            case LEFT_OF_CHART_CENTER:
-                mHorizontalAlignment = LegendHorizontalAlignment.LEFT;
-                mVerticalAlignment = newValue == LegendPosition.LEFT_OF_CHART_CENTER
-                        ? LegendVerticalAlignment.CENTER
-                        : LegendVerticalAlignment.TOP;
-                mOrientation = LegendOrientation.VERTICAL;
-                break;
-
-            case RIGHT_OF_CHART:
-            case RIGHT_OF_CHART_INSIDE:
-            case RIGHT_OF_CHART_CENTER:
-                mHorizontalAlignment = LegendHorizontalAlignment.RIGHT;
-                mVerticalAlignment = newValue == LegendPosition.RIGHT_OF_CHART_CENTER
-                        ? LegendVerticalAlignment.CENTER
-                        : LegendVerticalAlignment.TOP;
-                mOrientation = LegendOrientation.VERTICAL;
-                break;
-
-            case ABOVE_CHART_LEFT:
-            case ABOVE_CHART_CENTER:
-            case ABOVE_CHART_RIGHT:
-                mHorizontalAlignment = newValue == LegendPosition.ABOVE_CHART_LEFT
-                        ? LegendHorizontalAlignment.LEFT
-                        : (newValue == LegendPosition.ABOVE_CHART_RIGHT
-                        ? LegendHorizontalAlignment.RIGHT
-                        : LegendHorizontalAlignment.CENTER);
-                mVerticalAlignment = LegendVerticalAlignment.TOP;
-                mOrientation = LegendOrientation.HORIZONTAL;
-                break;
-
-            case BELOW_CHART_LEFT:
-            case BELOW_CHART_CENTER:
-            case BELOW_CHART_RIGHT:
-                mHorizontalAlignment = newValue == LegendPosition.BELOW_CHART_LEFT
-                        ? LegendHorizontalAlignment.LEFT
-                        : (newValue == LegendPosition.BELOW_CHART_RIGHT
-                        ? LegendHorizontalAlignment.RIGHT
-                        : LegendHorizontalAlignment.CENTER);
-                mVerticalAlignment = LegendVerticalAlignment.BOTTOM;
-                mOrientation = LegendOrientation.HORIZONTAL;
-                break;
-
-            case PIECHART_CENTER:
-                mHorizontalAlignment = LegendHorizontalAlignment.CENTER;
-                mVerticalAlignment = LegendVerticalAlignment.CENTER;
-                mOrientation = LegendOrientation.VERTICAL;
-                break;
-        }
-
-        mDrawInside = newValue == LegendPosition.LEFT_OF_CHART_INSIDE
-                || newValue == LegendPosition.RIGHT_OF_CHART_INSIDE;
     }
 
     /**
