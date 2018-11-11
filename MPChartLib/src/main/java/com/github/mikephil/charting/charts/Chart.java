@@ -208,18 +208,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
-        if (Build.VERSION.SDK_INT < 11) {
-            mAnimator = new ChartAnimator();
-        } else {
-            mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
+        mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
 
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    // ViewCompat.postInvalidateOnAnimation(Chart.this);
-                    postInvalidate();
-                }
-            });
-        }
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                // ViewCompat.postInvalidateOnAnimation(Chart.this);
+                postInvalidate();
+            }
+        });
 
         // initialize the utils
         Utils.init(getContext());
@@ -1697,16 +1693,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setHardwareAccelerationEnabled(boolean enabled) {
 
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-
-            if (enabled)
-                setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            else
-                setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        } else {
-            Log.e(LOG_TAG,
-                    "Cannot enable/disable hardware acceleration for devices below API level 11.");
-        }
+        if (enabled)
+            setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        else
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     @Override
