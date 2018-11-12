@@ -26,6 +26,10 @@
         android:title="@string/actionToggleHole">
     </item>
     <item
+        android:id="@+id/actionToggleCurvedSlices"
+        android:title="@string/actionToggleCurvedSlices">
+    </item>
+    <item
         android:id="@+id/actionDrawCenter"
         android:title="@string/actionDrawCenterText">
     </item>

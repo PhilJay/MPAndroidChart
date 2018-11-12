@@ -651,6 +651,16 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
+     * Sets whether to draw slices in a curved fashion, only works if drawing the hole is enabled
+     * and if the slices are not drawn under the hole.
+     *
+     * @param enabled draw curved ends of slices
+     */
+    public void setDrawRoundedSlices(boolean enabled) {
+        mDrawRoundedSlices = enabled;
+    }
+
+    /**
      * Returns true if the chart is set to draw each end of a pie-slice
      * "rounded".
      *

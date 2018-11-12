@@ -41,6 +41,7 @@
 
     <string name="actionTogglePercent">Toggle Percent</string>
     <string name="actionToggleHole">Toggle Hole</string>
+    <string name="actionToggleCurvedSlices">Toggle Curved Slices</string>
     <string name="actionDrawCenterText">Draw Center Text</string>
     <string name="actionToggleHighlightCircle">Toggle Highlight Circle</string>
     <string name="actionToggleRotation">Toggle Rotation</string>

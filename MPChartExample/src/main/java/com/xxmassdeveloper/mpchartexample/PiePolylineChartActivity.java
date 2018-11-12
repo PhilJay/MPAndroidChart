@@ -205,6 +205,18 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
                 chart.invalidate();
                 break;
             }
+            case R.id.actionToggleCurvedSlices: {
+                boolean toSet = !chart.isDrawRoundedSlicesEnabled() || !chart.isDrawHoleEnabled();
+                chart.setDrawRoundedSlices(toSet);
+                if (toSet && !chart.isDrawHoleEnabled()) {
+                    chart.setDrawHoleEnabled(true);
+                }
+                if (toSet && chart.isDrawSlicesUnderHoleEnabled()) {
+                    chart.setDrawSlicesUnderHole(false);
+                }
+                chart.invalidate();
+                break;
+            }
             case R.id.actionDrawCenter: {
                 if (chart.isDrawCenterTextEnabled())
                     chart.setDrawCenterText(false);
