@@ -14,4 +14,12 @@ public interface IHighlighter
      * @return
      */
     Highlight getHighlight(float x, float y);
+
+    /**
+     * Returns a Highlight object corresponding to the given index from the list of highlights.
+     *
+     * @param index
+     * @return
+     */
+    Highlight getHighlightByIndex(int index);
 }

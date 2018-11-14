@@ -42,6 +42,14 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         return high;
     }
 
+    @Override
+    public Highlight getHighlightByIndex(int index) {
+        if (mHighlightBuffer.size() <= index)
+            return null;
+
+        return mHighlightBuffer.get(index);
+    }
+
     /**
      * Returns a recyclable MPPointD instance.
      * Returns the corresponding xPos for a given touch-position in pixels.
