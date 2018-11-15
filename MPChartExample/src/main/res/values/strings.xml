@@ -40,6 +40,7 @@
     <string name="actionClearChart">Clear chart</string>
 
     <string name="actionTogglePercent">Toggle Percent</string>
+    <string name="actionToggleMinAngles">Toggle Minimum Angles</string>
     <string name="actionToggleHole">Toggle Hole</string>
     <string name="actionToggleCurvedSlices">Toggle Curved Slices</string>
     <string name="actionDrawCenterText">Draw Center Text</string>

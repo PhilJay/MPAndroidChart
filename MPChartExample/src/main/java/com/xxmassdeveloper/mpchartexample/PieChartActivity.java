@@ -210,6 +210,15 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 chart.invalidate();
                 break;
             }
+            case R.id.actionToggleMinAngles: {
+                if (chart.getMinAngleForSlices() == 0f)
+                    chart.setMinAngleForSlices(36f);
+                else
+                    chart.setMinAngleForSlices(0f);
+                chart.notifyDataSetChanged();
+                chart.invalidate();
+                break;
+            }
             case R.id.actionToggleCurvedSlices: {
                 boolean toSet = !chart.isDrawRoundedSlicesEnabled() || !chart.isDrawHoleEnabled();
                 chart.setDrawRoundedSlices(toSet);

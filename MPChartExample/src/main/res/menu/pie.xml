@@ -22,6 +22,10 @@
         android:title="@string/actionTogglePercent">
     </item>
     <item
+        android:id="@+id/actionToggleMinAngles"
+        android:title="@string/actionToggleMinAngles">
+    </item>
+    <item
         android:id="@+id/actionToggleHole"
         android:title="@string/actionToggleHole">
     </item>
