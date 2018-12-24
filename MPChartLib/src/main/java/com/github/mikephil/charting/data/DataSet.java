@@ -300,53 +300,39 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         if (mValues == null || mValues.isEmpty())
             return -1;
 
-        int low = 0;
-        int high = mValues.size() - 1;
-        int closest = high;
+        int closest = -1;
 
-        while (low < high) {
-            int m = (low + high) / 2;
-
-            final float d1 = mValues.get(m).getX() - xValue,
-                    d2 = mValues.get(m + 1).getX() - xValue,
-                    ad1 = Math.abs(d1), ad2 = Math.abs(d2);
-
-            if (ad2 < ad1) {
-                // [m + 1] is closer to xValue
-                // Search in an higher place
-                low = m + 1;
-            } else if (ad1 < ad2) {
-                // [m] is closer to xValue
-                // Search in a lower place
-                high = m;
-            } else {
-                // We have multiple sequential x-value with same distance
-
-                if (d1 >= 0.0) {
-                    // Search in a lower place
-                    high = m;
-                } else if (d1 < 0.0) {
-                    // Search in an higher place
-                    low = m + 1;
+        float minDistance = Float.MAX_VALUE;
+        for (int i = 0; i < mValues.size(); i++) {
+            float val = mValues.get(i).getX();
+            float distance = Math.abs(val - xValue);
+            if (distance < minDistance) {
+                switch (rounding) {
+                    case CLOSEST: {
+                        minDistance = distance;
+                        closest = i;
+                        break;
+                    }
+                    case UP: {
+                        if (val >= xValue) {
+                            minDistance = distance;
+                            closest = i;
+                        }
+                        break;
+                    }
+                    case DOWN: {
+                        if (val <= xValue) {
+                            minDistance = distance;
+                            closest = i;
+                        }
+                        break;
+                    }
                 }
             }
-
-            closest = high;
         }
 
         if (closest != -1) {
             float closestXValue = mValues.get(closest).getX();
-            if (rounding == Rounding.UP) {
-                // If rounding up, and found x-value is lower than specified x, and we can go upper...
-                if (closestXValue < xValue && closest < mValues.size() - 1) {
-                    ++closest;
-                }
-            } else if (rounding == Rounding.DOWN) {
-                // If rounding down, and found x-value is upper than specified x, and we can go lower...
-                if (closestXValue > xValue && closest > 0) {
-                    --closest;
-                }
-            }
 
             // Search by closest to y-value
             if (!Float.isNaN(closestToY)) {
@@ -367,7 +353,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
                         break;
 
                     if (Math.abs(value.getY() - closestToY) < Math.abs(closestYValue - closestToY)) {
-                        closestYValue = closestToY;
+                        closestYValue = value.getY();
                         closestYIndex = closest;
                     }
                 }
@@ -381,42 +367,13 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     @Override
     public List<T> getEntriesForXValue(float xValue) {
-
         List<T> entries = new ArrayList<T>();
 
-        int low = 0;
-        int high = mValues.size() - 1;
-
-        while (low <= high) {
-            int m = (high + low) / 2;
-            T entry = mValues.get(m);
-
-            // if we have a match
-            if (xValue == entry.getX()) {
-                while (m > 0 && mValues.get(m - 1).getX() == xValue)
-                    m--;
-
-                high = mValues.size();
-
-                // loop over all "equal" entries
-                for (; m < high; m++) {
-                    entry = mValues.get(m);
-                    if (entry.getX() == xValue) {
-                        entries.add(entry);
-                    } else {
-                        break;
-                    }
-                }
-
-                break;
-            } else {
-                if (xValue > entry.getX())
-                    low = m + 1;
-                else
-                    high = m - 1;
+        for (T entry : mValues) {
+            if (entry.getX() == xValue) {
+                entries.add(entry);
             }
         }
-
         return entries;
     }
 

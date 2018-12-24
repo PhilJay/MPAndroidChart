@@ -180,6 +180,46 @@ public class DataSetTest {
     }
 
     @Test
+    public void testGetEntryForXValue_Unordered() {
+
+        List<Entry> entries = new ArrayList<Entry>();
+        entries.add(new Entry(21, 5));
+        entries.add(new Entry(10, 10));
+        entries.add(new Entry(15, 5));
+
+        ScatterDataSet set = new ScatterDataSet(entries, "");
+
+        Entry closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.CLOSEST);
+        assertEquals(15, closest.getX(), 0.01f);
+        assertEquals(5, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.DOWN);
+        assertEquals(15, closest.getX(), 0.01f);
+        assertEquals(5, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(15, Float.NaN, DataSet.Rounding.DOWN);
+        assertEquals(15, closest.getX(), 0.01f);
+        assertEquals(5, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(14, Float.NaN, DataSet.Rounding.DOWN);
+        assertEquals(10, closest.getX(), 0.01f);
+        assertEquals(10, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.UP);
+        assertEquals(21, closest.getX(), 0.01f);
+        assertEquals(5, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(21, Float.NaN, DataSet.Rounding.UP);
+        assertEquals(21, closest.getX(), 0.01f);
+        assertEquals(5, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(21, Float.NaN, DataSet.Rounding.CLOSEST);
+        assertEquals(21, closest.getX(), 0.01f);
+        assertEquals(5, closest.getY(), 0.01f);
+    }
+
+
+    @Test
     public void testGetEntryForXValueWithDuplicates() {
 
         // sorted list of values (by x position)
