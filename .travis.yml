@@ -1,0 +1,18 @@
+language: android
+jdk: oraclejdk8
+# Use the Travis Container-Based Infrastructure
+sudo: false
+
+android:
+  components:
+    - build-tools-28.0.3
+    - android-28
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - extra-google-google_play_services
+  licenses:
+    - 'android-sdk-license-.+'
+
+script:
+  - ./gradlew clean build
+  - ./gradlew test --profile
