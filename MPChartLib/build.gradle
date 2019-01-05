@@ -25,7 +25,7 @@ android {
         // https://issuetracker.google.com/issues/158695880
         buildConfigField 'String', 'VERSION_NAME', "\"${getTag()}\""
 
-        consumerProguardFiles 'proguard-project.txt'
+        consumerProguardFiles 'proguard-lib.pro'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -34,7 +34,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     buildFeatures {
