@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/viewGithub"
+        android:title="@string/viewGithub">
+    </item>
+    <item
+        android:id="@+id/actionToggleValues"
+        android:title="@string/actionToggleValues">
+    </item>
+    <item
+        android:id="@+id/actionToggleIcons"
+        android:title="@string/actionToggleIcons">
+    </item>
+    <item
+        android:id="@+id/actionToggleFilled"
+        android:title="@string/actionToggleFilled">
+    </item>
+    <item
+        android:id="@+id/actionToggleHighlight"
+        android:title="@string/actionToggleHighlight">
+    </item>
+    <item
+        android:id="@+id/actionToggleHighlightCircle"
+        android:title="@string/actionToggleHighlightCircle">
+    </item>
+    <item
+        android:id="@+id/actionToggleRotate"
+        android:title="@string/actionToggleRotation">
+    </item>
+    <item
+        android:id="@+id/actionToggleYLabels"
+        android:title="@string/actionToggleYValues">
+    </item>
+    <item
+        android:id="@+id/actionToggleXLabels"
+        android:title="@string/actionToggleXValues">
+    </item>
+    <item
+        android:id="@+id/actionToggleSpin"
+        android:title="@string/actionToggleSpin">
+    </item>
+    <item
+        android:id="@+id/animateX"
+        android:title="@string/animateX">
+    </item>
+    <item
+        android:id="@+id/animateY"
+        android:title="@string/animateY">
+    </item>
+    <item
+        android:id="@+id/animateXY"
+        android:title="@string/animateXY">
+    </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="@string/actionSave">
+    </item>
+
+
+</menu>

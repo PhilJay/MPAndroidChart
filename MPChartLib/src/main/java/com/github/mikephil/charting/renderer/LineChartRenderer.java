@@ -12,6 +12,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -76,19 +77,21 @@ public class LineChartRenderer extends LineRadarRenderer {
         int width = (int) mViewPortHandler.getChartWidth();
         int height = (int) mViewPortHandler.getChartHeight();
 
-        if (mDrawBitmap == null
-                || (mDrawBitmap.get().getWidth() != width)
-                || (mDrawBitmap.get().getHeight() != height)) {
+        Bitmap drawBitmap = mDrawBitmap == null ? null : mDrawBitmap.get();
+
+        if (drawBitmap == null
+                || (drawBitmap.getWidth() != width)
+                || (drawBitmap.getHeight() != height)) {
 
             if (width > 0 && height > 0) {
-
-                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, mBitmapConfig));
-                mBitmapCanvas = new Canvas(mDrawBitmap.get());
+                drawBitmap = Bitmap.createBitmap(width, height, mBitmapConfig);
+                mDrawBitmap = new WeakReference<>(drawBitmap);
+                mBitmapCanvas = new Canvas(drawBitmap);
             } else
                 return;
         }
 
-        mDrawBitmap.get().eraseColor(Color.TRANSPARENT);
+        drawBitmap.eraseColor(Color.TRANSPARENT);
 
         LineData lineData = mChart.getLineData();
 
@@ -98,7 +101,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 drawDataSet(c, set);
         }
 
-        c.drawBitmap(mDrawBitmap.get(), 0, 0, mRenderPaint);
+        c.drawBitmap(drawBitmap, 0, 0, mRenderPaint);
     }
 
     protected void drawDataSet(Canvas c, ILineDataSet dataSet) {
@@ -183,7 +186,6 @@ public class LineChartRenderer extends LineRadarRenderer {
 
     protected void drawCubicBezier(ILineDataSet dataSet) {
 
-        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
@@ -293,7 +295,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         int entryCount = dataSet.getEntryCount();
 
-        final boolean isDrawSteppedEnabled = dataSet.isDrawSteppedEnabled();
+        final boolean isDrawSteppedEnabled = dataSet.getMode() == LineDataSet.Mode.STEPPED;
         final int pointsPerEntryPair = isDrawSteppedEnabled ? 4 : 2;
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
@@ -495,12 +497,12 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         // create a new path
         Entry currentEntry = null;
-        Entry previousEntry = null;
+        Entry previousEntry = entry;
         for (int x = startIndex + 1; x <= endIndex; x++) {
 
             currentEntry = dataSet.getEntryForIndex(x);
 
-            if (isDrawSteppedEnabled && previousEntry != null) {
+            if (isDrawSteppedEnabled) {
                 filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
             }
 
@@ -528,7 +530,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                 ILineDataSet dataSet = dataSets.get(i);
 
-                if (!shouldDrawValues(dataSet))
+                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1)
                     continue;
 
                 // apply the text-styling defined by the DataSet
@@ -546,6 +548,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                 float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
                         .getPhaseY(), mXBounds.min, mXBounds.max);
+                ValueFormatter formatter = dataSet.getValueFormatter();
 
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
                 iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
@@ -565,8 +568,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
                     if (dataSet.isDrawValuesEnabled()) {
-                        drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, x,
-                                y - valOffset, dataSet.getValueTextColor(j / 2));
+                        drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2));
                     }
 
                     if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
@@ -586,6 +588,12 @@ public class LineChartRenderer extends LineRadarRenderer {
                 MPPointF.recycleInstance(iconsOffset);
             }
         }
+    }
+
+    @Override
+    public void drawValue(Canvas c, String valueText, float x, float y, int color) {
+        mValuePaint.setColor(color);
+        c.drawText(valueText, x, y, mValuePaint);
     }
 
     @Override
@@ -738,7 +746,10 @@ public class LineChartRenderer extends LineRadarRenderer {
             mBitmapCanvas = null;
         }
         if (mDrawBitmap != null) {
-            mDrawBitmap.get().recycle();
+            Bitmap drawBitmap = mDrawBitmap.get();
+            if (drawBitmap != null) {
+                drawBitmap.recycle();
+            }
             mDrawBitmap.clear();
             mDrawBitmap = null;
         }
