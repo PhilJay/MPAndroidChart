@@ -61,4 +61,11 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
      * @return
      */
     String[] getStackLabels();
+
+    /**
+     * True if each stack value should use the same color as its stack bar.
+     * False if all stacks in an entry share the same color returned by {@link #getValueTextColor(int)}
+     * @return
+     */
+    boolean isValuesUseBarColor();
 }

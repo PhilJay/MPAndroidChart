@@ -322,7 +322,6 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                         float x = (buffer.buffer[bufferIndex] + buffer.buffer[bufferIndex + 2]) / 2f;
 
                         int color = dataSet.getValueTextColor(index);
-                        List<Integer> stackColors = dataSet.getColors();
 
                         // we still draw stacked bars, but there is one
                         // non-stacked
@@ -407,7 +406,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                                         || !mViewPortHandler.isInBoundsLeft(x))
                                     continue;
 
-                                int stackColor = stackColors != null ? stackColors.get(k / 2) : color;
+                                int stackColor = dataSet.isValuesUseBarColor() ? dataSet.getColors().get(k / 2) : color;
 
                                 if (dataSet.isDrawValuesEnabled()) {
                                     drawValue(c, formatter.getBarStackedLabel(val, entry), x, y, stackColor);
