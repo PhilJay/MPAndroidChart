@@ -526,6 +526,15 @@ public class LegendRenderer extends Renderer {
                 mLegendFormPaint.setStyle(Paint.Style.FILL);
                 c.drawCircle(x + half, y, half, mLegendFormPaint);
                 break;
+            case CIRCLE_STROKE:
+                mLegendFormPaint.setStyle(Paint.Style.STROKE);
+                final float strokeWidth = Utils.convertDpToPixel(
+                      Float.isNaN(entry.formLineWidth)
+                            ? legend.getFormLineWidth()
+                            : entry.formLineWidth);
+                mLegendFormPaint.setStrokeWidth(strokeWidth);
+                c.drawCircle(x + half, y, half, mLegendFormPaint);
+                break;
 
             case SQUARE:
                 mLegendFormPaint.setStyle(Paint.Style.FILL);
