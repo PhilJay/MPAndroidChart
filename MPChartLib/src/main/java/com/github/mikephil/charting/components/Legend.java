@@ -47,6 +47,11 @@ public class Legend extends ComponentBase {
         CIRCLE,
 
         /**
+         * Draw a circle stroke
+         */
+        CIRCLE_STROKE,
+
+        /**
          * Draw a horizontal line
          */
         LINE
