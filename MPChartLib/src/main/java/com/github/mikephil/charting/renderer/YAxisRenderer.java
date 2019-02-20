@@ -289,7 +289,7 @@ public class YAxisRenderer extends AxisRenderer {
             limitLinePath.moveTo(mViewPortHandler.contentLeft(), pts[1]);
             limitLinePath.lineTo(mViewPortHandler.contentRight(), pts[1]);
 
-            c.drawPath(limitLinePath, mLimitLinePaint);
+            //c.drawPath(limitLinePath, mLimitLinePaint);
             limitLinePath.reset();
             // c.drawLines(pts, mLimitLinePaint);
 
