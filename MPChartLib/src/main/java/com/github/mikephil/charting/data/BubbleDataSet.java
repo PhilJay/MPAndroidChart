@@ -94,14 +94,6 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
                 entries.add(entry);
         }
 
-        // debug message
-        StringBuilder sb = new StringBuilder(String.format(Locale.getDefault(),
-                "getEntriesForXValue(%.3f) found %d -> ", xValue, entries.size()));
-        for (BubbleEntry e : entries) {
-            sb.append(String.format(Locale.getDefault(), "x= %.1f, y= %.1f, xr= %.1f, yr= %.1f  ", e.getX(), e.getY(), e.getDrawnXRadius(), e.getDrawnYRadius()));
-        }
-        Log.i("BubbleDataSet", sb.toString());
-
         return entries;
     }
 
@@ -133,8 +125,6 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
             }
         }
 
-        // debug message
-        Log.i("BubbleDataSet", String.format(Locale.getDefault(), "getEntryIndex(%.2f, %.2f) found %s", xValue, yValue, mValues.get(index)));
         return index;
     }
 

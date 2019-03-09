@@ -19,7 +19,6 @@ import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.BarChartActivitySinus;
 import com.xxmassdeveloper.mpchartexample.BarChartPositiveNegative;
 import com.xxmassdeveloper.mpchartexample.BubbleChartActivity;
-import com.xxmassdeveloper.mpchartexample.BubbleChartHighlightActivity;
 import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
 import com.xxmassdeveloper.mpchartexample.CombinedChartActivity;
 import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
@@ -65,10 +64,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         // initialize the utilities
         Utils.init(this);
-
-        ////
-        addHeader("Demonstrate Highlight Problems");
-        addExample("Highlight Bubble Chart", "Click bubbles to highlight", BubbleChartHighlightActivity.class);
 
         addHeader("Line Charts");
 
