@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
@@ -73,7 +74,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
     @Override
     public void drawData(Canvas c) {
-
+        Log.i("___LineChartRenderer", "drawData");
         int width = (int) mViewPortHandler.getChartWidth();
         int height = (int) mViewPortHandler.getChartHeight();
 
@@ -105,7 +106,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     protected void drawDataSet(Canvas c, ILineDataSet dataSet) {
-
+        Log.i("___LineChartRenderer", "drawDataSet");
         if (dataSet.getEntryCount() < 1)
             return;
 
@@ -132,11 +133,12 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     protected void drawHorizontalBezier(ILineDataSet dataSet) {
-
+        Log.i("___LineChartRenderer", "drawHorizontalBezier");
         float phaseY = mAnimator.getPhaseY();
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
+        Log.i("___LineChartRenderer", "drawHorizontalBezier: set x bounds");
         mXBounds.set(mChart, dataSet);
 
         cubicPath.reset();
@@ -185,11 +187,12 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     protected void drawCubicBezier(ILineDataSet dataSet) {
-
+        Log.i("___LineChartRenderer", "drawCubicBezier");
         float phaseY = mAnimator.getPhaseY();
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
+        Log.i("___LineChartRenderer", "drawCubicBezier: set x bounds");
         mXBounds.set(mChart, dataSet);
 
         float intensity = dataSet.getCubicIntensity();
@@ -292,7 +295,7 @@ public class LineChartRenderer extends LineRadarRenderer {
      * @param dataSet
      */
     protected void drawLinear(Canvas c, ILineDataSet dataSet) {
-
+        Log.i("___LineChartRenderer", "drawLinear");
         int entryCount = dataSet.getEntryCount();
 
         final boolean isDrawSteppedEnabled = dataSet.getMode() == LineDataSet.Mode.STEPPED;
@@ -313,6 +316,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             canvas = c;
         }
 
+        Log.i("___LineChartRenderer", "drawLinear: set x bounds");
         mXBounds.set(mChart, dataSet);
 
         // if drawing filled is enabled
@@ -521,7 +525,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
     @Override
     public void drawValues(Canvas c) {
-
+        Log.i("___LineChartRenderer", "drawValues");
         if (isDrawingValuesAllowed(mChart)) {
 
             List<ILineDataSet> dataSets = mChart.getLineData().getDataSets();
@@ -544,6 +548,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
+                Log.i("___LineChartRenderer", "drawValues: set x bounds");
                 mXBounds.set(mChart, dataSet);
 
                 float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
@@ -612,7 +617,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     private float[] mCirclesBuffer = new float[2];
 
     protected void drawCircles(Canvas c) {
-
+        Log.i("___LineChartRenderer", "drawCircles");
         mRenderPaint.setStyle(Paint.Style.FILL);
 
         float phaseY = mAnimator.getPhaseY();
@@ -634,6 +639,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
+            Log.i("___LineChartRenderer", "drawCircles: set x bounds");
             mXBounds.set(mChart, dataSet);
 
             float circleRadius = dataSet.getCircleRadius();
@@ -691,7 +697,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
-
+        Log.i("___LineChartRenderer", "drawHighlighted[" + indices.length + "]");
         LineData lineData = mChart.getLineData();
 
         for (Highlight high : indices) {

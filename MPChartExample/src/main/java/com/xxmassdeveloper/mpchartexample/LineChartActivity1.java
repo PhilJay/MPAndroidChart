@@ -62,15 +62,18 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         setContentView(R.layout.activity_linechart);
 
         setTitle("LineChartActivity1");
+        Log.i("___LineChartActivity1", "onCreate");
 
         tvX = findViewById(R.id.tvXMax);
         tvY = findViewById(R.id.tvYMax);
 
         seekBarX = findViewById(R.id.seekBar1);
-        seekBarX.setOnSeekBarChangeListener(this);
-
         seekBarY = findViewById(R.id.seekBar2);
         seekBarY.setMax(180);
+        seekBarX.setProgress(45);
+        seekBarY.setProgress(180);
+
+        seekBarX.setOnSeekBarChangeListener(this);
         seekBarY.setOnSeekBarChangeListener(this);
 
 
@@ -164,12 +167,10 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         }
 
         // add data
-        seekBarX.setProgress(45);
-        seekBarY.setProgress(180);
         setData(45, 180);
 
         // draw points over time
-        chart.animateX(1500);
+        //chart.animateX(1500);
 
         // get the legend (only possible after setting data)
         Legend l = chart.getLegend();
@@ -179,7 +180,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     }
 
     private void setData(int count, float range) {
-
+        Log.i("___LineChartActivity1", "setData");
         ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {

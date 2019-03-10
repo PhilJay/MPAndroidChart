@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.data;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -374,7 +376,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             closest = closestYIndex;
         }
 
-
+        Log.i("___DataSet", String.format("getEntryIndex(%.1f, %.1f, %s) searched %d entries, returned: %s",
+                xValue, closestToY, rounding.name(), mValues.size(), mValues.get(closest)));
         return closest;
     }
 
@@ -416,6 +419,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             }
         }
 
+        Log.i("___DataSet", String.format("getEntriesForXValue(%.1f) searched %d entries, returned %d",
+                xValue, mValues.size(), entries.size()));
         return entries;
     }
 

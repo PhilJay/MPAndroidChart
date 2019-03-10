@@ -299,7 +299,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      * @param event
      */
     private void saveTouchStart(MotionEvent event) {
-
+        Log.i("___BLCListener", "saveTouchStart");
         mSavedMatrix.set(mMatrix);
         mTouchStartPoint.x = event.getX();
         mTouchStartPoint.y = event.getY();
@@ -607,7 +607,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-
+        Log.i("___BLCListener", "onSingleTapUp");
         mLastGesture = ChartGesture.SINGLE_TAP;
 
         OnChartGestureListener l = mChart.getOnChartGestureListener();

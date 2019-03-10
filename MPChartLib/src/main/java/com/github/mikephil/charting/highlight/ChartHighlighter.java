@@ -1,5 +1,7 @@
 package com.github.mikephil.charting.highlight;
 
+import android.util.Log;
+
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.data.DataSet;
@@ -158,18 +160,21 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @return
      */
     protected List<Highlight> buildHighlights(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
-
+        Log.i("___ChartHighlighter", String.format("buildHighlights index= %d xVal= %.1f, %s", dataSetIndex, xVal, rounding.name()));
         ArrayList<Highlight> highlights = new ArrayList<>();
 
         //noinspection unchecked
         List<Entry> entries = set.getEntriesForXValue(xVal);
+        Log.i("___ChartHighlighter", String.format("  buildHighlights found %d entries at %.2f", entries.size(), xVal));
         if (entries.size() == 0) {
             // Try to find closest x-value and take all entries for that x-value
             final Entry closest = set.getEntryForXValue(xVal, Float.NaN, rounding);
+            Log.i("___ChartHighlighter", String.format("    buildHighlights closest entry is %s", closest));
             if (closest != null)
             {
                 //noinspection unchecked
                 entries = set.getEntriesForXValue(closest.getX());
+                Log.i("___ChartHighlighter", String.format("      buildHighlights found %d entries at %.2f", entries.size(), closest.getX()));
             }
         }
 
@@ -183,7 +188,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
             highlights.add(new Highlight(
                     e.getX(), e.getY(),
                     (float) pixels.x, (float) pixels.y,
-                    dataSetIndex, set.getAxisDependency()));
+                    dataSetIndex, set.getEntryIndex(e), set.getAxisDependency()));
         }
 
         return highlights;
@@ -221,7 +226,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
                 }
             }
         }
-
+        Log.i("___ChartHighlighter", String.format("getClosestHighlightByPixel searching %d highlights, return %s", closestValues.size(), closest));
         return closest;
     }
 

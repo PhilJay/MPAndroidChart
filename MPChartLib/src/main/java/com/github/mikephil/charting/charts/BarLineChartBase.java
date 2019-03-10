@@ -185,6 +185,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.i("___BarLineChartBase", "onDraw");
         super.onDraw(canvas);
 
         if (mData == null)
@@ -234,6 +235,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         int clipRestoreCount = canvas.save();
         canvas.clipRect(mViewPortHandler.getContentRect());
 
+        Log.i("___BarLineChartBase", "drawData");
         mRenderer.drawData(canvas);
 
         if (!mXAxis.isDrawGridLinesBehindDataEnabled())
@@ -252,6 +254,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         // Removes clipping rectangle
         canvas.restoreToCount(clipRestoreCount);
 
+        Log.i("___BarLineChartBase", "drawExtras");
         mRenderer.drawExtras(canvas);
 
         if (mXAxis.isEnabled() && !mXAxis.isDrawLimitLinesBehindDataEnabled())
@@ -271,10 +274,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             clipRestoreCount = canvas.save();
             canvas.clipRect(mViewPortHandler.getContentRect());
 
+            Log.i("___BarLineChartBase", "drawValues");
             mRenderer.drawValues(canvas);
 
             canvas.restoreToCount(clipRestoreCount);
         } else {
+            Log.i("___BarLineChartBase", "drawValues");
             mRenderer.drawValues(canvas);
         }
 
@@ -282,6 +287,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         drawDescription(canvas);
 
+        Log.i("___BarLineChartBase", "drawMarkers");
         drawMarkers(canvas);
 
         if (mLogEnabled) {
