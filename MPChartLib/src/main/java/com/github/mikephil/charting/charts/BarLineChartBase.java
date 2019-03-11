@@ -36,6 +36,8 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
+import androidx.annotation.Nullable;
+
 /**
  * Base-class of LineChart, BarChart, ScatterChart and CandleStickChart.
  *
@@ -1645,5 +1647,60 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         } else {
             mViewPortHandler.refresh(mViewPortHandler.getMatrixTouch(), this, true);
         }
+    }
+
+
+    /**
+     * Returns true if the chart has an x axis.
+     *
+     * @return has x axis
+     */
+    @Override
+    public boolean hasXAxis() {
+        return true;
+    }
+
+    /**
+     * Returns true if the chart has a left axis.
+     *
+     * @return has left axis
+     */
+    @Override
+    public boolean hasLeftAxis() {
+        return mAxisLeft != null;
+    }
+
+    /**
+     * Returns the left axis, or null if there is not one.
+     * Do not call before checking hasLeftAxis, or you may get a run time exception.
+     *
+     * @return left axis or null
+     */
+    @Nullable
+    @Override
+    public YAxis getLeftAxis() {
+        return mAxisLeft;
+    }
+
+    /**
+     * Returns true if the chart has a right axis.
+     *
+     * @return has right axis
+     */
+    @Override
+    public boolean hasRightAxis() {
+        return mAxisRight != null;
+    }
+
+    /**
+     * Returns the right axis, or null if there is not one.
+     * Do not call before checking hasRightAxis, or you may get a run time exception.
+     *
+     * @return right axis or null
+     */
+    @Nullable
+    @Override
+    public YAxis getRightAxis() {
+        return mAxisRight;
     }
 }
