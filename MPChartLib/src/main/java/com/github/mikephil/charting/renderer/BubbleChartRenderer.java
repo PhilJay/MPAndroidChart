@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
@@ -51,8 +52,10 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         for (IBubbleDataSet set : bubbleData.getDataSets()) {
 
-            if (set.isVisible())
+            if (set.isVisible()) {
+                Log.i("___BubbleChartRenderer", "draw data set " + set.getLabel());
                 drawDataSet(c, set);
+            }
         }
     }
 
@@ -230,13 +233,19 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         float phaseY = mAnimator.getPhaseY();
 
         for (Highlight high : indices) {
-
+            Log.i("___BubbleChartRenderer", "drawHighlighted " + high);
             IBubbleDataSet set = bubbleData.getDataSetByIndex(high.getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            final BubbleEntry entry = set.getEntryForXValue(high.getX(), high.getY());
+            // if we know which entry the highlight comes from, don't go searching for it
+            BubbleEntry entry;
+            if (high.getDataIndex() >= 0)
+                entry = set.getEntryForIndex(high.getDataIndex());
+            else
+                // ok, search for it
+                entry = set.getEntryForXValue(high.getX(), high.getY());
 
             if (entry.getY() != high.getY())
                 continue;

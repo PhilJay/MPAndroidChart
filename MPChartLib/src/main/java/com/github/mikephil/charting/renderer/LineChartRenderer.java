@@ -707,12 +707,16 @@ public class LineChartRenderer extends LineRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            Entry e = set.getEntryForXValue(high.getX(), high.getY());
+            Entry entry;
+            if (high.getDataIndex() >= 0)
+                entry = set.getEntryForIndex(high.getDataIndex());
+            else
+                entry = set.getEntryForXValue(high.getX(), high.getY());
 
-            if (!isInBoundsX(e, set))
+            if (!isInBoundsX(entry, set))
                 continue;
 
-            MPPointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(e.getX(), e.getY() * mAnimator
+            MPPointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(entry.getX(), entry.getY() * mAnimator
                     .getPhaseY());
 
             high.setDraw((float) pix.x, (float) pix.y);

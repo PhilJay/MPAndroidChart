@@ -337,7 +337,12 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (highlight.getDataSetIndex() >= mDataSets.size())
             return null;
         else {
-            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXValue(highlight.getX(), highlight.getY());
+            Entry entry;
+            if (highlight.getDataIndex() >= 0)
+                return mDataSets.get(highlight.getDataSetIndex()).getEntryForIndex(highlight.getDataIndex());
+            else
+                return mDataSets.get(highlight.getDataSetIndex()).getEntryForXValue(highlight.getX(), highlight.getY());
+
         }
     }
 

@@ -20,6 +20,6 @@ public class PieHighlighter extends PieRadarHighlighter<PieChart> {
 
         final Entry entry = set.getEntryForIndex(index);
 
-        return new Highlight(index, entry.getY(), x, y, 0, set.getAxisDependency());
+        return new Highlight(index, entry.getY(), x, y, 0, index, set.getAxisDependency());
     }
 }

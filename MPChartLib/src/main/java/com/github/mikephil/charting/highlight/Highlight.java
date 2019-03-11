@@ -1,7 +1,11 @@
 
 package com.github.mikephil.charting.highlight;
 
+import android.util.Log;
+
 import com.github.mikephil.charting.components.YAxis;
+
+import java.util.Locale;
 
 /**
  * Contains information needed to determine the highlighted value.
@@ -64,12 +68,14 @@ public class Highlight {
         this.mX = x;
         this.mY = y;
         this.mDataSetIndex = dataSetIndex;
+        mDataIndex = -1;
+        mStackIndex = -1;
     }
 
-    public Highlight(float x, int dataSetIndex, int stackIndex) {
-        this(x, Float.NaN, dataSetIndex);
-        this.mStackIndex = stackIndex;
-    }
+//    public Highlight(float x, int dataSetIndex, int stackIndex) {
+//        this(x, Float.NaN, dataSetIndex);
+//        this.mStackIndex = stackIndex;
+//    }
 
     /**
      * constructor
@@ -78,13 +84,16 @@ public class Highlight {
      * @param y            the y-value of the highlighted value
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      */
-    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, YAxis.AxisDependency axis) {
+    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int dataIndex, YAxis.AxisDependency axis) {
         this.mX = x;
         this.mY = y;
         this.mXPx = xPx;
         this.mYPx = yPx;
         this.mDataSetIndex = dataSetIndex;
         this.axis = axis;
+        this.mDataIndex = dataIndex;
+        this.mStackIndex = -1;
+        Log.i("___new Highlight", this.toString());
     }
 
     /**
@@ -96,8 +105,8 @@ public class Highlight {
      * @param stackIndex   references which value of a stacked-bar entry has been
      *                     selected
      */
-    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int stackIndex, YAxis.AxisDependency axis) {
-        this(x, y, xPx, yPx, dataSetIndex, axis);
+    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int dataIndex, int stackIndex, YAxis.AxisDependency axis) {
+        this(x, y, xPx, yPx, dataSetIndex, dataIndex, axis);
         this.mStackIndex = stackIndex;
     }
 
@@ -229,7 +238,7 @@ public class Highlight {
 
     @Override
     public String toString() {
-        return "Highlight, x: " + mX + ", y: " + mY + ", dataSetIndex: " + mDataSetIndex
-                + ", stackIndex (only stacked barentry): " + mStackIndex;
+        return String.format(Locale.getDefault(), "Highlight: x= %.1f, y= %.1f, dataSetIndex= %d, dataIndex= %d, stackIndex= %d",
+                mX, mY, mDataSetIndex, mDataIndex, mStackIndex);
     }
 }

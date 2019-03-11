@@ -343,16 +343,20 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            CandleEntry e = set.getEntryForXValue(high.getX(), high.getY());
+            CandleEntry entry;
+            if (high.getDataIndex() >= 0)
+                entry = set.getEntryForIndex(high.getDataIndex());
+            else
+                entry = set.getEntryForXValue(high.getX(), high.getY());
 
-            if (!isInBoundsX(e, set))
+            if (!isInBoundsX(entry, set))
                 continue;
 
-            float lowValue = e.getLow() * mAnimator.getPhaseY();
-            float highValue = e.getHigh() * mAnimator.getPhaseY();
+            float lowValue = entry.getLow() * mAnimator.getPhaseY();
+            float highValue = entry.getHigh() * mAnimator.getPhaseY();
             float y = (lowValue + highValue) / 2f;
 
-            MPPointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(e.getX(), y);
+            MPPointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(entry.getX(), y);
 
             high.setDraw((float) pix.x, (float) pix.y);
 
