@@ -6,7 +6,7 @@ android {
         applicationId "com.xxmassdeveloper.mpchartexample"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 56
+        versionCode 57
         versionName '3.1.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.0.2"
     implementation 'com.google.android.material:material:1.0.0'
     implementation project(':MPChartLib')
 }
