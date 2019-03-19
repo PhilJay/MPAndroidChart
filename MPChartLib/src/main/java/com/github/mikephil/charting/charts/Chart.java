@@ -633,12 +633,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         // copy to mHighlights
         Highlights highlights = new Highlights();
-        if (highs != null) {
-            for (Highlight h : highs)
-                highlights.add(h);
-        }
+        for (Highlight h : highs)
+            highlights.add(h);
 
-        setHighlightValues(highlights);
+        setHighlights(highlights);
     }
 
     /**
@@ -1200,12 +1198,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     @Override
     public float getXChartMax() {
-        return mXAxis.getAxisMaximum();
+        return mXAxis.mAxisMaximum;
     }
 
     @Override
     public float getXChartMin() {
-        return mXAxis.getAxisMinimum();
+        return mXAxis.mAxisMinimum;
     }
 
     @Override

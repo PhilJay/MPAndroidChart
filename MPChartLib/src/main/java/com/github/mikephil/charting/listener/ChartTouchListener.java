@@ -7,6 +7,8 @@ import android.view.View;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.highlight.Highlight;
 
+import static com.github.mikephil.charting.highlight.Highlight.Type.NULL;
+
 /**
  * Created by philipp on 12/06/15.
  */
@@ -117,11 +119,14 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
      */
     protected void performHighlight(Highlight h, MotionEvent e) {
 
-        if (h == null || h.equalTo(mLastHighlighted)) {
-            mChart.highlightValue(null, true);
+        if (h == null)
+            h = new Highlight(NULL);
+
+        if (h.isNull() || h.equals(mLastHighlighted)) {
+            mChart.addHighlight(null, true);
             mLastHighlighted = null;
         } else {
-            mChart.highlightValue(h, true);
+            mChart.addHighlight(h, true);
             mLastHighlighted = h;
         }
     }
