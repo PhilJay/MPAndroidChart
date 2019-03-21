@@ -9,6 +9,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.renderer.scatter.IShapeRenderer;
@@ -169,12 +170,23 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
     public void drawExtras(Canvas c) {
     }
 
-    @Override
+    @Override @Deprecated
     public void drawHighlighted(Canvas c, Highlight[] indices) {
+        drawHighlights(c, new Highlights(indices));
+    }
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
 
         ScatterData scatterData = mChart.getScatterData();
 
-        for (Highlight high : indices) {
+        for (Highlight high : highlights) {
 
             IScatterDataSet set = scatterData.getDataSetByIndex(high.getDataSetIndex());
 

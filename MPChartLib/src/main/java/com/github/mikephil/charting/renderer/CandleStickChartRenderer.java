@@ -9,6 +9,7 @@ import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -332,11 +333,23 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
     }
 
     @Override
+    @Deprecated
     public void drawHighlighted(Canvas c, Highlight[] indices) {
+        drawHighlights(c, new Highlights(indices));
+    }
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
 
         CandleData candleData = mChart.getCandleData();
 
-        for (Highlight high : indices) {
+        for (Highlight high : highlights) {
 
             ICandleDataSet set = candleData.getDataSetByIndex(high.getDataSetIndex());
 

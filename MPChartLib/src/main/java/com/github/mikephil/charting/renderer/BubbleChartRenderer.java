@@ -11,6 +11,7 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.MPPointD;
@@ -226,13 +227,25 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     private float[] _hsvBuffer = new float[3];
 
     @Override
+    @Deprecated
     public void drawHighlighted(Canvas c, Highlight[] indices) {
+        drawHighlights(c, new Highlights(indices));
+    }
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
 
         BubbleData bubbleData = mChart.getBubbleData();
 
         float phaseY = mAnimator.getPhaseY();
 
-        for (Highlight high : indices) {
+        for (Highlight high : highlights) {
             Log.i("___BubbleChartRenderer", "drawHighlighted " + high);
             IBubbleDataSet set = bubbleData.getDataSetByIndex(high.getDataSetIndex());
 

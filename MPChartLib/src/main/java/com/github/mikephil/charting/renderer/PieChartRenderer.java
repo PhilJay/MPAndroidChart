@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -787,10 +788,22 @@ public class PieChartRenderer extends DataRenderer {
     }
 
     protected RectF mDrawHighlightedRectF = new RectF();
-    @Override
-    public void drawHighlighted(Canvas c, Highlight[] indices) {
 
-        /* Skip entirely if using rounded circle slices, because it doesn't make sense to highlight
+    @Override @Deprecated
+    public void drawHighlighted(Canvas c, Highlight[] indices) {
+        drawHighlights(c, new Highlights( indices));
+    }
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
+
+    /* Skip entirely if using rounded circle slices, because it doesn't make sense to highlight
          * in this way.
          * TODO: add support for changing slice color with highlighting rather than only shifting the slice
          */
@@ -816,17 +829,16 @@ public class PieChartRenderer extends DataRenderer {
         final RectF highlightedCircleBox = mDrawHighlightedRectF;
         highlightedCircleBox.set(0,0,0,0);
 
-        for (int i = 0; i < indices.length; i++) {
+        for (Highlight highlight : highlights) {
 
             // get the index to highlight
-            int index = (int) indices[i].getX();
+            int index = (int) highlight.getX();
 
             if (index >= drawAngles.length)
                 continue;
 
             IPieDataSet set = mChart.getData()
-                    .getDataSetByIndex(indices[i]
-                            .getDataSetIndex());
+                    .getDataSetByIndex(highlight.getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())
                 continue;

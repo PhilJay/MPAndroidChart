@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -295,9 +296,19 @@ public class RadarChartRenderer extends LineRadarRenderer {
         MPPointF.recycleInstance(p2out);
     }
 
-    @Override
+    @Override @Deprecated
     public void drawHighlighted(Canvas c, Highlight[] indices) {
+        drawHighlights(c, new Highlights(indices));
+    }
 
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
         float sliceangle = mChart.getSliceAngle();
 
         // calculate the factor that is needed for transforming the value to
@@ -309,7 +320,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         RadarData radarData = mChart.getData();
 
-        for (Highlight high : indices) {
+        for (Highlight high : highlights) {
 
             IRadarDataSet set = radarData.getDataSetByIndex(high.getDataSetIndex());
 

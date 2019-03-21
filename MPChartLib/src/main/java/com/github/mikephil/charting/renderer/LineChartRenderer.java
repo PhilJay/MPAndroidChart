@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -696,11 +697,23 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     @Override
+    @Deprecated
     public void drawHighlighted(Canvas c, Highlight[] indices) {
-        Log.i("___LineChartRenderer", "drawHighlighted[" + indices.length + "]");
+        drawHighlights(c, new Highlights(indices));
+    }
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
+        Log.i("___LineChartRenderer", "drawHighlighted[" + highlights.size() + "]");
         LineData lineData = mChart.getLineData();
 
-        for (Highlight high : indices) {
+        for (Highlight high : highlights) {
 
             ILineDataSet set = lineData.getDataSetByIndex(high.getDataSetIndex());
 
