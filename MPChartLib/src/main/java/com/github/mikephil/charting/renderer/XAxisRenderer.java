@@ -5,11 +5,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -116,30 +119,48 @@ public class XAxisRenderer extends AxisRenderer {
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
             pointF.x = 0.5f;
             pointF.y = 1.0f;
-            drawLabels(c, mViewPortHandler.contentTop() - yoffset, pointF);
+            float yPosition = mViewPortHandler.contentTop() - yoffset;
+            drawLabels(c, yPosition, pointF);
+            if (mAxis.isDrawHighlightValue())
+                drawHighlightLabels(c, yPosition, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
             pointF.x = 0.5f;
             pointF.y = 1.0f;
-            drawLabels(c, mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight, pointF);
+            float yPosition = mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight;
+                    drawLabels(c, yPosition, pointF);
+            if (mAxis.isDrawHighlightValue())
+                drawHighlightLabels(c, yPosition, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
             pointF.x = 0.5f;
             pointF.y = 0.0f;
-            drawLabels(c, mViewPortHandler.contentBottom() + yoffset, pointF);
+            float yPosition = mViewPortHandler.contentBottom() + yoffset;
+            drawLabels(c, yPosition, pointF);
+            if (mAxis.isDrawHighlightValue())
+                drawHighlightLabels(c, yPosition, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
             pointF.x = 0.5f;
             pointF.y = 0.0f;
-            drawLabels(c, mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight, pointF);
+            float yPosition = mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight;
+            drawLabels(c, yPosition, pointF);
+            if (mAxis.isDrawHighlightValue())
+                drawHighlightLabels(c, yPosition, pointF);
 
         } else { // BOTH SIDED
             pointF.x = 0.5f;
             pointF.y = 1.0f;
-            drawLabels(c, mViewPortHandler.contentTop() - yoffset, pointF);
+            float yPosition1 = mViewPortHandler.contentTop() - yoffset;
+            drawLabels(c, yPosition1, pointF);
+            if (mAxis.isDrawHighlightValue())
+                drawHighlightLabels(c, yPosition1, pointF);
             pointF.x = 0.5f;
             pointF.y = 0.0f;
-            drawLabels(c, mViewPortHandler.contentBottom() + yoffset, pointF);
+            float yPosition2 =mViewPortHandler.contentBottom() + yoffset;
+                    drawLabels(c, yPosition2, pointF);
+            if (mAxis.isDrawHighlightValue())
+                drawHighlightLabels(c, yPosition2, pointF);
         }
         MPPointF.recycleInstance(pointF);
     }
@@ -181,27 +202,28 @@ public class XAxisRenderer extends AxisRenderer {
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
+        float[] xValues = mXAxis.isCenterAxisLabelsEnabled() ? mXAxis.mCenteredEntries : mAxis.mEntries;
 
-        for (int i = 0; i < positions.length; i += 2) {
-
-            // only fill x values
-            if (centeringEnabled) {
-                positions[i] = mXAxis.mCenteredEntries[i / 2];
-            } else {
-                positions[i] = mXAxis.mEntries[i / 2];
-            }
+        // create xy position coordinate array for each label
+        float[] positions = new float[xValues.length * 2];
+        int i = 0;
+        for (float x : xValues) {
+            // Transform one entry at a time, because matrix multiply is O(n^3). Here n == 2, vs data set size
+            MPPointD point = mTrans.getPixelForValues(x, 0f);
+            positions[i++] = (float) point.x;
+            positions[i++] = (float) point.y;
+            MPPointD.recycleInstance(point);
         }
 
-        mTrans.pointValuesToPixel(positions);
+        // loop through the labels
+        for (int k = 0; k < xValues.length; ++k) {
 
-        for (int i = 0; i < positions.length; i += 2) {
-
-            float x = positions[i];
+            float x = positions[k * 2];
+            float y = positions[k + 2 + 1];
 
             if (mViewPortHandler.isInBoundsX(x)) {
 
-                String label = mXAxis.getValueFormatter().getAxisLabel(mXAxis.mEntries[i / 2], mXAxis);
+                String label = mXAxis.getValueFormatter().getAxisLabel(mXAxis.mEntries[k], mXAxis);
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
@@ -221,13 +243,15 @@ public class XAxisRenderer extends AxisRenderer {
                     }
                 }
 
-                drawLabel(c, label, x, pos, anchor, labelRotationAngleDegrees);
+                Log.i("___ XAxisRenderer", String.format("draw label %s @ %.2f, %.2f", label, x, pos));
+                drawLabel(c, label, x, pos, mAxisLabelPaint, anchor, labelRotationAngleDegrees);
             }
         }
+        drawHighlightLabels(c, pos, anchor);
     }
 
-    protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
-        Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+    protected void drawLabel(Canvas c, String formattedLabel, float x, float y, Paint paint, MPPointF anchor, float angleDegrees) {
+        Utils.drawXAxisValue(c, formattedLabel, x, y, paint, anchor, angleDegrees);
     }
     protected Path mRenderGridLinesPath = new Path();
     protected float[] mRenderGridLinesBuffer = new float[2];
@@ -397,4 +421,33 @@ public class XAxisRenderer extends AxisRenderer {
             }
         }
     }
+
+    private void drawHighlightLabels(Canvas c, float pos, MPPointF anchor) {
+        for (Highlight h : mAxis.getHighlights())
+            drawHighlightLabel(c, h, pos, anchor);
+    }
+
+    /**
+     * Draws a label at the highlight point.
+     *
+     * @param highlight
+     */
+    private void drawHighlightLabel(Canvas c, Highlight highlight, float yPix, MPPointF anchor) {
+        String formattedLabel = mXAxis.getValueFormatter().getAxisLabel(highlight.getX(), mXAxis);
+
+        float xPix = highlight.getXPx();
+
+        if (!mViewPortHandler.isInBoundsX(xPix)) {
+            // un-draw out-of-bounds label
+            highlight.setDraw(Float.NaN, Float.NaN);
+            return;
+        }
+
+        PointF drawn = Utils.drawXAxisHighlight(c, formattedLabel, xPix, yPix, mHighlightFillPadding, anchor, mAxisLabelPaint,
+                mHighlightTextColor, mHighlightFillColor, mXAxis.getLabelRotationAngle());
+        highlight.setDraw(drawn.x, drawn.y);
+        Log.i("___ XAxisRenderer", String.format("draw highlight label %s @ %.2f, %.2f", formattedLabel, xPix, yPix));
+    }
+
+
 }

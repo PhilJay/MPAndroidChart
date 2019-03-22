@@ -33,10 +33,10 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mHighlightEnabled = false;
 
     /**
-     * If true, the label nearest to each highligt is rendered in
-     * a diffetenr color.
+     * If true, the highlight value is rendered in front of
+     * the axis labels in a different color.
      */
-    protected boolean mSnapHighlightToLabel = false;
+    protected boolean mDrawHighlightValue = false;
 
     /**
      * custom formatter that is used instead of the auto-formatter if set
@@ -841,12 +841,12 @@ public abstract class AxisBase extends ComponentBase {
         this.mHighlightEnabled = mHighlightEnabled;
     }
 
-    public boolean isSnapHighlightToLabel() {
-        return mSnapHighlightToLabel;
+    public boolean isDrawHighlightValue() {
+        return mDrawHighlightValue;
     }
 
-    public void setSnapHighlightToLabel(boolean mSnapHighlightToLabel) {
-        this.mSnapHighlightToLabel = mSnapHighlightToLabel;
+    public void setDrawHighlightValue(boolean mDrawHighlightValue) {
+        this.mDrawHighlightValue = mDrawHighlightValue;
     }
 
     /**
@@ -865,4 +865,6 @@ public abstract class AxisBase extends ComponentBase {
     public void setMultipleHighlightsEnabled(boolean enabled) {
         mHighlights.setMultipleHighlightsEnabled(enabled);
     }
+
+
 }
