@@ -13,10 +13,8 @@ import android.graphics.Paint.Align;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
-import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,7 +23,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.IMarker;
@@ -37,10 +34,12 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.highlight.IHighlighter;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnAxisSelectedListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
@@ -54,6 +53,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
+import static com.github.mikephil.charting.highlight.Highlight.Type.NULL;
 
 /**
  * Baseclass of all Chart-Views.
@@ -136,6 +141,13 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * listener that is called when a value on the chart is selected
      */
     protected OnChartValueSelectedListener mSelectionListener;
+
+
+    /**
+     * listener that is called when an axis is selected
+     */
+    protected OnAxisSelectedListener mAxisSelectedListener;
+
 
     protected ChartTouchListener mChartTouchListener;
 
@@ -450,8 +462,16 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * array of Highlight objects that reference the highlighted slices in the
      * chart
+     *
+     * @deprecated in favor of Highlights
      */
+    @Deprecated
     protected Highlight[] mIndicesToHighlight;
+
+    /**
+     * object to store the currently highlighted values
+     */
+    protected Highlights mValueHighlights = new Highlights();
 
     /**
      * The maximum distance in dp away from an entry causing it to highlight.
@@ -477,10 +497,19 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * Returns the array of currently highlighted values. This might a null or
      * empty array if nothing is highlighted.
      *
+     * @deprecated use getHighlights()
      * @return
      */
+    @Deprecated
     public Highlight[] getHighlighted() {
-        return mIndicesToHighlight;
+        return mValueHighlights.asArray();
+    }
+
+    /**
+     * Returns the currently highlighted values.
+     */
+    public Highlights getHighlights() {
+        return mValueHighlights;
     }
 
     /**
@@ -507,26 +536,84 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * values to highlight. Checks if the highlight array is null, has a length
      * of zero or if the first object is null.
      *
+     * @deprecated use hasValueHighligh
      * @return
      */
+    @Deprecated
     public boolean valuesToHighlight() {
-        return mIndicesToHighlight == null || mIndicesToHighlight.length <= 0
-                || mIndicesToHighlight[0] == null ? false
-                : true;
+        return hasValueHighlight();
     }
+
+    /**
+     * Returns true if there is one or more value highlight
+     * @return values to highlight
+     */
+    public boolean hasValueHighlight() {
+        return !mValueHighlights.isEmpty();
+    }
+
+    /**
+     * Returns true if there is an x-axis with a highlight
+     * @return x-axis exists and has highlight
+     */
+    public boolean hasXAxisHighlight() {
+        return getXAxis().hasHighlight();
+    }
+
+    /**
+     * Returns true if there is a left axis with a highlight
+     * @return left axis exists and has highlight
+     */
+    public boolean hasLeftAxisHighlight() {
+        return hasLeftAxis() && getLeftAxis().hasHighlight();
+    }
+
+    /**
+     * Returns true if there is a right axis with a highlight
+     * @return right axis exists and has highlight
+     */
+    public boolean hasRightAxisHighlight() {
+        return hasRightAxis() && getRightAxis().hasHighlight();
+    }
+
+    /**
+     * Returns true if there is any highlight
+     * @return a highlight exists
+     */
+    public boolean hasHighlight() {
+        return hasValueHighlight() || hasXAxisHighlight()
+                || hasLeftAxisHighlight() || hasRightAxisHighlight();
+    }
+
 
     /**
      * Sets the last highlighted value for the touchlistener.
      *
+     * @deprecated use setLastHighlight
      * @param highs
      */
+    @Deprecated
     protected void setLastHighlighted(Highlight[] highs) {
 
         if (highs == null || highs.length <= 0 || highs[0] == null) {
-            mChartTouchListener.setLastHighlighted(null);
+            setLastHighlight(new Highlight(NULL));
         } else {
-            mChartTouchListener.setLastHighlighted(highs[0]);
+            setLastHighlight(highs[0]);
         }
+    }
+
+    /**
+     * Sets the last highlighted value for the touchlistener.
+     * @param high last value highlight
+     */
+    protected void setLastHighlight(Highlight high) {
+        if (mChartTouchListener == null)
+            return;
+
+        if (high == null)
+            high = new Highlight(NULL);
+
+        mChartTouchListener.setLastHighlighted(high);
     }
 
     /**
@@ -535,17 +622,46 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * programmatically highlight values.
      * This method *will not* call the listener.
      *
+     * @deprecated use setHighlights(highlights)
      * @param highs
      */
+    @Deprecated
     public void highlightValues(Highlight[] highs) {
 
         // set the indices to highlight
         mIndicesToHighlight = highs;
 
-        setLastHighlighted(highs);
+        // copy to mHighlights
+        Highlights highlights = new Highlights();
+        if (highs != null) {
+            for (Highlight h : highs)
+                highlights.add(h);
+        }
+
+        setHighlightValues(highlights);
+    }
+
+    /**
+     * Highlights the values provided.
+     * @param highs highlights
+     */
+    public void setHighlights(@Nullable Highlights highs) {
+        if (highs == null) {
+            mIndicesToHighlight = null;
+            mValueHighlights.clear();
+            setLastHighlight(new Highlight(NULL));
+        } else {
+            mIndicesToHighlight = highs.asArray(); // legacy support
+            mValueHighlights = highs;
+            if (highs.isEmpty())
+                setLastHighlight(new Highlight(NULL));
+            else
+                setLastHighlight(highs.iterator().next());
+        }
 
         // redraw the chart
         invalidate();
+
     }
 
     /**
@@ -612,49 +728,94 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * Highlights the value selected by touch gesture. Unlike
      * highlightValues(...), this generates a callback to the
-     * OnChartValueSelectedListener.
+     * OnChartValueSelectedListener or OnAxisSelectedListener.
      *
+     * @deprecated use highlightValue
      * @param high         - the highlight object
      * @param callListener - call the listener
      */
+    @Deprecated
     public void highlightValue(Highlight high, boolean callListener) {
+        addHighlight(high, callListener);
+    }
 
-        Entry e = null;
+    public void addHighlight(Highlight high, boolean callListener) {
 
         if (high == null)
-            mIndicesToHighlight = null;
-        else {
+            high = new Highlight(NULL);
+        addHighlight(high);
 
-            if (mLogEnabled)
-                Log.i(LOG_TAG, "Highlighted: " + high.toString());
+        if (mLogEnabled)
+            Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
-            e = mData.getEntryForHighlight(high);
-            if (e == null) {
-                mIndicesToHighlight = null;
-                high = null;
-            } else {
-
-                // set the indices to highlight
-                mIndicesToHighlight = new Highlight[]{
-                        high
-                };
-            }
-        }
-
-        setLastHighlighted(mIndicesToHighlight);
-
-        if (callListener && mSelectionListener != null) {
-
-            if (!valuesToHighlight())
-                mSelectionListener.onNothingSelected();
-            else {
-                // notify the listener
-                mSelectionListener.onValueSelected(e, high);
+        // notify the appropriate listener
+        if (callListener) {
+            switch (high.getType()) {
+                case NULL:
+                    // ignore this null if there are highlights
+                    if (!hasValueHighlight())
+                        if (mSelectionListener != null)
+                            mSelectionListener.onNothingSelected();
+                        else if (mAxisSelectedListener != null)
+                            mAxisSelectedListener.onNothingSelected();
+                    break;
+                case VALUE:
+                    if (mSelectionListener != null) {
+                        Entry entry = mData.getEntryForHighlight(high);
+                        Log.i(LOG_TAG, "  highlightValue: " + entry.toString());
+                        mSelectionListener.onValueSelected(entry, high);
+                    }
+                    break;
+                case X_AXIS:
+                case LEFT_AXIS:
+                case RIGHT_AXIS:
+                    Log.i(LOG_TAG, "  highlightAxis: " + high.toString());
+                    if (mAxisSelectedListener != null)
+                        mAxisSelectedListener.onAxisSelected(high);
             }
         }
 
         // redraw the chart
         invalidate();
+    }
+
+    /**
+     * Add a value highlight to mIndicesToHighlight. Sets last highlighted. If null, clears all highlights.
+     *
+     * @param highlight should be VALUE, or NULL to clear all highlights
+     */
+    private void addHighlight(Highlight highlight) {
+        if (highlight == null)
+            highlight = new Highlight(NULL);
+        if (mLogEnabled) Log.i("Highlights: addHighlight", highlight.toString());
+        switch (highlight.getType()) {
+            case NULL:
+                clearAllHighlights();
+                break;
+            case VALUE:
+                mValueHighlights.add(highlight);
+
+                // legacy support
+                if (mValueHighlights.isMultipleHighlightsEnabled() && hasValueHighlight()) {
+                    mIndicesToHighlight = Arrays.copyOf(mIndicesToHighlight, mIndicesToHighlight.length + 1);
+                    mIndicesToHighlight[mIndicesToHighlight.length - 1] = highlight;
+                } else {
+                    mIndicesToHighlight = new Highlight[]{highlight};
+                }
+                break;
+            case X_AXIS:
+                if (hasXAxis())
+                    getXAxis().addHighlight(highlight);
+                break;
+            case LEFT_AXIS:
+                if (hasLeftAxis())
+                    getLeftAxis().addHighlight(highlight);
+                break;
+            case RIGHT_AXIS:
+                if (hasRightAxis())
+                    getRightAxis().addHighlight(highlight);
+        }
+        setLastHighlight(highlight);
     }
 
     /**
@@ -673,6 +834,36 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             return null;
         } else
             return getHighlighter().getHighlight(x, y);
+    }
+
+    /**
+     * Clears highlights associated with the data values.
+     */
+    @Override
+    public void clearValueHighlights() {
+        mValueHighlights.clear();
+        mIndicesToHighlight = null;
+    }
+
+    /**
+     * Clears all highlights from data values and axes.
+     */
+    @Override
+    public void clearAllHighlights() {
+        clearValueHighlights();
+        mXAxis.clearHighlights();
+        if (hasLeftAxis())
+            getLeftAxis().clearHighlights();
+        if (hasRightAxis())
+            getRightAxis().clearHighlights();
+    }
+
+    public OnAxisSelectedListener getAxisSelectedListener() {
+        return mAxisSelectedListener;
+    }
+
+    public void setAxisSelectedListener(OnAxisSelectedListener mAxisSelectedListener) {
+        this.mAxisSelectedListener = mAxisSelectedListener;
     }
 
     /**
@@ -715,20 +906,19 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected void drawMarkers(Canvas canvas) {
 
         // if there is no marker view or drawing marker is disabled
-        if (mMarker == null || !isDrawMarkersEnabled() || !valuesToHighlight())
+        if (mMarker == null || !isDrawMarkersEnabled() || !hasValueHighlight())
             return;
 
-        for (int i = 0; i < mIndicesToHighlight.length; i++) {
-
-            Highlight highlight = mIndicesToHighlight[i];
+        int i = 0;
+        for (Highlight highlight : mValueHighlights) {
 
             IDataSet set = mData.getDataSetByIndex(highlight.getDataSetIndex());
 
-            Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
-            int entryIndex = set.getEntryIndex(e);
+            Entry entry = mData.getEntryForHighlight(highlight);
+            int entryIndex = set.getEntryIndex(entry);
 
             // make sure entry not null
-            if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
+            if (entry == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
                 continue;
 
             float[] pos = getMarkerPosition(highlight);
@@ -738,10 +928,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 continue;
 
             // callbacks to update the content
-            mMarker.refreshContent(e, highlight);
+            mMarker.refreshContent(entry, highlight);
 
             // draw the marker
             mMarker.draw(canvas, pos[0], pos[1]);
+
+            ++i;
         }
     }
 
@@ -1008,12 +1200,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     @Override
     public float getXChartMax() {
-        return mXAxis.mAxisMaximum;
+        return mXAxis.getAxisMaximum();
     }
 
     @Override
     public float getXChartMin() {
-        return mXAxis.mAxisMinimum;
+        return mXAxis.getAxisMinimum();
     }
 
     @Override
