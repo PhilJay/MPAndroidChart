@@ -13,12 +13,30 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * Base-class of all axes (previously called labels).
  *
  * @author Philipp Jahoda
  */
 public abstract class AxisBase extends ComponentBase {
+
+    /**
+     * Highlights for this axis.
+     */
+    protected Highlights mHighlights;
+
+    /**
+     * Are highlights enabled for this axis?
+     */
+    protected boolean mHighlightEnabled = false;
+
+    /**
+     * If true, the label nearest to each highligt is rendered in
+     * a diffetenr color.
+     */
+    protected boolean mSnapHighlightToLabel = false;
 
     /**
      * custom formatter that is used instead of the auto-formatter if set
@@ -154,18 +172,14 @@ public abstract class AxisBase extends ComponentBase {
     public float mAxisRange = 0f;
 
     /**
-     * Highlights for this axis.
-     */
-    protected Highlights mHighlights;
-
-    /**
      * default constructor
      */
-    public AxisBase() {
+    protected AxisBase() {
         this.mTextSize = Utils.convertDpToPixel(10f);
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(5f);
         this.mLimitLines = new ArrayList<LimitLine>();
+        this.mHighlights = new Highlights();
     }
 
     /**
@@ -787,6 +801,11 @@ public abstract class AxisBase extends ComponentBase {
         this.mSpaceMax = mSpaceMax;
     }
 
+    /**
+     * Returns the highlights for this axis.
+     * @return highlights
+     */
+    @NonNull
     public Highlights getHighlights() {
         return mHighlights;
     }
@@ -803,13 +822,47 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Adds a highlight.
+     * Adds a highlight if highlights are enabled.
      *
      * @param highlight highlight
      * @return true if added
      */
     public boolean addHighlight(Highlight highlight) {
-        return mHighlights.add(highlight);
+        if (mHighlightEnabled)
+            return mHighlights.add(highlight);
+        else return false;
     }
 
+    public boolean isHighlightEnabled() {
+        return mHighlightEnabled;
+    }
+
+    public void setHighlightEnabled(boolean mHighlightEnabled) {
+        this.mHighlightEnabled = mHighlightEnabled;
+    }
+
+    public boolean isSnapHighlightToLabel() {
+        return mSnapHighlightToLabel;
+    }
+
+    public void setSnapHighlightToLabel(boolean mSnapHighlightToLabel) {
+        this.mSnapHighlightToLabel = mSnapHighlightToLabel;
+    }
+
+    /**
+     * Are multiple highlights enabled?
+     *
+     * @return true if multiple highlights enabled
+     */
+    public boolean isMultipleHighlightsEnabled() {
+        return mHighlights.isMultipleHighlightsEnabled();
+    }
+
+    /**
+     * Sets the multiple highlights enabled flag.
+     * @param enabled enabled if true
+     */
+    public void setMultipleHighlightsEnabled(boolean enabled) {
+        mHighlights.setMultipleHighlightsEnabled(enabled);
+    }
 }
