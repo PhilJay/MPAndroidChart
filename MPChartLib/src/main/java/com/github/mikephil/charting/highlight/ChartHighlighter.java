@@ -2,6 +2,7 @@ package com.github.mikephil.charting.highlight;
 
 import android.util.Log;
 
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.data.DataSet;
@@ -12,6 +13,14 @@ import com.github.mikephil.charting.utils.MPPointD;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import static com.github.mikephil.charting.highlight.Highlight.Type.LEFT_AXIS;
+import static com.github.mikephil.charting.highlight.Highlight.Type.NULL;
+import static com.github.mikephil.charting.highlight.Highlight.Type.RIGHT_AXIS;
+import static com.github.mikephil.charting.highlight.Highlight.Type.X_AXIS;
 
 /**
  * Created by Philipp Jahoda on 21/07/15.
@@ -33,14 +42,42 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         this.mChart = chart;
     }
 
+    /**
+     * Creates the appropriate Highlight, and add to the appropriate chart item.
+     *
+     * @param x touch x
+     * @param y touch y
+     * @return highlight
+     */
+    @SuppressWarnings("ConstantConditions")  // suppress ugly NPE warnings on getAxis calls
+    @NonNull
     @Override
     public Highlight getHighlight(float x, float y) {
 
-        MPPointD pos = getValsForTouch(x, y);
-        float xVal = (float) pos.x;
-        MPPointD.recycleInstance(pos);
+        MPPointD touch = getValsForTouch(x, y);
+        float xVal = (float) touch.x;
+        float yVal = (float) touch.y;
 
-        Highlight high = getHighlightForX(xVal, x, y);
+        Highlight high = new Highlight(xVal, yVal, NULL, x, y);
+        MPPointD.recycleInstance(touch);
+
+        // look for touch point outside the data area
+        if (y > mChart.getContentRect().bottom && mChart.hasXAxis()) {
+            high = new Highlight(xVal, yVal, X_AXIS, x, y);
+        } else if (x < mChart.getContentRect().left && mChart.hasLeftAxis()) {
+            high = new Highlight(xVal, yVal, LEFT_AXIS, x, y);
+        } else if (x > mChart.getContentRect().right && mChart.hasRightAxis()) {
+            // we assumed LEFT axis above; recompute touch for RIGHT axis
+            touch = getValsForTouch(x, y, YAxis.AxisDependency.RIGHT);
+            high = new Highlight(xVal, yVal, RIGHT_AXIS, x, y);
+        }
+
+        // if not outside, look inside for value highlight
+        if (high.isNull()) {
+            high = getHighlightForX(xVal, x, y);
+        }
+        if (((Chart) mChart).isLogEnabled())
+            Log.i("ChartHighlighter" , high.toString());
         return high;
     }
 
@@ -53,9 +90,22 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @return
      */
     protected MPPointD getValsForTouch(float x, float y) {
+        return getValsForTouch(x, y, YAxis.AxisDependency.LEFT);
+    }
+
+    /**
+     * Returns a recyclable MPPointD instance.
+     * Returns the corresponding xPos for a given touch-position in pixels.
+     *
+     * @param x x in pixels
+     * @param y y in pixels
+     * @param dependency axis dependency
+     * @return values using dependency axis
+     */
+    protected MPPointD getValsForTouch(float x, float y, YAxis.AxisDependency dependency) {
 
         // take any transformer to determine the x-axis value
-        MPPointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
+        MPPointD pos = mChart.getTransformer(dependency).getValuesByTouchPoint(x, y);
         return pos;
     }
 
@@ -67,12 +117,13 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param y
      * @return
      */
+    @Nullable
     protected Highlight getHighlightForX(float xVal, float x, float y) {
 
         List<Highlight> closestValues = getHighlightsAtXValue(xVal, x, y);
 
         if(closestValues.isEmpty()) {
-            return null;
+            return new Highlight(x, y, NULL, Float.NaN, Float.NaN);
         }
 
         float leftAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.LEFT);
