@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
+import com.xxmassdeveloper.mpchartexample.AxisHighlightBubbleChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.BarChartActivitySinus;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         addHeader("Highlight Axes");
         addExample("Bubble Chart", "Highlight in two lines of code", HighlightBubbleChart.class);
+        addExample("Color Bubble Chart", "X Axis : change alpha; Y Axis: change size", AxisHighlightBubbleChartActivity.class);
 
         addHeader("Line Charts");
 

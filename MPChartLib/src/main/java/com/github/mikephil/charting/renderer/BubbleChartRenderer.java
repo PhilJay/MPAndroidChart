@@ -9,6 +9,7 @@ import android.util.Log;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.ColorBubbleEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.Highlights;
@@ -117,7 +118,11 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
             if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
                 break;
 
-            final int color = dataSet.getColor((int) entry.getX());
+            final int color;
+            if (entry instanceof ColorBubbleEntry)
+                color = ((ColorBubbleEntry) entry).getColor();
+            else
+                color = dataSet.getColor((int) entry.getX());
 
             mRenderPaint.setColor(color);
             c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mRenderPaint);

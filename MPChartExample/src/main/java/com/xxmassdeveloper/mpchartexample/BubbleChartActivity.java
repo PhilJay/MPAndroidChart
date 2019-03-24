@@ -240,7 +240,9 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
     }
 
     @Override
-    public void onNothingSelected() {}
+    public void onNothingSelected() {
+        Log.i("BubbleChartActivity", "onNothingSelected");
+    }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {}

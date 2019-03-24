@@ -51,6 +51,7 @@
         <activity android:name="BarChartPositiveNegative" />
         <activity android:name="FilledLineActivity" />
         <activity android:name="HighlightBubbleChart" />
+        <activity android:name="AxisHighlightBubbleChartActivity" />
     </application>
 
 </manifest>

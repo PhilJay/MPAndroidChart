@@ -55,6 +55,25 @@ public class ColorTemplate {
             rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
     };
 
+    // sixteen material colors
+    public static final int[] MATERIAL_COLORS_16 = {
+            rgb("#ffc1e3"), rgb("#5472d3"), rgb("#cccc00"), rgb("#b4ffff"),
+            rgb("#5c007a"), rgb("#99cc99"), rgb("#8c7b75"), rgb("#cfff95"),
+            rgb("#c8a600"), rgb("#ffca28"), rgb("#9e00c5"), rgb("#6699cc"),
+            rgb("#aabb97"), rgb("#6666cc"), rgb("#00766c"), rgb("#ff7d47")
+    };
+
+    // from https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/ without white or black
+    public static final int[] DISTINCT_COLORS = {
+            rgb("800000"), rgb("e6194B"), rgb("fabebe"),
+            rgb("9A6324"), rgb("f58231"), rgb("ffd8b1"),
+            rgb("808000"), rgb("ffe119"), rgb("fffac8"),
+            rgb("bfef45"), rgb("3cb44b"), rgb("aaffc3"),
+            rgb("469990"), rgb("42d4f4"), rgb("000075"),
+            rgb("4363d8"), rgb("911eb4"), rgb("e6beff"),
+            rgb("f032e6")
+    };
+
     /**
      * Converts the given hex-color-string to rgb.
      *

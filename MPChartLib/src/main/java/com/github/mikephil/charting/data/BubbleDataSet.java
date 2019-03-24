@@ -49,13 +49,12 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
             entries.add(mValues.get(i).copy());
         }
         BubbleDataSet copied = new BubbleDataSet(entries, getLabel());
-        copy(copied);
+        copyFieldsTo(copied);
         return copied;
     }
 
     protected void copy(BubbleDataSet bubbleDataSet) {
-        bubbleDataSet.mHighlightCircleWidth = mHighlightCircleWidth;
-        bubbleDataSet.mNormalizeSize = mNormalizeSize;
+        copyFieldsFrom(bubbleDataSet);
     }
 
     @Override
@@ -135,4 +134,46 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
             return (float) Math.hypot(entry.getX() - x, entry.getY() - y);
     }
 
+    /**
+     * Copies all the mutable fields from this data set
+     *
+     * @param bubbleDataSet to that data set
+     */
+    public void copyFieldsTo(BubbleDataSet bubbleDataSet) {
+        bubbleDataSet.setValueTypeface(getValueTypeface());
+        bubbleDataSet.setValueTextSize(getValueTextSize());
+        bubbleDataSet.setValueFormatter(getValueFormatter());
+        bubbleDataSet.setValueTextColors(getValueColors());
+        bubbleDataSet.setHighLightColor(getHighLightColor());
+        bubbleDataSet.setColors(getColors());
+        // the setter changes the value, so access directly
+        bubbleDataSet.mHighlightCircleWidth = getHighlightCircleWidth();
+        bubbleDataSet.setHighlightEnabled(isHighlightEnabled());
+        bubbleDataSet.setDrawIcons(isDrawIconsEnabled());
+        bubbleDataSet.setDrawValues(isDrawValuesEnabled());
+        bubbleDataSet.setVisible(isVisible());
+        bubbleDataSet.setNormalizeSizeEnabled(isNormalizeSizeEnabled());
+        bubbleDataSet.setAxisDependency(getAxisDependency());
+        bubbleDataSet.setForm(getForm());
+        bubbleDataSet.setGradientColors(getGradientColors());
+    }
+
+    public void copyFieldsFrom(BubbleDataSet from) {
+        setValueTypeface(from.getValueTypeface());
+        setValueTextSize(from.getValueTextSize());
+        setValueFormatter(from.getValueFormatter());
+        setValueTextColors(from.getColors());
+        setHighLightColor(from.getHighLightColor());
+        setColors(from.getColors());
+        // the setter changes the value, so access directly
+        mHighlightCircleWidth = from.getHighlightCircleWidth();
+        setHighlightEnabled(from.isHighlightEnabled());
+        setDrawIcons(from.isDrawIconsEnabled());
+        setDrawValues(from.isDrawValuesEnabled());
+        setVisible(from.isVisible());
+        setNormalizeSizeEnabled(from.isNormalizeSizeEnabled());
+        setAxisDependency(from.getAxisDependency());
+        setForm(from.getForm());
+        setGradientColors(from.getGradientColors());
+    }
 }
