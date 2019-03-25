@@ -69,7 +69,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         } else if (x > mChart.getContentRect().right && mChart.hasRightAxis()) {
             // we assumed LEFT axis above; recompute touch for RIGHT axis
             touch = getValsForTouch(x, y, YAxis.AxisDependency.RIGHT);
-            high = new Highlight(xVal, yVal, RIGHT_AXIS, x, y);
+            high = new Highlight((float) touch.x, (float) touch.y, RIGHT_AXIS, x, y);
         }
 
         // if not outside, look inside for value highlight

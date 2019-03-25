@@ -159,12 +159,12 @@ public abstract class AxisBase extends ComponentBase {
     /**
      * don't touch this direclty, use setter
      */
-    public float mAxisMaximum = 0f;
+    protected float mAxisMaximum = 0f;
 
     /**
      * don't touch this directly, use setter
      */
-    public float mAxisMinimum = 0f;
+    protected float mAxisMinimum = 0f;
 
     /**
      * the total range of values this axis covers

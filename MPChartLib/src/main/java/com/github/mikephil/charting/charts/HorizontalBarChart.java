@@ -127,10 +127,10 @@ public class HorizontalBarChart extends BarChart {
 
     @Override
     protected void prepareValuePxMatrix() {
-        mRightAxisTransformer.prepareMatrixValuePx(mAxisRight.mAxisMinimum, mAxisRight.mAxisRange, mXAxis.mAxisRange,
-                mXAxis.mAxisMinimum);
-        mLeftAxisTransformer.prepareMatrixValuePx(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisRange, mXAxis.mAxisRange,
-                mXAxis.mAxisMinimum);
+        mRightAxisTransformer.prepareMatrixValuePx(mAxisRight.getAxisMinimum(), mAxisRight.mAxisRange, mXAxis.mAxisRange,
+                mXAxis.getAxisMinimum());
+        mLeftAxisTransformer.prepareMatrixValuePx(mAxisLeft.getAxisMinimum(), mAxisLeft.mAxisRange, mXAxis.mAxisRange,
+                mXAxis.getAxisMinimum());
     }
 
     @Override
@@ -212,7 +212,7 @@ public class HorizontalBarChart extends BarChart {
     public float getLowestVisibleX() {
         getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
                 mViewPortHandler.contentBottom(), posForGetLowestVisibleX);
-        float result = (float) Math.max(mXAxis.mAxisMinimum, posForGetLowestVisibleX.y);
+        float result = (float) Math.max(mXAxis.getAxisMinimum(), posForGetLowestVisibleX.y);
         return result;
     }
 
@@ -220,7 +220,7 @@ public class HorizontalBarChart extends BarChart {
     public float getHighestVisibleX() {
         getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
                 mViewPortHandler.contentTop(), posForGetHighestVisibleX);
-        float result = (float) Math.min(mXAxis.mAxisMaximum, posForGetHighestVisibleX.y);
+        float result = (float) Math.min(mXAxis.getAxisMaximum(), posForGetHighestVisibleX.y);
         return result;
     }
 

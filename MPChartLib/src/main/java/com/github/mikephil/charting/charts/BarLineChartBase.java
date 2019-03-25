@@ -203,13 +203,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         }
 
         if (mAxisLeft.isEnabled())
-            mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, mAxisLeft.isInverted());
+            mAxisRendererLeft.computeAxis(mAxisLeft.getAxisMinimum(), mAxisLeft.getAxisMaximum(), mAxisLeft.isInverted());
 
         if (mAxisRight.isEnabled())
-            mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted());
+            mAxisRendererRight.computeAxis(mAxisRight.getAxisMinimum(), mAxisRight.getAxisMaximum(), mAxisRight.isInverted());
 
         if (mXAxis.isEnabled())
-            mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+            mXAxisRenderer.computeAxis(mXAxis.getAxisMinimum(), mXAxis.getAxisMaximum(), false);
 
         mXAxisRenderer.renderAxisLine(canvas);
         mAxisRendererLeft.renderAxisLine(canvas);
@@ -313,17 +313,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected void prepareValuePxMatrix() {
 
         if (mLogEnabled)
-            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXAxis.mAxisMinimum + ", xmax: "
-                    + mXAxis.mAxisMaximum + ", xdelta: " + mXAxis.mAxisRange);
+            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXAxis.getAxisMinimum() + ", xmax: "
+                    + mXAxis.getAxisMaximum() + ", xdelta: " + mXAxis.mAxisRange);
 
-        mRightAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum,
+        mRightAxisTransformer.prepareMatrixValuePx(mXAxis.getAxisMinimum(),
                 mXAxis.mAxisRange,
                 mAxisRight.mAxisRange,
-                mAxisRight.mAxisMinimum);
-        mLeftAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum,
+                mAxisRight.getAxisMinimum());
+        mLeftAxisTransformer.prepareMatrixValuePx(mXAxis.getAxisMinimum(),
                 mXAxis.mAxisRange,
                 mAxisLeft.mAxisRange,
-                mAxisLeft.mAxisMinimum);
+                mAxisLeft.getAxisMinimum());
     }
 
     protected void prepareOffsetMatrix() {
@@ -349,9 +349,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         calcMinMax();
 
-        mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, mAxisLeft.isInverted());
-        mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted());
-        mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+        mAxisRendererLeft.computeAxis(mAxisLeft.getAxisMinimum(), mAxisLeft.getAxisMaximum(), mAxisLeft.isInverted());
+        mAxisRendererRight.computeAxis(mAxisRight.getAxisMinimum(), mAxisRight.getAxisMaximum(), mAxisRight.isInverted());
+        mXAxisRenderer.computeAxis(mXAxis.getAxisMinimum(), mXAxis.getAxisMaximum(), false);
 
         if (mLegend != null)
             mLegendRenderer.computeLegend(mData);
@@ -1367,7 +1367,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public float getLowestVisibleX() {
         getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
                 mViewPortHandler.contentBottom(), posForGetLowestVisibleX);
-        float result = (float) Math.max(mXAxis.mAxisMinimum, posForGetLowestVisibleX.x);
+        float result = (float) Math.max(mXAxis.getAxisMinimum(), posForGetLowestVisibleX.x);
         return result;
     }
 
@@ -1386,7 +1386,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public float getHighestVisibleX() {
         getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentRight(),
                 mViewPortHandler.contentBottom(), posForGetHighestVisibleX);
-        float result = (float) Math.min(mXAxis.mAxisMaximum, posForGetHighestVisibleX.x);
+        float result = (float) Math.min(mXAxis.getAxisMaximum(), posForGetHighestVisibleX.x);
         return result;
     }
 
@@ -1556,12 +1556,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     @Override
     public float getYChartMax() {
-        return Math.max(mAxisLeft.mAxisMaximum, mAxisRight.mAxisMaximum);
+        return Math.max(mAxisLeft.getAxisMaximum(), mAxisRight.getAxisMaximum());
     }
 
     @Override
     public float getYChartMin() {
-        return Math.min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum);
+        return Math.min(mAxisLeft.getAxisMinimum(), mAxisRight.getAxisMinimum());
     }
 
     /**

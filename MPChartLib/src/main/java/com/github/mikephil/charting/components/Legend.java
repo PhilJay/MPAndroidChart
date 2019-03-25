@@ -257,7 +257,11 @@ public class Legend extends ComponentBase {
      *   to let the changes take effect)
      */
     public void setExtra(int[] colors, String[] labels) {
+        List<LegendEntry> entries = makeEntries(colors, labels);
+        mExtraEntries = entries.toArray(new LegendEntry[entries.size()]);
+    }
 
+    private List<LegendEntry> makeEntries(int[] colors, String[] labels) {
         List<LegendEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < Math.min(colors.length, labels.length); i++) {
@@ -273,8 +277,7 @@ public class Legend extends ComponentBase {
 
             entries.add(entry);
         }
-
-        mExtraEntries = entries.toArray(new LegendEntry[entries.size()]);
+        return entries;
     }
 
     /**
@@ -301,6 +304,22 @@ public class Legend extends ComponentBase {
      */
     public void setCustom(List<LegendEntry> entries) {
 
+        mEntries = entries.toArray(new LegendEntry[entries.size()]);
+        mIsLegendCustom = true;
+    }
+
+    /**
+     * Sets a custom legend's labels and colors arrays. The colors count should match
+     * the labels count. Each color is for the form drawn at the same index. A null
+     * label will start a group. A (-2) color will avoid drawing a form This will
+     * disable the feature that automatically calculates the legend labels and colors
+     * from the datasets. Call resetCustom() to re-enable automatic calculation
+     * (and then notifyDataSetChanged() is needed to auto-calculate the legend again)
+     * @param colors
+     * @param labels
+     */
+    public void setCustom(int[] colors, String[] labels) {
+        List<LegendEntry> entries = makeEntries(colors, labels);
         mEntries = entries.toArray(new LegendEntry[entries.size()]);
         mIsLegendCustom = true;
     }

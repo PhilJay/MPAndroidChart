@@ -137,9 +137,9 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
             }
         }
 
-        mAxis.mAxisMinimum = mAxis.mEntries[0];
-        mAxis.mAxisMaximum = mAxis.mEntries[n-1];
-        mAxis.mAxisRange = Math.abs(mAxis.mAxisMaximum - mAxis.mAxisMinimum);
+        mAxis.setAxisMinimum(mAxis.mEntries[0]);
+        mAxis.setAxisMaximum(mAxis.mEntries[n-1]);
+        mAxis.mAxisRange = Math.abs(mAxis.getAxisMaximum() - mAxis.getAxisMinimum());
     }
 
     @Override
@@ -163,7 +163,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         for (int j = from; j < to; j++) {
 
-            float r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
+            float r = (mYAxis.mEntries[j] - mYAxis.getAxisMinimum()) * factor;
 
             Utils.getPosition(center, r, mChart.getRotationAngle(), pOut);
 

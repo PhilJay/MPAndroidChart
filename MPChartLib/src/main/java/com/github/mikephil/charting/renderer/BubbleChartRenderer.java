@@ -307,7 +307,8 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
             if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
                 break;
 
-            final int originalColor = set.getColor((int) entry.getX());
+            final int originalColor = (entry instanceof ColorBubbleEntry) ?
+                    ((ColorBubbleEntry) entry).getColor() : set.getColor((int) entry.getX());
 
             Color.RGBToHSV(Color.red(originalColor), Color.green(originalColor),
                     Color.blue(originalColor), _hsvBuffer);

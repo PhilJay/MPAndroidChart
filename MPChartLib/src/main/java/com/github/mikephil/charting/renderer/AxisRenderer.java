@@ -302,6 +302,15 @@ public abstract class AxisRenderer extends Renderer {
     public abstract void renderLimitLines(Canvas c);
 
     /**
+     * Sets the color of the axis labels.
+     *
+     * @param color color
+     */
+    public void setAxisLabelColor(int color) {
+        mAxisLabelPaint.setColor(color);
+    }
+
+    /**
      * Set the color of the highlighted labels.
      *
      * @param color

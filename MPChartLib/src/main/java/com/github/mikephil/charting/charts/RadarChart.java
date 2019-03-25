@@ -112,8 +112,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         calcMinMax();
 
-        mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
-        mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+        mYAxisRenderer.computeAxis(mYAxis.getAxisMinimum(), mYAxis.getAxisMaximum(), mYAxis.isInverted());
+        mXAxisRenderer.computeAxis(mXAxis.getAxisMinimum(), mXAxis.getAxisMaximum(), false);
 
         if (mLegend != null && !mLegend.isLegendCustom())
             mLegendRenderer.computeLegend(mData);
@@ -129,10 +129,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             return;
 
 //        if (mYAxis.isEnabled())
-//            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
+//            mYAxisRenderer.computeAxis(mYAxis.getAxisMinimum(), mYAxis.getAxisMaximum(), mYAxis.isInverted());
 
         if (mXAxis.isEnabled())
-            mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+            mXAxisRenderer.computeAxis(mXAxis.getAxisMinimum(), mXAxis.getAxisMaximum(), false);
 
         mXAxisRenderer.renderAxisLabels(canvas);
 
@@ -342,14 +342,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * Returns the maximum value this chart can display on it's y-axis.
      */
     public float getYChartMax() {
-        return mYAxis.mAxisMaximum;
+        return mYAxis.getAxisMaximum();
     }
 
     /**
      * Returns the minimum value this chart can display on it's y-axis.
      */
     public float getYChartMin() {
-        return mYAxis.mAxisMinimum;
+        return mYAxis.getAxisMinimum();
     }
 
     /**

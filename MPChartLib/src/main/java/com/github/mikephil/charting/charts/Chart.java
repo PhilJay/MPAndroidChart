@@ -1198,12 +1198,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     @Override
     public float getXChartMax() {
-        return mXAxis.mAxisMaximum;
+        return mXAxis.getAxisMaximum();
     }
 
     @Override
     public float getXChartMin() {
-        return mXAxis.mAxisMinimum;
+        return mXAxis.getAxisMinimum();
     }
 
     @Override
