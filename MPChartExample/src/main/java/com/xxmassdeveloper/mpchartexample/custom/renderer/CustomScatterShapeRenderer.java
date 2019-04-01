@@ -1,4 +1,4 @@
-package com.xxmassdeveloper.mpchartexample.custom;
+package com.xxmassdeveloper.mpchartexample.custom.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

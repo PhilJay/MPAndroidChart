@@ -1,4 +1,4 @@
-package com.xxmassdeveloper.mpchartexample.custom;
+package com.xxmassdeveloper.mpchartexample.custom.formatter;
 
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;

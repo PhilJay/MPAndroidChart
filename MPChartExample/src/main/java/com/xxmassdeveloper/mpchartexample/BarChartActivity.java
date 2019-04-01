@@ -34,8 +34,8 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
-import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.formatter.DayAxisValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.formatter.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.XYMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
