@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -150,6 +152,11 @@ public abstract class AxisBase extends ComponentBase {
      * the total range of values this axis covers
      */
     public float mAxisRange = 0f;
+
+    /**
+     * Highlights for this axis.
+     */
+    protected Highlights mHighlights;
 
     /**
      * default constructor
@@ -779,4 +786,30 @@ public abstract class AxisBase extends ComponentBase {
     {
         this.mSpaceMax = mSpaceMax;
     }
+
+    public Highlights getHighlights() {
+        return mHighlights;
+    }
+
+    public boolean hasHighlight() {
+        return !mHighlights.isEmpty();
+    }
+
+    /**
+     * Clears the highlights for this axis.
+     */
+    public void clearHighlights() {
+        mHighlights.clear();
+    }
+
+    /**
+     * Adds a highlight.
+     *
+     * @param highlight highlight
+     * @return true if added
+     */
+    public boolean addHighlight(Highlight highlight) {
+        return mHighlights.add(highlight);
+    }
+
 }
