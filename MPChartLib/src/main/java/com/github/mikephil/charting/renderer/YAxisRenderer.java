@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
@@ -402,8 +401,5 @@ public class YAxisRenderer extends AxisRenderer {
         // draw a label in the box
         paint.setColor(mHighlightTextColor);
         c.drawText(formattedLabel, textX, textY, paint);
-
-        Log.i("___ YAxisRenderer", String.format("draw highlight box @ %.1f, %.1f %.1f, %.1f h= %.0f", left, top, right, bottom, bottom - top));
-        Log.i("___ YAxisRenderer", String.format("draw highlight label %s @ %.2f, %.2f", formattedLabel, textX, textY));
     }
 }

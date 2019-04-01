@@ -87,13 +87,9 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
             float low = chart.getLowestVisibleX();
             float high = chart.getHighestVisibleX();
 
-            Log.i("___BLSCBRenderer", String.format("finding low= %.1f", low));
             Entry entryFrom = dataSet.getEntryForXValue(low, Float.NaN, DataSet.Rounding.DOWN);
-            Log.i("___BLSCBRenderer", String.format("  found low= %.1f returned %s", low, entryFrom));
 
-            Log.i("___BLSCBRenderer", String.format("finding high= %.1f", high));
             Entry entryTo = dataSet.getEntryForXValue(high, Float.NaN, DataSet.Rounding.UP);
-            Log.i("___BLSCBRenderer", String.format("  found high= %.1f returned %s", high, entryTo));
 
             min = entryFrom == null ? 0 : dataSet.getEntryIndex(entryFrom);
             max = entryTo == null ? 0 : dataSet.getEntryIndex(entryTo);

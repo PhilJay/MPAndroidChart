@@ -226,7 +226,6 @@ class HighlightMapActivity : DemoBase(), OnChartValueSelectedListener, OnAxisSel
                             val copy = entry.copy()
                             copy.alpha = 0xff
                             show.add(copy)
-                            if (logEnabled) Log.i("onAxisSelected", "showing " + (entry.getData() as City).name)
                         }
                     }
                     val newSet = ColorBubbleDataSet(show, set.label)
@@ -275,17 +274,7 @@ class HighlightMapActivity : DemoBase(), OnChartValueSelectedListener, OnAxisSel
         smallestCity = cities[0]
         largestCity = cities[cities.size - 1]
 
-
-        Log.i("Activity", "largest= " + largestCity)
-        Log.i("Activity", "smallest= " + smallestCity)
-
-        Collections.sort(cities, City.BY_LATITUDE)
-        Log.i("Activity", "lowest= " + cities[0])
-        Log.i("Activity", "highest= " + cities[cities.size - 1])
-
         Collections.sort(cities, City.BY_LONGITUDE)
-        Log.i("Activity", "western= " + cities[0])
-        Log.i("Activity", "eastern= " + cities[cities.size - 1])
 
         // make 20 colors - kinda ROYGBIV, use every 4th
         val colors = ColorTemplate.DISTINCT_COLORS
@@ -306,8 +295,6 @@ class HighlightMapActivity : DemoBase(), OnChartValueSelectedListener, OnAxisSel
 
             val entry = ColorBubbleEntry(city.longitide, city.latitude, city.population.toFloat(), null, city, color)
             entries.add(entry)
-//            if (logEnabled)
-//                Log.i("HighlightMapActivity", String.format("read: %s, %.1f, %.1f, %d", city.name, city.longitide, city.latitude, city.population))
         }
         return entries
     }

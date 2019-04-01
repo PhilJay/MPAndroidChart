@@ -55,7 +55,6 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         for (IBubbleDataSet set : bubbleData.getDataSets()) {
 
             if (set.isVisible()) {
-                Log.i("___BubbleChartRenderer", "draw data set " + set.getLabel());
                 drawDataSet(c, set);
             }
         }
@@ -251,7 +250,6 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         float phaseY = mAnimator.getPhaseY();
 
         for (Highlight high : highlights) {
-            Log.i("___BubbleChartRenderer", "drawHighlighted " + high);
             IBubbleDataSet set = bubbleData.getDataSetByIndex(high.getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())

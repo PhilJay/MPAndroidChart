@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.highlight;
 
-import android.util.Log;
-
 import com.github.mikephil.charting.components.YAxis;
 
 import java.util.Locale;
@@ -108,7 +106,6 @@ public class Highlight {
         this.mDataIndex = dataIndex;
         this.mStackIndex = -1;
         mType = Type.VALUE;
-        Log.i("___new Highlight", this.toString());
     }
 
     /**
@@ -144,8 +141,6 @@ public class Highlight {
             axis = YAxis.AxisDependency.LEFT;
         else if (highlightType == Type.RIGHT_AXIS)
             axis = YAxis.AxisDependency.RIGHT;
-        Log.i("Highlight", String.format(Locale.getDefault(),
-                "new %s @ %.1f, %.1f", mType.name(), xVal, yVal));
     }
 
     /**

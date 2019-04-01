@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.PointF
 import android.graphics.RectF
-import android.util.Log
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.ColorBubbleEntry
@@ -12,7 +11,6 @@ import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet
 import com.github.mikephil.charting.renderer.BubbleChartRenderer
 import com.github.mikephil.charting.utils.ViewPortHandler
-import com.xxmassdeveloper.mpchartexample.custom.data.City
 import com.xxmassdeveloper.mpchartexample.custom.utils.Extensions.Companion.almostEquals
 
 class CityRenderer(chart: BubbleDataProvider, animator: ChartAnimator,
@@ -102,13 +100,6 @@ class CityRenderer(chart: BubbleDataProvider, animator: ChartAnimator,
                 color = dataSet.getColor(entry.x.toInt())
 
             mRenderPaint.color = color
-            if (logEnabled) {
-                val city = entry.data as City
-                Log.i("CityRenderer",
-                        String.format("%s size= %d -> %.1f, radius = %.1f",
-                                city.name, city.population, entry.size, radius))
-            }
-            Log.i("drawCity", String.format("%.1f, %.1f -> %.1f, %.1f", entry.x, entry.y, pointBuffer[0], pointBuffer[1]))
             c.drawCircle(pointBuffer[0], pointBuffer[1], radius, mRenderPaint)
 
             // translate the radius to data values and set the bubble radius fields

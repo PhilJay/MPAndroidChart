@@ -243,7 +243,6 @@ public class XAxisRenderer extends AxisRenderer {
                     }
                 }
 
-                Log.i("___ XAxisRenderer", String.format("draw label %s @ %.2f, %.2f", label, x, pos));
                 drawLabel(c, label, x, pos, mAxisLabelPaint, anchor, labelRotationAngleDegrees);
             }
         }
@@ -446,8 +445,5 @@ public class XAxisRenderer extends AxisRenderer {
         PointF drawn = Utils.drawXAxisHighlight(c, formattedLabel, xPix, yPix, mHighlightFillPadding, anchor, mAxisLabelPaint,
                 mHighlightTextColor, mHighlightFillColor, mXAxis.getLabelRotationAngle());
         highlight.setDraw(drawn.x, drawn.y);
-        Log.i("___ XAxisRenderer", String.format("draw highlight label %s @ %.2f, %.2f", formattedLabel, xPix, yPix));
     }
-
-
 }

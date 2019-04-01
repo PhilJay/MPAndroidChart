@@ -9,7 +9,6 @@ import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +40,8 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
+
 /**
  * Example of a heavily customized {@link LineChart} with limit lines, custom line shapes, etc.
  *
@@ -62,7 +63,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         setContentView(R.layout.activity_linechart);
 
         setTitle("LineChartActivity1");
-        Log.i("___LineChartActivity1", "onCreate");
 
         tvX = findViewById(R.id.tvXMax);
         tvY = findViewById(R.id.tvYMax);
@@ -180,7 +180,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     }
 
     private void setData(int count, float range) {
-        Log.i("___LineChartActivity1", "setData");
         ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {

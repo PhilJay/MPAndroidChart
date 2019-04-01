@@ -743,8 +743,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             high = new Highlight(NULL);
         addHighlight(high);
 
-        if (mLogEnabled)
-            Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
         // notify the appropriate listener
         if (callListener) {
@@ -760,14 +758,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 case VALUE:
                     if (mSelectionListener != null) {
                         Entry entry = mData.getEntryForHighlight(high);
-                        Log.i(LOG_TAG, "  highlightValue: " + entry.toString());
                         mSelectionListener.onValueSelected(entry, high);
                     }
                     break;
                 case X_AXIS:
                 case LEFT_AXIS:
                 case RIGHT_AXIS:
-                    Log.i(LOG_TAG, "  highlightAxis: " + high.toString());
                     if (mAxisSelectedListener != null)
                         mAxisSelectedListener.onAxisSelected(high);
             }
@@ -785,7 +781,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     private void addHighlight(Highlight highlight) {
         if (highlight == null)
             highlight = new Highlight(NULL);
-        if (mLogEnabled) Log.i("Highlights: addHighlight", highlight.toString());
         switch (highlight.getType()) {
             case NULL:
                 clearAllHighlights();

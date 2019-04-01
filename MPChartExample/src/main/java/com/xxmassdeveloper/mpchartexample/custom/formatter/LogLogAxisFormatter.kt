@@ -12,7 +12,6 @@ class LogLogAxisFormatter : LargeValueFormatter(), ICodecFormatter {
      */
     override fun encode(y: Float): Float {
         val f = Math.log(Math.log(y.toDouble())).toFloat()
-        Log.i("LogLogAxisFormatter", String.format("encode %.4f -> %.4f", y, f))
         return f
     }
 
@@ -21,7 +20,6 @@ class LogLogAxisFormatter : LargeValueFormatter(), ICodecFormatter {
      */
     override fun decode(y: Float): Float {
         val f = Math.pow(Math.E, Math.pow(Math.E, y.toDouble())).toFloat()
-        Log.i("LogLogAxisFormatter", String.format("decode %.4f -> %.4f", y, Math.pow(Math.E, Math.pow(Math.E, y.toDouble())).toFloat()))
         return f
     }
 

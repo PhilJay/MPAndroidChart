@@ -319,7 +319,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 mChart.isInverted(closest.getAxisDependency());
         }
 
-       Log.i("___BLCListener", "mIsInverted " + mIsInverted);
     }
 
     /**
@@ -612,7 +611,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Log.i("___BLCListener", "onSingleTapUp");
         mLastGesture = ChartGesture.SINGLE_TAP;
 
         OnChartGestureListener l = mChart.getOnChartGestureListener();
