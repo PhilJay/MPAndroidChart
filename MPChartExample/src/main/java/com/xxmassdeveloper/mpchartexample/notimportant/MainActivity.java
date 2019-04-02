@@ -25,6 +25,7 @@ import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.DynamicalAddingActivity;
 import com.xxmassdeveloper.mpchartexample.FilledLineActivity;
 import com.xxmassdeveloper.mpchartexample.HalfPieChartActivity;
+import com.xxmassdeveloper.mpchartexample.HighlightBubbleChart;
 import com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity1;
@@ -64,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         // initialize the utilities
         Utils.init(this);
+
+        addHeader("Highlight Axes");
+        addExample("Bubble Chart", "Highlight in two lines of code", HighlightBubbleChart.class);
 
         addHeader("Line Charts");
 
