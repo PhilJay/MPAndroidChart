@@ -118,4 +118,14 @@ public interface ChartInterface {
      * @return right axis or null
      */
     @Nullable YAxis getRightAxis();
+
+    /**
+     * Clears highlights associated with the data values.
+     */
+    void clearValueHighlights();
+
+    /**
+     * Clears all highlights from data values and axes.
+     */
+    void clearAllHighlights();
 }
