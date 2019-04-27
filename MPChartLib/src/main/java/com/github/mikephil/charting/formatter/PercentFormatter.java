@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 
 /**
  * This IValueFormatter is just for convenience and simply puts a "%" sign after
- * each value. (Recommeded for PieChart)
+ * each value. (Recommended for PieChart)
  *
  * @author Philipp Jahoda
  */
@@ -16,9 +16,11 @@ public class PercentFormatter extends ValueFormatter
 
     public DecimalFormat mFormat;
     private PieChart pieChart;
+    private boolean percentSignSeparated;
 
     public PercentFormatter() {
         mFormat = new DecimalFormat("###,###,##0.0");
+        percentSignSeparated = true;
     }
 
     // Can be used to remove percent signs if the chart isn't in percent mode
@@ -27,9 +29,15 @@ public class PercentFormatter extends ValueFormatter
         this.pieChart = pieChart;
     }
 
+    // Can be used to remove percent signs if the chart isn't in percent mode
+    public PercentFormatter(PieChart pieChart, boolean percentSignSeparated) {
+        this(pieChart);
+        this.percentSignSeparated = percentSignSeparated;
+    }
+
     @Override
     public String getFormattedValue(float value) {
-        return mFormat.format(value) + " %";
+        return mFormat.format(value) + (percentSignSeparated ? " %" : "%");
     }
 
     @Override
