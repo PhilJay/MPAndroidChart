@@ -37,9 +37,9 @@ All MPAndroidChart users are entitled to a special **discount of 5%** off the <a
 
 <br/>
 
-## [Daily Coding Newsletter](https://philjay.substack.com/subscribe)
+## [Bi-Weekly Coding Newsletter](https://weeklycoding.com)
 
-Sign up for my [daily coding newsletter](https://philjay.substack.com/subscribe) to get quick updates on Kotlin and Android development related topics.
+Sign up for my [coding newsletter](https://weeklycoding.com) to get quick updates on Kotlin and Android development related topics.
 
 <h2 id="quick-start">Quick Start :chart_with_upwards_trend:</h2>
 
@@ -78,7 +78,7 @@ dependencies {
 
 <h2 id="documentation">Documentation :notebook_with_decorative_cover:</h2>
 
-See the [**documentation**](https://github.com/PhilJay/MPAndroidChart/wiki) for examples and general use of MPAndroidChart.
+See the [**documentation**](https://weeklycoding.com/mpandroidchart/) for examples and general use of MPAndroidChart.
 
 See the [**javadocs**](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v3.1.0/javadoc/) for more advanced documentation.
 
@@ -96,7 +96,7 @@ Download the [MPAndroidChart Example App](https://play.google.com/store/apps/det
 
 This repository's issue tracker is only for bugs and feature requests. The maintainers ask that you refrain from asking questions about how to use MPAndroidChart through the issue tracker.
 
-Please read the [**documentation**](https://github.com/PhilJay/MPAndroidChart/wiki) first, then ask all your questions on [stackoverflow.com](https://stackoverflow.com/questions/tagged/mpandroidchart) for the fastest answer.
+Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) first, then ask all your questions on [stackoverflow.com](https://stackoverflow.com/questions/tagged/mpandroidchart) for the fastest answer.
 
 <br/>
 
@@ -133,7 +133,7 @@ If you like this library, please tell others about it :two_hearts: :two_hearts:
 [![Share on Google+](https://github.com/PhilJay/MPAndroidChart/blob/master/design/googleplus_icon.png)](https://plus.google.com/share?url=https://github.com/PhilJay/MPAndroidChart)
 [![Share on Facebook](https://github.com/PhilJay/MPAndroidChart/blob/master/design/facebook_icon.png)](https://www.facebook.com/sharer/sharer.php?u=https://github.com/PhilJay/MPAndroidChart)
 
-You can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJahoda) or sign up for my [**daily coding newsletter**](https://philjay.substack.com/subscribe).
+You can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJahoda) or sign up for my [**coding newsletter**](https://weeklycoding.com).
 
 <br/>
 
@@ -209,7 +209,7 @@ You can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJah
 
 <h1 id="license">License :page_facing_up:</h1>
 
-Copyright 2018 Philipp Jahoda
+Copyright 2019 Philipp Jahoda
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
