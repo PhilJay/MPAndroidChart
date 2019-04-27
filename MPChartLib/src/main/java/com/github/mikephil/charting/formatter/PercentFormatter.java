@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 
 /**
  * This IValueFormatter is just for convenience and simply puts a "%" sign after
- * each value. (Recommeded for PieChart)
+ * each value. (Recommended for PieChart)
  *
  * @author Philipp Jahoda
  */
