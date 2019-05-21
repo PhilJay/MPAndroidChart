@@ -20,6 +20,15 @@ public class CustomScatterShapeRenderer implements IShapeRenderer {
 
         final float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
+        // example of using the entry to modify displayed data. Could be more pushed, for example we could draw the Y value directly on the chart, or draw a specific icon (like a weather icon)
+        /*
+        if (e.getY() < 50) {
+            renderPaint.setColor(Color.BLUE);
+        } else {
+            renderPaint.setColor(Color.RED);
+        }
+        */
+
         c.drawLine(
                 posX - shapeHalf,
                 posY - shapeHalf,
