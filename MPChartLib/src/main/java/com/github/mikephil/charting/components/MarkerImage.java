@@ -142,10 +142,10 @@ public class MarkerImage implements IMarker {
         float width = mSize.width;
         float height = mSize.height;
 
-        if (width == 0.f && mDrawable != null) {
+        if (width == 0.f) {
             width = mDrawable.getIntrinsicWidth();
         }
-        if (height == 0.f && mDrawable != null) {
+        if (height == 0.f) {
             height = mDrawable.getIntrinsicHeight();
         }
 

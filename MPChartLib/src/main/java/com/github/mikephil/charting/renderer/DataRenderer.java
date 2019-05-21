@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
@@ -8,8 +7,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -136,19 +133,13 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Draws the value of the given entry by using the provided IValueFormatter.
      *
-     * @param c            canvas
-     * @param formatter    formatter for custom value-formatting
-     * @param value        the value to be drawn
-     * @param entry        the entry the value belongs to
-     * @param dataSetIndex the index of the DataSet the drawn Entry belongs to
-     * @param x            position
-     * @param y            position
+     * @param c         canvas
+     * @param valueText label to draw
+     * @param x         position
+     * @param y         position
      * @param color
      */
-    public void drawValue(Canvas c, IValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
-        mValuePaint.setColor(color);
-        c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler), x, y, mValuePaint);
-    }
+    public abstract void drawValue(Canvas c, String valueText, float x, float y, int color);
 
     /**
      * Draws any kind of additional information (e.g. line-circles).

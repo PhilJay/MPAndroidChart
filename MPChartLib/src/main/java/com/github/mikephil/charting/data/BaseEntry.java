@@ -1,5 +1,7 @@
 package com.github.mikephil.charting.data;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * Created by Philipp Jahoda on 02/06/16.
  */
@@ -10,6 +12,9 @@ public abstract class BaseEntry {
 
     /** optional spot for additional data this Entry represents */
     private Object mData = null;
+
+    /** optional icon image */
+    private Drawable mIcon = null;
 
     public BaseEntry() {
 
@@ -24,6 +29,17 @@ public abstract class BaseEntry {
         this.mData = data;
     }
 
+    public BaseEntry(float y, Drawable icon) {
+        this(y);
+        this.mIcon = icon;
+    }
+
+    public BaseEntry(float y, Drawable icon, Object data) {
+        this(y);
+        this.mIcon = icon;
+        this.mData = data;
+    }
+
     /**
      * Returns the y value of this Entry.
      *
@@ -31,6 +47,24 @@ public abstract class BaseEntry {
      */
     public float getY() {
         return y;
+    }
+
+    /**
+     * Sets the icon drawable
+     *
+     * @param icon
+     */
+    public void setIcon(Drawable icon) {
+        this.mIcon = icon;
+    }
+
+    /**
+     * Returns the icon of this Entry.
+     *
+     * @return
+     */
+    public Drawable getIcon() {
+        return mIcon;
     }
 
     /**

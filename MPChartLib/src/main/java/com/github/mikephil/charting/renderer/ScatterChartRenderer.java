@@ -1,17 +1,19 @@
-
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.renderer.scatter.IShapeRenderer;
 import com.github.mikephil.charting.utils.MPPointD;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -46,6 +48,9 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
     float[] mPixelBuffer = new float[2];
 
     protected void drawDataSet(Canvas c, IScatterDataSet dataSet) {
+
+        if (dataSet.getEntryCount() < 1)
+            return;
 
         ViewPortHandler viewPortHandler = mViewPortHandler;
 
@@ -99,7 +104,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                 IScatterDataSet dataSet = dataSets.get(i);
 
-                if (!shouldDrawValues(dataSet))
+                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1)
                     continue;
 
                 // apply the text-styling defined by the DataSet
@@ -113,6 +118,12 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                 float shapeSize = Utils.convertDpToPixel(dataSet.getScatterShapeSize());
 
+                ValueFormatter formatter = dataSet.getValueFormatter();
+
+                MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
+                iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
+                iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+
                 for (int j = 0; j < positions.length; j += 2) {
 
                     if (!mViewPortHandler.isInBoundsRight(positions[j]))
@@ -125,11 +136,33 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
-                    drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, positions[j],
-                            positions[j + 1] - shapeSize, dataSet.getValueTextColor(j / 2 + mXBounds.min));
+                    if (dataSet.isDrawValuesEnabled()) {
+                        drawValue(c, formatter.getPointLabel(entry), positions[j], positions[j + 1] - shapeSize, dataSet.getValueTextColor(j / 2 + mXBounds.min));
+                    }
+
+                    if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+
+                        Drawable icon = entry.getIcon();
+
+                        Utils.drawImage(
+                                c,
+                                icon,
+                                (int)(positions[j] + iconsOffset.x),
+                                (int)(positions[j + 1] + iconsOffset.y),
+                                icon.getIntrinsicWidth(),
+                                icon.getIntrinsicHeight());
+                    }
                 }
+
+                MPPointF.recycleInstance(iconsOffset);
             }
         }
+    }
+
+    @Override
+    public void drawValue(Canvas c, String valueText, float x, float y, int color) {
+        mValuePaint.setColor(color);
+        c.drawText(valueText, x, y, mValuePaint);
     }
 
     @Override

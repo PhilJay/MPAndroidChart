@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.utils;
 
 import android.annotation.SuppressLint;
@@ -7,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.List;
 
@@ -107,14 +107,9 @@ public abstract class Utils {
                             " calling Utils.convertDpToPixel(...). Otherwise conversion does not " +
                             "take place.");
             return dp;
-            // throw new IllegalStateException(
-            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before
-            // calling Utils.convertDpToPixel(...).");
         }
 
-        DisplayMetrics metrics = mMetrics;
-        float px = dp * (metrics.densityDpi / 160f);
-        return px;
+        return dp * mMetrics.density;
     }
 
     /**
@@ -133,14 +128,9 @@ public abstract class Utils {
                             " calling Utils.convertPixelsToDp(...). Otherwise conversion does not" +
                             " take place.");
             return px;
-            // throw new IllegalStateException(
-            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before
-            // calling Utils.convertPixelsToDp(...).");
         }
 
-        DisplayMetrics metrics = mMetrics;
-        float dp = px / (metrics.densityDpi / 160f);
-        return dp;
+        return px / mMetrics.density;
     }
 
     /**
@@ -236,15 +226,14 @@ public abstract class Utils {
             1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
     };
 
-    private static IValueFormatter mDefaultValueFormatter = generateDefaultValueFormatter();
+    private static ValueFormatter mDefaultValueFormatter = generateDefaultValueFormatter();
 
-    private static IValueFormatter generateDefaultValueFormatter() {
-        final DefaultValueFormatter formatter = new DefaultValueFormatter(1);
-        return formatter;
+    private static ValueFormatter generateDefaultValueFormatter() {
+        return new DefaultValueFormatter(1);
     }
 
     /// - returns: The default value formatter used for all chart components that needs a default
-    public static IValueFormatter getDefaultValueFormatter()
+    public static ValueFormatter getDefaultValueFormatter()
     {
         return mDefaultValueFormatter;
     }
@@ -360,11 +349,11 @@ public abstract class Utils {
      * @return
      */
     public static float roundToNextSignificant(double number) {
-        if (Double.isInfinite(number) || 
-            Double.isNaN(number) || 
+        if (Double.isInfinite(number) ||
+            Double.isNaN(number) ||
             number == 0.0)
             return 0;
-        
+
         final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
         final int pw = 1 - (int) d;
         final float magnitude = (float) Math.pow(10, pw);
@@ -382,10 +371,10 @@ public abstract class Utils {
     public static int getDecimals(float number) {
 
         float i = roundToNextSignificant(number);
-        
+
         if (Float.isInfinite(i))
             return 0;
-        
+
         return (int) Math.ceil(-Math.log10(i)) + 2;
     }
 
@@ -530,6 +519,31 @@ public abstract class Utils {
             angle += 360.f;
 
         return angle % 360.f;
+    }
+
+    private static Rect mDrawableBoundsCache = new Rect();
+
+    public static void drawImage(Canvas canvas,
+                                 Drawable drawable,
+                                 int x, int y,
+                                 int width, int height) {
+
+        MPPointF drawOffset = MPPointF.getInstance();
+        drawOffset.x = x - (width / 2);
+        drawOffset.y = y - (height / 2);
+
+        drawable.copyBounds(mDrawableBoundsCache);
+        drawable.setBounds(
+                mDrawableBoundsCache.left,
+                mDrawableBoundsCache.top,
+                mDrawableBoundsCache.left + width,
+                mDrawableBoundsCache.top + width);
+
+        int saveId = canvas.save();
+        // translate to the correct position and draw
+        canvas.translate(drawOffset.x, drawOffset.y);
+        drawable.draw(canvas);
+        canvas.restoreToCount(saveId);
     }
 
     private static Rect mDrawTextRectBuffer = new Rect();

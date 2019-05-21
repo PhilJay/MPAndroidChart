@@ -7,7 +7,9 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.model.GradientColor;
 
 import java.util.List;
 
@@ -284,6 +286,28 @@ public interface IDataSet<T extends Entry> {
     int getColor();
 
     /**
+     * Returns the Gradient color model
+     *
+     * @return
+     */
+    GradientColor getGradientColor();
+
+    /**
+     * Returns the Gradient colors
+     *
+     * @return
+     */
+    List<GradientColor> getGradientColors();
+
+    /**
+     * Returns the Gradient colors
+     *
+     * @param index
+     * @return
+     */
+    GradientColor getGradientColor(int index);
+
+    /**
      * Returns the color at the given index of the DataSet's color array.
      * Performs a IndexOutOfBounds check by modulus.
      *
@@ -316,14 +340,14 @@ public interface IDataSet<T extends Entry> {
      *
      * @param f
      */
-    void setValueFormatter(IValueFormatter f);
+    void setValueFormatter(ValueFormatter f);
 
     /**
      * Returns the formatter used for drawing the values inside the chart.
      *
      * @return
      */
-    IValueFormatter getValueFormatter();
+    ValueFormatter getValueFormatter();
 
     /**
      * Returns true if the valueFormatter object of this DataSet is null.
@@ -419,10 +443,10 @@ public interface IDataSet<T extends Entry> {
     DashPathEffect getFormLineDashEffect();
 
     /**
-     * set this to true to draw y-values on the chart NOTE (for bar and
-     * linechart): if "maxvisiblecount" is reached, no values will be drawn even
-     * if this is enabled
+     * set this to true to draw y-values on the chart.
      *
+     * NOTE (for bar and line charts): if `maxVisibleCount` is reached, no values will be drawn even
+     * if this is enabled
      * @param enabled
      */
     void setDrawValues(boolean enabled);
@@ -433,6 +457,38 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     boolean isDrawValuesEnabled();
+
+    /**
+     * Set this to true to draw y-icons on the chart.
+     *
+     * NOTE (for bar and line charts): if `maxVisibleCount` is reached, no icons will be drawn even
+     * if this is enabled
+     *
+     * @param enabled
+     */
+    void setDrawIcons(boolean enabled);
+
+    /**
+     * Returns true if y-icon drawing is enabled, false if not
+     *
+     * @return
+     */
+    boolean isDrawIconsEnabled();
+
+    /**
+     * Offset of icons drawn on the chart.
+     *
+     * For all charts except Pie and Radar it will be ordinary (x offset,y offset).
+     *
+     * For Pie and Radar chart it will be (y offset, distance from center offset); so if you want icon to be rendered under value, you should increase X component of CGPoint, and if you want icon to be rendered closet to center, you should decrease height component of CGPoint.
+     * @param offset
+     */
+    void setIconsOffset(MPPointF offset);
+
+    /**
+     * Get the offset for drawing icons.
+     */
+    MPPointF getIconsOffset();
 
     /**
      * Set the visibility of this DataSet. If not visible, the DataSet will not

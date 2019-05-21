@@ -1,9 +1,7 @@
-
 package com.github.mikephil.charting.charts;
 
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,8 +13,10 @@ import android.graphics.Paint.Align;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
+import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -26,7 +26,7 @@ import android.view.ViewParent;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.animation.EasingFunction;
+import com.github.mikephil.charting.animation.Easing.EasingFunction;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
@@ -34,7 +34,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.IHighlighter;
@@ -60,7 +60,6 @@ import java.util.ArrayList;
  *
  * @author Philipp Jahoda
  */
-@SuppressLint("NewApi")
 public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends
         ViewGroup
         implements ChartInterface {
@@ -209,17 +208,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
-            mAnimator = new ChartAnimator();
-        else
-            mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
+        mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
 
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    // ViewCompat.postInvalidateOnAnimation(Chart.this);
-                    postInvalidate();
-                }
-            });
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                // ViewCompat.postInvalidateOnAnimation(Chart.this);
+                postInvalidate();
+            }
+        });
 
         // initialize the utils
         Utils.init(getContext());
@@ -315,6 +311,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         mData = null;
         mOffsetsCalculated = false;
         mIndicesToHighlight = null;
+        mChartTouchListener.setLastHighlighted(null);
         invalidate();
     }
 
@@ -835,9 +832,25 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param easingX         a custom easing function to be used on the animation phase
      * @param easingY         a custom easing function to be used on the animation phase
      */
+    @RequiresApi(11)
     public void animateXY(int durationMillisX, int durationMillisY, EasingFunction easingX,
                           EasingFunction easingY) {
         mAnimator.animateXY(durationMillisX, durationMillisY, easingX, easingY);
+    }
+
+    /**
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
+     * the specified animation time. If animate(...) is called, no further
+     * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
+     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
+     *
+     * @param durationMillisX
+     * @param durationMillisY
+     * @param easing         a custom easing function to be used on the animation phase
+     */
+    @RequiresApi(11)
+    public void animateXY(int durationMillisX, int durationMillisY, EasingFunction easing) {
+        mAnimator.animateXY(durationMillisX, durationMillisY, easing);
     }
 
     /**
@@ -849,6 +862,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param durationMillis
      * @param easing         a custom easing function to be used on the animation phase
      */
+    @RequiresApi(11)
     public void animateX(int durationMillis, EasingFunction easing) {
         mAnimator.animateX(durationMillis, easing);
     }
@@ -862,6 +876,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param durationMillis
      * @param easing         a custom easing function to be used on the animation phase
      */
+    @RequiresApi(11)
     public void animateY(int durationMillis, EasingFunction easing) {
         mAnimator.animateY(durationMillis, easing);
     }
@@ -871,48 +886,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW FOR PREDEFINED EASING OPTIONS */
-
-    /**
-     * Animates the drawing / rendering of the chart on both x- and y-axis with
-     * the specified animation time. If animate(...) is called, no further
-     * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
-     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
-     *
-     * @param durationMillisX
-     * @param durationMillisY
-     * @param easingX         a predefined easing option
-     * @param easingY         a predefined easing option
-     */
-    public void animateXY(int durationMillisX, int durationMillisY, Easing.EasingOption easingX,
-                          Easing.EasingOption easingY) {
-        mAnimator.animateXY(durationMillisX, durationMillisY, easingX, easingY);
-    }
-
-    /**
-     * Animates the rendering of the chart on the x-axis with the specified
-     * animation time. If animate(...) is called, no further calling of
-     * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
-     *
-     * @param durationMillis
-     * @param easing         a predefined easing option
-     */
-    public void animateX(int durationMillis, Easing.EasingOption easing) {
-        mAnimator.animateX(durationMillis, easing);
-    }
-
-    /**
-     * Animates the rendering of the chart on the y-axis with the specified
-     * animation time. If animate(...) is called, no further calling of
-     * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
-     *
-     * @param durationMillis
-     * @param easing         a predefined easing option
-     */
-    public void animateY(int durationMillis, Easing.EasingOption easing) {
-        mAnimator.animateY(durationMillis, easing);
-    }
 
     /**
      * ################ ################ ################ ################
@@ -928,6 +901,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @param durationMillis
      */
+    @RequiresApi(11)
     public void animateX(int durationMillis) {
         mAnimator.animateX(durationMillis);
     }
@@ -940,6 +914,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @param durationMillis
      */
+    @RequiresApi(11)
     public void animateY(int durationMillis) {
         mAnimator.animateY(durationMillis);
     }
@@ -953,6 +928,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param durationMillisX
      * @param durationMillisY
      */
+    @RequiresApi(11)
     public void animateXY(int durationMillisX, int durationMillisY) {
         mAnimator.animateXY(durationMillisX, durationMillisY);
     }
@@ -980,7 +956,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @return
      */
-    public IValueFormatter getDefaultValueFormatter() {
+    public ValueFormatter getDefaultValueFormatter() {
         return mDefaultValueFormatter;
     }
 
@@ -1492,6 +1468,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public boolean saveToPath(String title, String pathOnSD) {
 
+
+
         Bitmap b = getChartBitmap();
 
         OutputStream stream = null;
@@ -1607,7 +1585,18 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @return returns true if saving was successful, false if not
      */
     public boolean saveToGallery(String fileName, int quality) {
-        return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.JPEG, quality);
+        return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.PNG, quality);
+    }
+
+    /**
+     * Saves the current state of the chart to the gallery as a PNG image.
+     * NOTE: Needs permission WRITE_EXTERNAL_STORAGE
+     *
+     * @param fileName e.g. "my_image"
+     * @return returns true if saving was successful, false if not
+     */
+    public boolean saveToGallery(String fileName) {
+        return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.PNG, 40);
     }
 
     /**
@@ -1675,20 +1664,23 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             Log.i(LOG_TAG, "OnSizeChanged()");
 
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
-
-            mViewPortHandler.setChartDimens(w, h);
-
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Setting chart dimens, width: " + w + ", height: " + h);
-
-            for (Runnable r : mJobs) {
-                post(r);
-            }
-
-            mJobs.clear();
+            mViewPortHandler.setChartDimens(w, h);
+        } else {
+            if (mLogEnabled)
+                Log.w(LOG_TAG, "*Avoiding* setting chart dimens! width: " + w + ", height: " + h);
         }
 
+        // This may cause the chart view to mutate properties affecting the view port --
+        //   lets do this before we try to run any pending jobs on the view port itself
         notifyDataSetChanged();
+
+        for (Runnable r : mJobs) {
+            post(r);
+        }
+
+        mJobs.clear();
 
         super.onSizeChanged(w, h, oldw, oldh);
     }
@@ -1701,16 +1693,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setHardwareAccelerationEnabled(boolean enabled) {
 
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-
-            if (enabled)
-                setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            else
-                setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        } else {
-            Log.e(LOG_TAG,
-                    "Cannot enable/disable hardware acceleration for devices below API level 11.");
-        }
+        if (enabled)
+            setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        else
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     @Override

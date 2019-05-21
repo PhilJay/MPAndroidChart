@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.data;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.highlight.Range;
 
@@ -33,20 +34,6 @@ public class BarEntry extends Entry {
     private float mPositiveSum;
 
     /**
-     * Constructor for stacked bar entries.
-     *
-     * @param x
-     * @param vals - the stack values, use at lest 2
-     */
-    public BarEntry(float x, float[] vals) {
-        super(x, calcSum(vals));
-
-        this.mYVals = vals;
-        calcPosNegSum();
-        calcRanges();
-    }
-
-    /**
      * Constructor for normal bars (not stacked).
      *
      * @param x
@@ -57,18 +44,14 @@ public class BarEntry extends Entry {
     }
 
     /**
-     * Constructor for stacked bar entries.
+     * Constructor for normal bars (not stacked).
      *
      * @param x
-     * @param vals  - the stack values, use at least 2
-     * @param label Additional description label.
+     * @param y
+     * @param data - Spot for additional data this Entry represents.
      */
-    public BarEntry(float x, float[] vals, String label) {
-        super(x, calcSum(vals), label);
-
-        this.mYVals = vals;
-        calcPosNegSum();
-        calcRanges();
+    public BarEntry(float x, float y, Object data) {
+        super(x, y, data);
     }
 
     /**
@@ -76,10 +59,82 @@ public class BarEntry extends Entry {
      *
      * @param x
      * @param y
-     * @param data Spot for additional data this Entry represents.
+     * @param icon - icon image
      */
-    public BarEntry(float x, float y, Object data) {
-        super(x, y, data);
+    public BarEntry(float x, float y, Drawable icon) {
+        super(x, y, icon);
+    }
+
+    /**
+     * Constructor for normal bars (not stacked).
+     *
+     * @param x
+     * @param y
+     * @param icon - icon image
+     * @param data - Spot for additional data this Entry represents.
+     */
+    public BarEntry(float x, float y, Drawable icon, Object data) {
+        super(x, y, icon, data);
+    }
+
+    /**
+     * Constructor for stacked bar entries. One data object for whole stack
+     *
+     * @param x
+     * @param vals - the stack values, use at least 2
+     */
+    public BarEntry(float x, float[] vals) {
+        super(x, calcSum(vals));
+
+        this.mYVals = vals;
+        calcPosNegSum();
+        calcRanges();
+    }
+
+    /**
+     * Constructor for stacked bar entries. One data object for whole stack
+     *
+     * @param x
+     * @param vals - the stack values, use at least 2
+     * @param data - Spot for additional data this Entry represents.
+     */
+    public BarEntry(float x, float[] vals, Object data) {
+        super(x, calcSum(vals), data);
+
+        this.mYVals = vals;
+        calcPosNegSum();
+        calcRanges();
+    }
+
+    /**
+     * Constructor for stacked bar entries. One data object for whole stack
+     *
+     * @param x
+     * @param vals - the stack values, use at least 2
+     * @param icon - icon image
+     */
+    public BarEntry(float x, float[] vals, Drawable icon) {
+        super(x, calcSum(vals), icon);
+
+        this.mYVals = vals;
+        calcPosNegSum();
+        calcRanges();
+    }
+
+    /**
+     * Constructor for stacked bar entries. One data object for whole stack
+     *
+     * @param x
+     * @param vals - the stack values, use at least 2
+     * @param icon - icon image
+     * @param data - Spot for additional data this Entry represents.
+     */
+    public BarEntry(float x, float[] vals, Drawable icon, Object data) {
+        super(x, calcSum(vals), icon, data);
+
+        this.mYVals = vals;
+        calcPosNegSum();
+        calcRanges();
     }
 
     /**
