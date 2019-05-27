@@ -200,7 +200,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
                     Utils.getPosition(
                             center,
-                            (entry.getY()) * factor * phaseY + iconsOffset.y,
+                            (entry.getY() - mChart.getYChartMin()) * factor * phaseY + iconsOffset.y,
                             sliceangle * j * phaseX + mChart.getRotationAngle(),
                             pIcon);
 
