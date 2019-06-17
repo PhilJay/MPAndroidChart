@@ -62,17 +62,19 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
         for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
 
             IDataSet<?> dataSet = mChart.getData().getDataSetByIndex(i);
+            // add highlight entries only of visible data sets with highlight enabled
+            if(dataSet.isVisible() && dataSet.isHighlightEnabled()) {
+                if (index < dataSet.getEntryCount()) {
+                    final Entry entry = dataSet.getEntryForIndex(index);
 
-            if (index < dataSet.getEntryCount()) {
-                final Entry entry = dataSet.getEntryForIndex(index);
+                    float y = (entry.getY() - mChart.getYChartMin());
 
-                float y = (entry.getY() - mChart.getYChartMin());
+                    Utils.getPosition(
+                            mChart.getCenterOffsets(), y * factor * phaseY,
+                            sliceangle * index * phaseX + mChart.getRotationAngle(), pOut);
 
-                Utils.getPosition(
-                        mChart.getCenterOffsets(), y * factor * phaseY,
-                        sliceangle * index * phaseX + mChart.getRotationAngle(), pOut);
-
-                mHighlightBuffer.add(new Highlight(index, entry.getY(), pOut.x, pOut.y, i, dataSet.getAxisDependency()));
+                    mHighlightBuffer.add(new Highlight(index, entry.getY(), pOut.x, pOut.y, i, dataSet.getAxisDependency()));
+                }
             }
         }
 
