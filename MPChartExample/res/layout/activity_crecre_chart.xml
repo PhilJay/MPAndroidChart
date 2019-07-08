@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F7F7"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        tools:text="토탈 몇 점"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textColor="#333333"
+        android:fontFamily="@font/noto_sans_kr_bold"
+        android:id="@+id/act_crecre_chart_tv_total"/>
+
+    <TextView
+        tools:text="(몇명 리뷰)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="#127cc5"
+        android:fontFamily="@font/noto_sans_kr_regular"
+        android:id="@+id/act_crecre_chart_tv_review"/>
+
+    <com.github.mikephil.charting.charts.RadarChart
+        android:id="@+id/act_crecre_chart_rc"
+        android:layout_width="match_parent"
+        android:layout_height="352dp" />
+
+</LinearLayout>

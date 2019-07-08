@@ -1,11 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 56
         versionName '3.0.3'
@@ -31,6 +34,10 @@ android {
     lintOptions {
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 buildscript {
@@ -51,6 +58,7 @@ repositories {
     maven { // this is for realm-db
         url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -60,6 +68,7 @@ dependencies {
 
     implementation project(':MPChartLib')
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //compile 'io.realm:realm-android:0.87.5' // dependency for realm-database API (http://realm.io)
     //compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
 }

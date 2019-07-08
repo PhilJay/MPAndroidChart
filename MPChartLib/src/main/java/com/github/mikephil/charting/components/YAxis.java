@@ -373,11 +373,18 @@ public class YAxis extends AxisBase {
             min = min - 1f;
         }
 
-        float bottomSpace = range / 100f * getSpaceBottom();
-        this.mAxisMinimum = (min - bottomSpace);
-            
-        float topSpace = range / 100f * getSpaceTop();
-        this.mAxisMaximum = (max + topSpace);
+        if (!mCustomAxisMin) {
+
+            float bottomSpace = range / 100f * getSpaceBottom();
+            this.mAxisMinimum = (min - bottomSpace);
+        }
+
+        // top-space only effects non-custom max
+        if (!mCustomAxisMax) {
+
+            float topSpace = range / 100f * getSpaceTop();
+            this.mAxisMaximum = (max + topSpace);
+        }
 
         // calc actual range
         this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
