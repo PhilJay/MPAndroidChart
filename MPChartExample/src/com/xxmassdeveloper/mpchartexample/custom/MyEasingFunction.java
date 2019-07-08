@@ -1,14 +1,14 @@
 
 package com.xxmassdeveloper.mpchartexample.custom;
 
-import com.github.mikephil.charting.animation.EasingFunction;
+import com.github.mikephil.charting.animation.Easing;
 
 /**
  * Example of a custom made animation EasingFunction.
  * 
  * @author Philipp Jahoda
  */
-public class MyEasingFunction implements EasingFunction {
+public class MyEasingFunction implements Easing.EasingFunction {
 
     @Override
     public float getInterpolation(float input) {

@@ -66,12 +66,13 @@ public class RadarChartActivity extends DemoBase {
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(mTfLight);
-        xAxis.setTextSize(9f);
+        xAxis.setTextSize(14f);
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
+        xAxis.setMultiLineLabel(true);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            private String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
+            private String[] mActivities = new String[]{"Item1\nscore", "Item2\nscore", "Item3\nscore", "Item4\nscore", "Item5\nscore"};
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
