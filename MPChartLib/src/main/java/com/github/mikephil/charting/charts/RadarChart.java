@@ -40,6 +40,16 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private int mWebColor = Color.rgb(122, 122, 122);
 
     /**
+     * color for the main web lines
+     */
+    private int mWebOuterColor = Color.rgb(122, 122, 122);
+
+    /**
+     * color for the main web lines
+     */
+    private int mRadarBackgroundColor = Color.rgb(122, 122, 122);
+
+    /**
      * color for the inner web
      */
     private int mWebColorInner = Color.rgb(122, 122, 122);
@@ -271,6 +281,36 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     public int getWebColor() {
         return mWebColor;
+    }
+
+    /**
+     * Sets the color for the web lines that come from the center. Don't forget
+     * to use getResources().getColor(...) when loading a color from the
+     * resources. Default: Color.rgb(122, 122, 122)
+     *
+     * @param color
+     */
+    public void setWebOuterColor(int color) {
+        mWebOuterColor = color;
+    }
+
+    public int getWebOuterColor() {
+        return mWebOuterColor;
+    }
+
+    /**
+     * Sets the color for the web lines that come from the center. Don't forget
+     * to use getResources().getColor(...) when loading a color from the
+     * resources. Default: Color.rgb(122, 122, 122)
+     *
+     * @param color
+     */
+    public void setRadarBackgroundColor(int color) {
+        mRadarBackgroundColor = color;
+    }
+
+    public int getRadarBackgroundColor() {
+        return mRadarBackgroundColor;
     }
 
     /**

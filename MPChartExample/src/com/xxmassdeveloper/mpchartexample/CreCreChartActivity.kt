@@ -3,6 +3,8 @@ package com.xxmassdeveloper.mpchartexample
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -29,7 +31,7 @@ import kotlinx.android.synthetic.main.activity_crecre_chart.*
 
 import java.util.ArrayList
 
-class CreCreChartActivity : DemoBase() {
+class CreCreChartActivity : FragmentActivity() {
 
     lateinit var total: TextView
     lateinit var review: TextView
@@ -39,12 +41,13 @@ class CreCreChartActivity : DemoBase() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_crecre_chart)
 
         review = act_crecre_chart_tv_review
         total = act_crecre_chart_tv_total
+
+        val fontReguler = total.typeface
+
         total.setTextColor(Color.rgb(51, 51, 51))
 
         mChart = act_crecre_chart_rc
@@ -52,8 +55,10 @@ class CreCreChartActivity : DemoBase() {
             isRotationEnabled = false
             description.isEnabled = false
             webLineWidth = 1f
-            webColor = Color.LTGRAY
+            webColor = Color.WHITE
             webLineWidthInner = 1f
+            radarBackgroundColor = Color.rgb(240, 240, 240)
+            webOuterColor = Color.rgb(170, 170, 170)
             webColorInner = Color.rgb(221, 221, 221)
             //webAlpha = 100
         }
@@ -87,7 +92,7 @@ class CreCreChartActivity : DemoBase() {
 
         val data = RadarData(sets)
         data.run {
-            setValueTypeface(mTfLight)
+            setValueTypeface(fontReguler)
             setValueTextSize(8f)
             setDrawValues(false)
             setValueTextColor(Color.WHITE)
@@ -104,7 +109,7 @@ class CreCreChartActivity : DemoBase() {
 
         mChart.run {
             xAxis.run {
-                typeface = mTfLight
+                typeface = fontReguler
                 textSize = 14f
                 yOffset = 0f
                 xOffset = 0f
