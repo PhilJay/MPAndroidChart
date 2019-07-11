@@ -30,6 +30,11 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     private float mValueLinePart2Length = 0.4f;
     private boolean mValueLineVariableLength = true;
 
+    //ScaCap custom - Bermuda
+    private boolean drawValueTextBubbleEnabled = false;
+    private int highlightValueTextColor = 0xffffffff;
+    private float valueTextBubbleSpacing = 100.0f;
+
     public PieDataSet(List<PieEntry> yVals, String label) {
         super(yVals, label);
 //        mShift = Utils.convertDpToPixel(12f);
@@ -216,6 +221,41 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
 
     public void setValueLineVariableLength(boolean valueLineVariableLength) {
         this.mValueLineVariableLength = valueLineVariableLength;
+    }
+
+    /**
+     * When Draw value text is enabled, the value of slice is drawn outside the pie with a roundrect surrounding it.
+     * Value line is not drawn.
+     * See also, highlightValueTextColor and valueTextBubbleSpacing
+     */
+    public boolean isDrawValueTextBubbleEnabled() {
+        return drawValueTextBubbleEnabled;
+    }
+
+    public void setDrawValueTextBubble(boolean drawValueTextBubble) {
+        this.drawValueTextBubbleEnabled = drawValueTextBubble;
+    }
+
+    /**
+     * Color for the value text when it is selected. The stroke of value text bubble becomes FILL, so update the value text to desired color.
+     */
+    public int getHighlightValueTextColor() {
+        return highlightValueTextColor;
+    }
+
+    public void setHighlightValueTextColor(int highlightValueTextColor) {
+        this.highlightValueTextColor = highlightValueTextColor;
+    }
+
+    /**
+     * Additional spacing for the value text bubble from the Pie in addition to the maximum specified by highlightRadius calculated according to selectionShift.
+     */
+    public float getValueTextBubbleSpacing() {
+        return valueTextBubbleSpacing;
+    }
+
+    public void setValueTextBubbleSpacing(float valueTextBubbleSpacing) {
+        this.valueTextBubbleSpacing = valueTextBubbleSpacing;
     }
 
     public enum ValuePosition {
