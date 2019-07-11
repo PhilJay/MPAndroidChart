@@ -1,11 +1,10 @@
-
 package com.github.mikephil.charting.data;
 
 import android.graphics.Typeface;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
@@ -659,7 +658,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @param f
      */
-    public void setValueFormatter(IValueFormatter f) {
+    public void setValueFormatter(ValueFormatter f) {
         if (f == null)
             return;
         else {

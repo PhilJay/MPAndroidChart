@@ -1,49 +1,54 @@
-
 package com.github.mikephil.charting.formatter;
 
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieEntry;
 
 import java.text.DecimalFormat;
 
 /**
  * This IValueFormatter is just for convenience and simply puts a "%" sign after
- * each value. (Recommeded for PieChart)
+ * each value. (Recommended for PieChart)
  *
  * @author Philipp Jahoda
  */
-public class PercentFormatter implements IValueFormatter, IAxisValueFormatter
+public class PercentFormatter extends ValueFormatter
 {
 
-    protected DecimalFormat mFormat;
+    public DecimalFormat mFormat;
+    private PieChart pieChart;
+    private boolean percentSignSeparated;
 
     public PercentFormatter() {
         mFormat = new DecimalFormat("###,###,##0.0");
+        percentSignSeparated = true;
     }
 
-    /**
-     * Allow a custom decimalformat
-     *
-     * @param format
-     */
-    public PercentFormatter(DecimalFormat format) {
-        this.mFormat = format;
+    // Can be used to remove percent signs if the chart isn't in percent mode
+    public PercentFormatter(PieChart pieChart) {
+        this();
+        this.pieChart = pieChart;
     }
 
-    // IValueFormatter
+    // Can be used to remove percent signs if the chart isn't in percent mode
+    public PercentFormatter(PieChart pieChart, boolean percentSignSeparated) {
+        this(pieChart);
+        this.percentSignSeparated = percentSignSeparated;
+    }
+
     @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        return mFormat.format(value) + " %";
+    public String getFormattedValue(float value) {
+        return mFormat.format(value) + (percentSignSeparated ? " %" : "%");
     }
 
-    // IAxisValueFormatter
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
-        return mFormat.format(value) + " %";
+    public String getPieLabel(float value, PieEntry pieEntry) {
+        if (pieChart != null && pieChart.isUsePercentValuesEnabled()) {
+            // Converted to percent
+            return getFormattedValue(value);
+        } else {
+            // raw value, skip percent sign
+            return mFormat.format(value);
+        }
     }
 
-    public int getDecimalDigits() {
-        return 1;
-    }
 }

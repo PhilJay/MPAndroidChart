@@ -1,25 +1,17 @@
-//task wrapper(type: Wrapper) {
-//    gradleVersion = '2.9'
-//}
-
 buildscript {
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath "io.realm:realm-gradle-plugin:4.2.0"
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+        classpath 'com.android.tools.build:gradle:3.4.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        google()
     }
 }
