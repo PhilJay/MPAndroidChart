@@ -2,6 +2,8 @@ package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +29,14 @@ public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implement
     public Highlight getHighlight(float x, float y) {
 
         float touchDistanceToCenter = mChart.distanceToCenter(x, y);
+        PieDataSet dataSet = ((PieDataSet)mChart.getData().getDataSetByIndex(0));
+        float extraDistance = 0.0f;
+        if ( dataSet.isDrawValueTextBubbleEnabled()) {
+            extraDistance = dataSet.getSelectionShift() + dataSet.getValueTextBubbleSpacing()*1.5f;
+        }
 
         // check if a slice was touched
-        if (touchDistanceToCenter > mChart.getRadius()) {
+        if (touchDistanceToCenter > mChart.getRadius() + extraDistance) {
 
             // if no slice was touched, highlight nothing
             return null;
