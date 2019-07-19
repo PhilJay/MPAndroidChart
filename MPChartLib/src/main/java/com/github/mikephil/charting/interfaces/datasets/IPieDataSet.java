@@ -70,5 +70,9 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
      * */
     boolean isValueLineVariableLength();
 
+    float getValueTextBubbleHeightMultiplier();
+
+    float getValueTextBubbleWidthMultiplier();
+
 }
 

@@ -34,6 +34,24 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     private boolean drawValueTextBubbleEnabled = false;
     private int highlightValueTextColor = 0xffffffff;
     private float valueTextBubbleSpacing = 100.0f;
+    private float valueTextBubbleHeightMultiplier = 2.5f;
+    private float valueTextBubbleWidthMultiplier = 1.2f;
+
+    public float getValueTextBubbleHeightMultiplier() {
+        return valueTextBubbleHeightMultiplier;
+    }
+
+    public void setValueTextBubbleHeightMultiplier(float valueTextBubbleHeightMultiplier) {
+        this.valueTextBubbleHeightMultiplier = valueTextBubbleHeightMultiplier;
+    }
+
+    public float getValueTextBubbleWidthMultiplier() {
+        return valueTextBubbleWidthMultiplier;
+    }
+
+    public void setValueTextBubbleWidthMultiplier(float valueTextBubbleWidthMultiplier) {
+        this.valueTextBubbleWidthMultiplier = valueTextBubbleWidthMultiplier;
+    }
 
     public PieDataSet(List<PieEntry> yVals, String label) {
         super(yVals, label);
