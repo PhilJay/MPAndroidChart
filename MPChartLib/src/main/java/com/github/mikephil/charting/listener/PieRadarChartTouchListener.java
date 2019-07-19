@@ -112,11 +112,8 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
 
                     break;
             }
-            return true;
         }
-
-        return false;
-
+        return true;
     }
 
     @Override
