@@ -530,7 +530,7 @@ public class PieChartRenderer extends DataRenderer {
                         labelPty = center.y + (float) ((radius + dataSet.getSelectionShift() + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.sin(Math.toRadians(angle + rotationAngle)));
 
                         drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty, dataSet
-                                .getValueTextColor(j), dataSet.getColor(j), false);
+                                .getValueTextColor(j), dataSet.getColor(j), false, dataSet.getValueTextBubbleHeightMultiplier(), dataSet.getValueTextBubbleWidthMultiplier());
                     } else {
 
                         float line1Radius;
@@ -873,7 +873,7 @@ public class PieChartRenderer extends DataRenderer {
                 final float labelPtx = center.x + (float)((highlightedRadius + ((PieDataSet) set).getValueTextBubbleSpacing())*Math.cos(Math.toRadians(angle+sliceAngle/2 + rotationAngle)));
                 final float labelPty = center.y + (float)((highlightedRadius + ((PieDataSet) set).getValueTextBubbleSpacing())*Math.sin(Math.toRadians(angle+sliceAngle/2 + rotationAngle)));
 
-                drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty , ((PieDataSet) set).getHighlightValueTextColor(), set.getColor(index),true);
+                drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty , ((PieDataSet) set).getHighlightValueTextColor(), set.getColor(index),true, set.getValueTextBubbleHeightMultiplier(),set.getValueTextBubbleWidthMultiplier());
             }
 
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
@@ -1079,11 +1079,11 @@ public class PieChartRenderer extends DataRenderer {
         }
     }
 
-    private void drawValueInRoundedBox(Canvas c, String formattedValue, float x, float y, int color,int boxColor,boolean isHighlight) {
+    private void drawValueInRoundedBox(Canvas c, String formattedValue, float x, float y, int color,int boxColor,boolean isHighlight, float heightMult, float widthMult) {
         final float textHeight = Utils.calcTextHeight(mValuePaint,formattedValue);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawRoundedRect(c, x, y - textHeight/2, Utils.calcTextWidth(mValuePaint,formattedValue)*1.6f, textHeight*2f, boxColor, isHighlight);
+            drawRoundedRect(c, x, y - textHeight/2, Utils.calcTextWidth(mValuePaint,formattedValue)*widthMult, textHeight*heightMult, boxColor, isHighlight);
         }
         drawValue(c,formattedValue,x,y,color);
     }
