@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint.Align;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.text.TextPaint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.BarBuffer;
@@ -15,6 +16,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Fill;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
@@ -411,7 +413,13 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     @Override
     public void drawValue(Canvas c, String valueText, float x, float y, int color) {
         mValuePaint.setColor(color);
-        c.drawText(valueText, x, y, mValuePaint);
+        if (Utils.isMultilineText(valueText)) {
+            Utils.drawMultilineText(c, valueText, x, y,
+                    new TextPaint(mValuePaint),
+                    new FSize(c.getWidth(), c.getHeight()), new MPPointF(0f, 0f), 0);
+        } else {
+            c.drawText(valueText, x, y, mValuePaint);
+        }
     }
 
     @Override

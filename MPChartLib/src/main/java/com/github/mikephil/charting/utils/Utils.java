@@ -11,6 +11,7 @@ import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -38,6 +39,8 @@ public abstract class Utils {
     private static int mMaximumFlingVelocity = 8000;
     public final static double DEG2RAD = (Math.PI / 180.0);
     public final static float FDEG2RAD = ((float) Math.PI / 180.f);
+
+    private static final String CHAR_NEW_LINE = "\n";
 
     @SuppressWarnings("unused")
     public final static double DOUBLE_EPSILON = Double.longBitsToDouble(1);
@@ -613,6 +616,14 @@ public abstract class Utils {
         }
 
         paint.setTextAlign(originalTextAlign);
+    }
+
+    public static boolean isMultilineText(String text) {
+        if (TextUtils.isEmpty(text)) {
+            return false;
+        }
+
+        return text.contains(CHAR_NEW_LINE);
     }
 
     public static void drawMultilineText(Canvas c, StaticLayout textLayout,

@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
+import android.text.TextPaint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
@@ -12,6 +13,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -199,7 +201,13 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     @Override
     public void drawValue(Canvas c, String valueText, float x, float y, int color) {
         mValuePaint.setColor(color);
-        c.drawText(valueText, x, y, mValuePaint);
+        if (Utils.isMultilineText(valueText)) {
+            Utils.drawMultilineText(c, valueText, x, y,
+                    new TextPaint(mValuePaint),
+                    new FSize(c.getWidth(), c.getHeight()), new MPPointF(0f, 0f), 0);
+        } else {
+            c.drawText(valueText, x, y, mValuePaint);
+        }
     }
 
     @Override

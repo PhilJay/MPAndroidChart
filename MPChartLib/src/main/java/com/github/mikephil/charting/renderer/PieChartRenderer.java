@@ -25,6 +25,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -653,7 +654,13 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void drawValue(Canvas c, String valueText, float x, float y, int color) {
         mValuePaint.setColor(color);
-        c.drawText(valueText, x, y, mValuePaint);
+        if (Utils.isMultilineText(valueText)) {
+            Utils.drawMultilineText(c, valueText, x, y,
+                    new TextPaint(mValuePaint),
+                    new FSize(c.getWidth(), c.getHeight()), new MPPointF(0f, 0f), 0);
+        } else {
+            c.drawText(valueText, x, y, mValuePaint);
+        }
     }
 
     /**

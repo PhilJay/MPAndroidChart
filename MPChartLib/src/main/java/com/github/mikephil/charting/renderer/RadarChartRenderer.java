@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.text.TextPaint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -14,6 +15,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -228,7 +230,13 @@ public class RadarChartRenderer extends LineRadarRenderer {
     @Override
     public void drawValue(Canvas c, String valueText, float x, float y, int color) {
         mValuePaint.setColor(color);
-        c.drawText(valueText, x, y, mValuePaint);
+        if (Utils.isMultilineText(valueText)) {
+            Utils.drawMultilineText(c, valueText, x, y,
+                    new TextPaint(mValuePaint),
+                    new FSize(c.getWidth(), c.getHeight()), new MPPointF(0f, 0f), 0);
+        } else {
+            c.drawText(valueText, x, y, mValuePaint);
+        }
     }
 
     @Override
