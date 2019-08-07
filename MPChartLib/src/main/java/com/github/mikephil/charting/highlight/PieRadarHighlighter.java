@@ -32,13 +32,12 @@ public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implement
 
         float touchDistanceToCenter = mChart.distanceToCenter(x, y);
         PieDataSet dataSet = ((PieDataSet)mChart.getData().getDataSetByIndex(0));
-        float extraDistance = 0.0f;
         if ( dataSet.isDrawValueTextBubbleEnabled()) {
-            if (extraSelectionDistance == 0) extraSelectionDistance = Utils.calcTextWidth(mChart.getRenderer().getPaintValues(),"100.0 %") + dataSet.getSelectionShift() + dataSet.getValueTextBubbleSpacing();
+            if (extraSelectionDistance == 0) extraSelectionDistance = Utils.calcTextWidth(mChart.getRenderer().getPaintValues(),"100.0 %")*dataSet.getValueTextBubbleWidthMultiplier() + dataSet.getSelectionShift() + dataSet.getValueTextBubbleSpacing();
         }
 
         // check if a slice was touched
-        if (touchDistanceToCenter > mChart.getRadius() + extraDistance) {
+        if (touchDistanceToCenter > mChart.getRadius() + extraSelectionDistance) {
 
             // if no slice was touched, highlight nothing
             return null;
