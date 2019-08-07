@@ -27,6 +27,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -526,11 +527,13 @@ public class PieChartRenderer extends DataRenderer {
                     float labelPtx, labelPty;
 
                     if (drawValueTextBubble) {
-                        labelPtx = center.x + (float) ((radius + dataSet.getSelectionShift() + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.cos(Math.toRadians(angle + rotationAngle)));
-                        labelPty = center.y + (float) ((radius + dataSet.getSelectionShift() + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.sin(Math.toRadians(angle + rotationAngle)));
+                        final FSize textSize = Utils.calcTextSize(mValuePaint,formattedValue);
+                        labelPtx = center.x + (float) ((radius + dataSet.getSelectionShift() + textSize.width + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.cos(Math.toRadians(angle + rotationAngle)) - (textSize.height*dataSet.getValueTextBubbleHeightMultiplier()/2 * Math.sin(Math.toRadians(angle + rotationAngle + 90))));
+                        labelPty = center.y + (float) ((radius + dataSet.getSelectionShift() + textSize.width + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.sin(Math.toRadians(angle + rotationAngle)) + (textSize.width*dataSet.getValueTextBubbleWidthMultiplier()/2 * Math.cos(Math.toRadians(angle + rotationAngle + 90))));
 
                         drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty, dataSet
-                                .getValueTextColor(j), dataSet.getColor(j), false, dataSet.getValueTextBubbleHeightMultiplier(), dataSet.getValueTextBubbleWidthMultiplier());
+                                .getValueTextColor(j), dataSet.getColor(j), false, dataSet.getValueTextBubbleHeightMultiplier(), dataSet.getValueTextBubbleWidthMultiplier(), textSize);
+                        FSize.recycleInstance(textSize);
                     } else {
 
                         float line1Radius;
@@ -870,10 +873,12 @@ public class PieChartRenderer extends DataRenderer {
                         / mChart.getData().getYValueSum() * 100f : set.getEntryForIndex(index).getY();
                 final String formattedValue = set.getValueFormatter().getPieLabel(value,set.getEntryForIndex(index));
 
-                final float labelPtx = center.x + (float)((highlightedRadius + ((PieDataSet) set).getValueTextBubbleSpacing())*Math.cos(Math.toRadians(angle+sliceAngle/2 + rotationAngle)));
-                final float labelPty = center.y + (float)((highlightedRadius + ((PieDataSet) set).getValueTextBubbleSpacing())*Math.sin(Math.toRadians(angle+sliceAngle/2 + rotationAngle)));
+                final FSize textSize = Utils.calcTextSize(mValuePaint,formattedValue);
+                final float labelPtx = center.x + (float)((highlightedRadius + textSize.width+((PieDataSet) set).getValueTextBubbleSpacing())*Math.cos(Math.toRadians(angle+sliceAngle/2 + rotationAngle))- (textSize.height*set.getValueTextBubbleHeightMultiplier()/2 * Math.sin(Math.toRadians(angle+sliceAngle/2 + rotationAngle + 90))));
+                final float labelPty = center.y + (float)((highlightedRadius + textSize.width+((PieDataSet) set).getValueTextBubbleSpacing())*Math.sin(Math.toRadians(angle+sliceAngle/2 + rotationAngle))+ (textSize.width*set.getValueTextBubbleWidthMultiplier()/2 * Math.cos(Math.toRadians(angle+sliceAngle/2 + rotationAngle + 90))));
 
-                drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty , ((PieDataSet) set).getHighlightValueTextColor(), set.getColor(index),true, set.getValueTextBubbleHeightMultiplier(),set.getValueTextBubbleWidthMultiplier());
+                drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty , ((PieDataSet) set).getHighlightValueTextColor(), set.getColor(index),true, set.getValueTextBubbleHeightMultiplier(),set.getValueTextBubbleWidthMultiplier(), textSize);
+                FSize.recycleInstance(textSize);
             }
 
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
@@ -1079,13 +1084,13 @@ public class PieChartRenderer extends DataRenderer {
         }
     }
 
-    private void drawValueInRoundedBox(Canvas c, String formattedValue, float x, float y, int color,int boxColor,boolean isHighlight, float heightMult, float widthMult) {
-        final float textHeight = Utils.calcTextHeight(mValuePaint,formattedValue);
+    private void drawValueInRoundedBox(Canvas c, String formattedValue, float x, float y, int color,int boxColor,boolean isHighlight, float heightMult, float widthMult, FSize textSize) {
+        y+=textSize.height/2; // provided y value is to be used as center of the box/text. Value drawing happens to y at baseline of string
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawRoundedRect(c, x, y - textHeight/2, Utils.calcTextWidth(mValuePaint,formattedValue)*widthMult, textHeight*heightMult, boxColor, isHighlight);
+            drawRoundedRect(c, x, y - textSize.height/2, textSize.width*widthMult, textSize.height*heightMult, boxColor, isHighlight);
         }
-        drawValue(c,formattedValue,x,y,color);
+        drawValue(c,formattedValue,x,y ,color);
     }
 
     @TargetApi(21)
