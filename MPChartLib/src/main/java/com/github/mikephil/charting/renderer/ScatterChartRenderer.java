@@ -84,7 +84,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                     || !viewPortHandler.isInBoundsY(mPixelBuffer[1]))
                 continue;
 
-            mRenderPaint.setColor(dataSet.getColor(i / 2));
+            mRenderPaint.setColor(dataSet.getColor(i));
             renderer.renderShape(
                     c, dataSet, mViewPortHandler,
                     mPixelBuffer[0], mPixelBuffer[1],
