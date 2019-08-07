@@ -34,7 +34,7 @@ public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implement
         PieDataSet dataSet = ((PieDataSet)mChart.getData().getDataSetByIndex(0));
         float extraDistance = 0.0f;
         if ( dataSet.isDrawValueTextBubbleEnabled()) {
-            if (extraSelectionDistance == 0) extraSelectionDistance = Utils.calcTextWidth(mChart.getRenderer().getPaintValues(),"100.0%") + dataSet.getSelectionShift() + dataSet.getValueTextBubbleSpacing();
+            if (extraSelectionDistance == 0) extraSelectionDistance = Utils.calcTextWidth(mChart.getRenderer().getPaintValues(),"100.0 %") + dataSet.getSelectionShift() + dataSet.getValueTextBubbleSpacing();
         }
 
         // check if a slice was touched
