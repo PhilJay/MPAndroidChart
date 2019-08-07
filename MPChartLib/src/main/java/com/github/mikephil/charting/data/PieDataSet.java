@@ -273,7 +273,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     }
 
     public void setValueTextBubbleSpacing(float valueTextBubbleSpacing) {
-        this.valueTextBubbleSpacing = valueTextBubbleSpacing;
+        this.valueTextBubbleSpacing = Utils.convertDpToPixel(valueTextBubbleSpacing);
     }
 
     public enum ValuePosition {

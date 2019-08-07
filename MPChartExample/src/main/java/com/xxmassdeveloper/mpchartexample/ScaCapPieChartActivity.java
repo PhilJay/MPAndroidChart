@@ -76,7 +76,7 @@ public class ScaCapPieChartActivity extends DemoBase implements SeekBar.OnSeekBa
         chart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
         chart.setCenterText(generateCenterSpannableText());
 
-        chart.setExtraOffsets(20.f, 0.f, 20.f, 0.f);
+        chart.setExtraOffsets(30f, 30f, 30f, 30f);
 
         chart.setDrawHoleEnabled(true);
         chart.setHoleColor(Color.WHITE);
@@ -164,7 +164,7 @@ public class ScaCapPieChartActivity extends DemoBase implements SeekBar.OnSeekBa
         dataSet.setDrawValueTextBubble(true);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         dataSet.setHighlightValueTextColor(Color.WHITE);
-        dataSet.setValueTextBubbleSpacing(100);
+        dataSet.setValueTextBubbleSpacing(5);
         //dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_ALONG_CENTER_LINE);
 
 

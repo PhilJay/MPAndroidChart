@@ -4,6 +4,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implement
 {
 
     protected T mChart;
+    protected float extraSelectionDistance = 0;
 
     /**
      * buffer for storing previously highlighted values
@@ -32,7 +34,7 @@ public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implement
         PieDataSet dataSet = ((PieDataSet)mChart.getData().getDataSetByIndex(0));
         float extraDistance = 0.0f;
         if ( dataSet.isDrawValueTextBubbleEnabled()) {
-            extraDistance = dataSet.getSelectionShift() + dataSet.getValueTextBubbleSpacing()*1.5f;
+            if (extraSelectionDistance == 0) extraSelectionDistance = Utils.calcTextWidth(mChart.getRenderer().getPaintValues(),"100.0%") + dataSet.getSelectionShift() + dataSet.getValueTextBubbleSpacing();
         }
 
         // check if a slice was touched
