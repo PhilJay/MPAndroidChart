@@ -150,7 +150,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         mYAxisRenderer.renderAxisLabels(canvas);
 
-        mRenderer.drawValues(canvas);
+        // drawValues now moved to drawData()
+//        mRenderer.drawValues(canvas);
 
         mLegendRenderer.renderLegend(canvas);
 
