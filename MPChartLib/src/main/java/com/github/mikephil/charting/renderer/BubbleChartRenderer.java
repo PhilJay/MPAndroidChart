@@ -77,6 +77,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         mXBounds.set(mChart, dataSet);
 
         sizeBuffer[0] = 0f;
+        sizeBuffer[1] = sizeBuffer[3] = 0f;
         sizeBuffer[2] = 1f;
 
         trans.pointValuesToPixel(sizeBuffer);
