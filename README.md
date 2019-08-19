@@ -125,9 +125,7 @@ Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) fi
 
 <br/>
 
-<h2 id="
-
-">Social Media :fire:</h2>
+<h2 id="social">Social Media :fire:</h2>
 
 If you like this library, please tell others about it :two_hearts: :two_hearts:
 
