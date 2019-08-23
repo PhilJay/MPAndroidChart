@@ -526,7 +526,7 @@ public class PieChartRenderer extends DataRenderer {
                     float pt2x, pt2y;
                     float labelPtx, labelPty;
 
-                    if (drawValueTextBubble) {
+                    if (drawValueTextBubble && !formattedValue.isEmpty()) {
                         final FSize textSize = Utils.calcTextSize(mValuePaint,formattedValue);
                         labelPtx = center.x + (float) ((radius + dataSet.getSelectionShift() + textSize.width + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.cos(Math.toRadians(angle + rotationAngle)) - (textSize.height*dataSet.getValueTextBubbleHeightMultiplier()/2 * Math.sin(Math.toRadians(angle + rotationAngle + 90))));
                         labelPty = center.y + (float) ((radius + dataSet.getSelectionShift() + textSize.width + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.sin(Math.toRadians(angle + rotationAngle)) + (textSize.width*dataSet.getValueTextBubbleWidthMultiplier()/2 * Math.cos(Math.toRadians(angle + rotationAngle + 90))));
@@ -868,17 +868,19 @@ public class PieChartRenderer extends DataRenderer {
             highlightedCircleBox.set(mChart.getCircleBox());
             highlightedCircleBox.inset(-shift, -shift);
 
-            if (((PieDataSet)set).isDrawValueTextBubbleEnabled()) {
+            if (((PieDataSet)set).isDrawValueTextBubbleEnabled() ) {
                 final float value = mChart.isUsePercentValuesEnabled() ? set.getEntryForIndex(index).getY()
                         / mChart.getData().getYValueSum() * 100f : set.getEntryForIndex(index).getY();
                 final String formattedValue = set.getValueFormatter().getPieLabel(value,set.getEntryForIndex(index));
 
-                final FSize textSize = Utils.calcTextSize(mValuePaint,formattedValue);
-                final float labelPtx = center.x + (float)((highlightedRadius + textSize.width+((PieDataSet) set).getValueTextBubbleSpacing())*Math.cos(Math.toRadians(angle+sliceAngle/2 + rotationAngle))- (textSize.height*set.getValueTextBubbleHeightMultiplier()/2 * Math.sin(Math.toRadians(angle+sliceAngle/2 + rotationAngle + 90))));
-                final float labelPty = center.y + (float)((highlightedRadius + textSize.width+((PieDataSet) set).getValueTextBubbleSpacing())*Math.sin(Math.toRadians(angle+sliceAngle/2 + rotationAngle))+ (textSize.width*set.getValueTextBubbleWidthMultiplier()/2 * Math.cos(Math.toRadians(angle+sliceAngle/2 + rotationAngle + 90))));
+                if (!formattedValue.isEmpty()) {
+                    final FSize textSize = Utils.calcTextSize(mValuePaint, formattedValue);
+                    final float labelPtx = center.x + (float) ((highlightedRadius + textSize.width + ((PieDataSet) set).getValueTextBubbleSpacing()) * Math.cos(Math.toRadians(angle + sliceAngle / 2 + rotationAngle)) - (textSize.height * set.getValueTextBubbleHeightMultiplier() / 2 * Math.sin(Math.toRadians(angle + sliceAngle / 2 + rotationAngle + 90))));
+                    final float labelPty = center.y + (float) ((highlightedRadius + textSize.width + ((PieDataSet) set).getValueTextBubbleSpacing()) * Math.sin(Math.toRadians(angle + sliceAngle / 2 + rotationAngle)) + (textSize.width * set.getValueTextBubbleWidthMultiplier() / 2 * Math.cos(Math.toRadians(angle + sliceAngle / 2 + rotationAngle + 90))));
 
-                drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty , ((PieDataSet) set).getHighlightValueTextColor(), set.getColor(index),true, set.getValueTextBubbleHeightMultiplier(),set.getValueTextBubbleWidthMultiplier(), textSize);
-                FSize.recycleInstance(textSize);
+                    drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty, ((PieDataSet) set).getHighlightValueTextColor(), set.getColor(index), true, set.getValueTextBubbleHeightMultiplier(), set.getValueTextBubbleWidthMultiplier(), textSize);
+                    FSize.recycleInstance(textSize);
+                }
             }
 
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
