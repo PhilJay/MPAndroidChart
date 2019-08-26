@@ -526,14 +526,16 @@ public class PieChartRenderer extends DataRenderer {
                     float pt2x, pt2y;
                     float labelPtx, labelPty;
 
-                    if (drawValueTextBubble && !formattedValue.isEmpty()) {
-                        final FSize textSize = Utils.calcTextSize(mValuePaint,formattedValue);
-                        labelPtx = center.x + (float) ((radius + dataSet.getSelectionShift() + textSize.width + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.cos(Math.toRadians(angle + rotationAngle)) - (textSize.height*dataSet.getValueTextBubbleHeightMultiplier()/2 * Math.sin(Math.toRadians(angle + rotationAngle + 90))));
-                        labelPty = center.y + (float) ((radius + dataSet.getSelectionShift() + textSize.width + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.sin(Math.toRadians(angle + rotationAngle)) + (textSize.width*dataSet.getValueTextBubbleWidthMultiplier()/2 * Math.cos(Math.toRadians(angle + rotationAngle + 90))));
+                    if (drawValueTextBubble) {
+                        if (!formattedValue.isEmpty()) {
+                            final FSize textSize = Utils.calcTextSize(mValuePaint, formattedValue);
+                            labelPtx = center.x + (float) ((radius + dataSet.getSelectionShift() + textSize.width + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.cos(Math.toRadians(angle + rotationAngle)) - (textSize.height * dataSet.getValueTextBubbleHeightMultiplier() / 2 * Math.sin(Math.toRadians(angle + rotationAngle + 90))));
+                            labelPty = center.y + (float) ((radius + dataSet.getSelectionShift() + textSize.width + ((PieDataSet) dataSet).getValueTextBubbleSpacing()) * Math.sin(Math.toRadians(angle + rotationAngle)) + (textSize.width * dataSet.getValueTextBubbleWidthMultiplier() / 2 * Math.cos(Math.toRadians(angle + rotationAngle + 90))));
 
-                        drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty, dataSet
-                                .getValueTextColor(j), dataSet.getColor(j), false, dataSet.getValueTextBubbleHeightMultiplier(), dataSet.getValueTextBubbleWidthMultiplier(), textSize);
-                        FSize.recycleInstance(textSize);
+                            drawValueInRoundedBox(c, formattedValue, labelPtx, labelPty, dataSet
+                                    .getValueTextColor(j), dataSet.getColor(j), false, dataSet.getValueTextBubbleHeightMultiplier(), dataSet.getValueTextBubbleWidthMultiplier(), textSize);
+                            FSize.recycleInstance(textSize);
+                        }
                     } else {
 
                         float line1Radius;
