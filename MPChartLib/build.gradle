@@ -13,11 +13,38 @@ android {
         versionName '3.1.0'
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        staging {
+        }
+
+        impersonation {
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "version"
+    productFlavors {
+        scalable {
+
+        }
+        tango {
+
+        }
+        sia {
+
+        }
+        bermuda {
+
+        }
+    }
+
     testOptions {
         unitTests.returnDefaultValues = true // this prevents "not mocked" error
     }
