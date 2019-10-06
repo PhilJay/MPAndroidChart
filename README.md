@@ -32,6 +32,7 @@ MPAndroidChart is free software, as a result **dynamic & realtime data is not of
 <a href="https://scichart.com/android-chart-features?source=MPAndroidChart" target="_blank">SciChart Android</a>.
 
 <img align="right" width="270" height="60" style="margin:0px 0px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/bottom.png">
+#done
 
 All MPAndroidChart users are entitled to a special **discount of 5%** off the <a href="https://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART&source=MPAndroidChart" target="_blank">SciChart store</a>, using the following discount code: **MPANDROIDCHART**
 
