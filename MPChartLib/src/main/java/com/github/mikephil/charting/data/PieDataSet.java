@@ -7,6 +7,8 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Color;
+
 public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
 
     /**
@@ -14,6 +16,8 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
      */
     private float mSliceSpace = 0f;
     private boolean mAutomaticallyDisableSliceSpacing;
+    private float mSliceBorderWidth = 0f;
+    private int mSliceBorderColor = Color.BLACK;
 
     /**
      * indicates the selection distance of a pie slice
@@ -78,6 +82,34 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     @Override
     public float getSliceSpace() {
         return mSliceSpace;
+    }
+
+    @Override
+    public float getSliceBorderWidth() {
+        return mSliceBorderWidth;
+    }
+
+    /**
+     * Sets the border width for the piechart-slices in dp.
+     * Default: 0 --> no slice border
+     *
+     * @param widthDp
+     */
+    public void setSliceBorderWidth(float widthDp) {
+        if (widthDp < 0) {
+            widthDp = 0f;
+        }
+
+        mSliceBorderWidth = widthDp;
+    }
+
+    @Override
+    public int getSliceBorderColor() {
+        return mSliceBorderColor;
+    }
+
+    public void setSliceBorderColor(int sliceBorderColor) {
+        this.mSliceBorderColor = sliceBorderColor;
     }
 
     /**

@@ -43,6 +43,7 @@ public class PieChartRenderer extends DataRenderer {
     protected Paint mHolePaint;
     protected Paint mTransparentCirclePaint;
     protected Paint mValueLinePaint;
+    protected Paint mStrokePaint;
 
     /**
      * paint object for the text that can be displayed in the center of the
@@ -96,6 +97,9 @@ public class PieChartRenderer extends DataRenderer {
 
         mValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValueLinePaint.setStyle(Style.STROKE);
+
+        mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mStrokePaint.setStyle(Style.STROKE);
     }
 
     public Paint getPaintHole() {
@@ -244,6 +248,14 @@ public class PieChartRenderer extends DataRenderer {
 
         final float sliceSpace = visibleAngleCount <= 1 ? 0.f : getSliceSpace(dataSet);
 
+        float sliceBorderWidth = dataSet.getSliceBorderWidth();
+        boolean drawSliceBorder = sliceBorderWidth > 0f;
+
+        if (drawSliceBorder) {
+            mStrokePaint.setColor(dataSet.getSliceBorderColor());
+            mStrokePaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getSliceBorderWidth()));
+        }
+
         for (int j = 0; j < entryCount; j++) {
 
             float sliceAngle = drawAngles[j];
@@ -390,12 +402,15 @@ public class PieChartRenderer extends DataRenderer {
                                 center.y);
                     }
                 }
-
             }
 
             mPathBuffer.close();
 
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+
+            if (drawSliceBorder) {
+                mBitmapCanvas.drawPath(mPathBuffer, mStrokePaint);
+            }
 
             angle += sliceAngle * phaseX;
         }

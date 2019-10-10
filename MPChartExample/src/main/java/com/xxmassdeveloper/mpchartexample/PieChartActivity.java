@@ -31,6 +31,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -271,6 +272,12 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 } else {
                     requestStoragePermission(chart);
                 }
+                break;
+            }
+            case R.id.actionToggleSliceBorders: {
+                for (IPieDataSet set : chart.getData().getDataSets())
+                    ((PieDataSet) set).setSliceBorderWidth(set.getSliceBorderWidth() == 1.f ? 0.f : 1.f);
+                chart.invalidate();
                 break;
             }
         }

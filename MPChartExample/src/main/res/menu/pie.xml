@@ -57,5 +57,9 @@
         android:id="@+id/actionSave"
         android:title="@string/actionSave">
     </item>
+    <item
+        android:id="@+id/actionToggleSliceBorders"
+        android:title="@string/actionToggleSliceBorders">
+    </item>
 
 </menu>
