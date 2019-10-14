@@ -44,12 +44,12 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private int mWebColorInner = Color.rgb(122, 122, 122);
 
     /**
-     * transparency the grid is drawn with (0-255)
+     * transparency the y axis grid is drawn with (0-255)
      */
     private int mWebAlpha = 150;
 
     /**
-     * transparency the grid is drawn with (0-255)
+     * transparency the x axis "inner-web" grid is drawn with (0-255)
      */
     private int mWebAlphaInner = 150;
 
