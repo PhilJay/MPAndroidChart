@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/viewGithub"
+        android:title="@string/viewGithub">
+    </item>
+    <item
+        android:id="@+id/actionAdd"
+        android:title="@string/actionAddEntry">
+    </item>
+    <item
+        android:id="@+id/actionClear"
+        android:title="@string/actionClearChart">
+    </item>
+    <item
+        android:id="@+id/actionFeedMultiple"
+        android:title="@string/actionFeedMultiple">
+    </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="@string/actionSave">
+    </item>
+
+</menu>

@@ -45,6 +45,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
             return true;
 
         // if rotation by touch is enabled
+        // TODO: Also check if the pie itself is being touched, rather than the entire chart area
         if (mChart.isRotationEnabled()) {
 
             float x = event.getX();
