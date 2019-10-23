@@ -28,7 +28,7 @@
 <img align="left" width="190" height="190" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/left.png">
 <img align="right" width="90" height="90" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/right.png">
 
-MPAndroidChart is free software, as a result **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme realtime performance and tech support, we recommend
+MPAndroidChart is free software, as a result, **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme real-time performance and tech support, we recommend
 <a href="https://scichart.com/android-chart-features?source=MPAndroidChart" target="_blank">SciChart Android</a>.
 
 <img align="right" width="270" height="60" style="margin:0px 0px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/bottom.png">
@@ -47,7 +47,7 @@ Add the library to your Android project, then check out the examples below!
 
 ### Gradle Setup
 
-```gradle
+Gradle
 repositories {
     maven { url 'https://jitpack.io' }
 }
@@ -102,7 +102,7 @@ Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) fi
 
 <h2 id="donate">Donations :heart:</h2>
 
-**This project needs you!** If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, **feel free to donate**. Your donation is highly appreciated (and I love food, coffee and beer). Thank you!
+**This project needs you!** If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, **feel free to donate**. Your donation is highly appreciated (and I love food, coffee, and beer). Thank you!
 
 **My Bitcoin Wallet** (Bitcoin only)
 
@@ -117,7 +117,7 @@ Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) fi
 
 **PayPal**
 
-- [**Donate 5 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7G52RA87ED8NY): Thank's for creating this project, here's a coffee (or some beer) for you!
+- [**Donate 5 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7G52RA87ED8NY): Thank's for creating this project, here's coffee (or some beer) for you!
 - [**Donate 10 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4C9TPE67F5PUQ): Wow, I am stunned. Let me take you to the movies!
 - [**Donate 15 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YKMPTFMVK3JMC): I really appreciate your work, let's grab some lunch!
 - [**Donate 25 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H9JA4QX7UHXCY): That's some awesome stuff you did right there, dinner is on me!
@@ -176,7 +176,7 @@ You can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJah
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.png)
 <br/><br/>
 
-**Combined-Chart (bar- and linechart in this case)**
+**Combined-Chart (bar- and line chart in this case)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/combined_chart.png)
 <br/><br/>
@@ -196,7 +196,7 @@ You can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJah
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
 <br/><br/>
 
-**BubbleChart** (area covered by bubbles indicates the yValue)
+**BubbleChart** (area covered by bubbles indicates the value)
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/bubblechart.png)
 <br/><br/>
