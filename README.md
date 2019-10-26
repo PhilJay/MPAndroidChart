@@ -6,7 +6,7 @@
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PhilJay/MPAndroidChart?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 [![Twitter](https://img.shields.io/badge/Twitter-@mpandroidchart-blue.svg?style=flat)](http://twitter.com/mpandroidchart)
 
-:zap: A powerful & easy to use chart library for Android :zap:
+:zap: A powerful & easy-to-use chart library for Android :zap:
 
 [**Charts**](https://github.com/danielgindi/Charts) is the iOS version of this library
 
@@ -28,7 +28,7 @@
 <img align="left" width="190" height="190" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/left.png">
 <img align="right" width="90" height="90" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/right.png">
 
-MPAndroidChart is free software, as a result **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme realtime performance and tech support, we recommend
+MPAndroidChart is free software. As a result **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme realtime performance and tech support, we recommend
 <a href="https://scichart.com/android-chart-features?source=MPAndroidChart" target="_blank">SciChart Android</a>.
 
 <img align="right" width="270" height="60" style="margin:0px 0px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/bottom.png">
@@ -117,7 +117,7 @@ Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) fi
 
 **PayPal**
 
-- [**Donate 5 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7G52RA87ED8NY): Thank's for creating this project, here's a coffee (or some beer) for you!
+- [**Donate 5 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7G52RA87ED8NY): Thanks for creating this project, here's a coffee (or some beer) for you!
 - [**Donate 10 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4C9TPE67F5PUQ): Wow, I am stunned. Let me take you to the movies!
 - [**Donate 15 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YKMPTFMVK3JMC): I really appreciate your work, let's grab some lunch!
 - [**Donate 25 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H9JA4QX7UHXCY): That's some awesome stuff you did right there, dinner is on me!
