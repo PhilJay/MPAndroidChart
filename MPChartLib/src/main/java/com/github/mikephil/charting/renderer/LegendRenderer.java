@@ -7,6 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+
+import androidx.annotation.ColorInt;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -108,7 +111,8 @@ public class LegendRenderer extends Renderer {
                                 dataSet.getFormSize(),
                                 dataSet.getFormLineWidth(),
                                 dataSet.getFormLineDashEffect(),
-                                clrs.get(j)
+                                clrs.get(j),
+                                mLegend.getCustomDrawable()
                         ));
                     }
 
@@ -120,7 +124,8 @@ public class LegendRenderer extends Renderer {
                                 Float.NaN,
                                 Float.NaN,
                                 null,
-                                ColorTemplate.COLOR_NONE
+                                ColorTemplate.COLOR_NONE,
+                                mLegend.getCustomDrawable()
                         ));
                     }
 
@@ -136,7 +141,8 @@ public class LegendRenderer extends Renderer {
                                 dataSet.getFormSize(),
                                 dataSet.getFormLineWidth(),
                                 dataSet.getFormLineDashEffect(),
-                                clrs.get(j)
+                                clrs.get(j),
+                                mLegend.getCustomDrawable()
                         ));
                     }
 
@@ -148,7 +154,8 @@ public class LegendRenderer extends Renderer {
                                 Float.NaN,
                                 Float.NaN,
                                 null,
-                                ColorTemplate.COLOR_NONE
+                                ColorTemplate.COLOR_NONE,
+                                mLegend.getCustomDrawable()
                         ));
                     }
 
@@ -164,7 +171,8 @@ public class LegendRenderer extends Renderer {
                             dataSet.getFormSize(),
                             dataSet.getFormLineWidth(),
                             dataSet.getFormLineDashEffect(),
-                            decreasingColor
+                            decreasingColor,
+                            mLegend.getCustomDrawable()
                     ));
 
                     computedEntries.add(new LegendEntry(
@@ -173,7 +181,8 @@ public class LegendRenderer extends Renderer {
                             dataSet.getFormSize(),
                             dataSet.getFormLineWidth(),
                             dataSet.getFormLineDashEffect(),
-                            increasingColor
+                            increasingColor,
+                            mLegend.getCustomDrawable()
                     ));
 
                 } else { // all others
@@ -195,7 +204,8 @@ public class LegendRenderer extends Renderer {
                                 dataSet.getFormSize(),
                                 dataSet.getFormLineWidth(),
                                 dataSet.getFormLineDashEffect(),
-                                clrs.get(j)
+                                clrs.get(j),
+                                mLegend.getCustomDrawable()
                         ));
                     }
                 }
@@ -522,8 +532,7 @@ public class LegendRenderer extends Renderer {
                 c.drawRect(x, y - half, x + formSize, y + half, mLegendFormPaint);
                 break;
 
-            case LINE:
-            {
+            case LINE: {
                 final float formLineWidth = Utils.convertDpToPixel(
                         Float.isNaN(entry.formLineWidth)
                                 ? legend.getFormLineWidth()
@@ -540,6 +549,13 @@ public class LegendRenderer extends Renderer {
                 mLineFormPath.lineTo(x + formSize, y);
                 c.drawPath(mLineFormPath, mLegendFormPaint);
             }
+            break;
+            case CUSTOM_DRAWABLE:
+                if (entry.customDrawable != null) {
+                    entry.customDrawable.setColor(entry.formColor);
+                    entry.customDrawable.setBounds((int) x, (int) y, (int) (x + formSize), (int) (y + formSize));
+                    entry.customDrawable.draw(c);
+                }
                 break;
         }
 
@@ -557,4 +573,12 @@ public class LegendRenderer extends Renderer {
     protected void drawLabel(Canvas c, float x, float y, String label) {
         c.drawText(label, x, y, mLegendLabelPaint);
     }
+
+    /**
+     * drawable for drawing legend form.
+     */
+    public static abstract class CustomLegendDrawable extends Drawable {
+        public abstract void setColor(@ColorInt int color);
+    }
+
 }
