@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -31,6 +34,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xxmassdeveloper.mpchartexample.custom.MyCustomLegendDrawable;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
+import com.xxmassdeveloper.mpchartexample.custom.WaveDrawable;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -93,11 +97,37 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         l.setCustomDrawable(new MyCustomLegendDrawable());
         l.setForm(Legend.LegendForm.CUSTOM_DRAWABLE);
         l.setTypeface(tfLight);
+        l.setCustom(new LegendEntry[]{
+                new LegendEntry("companyA",
+                        Legend.LegendForm.CUSTOM_DRAWABLE,
+                        20,
+                        Float.NaN, null,
+                        Color.rgb(104, 241, 175),
+                        new MyCustomLegendDrawable()),
+                new LegendEntry("companyB",
+                        Legend.LegendForm.CUSTOM_DRAWABLE,
+                        20,
+                        Float.NaN, null,
+                        Color.rgb(164, 228, 251),
+                        getResources().getDrawable(R.drawable.fade_red)),
+                new LegendEntry("companyC",
+                        Legend.LegendForm.CUSTOM_DRAWABLE,
+                        20,
+                        Float.NaN, null,
+                        Color.rgb(242, 247, 158),
+                        new ShapeDrawable(new OvalShape())),
+                new LegendEntry("companyD",
+                        Legend.LegendForm.CUSTOM_DRAWABLE,
+                        20,
+                        Float.NaN, null,
+                        Color.rgb(255, 102, 0),
+                        new WaveDrawable()),
+        });
         l.setYOffset(0f);
         l.setXOffset(10f);
         l.setFormSize(12f);
         l.setYEntrySpace(0f);
-        l.setTextSize(8f);
+        l.setTextSize(14f);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setTypeface(tfLight);
@@ -275,10 +305,12 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
+    public void onStartTrackingTouch(SeekBar seekBar) {
+    }
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
+    public void onStopTrackingTouch(SeekBar seekBar) {
+    }
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {

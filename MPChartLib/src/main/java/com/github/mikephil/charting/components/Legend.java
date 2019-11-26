@@ -2,8 +2,8 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 
-import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Utils;
@@ -152,7 +152,7 @@ public class Legend extends ComponentBase {
     /**
      * the given drawable for drawing legend form
      */
-    private LegendRenderer.CustomLegendDrawable mCustomDrawable;
+    private Drawable mCustomDrawable;
 
     /**
      * default constructor
@@ -638,11 +638,11 @@ public class Legend extends ComponentBase {
         mMaxSizePercent = maxSize;
     }
 
-    public LegendRenderer.CustomLegendDrawable getCustomDrawable() {
+    public Drawable getCustomDrawable() {
         return mCustomDrawable;
     }
 
-    public void setCustomDrawable(LegendRenderer.CustomLegendDrawable customDrawable) {
+    public void setCustomDrawable(Drawable customDrawable) {
         this.mCustomDrawable = customDrawable;
     }
 

@@ -2,8 +2,8 @@ package com.github.mikephil.charting.components;
 
 
 import android.graphics.DashPathEffect;
+import android.graphics.drawable.Drawable;
 
-import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 public class LegendEntry {
@@ -51,7 +51,7 @@ public class LegendEntry {
                        float formLineWidth,
                        DashPathEffect formLineDashEffect,
                        int formColor,
-                       LegendRenderer.CustomLegendDrawable customDrawable)
+                       Drawable customDrawable)
     {
         this.label = label;
         this.form = form;
@@ -106,6 +106,6 @@ public class LegendEntry {
     /**
      * The drawable for drawing the form
      */
-    public LegendRenderer.CustomLegendDrawable customDrawable;
+    public Drawable customDrawable;
 
 }

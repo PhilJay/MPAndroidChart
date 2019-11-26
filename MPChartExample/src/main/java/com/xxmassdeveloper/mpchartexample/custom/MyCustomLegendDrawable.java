@@ -7,19 +7,20 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.github.mikephil.charting.renderer.LegendRenderer.CustomLegendDrawable;
 
 /**
  * Created by keaideluren on 2019/11/25 0025.
  * Email:513421345@qq.com
  */
-public class MyCustomLegendDrawable extends CustomLegendDrawable {
+public class MyCustomLegendDrawable extends Drawable {
     private int color;
     private Paint mPaint;
+    private Paint whitePaint;
     private Paint outRingPaint;
 
     public MyCustomLegendDrawable() {
@@ -29,7 +30,10 @@ public class MyCustomLegendDrawable extends CustomLegendDrawable {
     public MyCustomLegendDrawable(int color) {
         this.color = color;
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        whitePaint.setColor(Color.WHITE);
         outRingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        setColor(color);
     }
 
     @Override
@@ -55,9 +59,10 @@ public class MyCustomLegendDrawable extends CustomLegendDrawable {
         return getBounds().height();
     }
 
-    @Override
     public void setColor(int color) {
         this.color = color;
+        mPaint.setColor(color);
+        outRingPaint.setColor(color);
     }
 
     @Override
@@ -65,27 +70,30 @@ public class MyCustomLegendDrawable extends CustomLegendDrawable {
         float halfWidth = getIntrinsicWidth() * 0.5F;
         float halfHeight = getIntrinsicWidth() * 0.5F;
         float minHalfSize = Math.min(halfWidth, halfHeight);
-        canvas.translate(getBounds().left, getBounds().top - halfHeight);
+        canvas.translate(getBounds().left, getBounds().top);
         canvas.drawCircle(halfWidth, halfHeight, minHalfSize, outRingPaint);
-        mPaint.setColor(Color.WHITE);
-        canvas.drawCircle(halfWidth, halfHeight, minHalfSize * 0.6F, mPaint);
-        mPaint.setColor(color);
+
+        canvas.drawCircle(halfWidth, halfHeight, minHalfSize * 0.6F, whitePaint);
+
         canvas.drawCircle(halfWidth, halfHeight, minHalfSize * 0.4F, mPaint);
         canvas.restore();
     }
 
     @Override
     public void setAlpha(int alpha) {
-
+        outRingPaint.setAlpha(alpha);
+        mPaint.setAlpha(alpha);
+        whitePaint.setAlpha(alpha);
     }
 
     @Override
     public void setColorFilter(@Nullable ColorFilter colorFilter) {
-
+        mPaint.setColorFilter(colorFilter);
+        outRingPaint.setColorFilter(colorFilter);
     }
 
     @Override
     public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
+        return PixelFormat.OPAQUE;
     }
 }
