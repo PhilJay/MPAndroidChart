@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader.TileMode;
 import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -175,7 +176,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                         buffer.buffer[j + 1],
                         gradientColor.getStartColor(),
                         gradientColor.getEndColor(),
-                        android.graphics.Shader.TileMode.MIRROR));
+                        TileMode.MIRROR));
             }
 
             if (dataSet.getGradientColors() != null) {
@@ -187,7 +188,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                         buffer.buffer[j + 1],
                         dataSet.getGradientColor(j / 4).getStartColor(),
                         dataSet.getGradientColor(j / 4).getEndColor(),
-                        android.graphics.Shader.TileMode.MIRROR));
+                        TileMode.MIRROR));
             }
 
 

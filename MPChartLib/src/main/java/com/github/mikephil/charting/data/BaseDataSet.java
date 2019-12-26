@@ -252,7 +252,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * @param gradientColors
      */
     public void setGradientColors(List<GradientColor> gradientColors) {
-        this.mGradientColors = gradientColors;
+        mGradientColors = gradientColors;
     }
 
     /**

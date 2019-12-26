@@ -4,6 +4,7 @@ package com.xxmassdeveloper.mpchartexample;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.model.GradientColor;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -139,9 +142,44 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
         } else {
+            /*set1 = new BarDataSet(values, "DataSet 1");
+
+            set1.setDrawIcons(false);
+            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+//            set1.setGradientColor(Color.rgb(192, 255, 140), Color.rgb(255, 247, 140));
+
+            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1);
+
+            BarData data = new BarData(dataSets);
+            data.setValueTextSize(10f);
+            data.setValueTypeface(tfLight);
+            data.setBarWidth(barWidth);
+            chart.setData(data);*/
+
             set1 = new BarDataSet(values, "DataSet 1");
 
             set1.setDrawIcons(false);
+
+            int startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
+            int startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light);
+            int startColor3 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
+            int startColor4 = ContextCompat.getColor(this, android.R.color.holo_green_light);
+            int startColor5 = ContextCompat.getColor(this, android.R.color.holo_red_light);
+            int endColor1 = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
+            int endColor2 = ContextCompat.getColor(this, android.R.color.holo_purple);
+            int endColor3 = ContextCompat.getColor(this, android.R.color.holo_green_dark);
+            int endColor4 = ContextCompat.getColor(this, android.R.color.holo_red_dark);
+            int endColor5 = ContextCompat.getColor(this, android.R.color.holo_orange_dark);
+
+            List<GradientColor> gradientColors = new ArrayList<>();
+            gradientColors.add(new GradientColor(startColor1, endColor1));
+            gradientColors.add(new GradientColor(startColor2, endColor2));
+            gradientColors.add(new GradientColor(startColor3, endColor3));
+            gradientColors.add(new GradientColor(startColor4, endColor4));
+            gradientColors.add(new GradientColor(startColor5, endColor5));
+
+            set1.setGradientColors(gradientColors);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
