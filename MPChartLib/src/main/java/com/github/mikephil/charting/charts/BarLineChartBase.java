@@ -236,7 +236,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mRenderer.drawFills(canvas);
 
-        
         // draw borders over data
         drawGridBorders(canvas);
 
