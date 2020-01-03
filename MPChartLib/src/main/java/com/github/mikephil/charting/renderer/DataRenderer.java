@@ -123,6 +123,9 @@ public abstract class DataRenderer extends Renderer {
      */
     public abstract void drawData(Canvas c);
 
+
+    public abstract void drawFills(Canvas c);
+
     /**
      * Loops over all Entrys and draws their values.
      *
