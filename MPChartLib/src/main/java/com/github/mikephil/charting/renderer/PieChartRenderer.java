@@ -120,12 +120,6 @@ public class PieChartRenderer extends DataRenderer {
     }
 
     @Override
-    public void drawFills(Canvas c) {
-    
-    }
-
-
-    @Override
     public void drawData(Canvas c) {
 
         int width = (int) mViewPortHandler.getChartWidth();

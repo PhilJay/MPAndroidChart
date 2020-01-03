@@ -70,11 +70,6 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
     }
 
     @Override
-    public void drawFills(Canvas c) {
-
-    }
-
-    @Override
     public void drawData(Canvas c) {
 
         BarData barData = mChart.getBarData();
