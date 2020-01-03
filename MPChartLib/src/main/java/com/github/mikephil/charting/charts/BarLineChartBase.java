@@ -236,6 +236,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mRenderer.drawData(canvas);
 
+        // draw borders over data
+        drawGridBorders(canvas);
+
         if (!mXAxis.isDrawGridLinesBehindDataEnabled())
             mXAxisRenderer.renderGridLines(canvas);
 
@@ -539,9 +542,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             c.drawRect(mViewPortHandler.getContentRect(), mGridBackgroundPaint);
         }
 
+    }
+
+    /**
+     * draws the grid borders
+     */
+    protected void drawGridBorders(Canvas c) {
+
         if (mDrawBorders) {
             c.drawRect(mViewPortHandler.getContentRect(), mBorderPaint);
         }
+
     }
 
     /**
