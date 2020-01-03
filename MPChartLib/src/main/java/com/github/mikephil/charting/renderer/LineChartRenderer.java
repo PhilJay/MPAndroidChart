@@ -104,39 +104,6 @@ public class LineChartRenderer extends LineRadarRenderer {
         c.drawBitmap(drawBitmap, 0, 0, mRenderPaint);
     }
 
-    @Override
-    public void drawFills(Canvas c) {
-
-        int width = (int) mViewPortHandler.getChartWidth();
-        int height = (int) mViewPortHandler.getChartHeight();
-
-        Bitmap drawBitmap = mDrawBitmap == null ? null : mDrawBitmap.get();
-
-        if (drawBitmap == null
-                || (drawBitmap.getWidth() != width)
-                || (drawBitmap.getHeight() != height)) {
-
-            if (width > 0 && height > 0) {
-                drawBitmap = Bitmap.createBitmap(width, height, mBitmapConfig);
-                mDrawBitmap = new WeakReference<>(drawBitmap);
-                mBitmapCanvas = new Canvas(drawBitmap);
-            } else
-                return;
-        }
-
-        drawBitmap.eraseColor(Color.TRANSPARENT);
-
-        LineData lineData = mChart.getLineData();
-
-        for (ILineDataSet set : lineData.getDataSets()) {
-
-            if (set.isVisible())
-                drawDataSetFills(c, set);
-        }
-
-        c.drawBitmap(drawBitmap, 0, 0, mRenderPaint);
-    }
-
     protected void drawDataSet(Canvas c, ILineDataSet dataSet) {
 
         if (dataSet.getEntryCount() < 1)
@@ -158,33 +125,6 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             case HORIZONTAL_BEZIER:
                 drawHorizontalBezier(dataSet);
-                break;
-        }
-
-        mRenderPaint.setPathEffect(null);
-    }
-
-    protected void drawDataSetFills(Canvas c, ILineDataSet dataSet) {
-
-        if (dataSet.getEntryCount() < 1)
-            return;
-
-        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
-        mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
-
-        switch (dataSet.getMode()) {
-            default:
-            /* case LINEAR:
-            case STEPPED:
-                drawLinear(c, dataSet);
-                break;
-
-            case CUBIC_BEZIER:
-                drawCubicBezier(dataSet);
-                break; */
-
-            case HORIZONTAL_BEZIER:
-                drawHorizontalBezierFills(dataSet);
                 break;
         }
 
@@ -223,27 +163,6 @@ public class LineChartRenderer extends LineRadarRenderer {
                         cur.getX(), cur.getY() * phaseY);
             }
         }
-
-        mRenderPaint.setColor(dataSet.getColor());
-
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-
-        trans.pathValueToPixel(cubicPath);
-
-        mBitmapCanvas.drawPath(cubicPath, mRenderPaint);
-
-        mRenderPaint.setPathEffect(null);
-    }
-
-    protected void drawHorizontalBezierFills(ILineDataSet dataSet) {
-
-        float phaseY = mAnimator.getPhaseY();
-
-        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-
-        mXBounds.set(mChart, dataSet);
-
-        cubicPath.reset();
 
         // if filled is enabled, close the path
         if (dataSet.isDrawFilledEnabled()) {
