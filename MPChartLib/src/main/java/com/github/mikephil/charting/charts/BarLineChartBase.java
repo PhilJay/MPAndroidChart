@@ -234,7 +234,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         int clipRestoreCount = canvas.save();
         canvas.clipRect(mViewPortHandler.getContentRect());
 
-        mRenderer.drawData(canvas);
+        mRenderer.drawFills(canvas);
 
         // draw borders over data
         drawGridBorders(canvas);
@@ -248,7 +248,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (!mAxisRight.isDrawGridLinesBehindDataEnabled())
             mAxisRendererRight.renderGridLines(canvas);
         
-        mRenderer.drawFills(canvas);
+        mRenderer.drawData(canvas);
 
         // if highlighting is enabled
         if (valuesToHighlight())
