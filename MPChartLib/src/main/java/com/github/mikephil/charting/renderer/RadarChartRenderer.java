@@ -2,8 +2,10 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -90,14 +92,27 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
+        MPPointF lastPoint = pOut;
         Path surface = mDrawDataSetSurfacePathBuffer;
         surface.reset();
 
+//        int[] colors = new int[dataSet.getColors().size()];
+//        for (int i =0 ;i < dataSet.getColors().size(); i++)
+//            colors[i] = dataSet.getColors().get(i);
+//
+//        Shader shader = new LinearGradient(0.0f,0.0f,10.0f,10.0f, colors, null, Shader.TileMode.REPEAT);
+//        mRenderPaint.setShader(shader);
+
         boolean hasMovedToPoint = false;
 
-        for (int j = 0; j < dataSet.getEntryCount(); j++) {
+        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+        mRenderPaint.setStyle(Paint.Style.STROKE);
 
-            mRenderPaint.setColor(dataSet.getColor(j));
+        Path path = new Path();
+        MPPointF firstPoint = null;
+        for (int j = 0; j < dataSet.getEntryCount(); j++) {
+            path = new Path();
+            path.moveTo(lastPoint.x, lastPoint.y);
 
             RadarEntry e = dataSet.getEntryForIndex(j);
 
@@ -111,10 +126,27 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
             if (!hasMovedToPoint) {
                 surface.moveTo(pOut.x, pOut.y);
+                path.moveTo(pOut.x, pOut.y);
                 hasMovedToPoint = true;
-            } else
+                firstPoint = new MPPointF(pOut.x, pOut.y);
+            } else {
+                int color = dataSet.getColor(j-1);
+                mRenderPaint.setColor(color);
+                mRenderPaint.setShadowLayer(12, 0, 0, color);
                 surface.lineTo(pOut.x, pOut.y);
+                path.lineTo(pOut.x, pOut.y);
+                c.drawPath(path, mRenderPaint);
+            }
+            lastPoint = pOut;
         }
+        int color = dataSet.getColor(dataSet.getEntryCount()-1);
+        mRenderPaint.setColor(color);
+        mRenderPaint.setShadowLayer(12, 0, 0, color);
+        path = new Path();
+        path.moveTo(lastPoint.x, lastPoint.y);
+        assert firstPoint != null;
+        path.lineTo(firstPoint.x, firstPoint.y);
+        c.drawPath(path, mRenderPaint);
 
         if (dataSet.getEntryCount() > mostEntries) {
             // if this is not the largest set, draw a line to the center before closing
@@ -123,24 +155,22 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         surface.close();
 
-        if (dataSet.isDrawFilledEnabled()) {
-
-            final Drawable drawable = dataSet.getFillDrawable();
-            if (drawable != null) {
-
-                drawFilledPath(c, surface, drawable);
-            } else {
-
-                drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
-            }
-        }
+//        if (dataSet.isDrawFilledEnabled()) {
+//
+//            final Drawable drawable = dataSet.getFillDrawable();
+//            if (drawable != null) {
+//                drawFilledPath(c, surface, drawable);
+//            } else {
+//                drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
+//            }
+//        }
 
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
         // draw the line (only if filled is disabled or alpha is below 255)
-        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
-            c.drawPath(surface, mRenderPaint);
+//        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
+//            c.drawPath(surface, mRenderPaint);
 
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
