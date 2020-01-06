@@ -24,6 +24,8 @@ import com.github.mikephil.charting.utils.Utils;
  */
 public class RadarChart extends PieRadarChartBase<RadarData> {
 
+    private final int DEFAULT_WEB_TRANSPERENCY = 150;
+
     /**
      * width of the main web lines
      */
@@ -47,7 +49,12 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     /**
      * transparency the grid is drawn with (0-255)
      */
-    private int mWebAlpha = 150;
+    private int mWebAlpha = DEFAULT_WEB_TRANSPERENCY;
+
+    /**
+     * transparency of the inner web
+     */
+    private int mWebAlphaInner = DEFAULT_WEB_TRANSPERENCY;
 
     /**
      * flag indicating if the web lines should be drawn or not
@@ -357,5 +364,23 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public float getYRange() {
         return mYAxis.mAxisRange;
+    }
+
+    /**
+     * Get the alpha for inner web lines. Default {@link #DEFAULT_WEB_TRANSPERENCY}
+     *
+     * @return the alpha for inner web lines
+     */
+    public int getWebAlphaInner() {
+        return mWebAlphaInner;
+    }
+
+    /**
+     * Sets the alpha for inner web lines. Default {@link #DEFAULT_WEB_TRANSPERENCY}
+     *
+     * @param mWebAlphaInner the new alpha for inner web lines
+     */
+    public void setWebAlphaInner(int mWebAlphaInner) {
+        this.mWebAlphaInner = mWebAlphaInner;
     }
 }
