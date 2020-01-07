@@ -92,16 +92,9 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
-        MPPointF lastPoint = pOut;
+        MPPointF lastPoint = MPPointF.getInstance(pOut);
         Path surface = mDrawDataSetSurfacePathBuffer;
         surface.reset();
-
-//        int[] colors = new int[dataSet.getColors().size()];
-//        for (int i =0 ;i < dataSet.getColors().size(); i++)
-//            colors[i] = dataSet.getColors().get(i);
-//
-//        Shader shader = new LinearGradient(0.0f,0.0f,10.0f,10.0f, colors, null, Shader.TileMode.REPEAT);
-//        mRenderPaint.setShader(shader);
 
         boolean hasMovedToPoint = false;
 
@@ -128,23 +121,49 @@ public class RadarChartRenderer extends LineRadarRenderer {
                 surface.moveTo(pOut.x, pOut.y);
                 path.moveTo(pOut.x, pOut.y);
                 hasMovedToPoint = true;
-                firstPoint = new MPPointF(pOut.x, pOut.y);
+                firstPoint = MPPointF.getInstance(pOut);
             } else {
                 int color = dataSet.getColor(j-1);
-                mRenderPaint.setColor(color);
-                mRenderPaint.setShadowLayer(12, 0, 0, color);
+//                mRenderPaint.setColor(color);
+                int[] colors = new int[2];
+                colors[0] = dataSet.getGradientColor(j-1).getStartColor();
+                colors[1] = dataSet.getGradientColor(j-1).getEndColor();
+                Shader shader = new LinearGradient(
+                        lastPoint.x,
+                        lastPoint.y,
+                        pOut.x,
+                        pOut.y,
+                        colors,
+                        null,
+                        Shader.TileMode.REPEAT
+                );
+                mRenderPaint.setShader(shader);
+//                mRenderPaint.setShadowLayer(12, 0, 0, color);
                 surface.lineTo(pOut.x, pOut.y);
                 path.lineTo(pOut.x, pOut.y);
                 c.drawPath(path, mRenderPaint);
             }
-            lastPoint = pOut;
+            lastPoint = MPPointF.getInstance(pOut);
         }
+        assert firstPoint != null;
         int color = dataSet.getColor(dataSet.getEntryCount()-1);
-        mRenderPaint.setColor(color);
-        mRenderPaint.setShadowLayer(12, 0, 0, color);
+//        mRenderPaint.setColor(color);
+        int[] colors = new int[2];
+        colors[0] = dataSet.getGradientColor(dataSet.getEntryCount()-1).getStartColor();
+        colors[1] = dataSet.getGradientColor(dataSet.getEntryCount()-1).getEndColor();
+        Shader shader = new LinearGradient(
+                lastPoint.x,
+                lastPoint.y,
+                firstPoint.x,
+                firstPoint.y,
+                colors,
+                null,
+                Shader.TileMode.REPEAT
+        );
+        mRenderPaint.setShader(shader);
+//        mRenderPaint.setShadowLayer(12, 0, 0, color);
         path = new Path();
         path.moveTo(lastPoint.x, lastPoint.y);
-        assert firstPoint != null;
         path.lineTo(firstPoint.x, firstPoint.y);
         c.drawPath(path, mRenderPaint);
 
@@ -174,6 +193,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
+        MPPointF.recycleInstance(firstPoint);
+        MPPointF.recycleInstance(lastPoint);
     }
 
     @Override
