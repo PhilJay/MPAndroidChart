@@ -3,6 +3,8 @@ package com.github.mikephil.charting.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -95,5 +97,11 @@ public class MPPointF extends ObjectPool.Poolable {
     @Override
     protected ObjectPool.Poolable instantiate() {
         return new MPPointF(0,0);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "(" + x +", " + y + ")";
     }
 }
