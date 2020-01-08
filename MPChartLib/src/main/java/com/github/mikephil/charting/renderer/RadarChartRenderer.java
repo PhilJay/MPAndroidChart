@@ -85,7 +85,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
         // reset all params to remove any previous color/shader
         mRenderPaint.reset();
         mRenderPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        
         // TODO add support for shadow in each line
         // modification: Need to add support for
         // - multiple and single color(s) per dataSet
@@ -106,26 +105,21 @@ public class RadarChartRenderer extends LineRadarRenderer {
     }
 
     private void drawDataSetMultipleGradient(@NonNull Canvas c, @NonNull IRadarDataSet dataSet, int mostEntries) {
-        // TODO add shadow + fill drawable support
+        // TODO add shadow
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
         float sliceangle = mChart.getSliceAngle();
-
         // calculate the factor that is needed for transforming the value to
         // pixels
         float factor = mChart.getFactor();
-
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
         MPPointF lastPoint = MPPointF.getInstance(pOut);
         Path surface = mDrawDataSetSurfacePathBuffer;
         surface.reset();
-
         boolean hasMovedToPoint = false;
-
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
         mRenderPaint.setStyle(Paint.Style.STROKE);
-
         Path path = new Path();
         MPPointF firstPoint = null;
         for (int j = 0; j < dataSet.getEntryCount(); j++) {
@@ -192,19 +186,15 @@ public class RadarChartRenderer extends LineRadarRenderer {
             // if this is not the largest set, draw a line to the center before closing
             surface.lineTo(center.x, center.y);
         }
-
         surface.close();
-
-//        if (dataSet.isDrawFilledEnabled()) {
-//
-//            final Drawable drawable = dataSet.getFillDrawable();
-//            if (drawable != null) {
-//                drawFilledPath(c, surface, drawable);
-//            } else {
-//                drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
-//            }
-//        }
-
+        if (dataSet.isDrawFilledEnabled()) {
+            final Drawable drawable = dataSet.getFillDrawable();
+            if (drawable != null) {
+                drawFilledPath(c, surface, drawable);
+            } else {
+                drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
+            }
+        }
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
         MPPointF.recycleInstance(firstPoint);
