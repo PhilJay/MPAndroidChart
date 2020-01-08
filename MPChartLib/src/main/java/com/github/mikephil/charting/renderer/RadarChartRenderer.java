@@ -8,6 +8,8 @@ import android.graphics.Path;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.NonNull;
+
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.RadarData;
@@ -80,10 +82,33 @@ public class RadarChartRenderer extends LineRadarRenderer {
      * @param mostEntries the entry count of the dataset with the most entries
      */
     protected void drawDataSet(Canvas c, IRadarDataSet dataSet, int mostEntries) {
+        // reset all params to remove any previous color/shader
+        mRenderPaint.reset();
+        mRenderPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        
+        // TODO add support for shadow in each line
+        // modification: Need to add support for
+        // - multiple and single color(s) per dataSet
+        // - multiple and single gradient(s) per dataSet
+        if (dataSet.isGradientEnabled()) {
+            if (dataSet.getGradientColors().size() > 1) {
+                drawDataSetMultipleGradient(c, dataSet, mostEntries);
+            } else {
+                drawDataSetSingleGradient(c, dataSet, mostEntries);
+            }
+        } else {
+            if (dataSet.getColors().size() > 1) {
+                drawDataSetMultipleColor(c, dataSet, mostEntries);
+            } else {
+                drawDataSetSingleColor(c, dataSet, mostEntries);
+            }
+        }
+    }
 
+    private void drawDataSetMultipleGradient(@NonNull Canvas c, @NonNull IRadarDataSet dataSet, int mostEntries) {
+        // TODO add shadow + fill drawable support
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
-
         float sliceangle = mChart.getSliceAngle();
 
         // calculate the factor that is needed for transforming the value to
@@ -123,8 +148,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
                 hasMovedToPoint = true;
                 firstPoint = MPPointF.getInstance(pOut);
             } else {
-                int color = dataSet.getColor(j-1);
-//                mRenderPaint.setColor(color);
                 int[] colors = new int[2];
                 colors[0] = dataSet.getGradientColor(j-1).getStartColor();
                 colors[1] = dataSet.getGradientColor(j-1).getEndColor();
@@ -146,8 +169,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
             lastPoint = MPPointF.getInstance(pOut);
         }
         assert firstPoint != null;
-        int color = dataSet.getColor(dataSet.getEntryCount()-1);
-//        mRenderPaint.setColor(color);
         int[] colors = new int[2];
         colors[0] = dataSet.getGradientColor(dataSet.getEntryCount()-1).getStartColor();
         colors[1] = dataSet.getGradientColor(dataSet.getEntryCount()-1).getEndColor();
@@ -184,17 +205,82 @@ public class RadarChartRenderer extends LineRadarRenderer {
 //            }
 //        }
 
-        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-
-        // draw the line (only if filled is disabled or alpha is below 255)
-//        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
-//            c.drawPath(surface, mRenderPaint);
-
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
         MPPointF.recycleInstance(firstPoint);
         MPPointF.recycleInstance(lastPoint);
+    }
+
+    private void drawDataSetSingleGradient(@NonNull Canvas c, @NonNull IRadarDataSet dataSet, int mostEntries) {
+
+    }
+
+    private void drawDataSetMultipleColor(@NonNull Canvas c, @NonNull IRadarDataSet dataSet, int mostEntries) {
+
+    }
+
+    private void drawDataSetSingleColor(@NonNull Canvas c, @NonNull IRadarDataSet dataSet, int mostEntries) {
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+        float sliceangle = mChart.getSliceAngle();
+
+        // calculate the factor that is needed for transforming the value to
+        // pixels
+        float factor = mChart.getFactor();
+
+        MPPointF center = mChart.getCenterOffsets();
+        MPPointF pOut = MPPointF.getInstance(0,0);
+        Path surface = mDrawDataSetSurfacePathBuffer;
+        surface.reset();
+
+        boolean hasMovedToPoint = false;
+
+        for (int j = 0; j < dataSet.getEntryCount(); j++) {
+
+            mRenderPaint.setColor(dataSet.getColor(j));
+
+            RadarEntry e = dataSet.getEntryForIndex(j);
+
+            Utils.getPosition(
+                    center,
+                    (e.getY() - mChart.getYChartMin()) * factor * phaseY,
+                    sliceangle * j * phaseX + mChart.getRotationAngle(), pOut);
+
+            if (Float.isNaN(pOut.x))
+                continue;
+
+            if (!hasMovedToPoint) {
+                surface.moveTo(pOut.x, pOut.y);
+                hasMovedToPoint = true;
+            } else
+                surface.lineTo(pOut.x, pOut.y);
+        }
+
+        if (dataSet.getEntryCount() > mostEntries) {
+            // if this is not the largest set, draw a line to the center before closing
+            surface.lineTo(center.x, center.y);
+        }
+
+        surface.close();
+
+        if (dataSet.isDrawFilledEnabled()) {
+            final Drawable drawable = dataSet.getFillDrawable();
+            if (drawable != null) {
+                drawFilledPath(c, surface, drawable);
+            } else {
+                drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
+            }
+        }
+
+        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+
+        // draw the line (only if filled is disabled or alpha is below 255)
+        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
+            c.drawPath(surface, mRenderPaint);
+
+        MPPointF.recycleInstance(center);
+        MPPointF.recycleInstance(pOut);
     }
 
     @Override

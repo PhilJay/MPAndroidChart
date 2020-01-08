@@ -29,6 +29,12 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     protected List<Integer> mColors = null;
 
+    /**
+     * For data set with multiple value this may not be sufficient.
+     * It is better to use single valued list instead of this, which would
+     * provide a cleaner client API
+     */
+    @Deprecated
     protected GradientColor mGradientColor = null;
 
     protected List<GradientColor> mGradientColors = null;
@@ -144,6 +150,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public int getColor(int index) {
         return mColors.get(index % mColors.size());
+    }
+
+    @Override
+    public boolean isGradientEnabled() {
+        return mGradientColor != null && mGradientColors != null && mGradientColors.size() > 0;
     }
 
     @Override

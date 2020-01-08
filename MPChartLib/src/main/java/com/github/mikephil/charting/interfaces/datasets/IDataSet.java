@@ -289,6 +289,8 @@ public interface IDataSet<T extends Entry> {
      * Returns the Gradient color model
      *
      * @return
+     *
+     * @deprecated use {@link #getGradientColor(int)} or {@link #getGradientColors()} instead
      */
     GradientColor getGradientColor();
 
@@ -315,6 +317,18 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     int getColor(int index);
+
+    /**
+     * Check if we should use gradient colors for drawing this data set
+     *
+     * Normally it is a good idea to have this check before invoking
+     * {@link #getGradientColor()}, {@link #getGradientColor(int)} or
+     * {@link #getGradientColors()}
+     *
+     * @return {@code true} iff we have gradient colors available for this
+     *         data set, {@code false} otherwise
+     */
+    boolean isGradientEnabled();
 
     /**
      * returns true if highlighting of values is enabled, false if not
