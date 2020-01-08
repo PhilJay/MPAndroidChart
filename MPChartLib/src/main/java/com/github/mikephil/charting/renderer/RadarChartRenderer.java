@@ -86,6 +86,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
         mRenderPaint.reset();
         mRenderPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         // TODO add support for shadow in each line
+        //  need to check surface.close() case for the modified cases
         // modification: Need to add support for
         // - multiple and single color(s) per dataSet
         // - multiple and single gradient(s) per dataSet
@@ -206,7 +207,78 @@ public class RadarChartRenderer extends LineRadarRenderer {
     }
 
     private void drawDataSetMultipleColor(@NonNull Canvas c, @NonNull IRadarDataSet dataSet, int mostEntries) {
+        // TODO add shadow
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+        float sliceangle = mChart.getSliceAngle();
+        // calculate the factor that is needed for transforming the value to
+        // pixels
+        float factor = mChart.getFactor();
+        MPPointF center = mChart.getCenterOffsets();
+        MPPointF pOut = MPPointF.getInstance(0,0);
+        MPPointF lastPoint = MPPointF.getInstance(pOut);
+        Path surface = mDrawDataSetSurfacePathBuffer;
+        surface.reset();
+        boolean hasMovedToPoint = false;
+        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+        Path path = new Path();
+        MPPointF firstPoint = null;
+        for (int j = 0; j < dataSet.getEntryCount(); j++) {
+            path = new Path();
+            path.moveTo(lastPoint.x, lastPoint.y);
 
+            RadarEntry e = dataSet.getEntryForIndex(j);
+
+            Utils.getPosition(
+                    center,
+                    (e.getY() - mChart.getYChartMin()) * factor * phaseY,
+                    sliceangle * j * phaseX + mChart.getRotationAngle(), pOut);
+
+            if (Float.isNaN(pOut.x))
+                continue;
+
+            if (!hasMovedToPoint) {
+                surface.moveTo(pOut.x, pOut.y);
+                path.moveTo(pOut.x, pOut.y);
+                hasMovedToPoint = true;
+                firstPoint = MPPointF.getInstance(pOut);
+            } else {
+                int color = dataSet.getColor(j-1);
+                mRenderPaint.setColor(color);
+//                mRenderPaint.setShadowLayer(12, 0, 0, color);
+                surface.lineTo(pOut.x, pOut.y);
+                path.lineTo(pOut.x, pOut.y);
+                c.drawPath(path, mRenderPaint);
+            }
+            lastPoint = MPPointF.getInstance(pOut);
+        }
+        assert firstPoint != null;
+        int color = dataSet.getColor(dataSet.getEntryCount()-1);
+        mRenderPaint.setColor(color);
+//        mRenderPaint.setShadowLayer(12, 0, 0, color);
+        path = new Path();
+        path.moveTo(lastPoint.x, lastPoint.y);
+        path.lineTo(firstPoint.x, firstPoint.y);
+        c.drawPath(path, mRenderPaint);
+
+        if (dataSet.getEntryCount() > mostEntries) {
+            // if this is not the largest set, draw a line to the center before closing
+            surface.lineTo(center.x, center.y);
+        }
+        surface.close();
+        if (dataSet.isDrawFilledEnabled()) {
+            final Drawable drawable = dataSet.getFillDrawable();
+            if (drawable != null) {
+                drawFilledPath(c, surface, drawable);
+            } else {
+                drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
+            }
+        }
+        MPPointF.recycleInstance(center);
+        MPPointF.recycleInstance(pOut);
+        MPPointF.recycleInstance(firstPoint);
+        MPPointF.recycleInstance(lastPoint);
     }
 
     private void drawDataSetSingleColor(@NonNull Canvas c, @NonNull IRadarDataSet dataSet, int mostEntries) {
