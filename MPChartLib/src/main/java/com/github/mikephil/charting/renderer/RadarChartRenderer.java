@@ -91,7 +91,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
         // - multiple and single color(s) per dataSet
         // - multiple and single gradient(s) per dataSet
         if (dataSet.isGradientEnabled()) {
-            if (dataSet.getGradientColors().size() > 1) {
+            if (dataSet.getGradientColor() == null && dataSet.getGradientColors().size() > 1) {
                 drawDataSetMultipleGradient(c, dataSet, mostEntries);
             } else {
                 drawDataSetSingleGradient(c, dataSet, mostEntries);

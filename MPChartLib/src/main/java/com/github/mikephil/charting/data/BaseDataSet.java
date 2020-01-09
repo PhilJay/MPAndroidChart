@@ -154,7 +154,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     @Override
     public boolean isGradientEnabled() {
-        return mGradientColor != null && mGradientColors != null && mGradientColors.size() > 0;
+        return mGradientColor != null || (mGradientColors != null && mGradientColors.size() > 0);
     }
 
     @Override
