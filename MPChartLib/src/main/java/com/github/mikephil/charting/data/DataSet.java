@@ -401,7 +401,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
                 // loop over all "equal" entries
                 for (; m < high; m++) {
                     entry = mValues.get(m);
-                    if (entry.getX() == xValue) {
+                    if (entry != null && entry.getX() == xValue) {
                         entries.add(entry);
                     } else {
                         break;
