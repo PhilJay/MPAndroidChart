@@ -12,6 +12,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -88,9 +89,13 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
         final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-        for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
+        for (int j = 0; j <= dataSet.getEntryCount() - 1; j++) {
 
             final BubbleEntry entry = dataSet.getEntryForIndex(j);
+            entry.unDraw();
+
+            if (j < mXBounds.min || j > mXBounds.range + mXBounds.min)
+                continue;
 
             pointBuffer[0] = entry.getX();
             pointBuffer[1] = (entry.getY()) * phaseY;
@@ -112,6 +117,15 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
             mRenderPaint.setColor(color);
             c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mRenderPaint);
+
+            // translate the radius to data values and set the bubble radius fields
+            float rightPixels = pointBuffer[0] + shapeHalf;
+            float topPixels = pointBuffer[1] + shapeHalf;
+            MPPointD topRightValues = trans.getValuesByTouchPoint(rightPixels, topPixels);
+            float xRadius = (float) topRightValues.x - entry.getX();
+            float yRadius = entry.getY() - (float) topRightValues.y;
+            entry.setDrawnRadii(xRadius, yRadius);
+            MPPointD.recycleInstance(topRightValues);
         }
     }
 

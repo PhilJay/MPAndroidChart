@@ -334,47 +334,46 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             closest = high;
         }
 
-        if (closest != -1) {
-            float closestXValue = mValues.get(closest).getX();
-            if (rounding == Rounding.UP) {
-                // If rounding up, and found x-value is lower than specified x, and we can go upper...
-                if (closestXValue < xValue && closest < mValues.size() - 1) {
-                    ++closest;
-                }
-            } else if (rounding == Rounding.DOWN) {
-                // If rounding down, and found x-value is upper than specified x, and we can go lower...
-                if (closestXValue > xValue && closest > 0) {
-                    --closest;
-                }
+        float closestXValue = mValues.get(closest).getX();
+        if (rounding == Rounding.UP) {
+            // If rounding up, and found x-value is lower than specified x, and we can go upper...
+            if (closestXValue < xValue && closest < mValues.size() - 1) {
+                ++closest;
             }
-
-            // Search by closest to y-value
-            if (!Float.isNaN(closestToY)) {
-                while (closest > 0 && mValues.get(closest - 1).getX() == closestXValue)
-                    closest -= 1;
-
-                float closestYValue = mValues.get(closest).getY();
-                int closestYIndex = closest;
-
-                while (true) {
-                    closest += 1;
-                    if (closest >= mValues.size())
-                        break;
-
-                    final Entry value = mValues.get(closest);
-
-                    if (value.getX() != closestXValue)
-                        break;
-
-                    if (Math.abs(value.getY() - closestToY) < Math.abs(closestYValue - closestToY)) {
-                        closestYValue = closestToY;
-                        closestYIndex = closest;
-                    }
-                }
-
-                closest = closestYIndex;
+        } else if (rounding == Rounding.DOWN) {
+            // If rounding down, and found x-value is upper than specified x, and we can go lower...
+            if (closestXValue > xValue && closest > 0) {
+                --closest;
             }
         }
+
+        // Search by closest to y-value
+        if (!Float.isNaN(closestToY)) {
+            while (closest > 0 && mValues.get(closest - 1).getX() == closestXValue)
+                closest -= 1;
+
+            float closestYValue = mValues.get(closest).getY();
+            int closestYIndex = closest;
+
+            while (true) {
+                closest += 1;
+                if (closest >= mValues.size())
+                    break;
+
+                final Entry value = mValues.get(closest);
+
+                if (value.getX() != closestXValue)
+                    break;
+
+                if (Math.abs(value.getY() - closestToY) < Math.abs(closestYValue - closestToY)) {
+                    closestYValue = value.getY();
+                    closestYIndex = closest;
+                }
+            }
+
+            closest = closestYIndex;
+        }
+
 
         return closest;
     }
