@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -73,7 +74,6 @@ public class LineChartRenderer extends LineRadarRenderer {
 
     @Override
     public void drawData(Canvas c) {
-
         int width = (int) mViewPortHandler.getChartWidth();
         int height = (int) mViewPortHandler.getChartHeight();
 
@@ -105,7 +105,6 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     protected void drawDataSet(Canvas c, ILineDataSet dataSet) {
-
         if (dataSet.getEntryCount() < 1)
             return;
 
@@ -132,7 +131,6 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     protected void drawHorizontalBezier(ILineDataSet dataSet) {
-
         float phaseY = mAnimator.getPhaseY();
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
@@ -690,23 +688,39 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     @Override
+    @Deprecated
     public void drawHighlighted(Canvas c, Highlight[] indices) {
+        drawHighlights(c, new Highlights(indices));
+    }
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
 
         LineData lineData = mChart.getLineData();
 
-        for (Highlight high : indices) {
+        for (Highlight high : highlights) {
 
             ILineDataSet set = lineData.getDataSetByIndex(high.getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            Entry e = set.getEntryForXValue(high.getX(), high.getY());
+            Entry entry;
+            if (high.getDataIndex() >= 0)
+                entry = set.getEntryForIndex(high.getDataIndex());
+            else
+                entry = set.getEntryForXValue(high.getX(), high.getY());
 
-            if (!isInBoundsX(e, set))
+            if (!isInBoundsX(entry, set))
                 continue;
 
-            MPPointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(e.getX(), e.getY() * mAnimator
+            MPPointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(entry.getX(), entry.getY() * mAnimator
                     .getPhaseY());
 
             high.setDraw((float) pix.x, (float) pix.y);

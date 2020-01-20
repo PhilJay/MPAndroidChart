@@ -50,7 +50,9 @@
         <activity android:name="StackedBarActivityNegative" />
         <activity android:name="BarChartPositiveNegative" />
         <activity android:name="FilledLineActivity" />
-        <activity android:name="HalfPieChartActivity" />
+        <activity android:name="HighlightBubbleChart" />
+        <activity android:name="AxisHighlightBubbleChartActivity" />
+        <activity android:name=".HighlightMapActivity" />
     </application>
 
 </manifest>

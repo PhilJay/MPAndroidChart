@@ -16,6 +16,8 @@ import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererRadarChart;
 import com.github.mikephil.charting.utils.Utils;
 
+import androidx.annotation.Nullable;
+
 /**
  * Implementation of the RadarChart, a "spidernet"-like chart. It works best
  * when displaying 5-10 entries per DataSet.
@@ -110,8 +112,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         calcMinMax();
 
-        mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
-        mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+        mYAxisRenderer.computeAxis(mYAxis.getAxisMinimum(), mYAxis.getAxisMaximum(), mYAxis.isInverted());
+        mXAxisRenderer.computeAxis(mXAxis.getAxisMinimum(), mXAxis.getAxisMaximum(), false);
 
         if (mLegend != null && !mLegend.isLegendCustom())
             mLegendRenderer.computeLegend(mData);
@@ -127,10 +129,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             return;
 
 //        if (mYAxis.isEnabled())
-//            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
+//            mYAxisRenderer.computeAxis(mYAxis.getAxisMinimum(), mYAxis.getAxisMaximum(), mYAxis.isInverted());
 
         if (mXAxis.isEnabled())
-            mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+            mXAxisRenderer.computeAxis(mXAxis.getAxisMinimum(), mXAxis.getAxisMaximum(), false);
 
         mXAxisRenderer.renderAxisLabels(canvas);
 
@@ -340,14 +342,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * Returns the maximum value this chart can display on it's y-axis.
      */
     public float getYChartMax() {
-        return mYAxis.mAxisMaximum;
+        return mYAxis.getAxisMaximum();
     }
 
     /**
      * Returns the minimum value this chart can display on it's y-axis.
      */
     public float getYChartMin() {
-        return mYAxis.mAxisMinimum;
+        return mYAxis.getAxisMinimum();
     }
 
     /**
@@ -357,5 +359,28 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public float getYRange() {
         return mYAxis.mAxisRange;
+    }
+
+
+    /**
+     * Returns true if the chart has a left axis.
+     *
+     * @return has left axis
+     */
+    @Override
+    public boolean hasLeftAxis() {
+        return true;
+    }
+
+    /**
+     * Returns the left axis, or null if there is not one.
+     * Do not call before checking hasLeftAxis, or you may get a run time exception.
+     *
+     * @return left axis or null
+     */
+    @Nullable
+    @Override
+    public YAxis getLeftAxis() {
+        return mYAxis;
     }
 }

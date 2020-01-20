@@ -71,7 +71,7 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
                     mChart.getCenterOffsets(), y * factor * phaseY,
                     sliceangle * index * phaseX + mChart.getRotationAngle(), pOut);
 
-            mHighlightBuffer.add(new Highlight(index, entry.getY(), pOut.x, pOut.y, i, dataSet.getAxisDependency()));
+            mHighlightBuffer.add(new Highlight(index, entry.getY(), pOut.x, pOut.y, i, index, dataSet.getAxisDependency()));
         }
 
         return mHighlightBuffer;

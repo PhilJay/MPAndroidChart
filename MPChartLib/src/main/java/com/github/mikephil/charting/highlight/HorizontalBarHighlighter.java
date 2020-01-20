@@ -72,7 +72,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 			highlights.add(new Highlight(
 					e.getX(), e.getY(),
 					(float) pixels.x, (float) pixels.y,
-					dataSetIndex, set.getAxisDependency()));
+					dataSetIndex, set.getEntryIndex(e), set.getAxisDependency()));
 		}
 
 		return highlights;

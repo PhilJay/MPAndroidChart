@@ -9,7 +9,6 @@ import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +40,8 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
+
 /**
  * Example of a heavily customized {@link LineChart} with limit lines, custom line shapes, etc.
  *
@@ -67,10 +68,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         tvY = findViewById(R.id.tvYMax);
 
         seekBarX = findViewById(R.id.seekBar1);
-        seekBarX.setOnSeekBarChangeListener(this);
-
         seekBarY = findViewById(R.id.seekBar2);
         seekBarY.setMax(180);
+        seekBarX.setProgress(45);
+        seekBarY.setProgress(180);
+
+        seekBarX.setOnSeekBarChangeListener(this);
         seekBarY.setOnSeekBarChangeListener(this);
 
 
@@ -164,12 +167,10 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         }
 
         // add data
-        seekBarX.setProgress(45);
-        seekBarY.setProgress(180);
         setData(45, 180);
 
         // draw points over time
-        chart.animateX(1500);
+        //chart.animateX(1500);
 
         // get the legend (only possible after setting data)
         Legend l = chart.getLegend();
@@ -179,7 +180,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     }
 
     private void setData(int count, float range) {
-
         ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {

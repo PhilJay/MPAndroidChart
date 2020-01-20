@@ -4,14 +4,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.ColorBubbleEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -50,8 +54,9 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         for (IBubbleDataSet set : bubbleData.getDataSets()) {
 
-            if (set.isVisible())
+            if (set.isVisible()) {
                 drawDataSet(c, set);
+            }
         }
     }
 
@@ -88,9 +93,13 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
         final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-        for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
+        for (int j = 0; j <= dataSet.getEntryCount() - 1; j++) {
 
             final BubbleEntry entry = dataSet.getEntryForIndex(j);
+            entry.unDraw();
+
+            if (j < mXBounds.min || j > mXBounds.range + mXBounds.min)
+                continue;
 
             pointBuffer[0] = entry.getX();
             pointBuffer[1] = (entry.getY()) * phaseY;
@@ -108,10 +117,23 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
             if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
                 break;
 
-            final int color = dataSet.getColor((int) entry.getX());
+            final int color;
+            if (entry instanceof ColorBubbleEntry)
+                color = ((ColorBubbleEntry) entry).getColor();
+            else
+                color = dataSet.getColor((int) entry.getX());
 
             mRenderPaint.setColor(color);
             c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mRenderPaint);
+
+            // translate the radius to data values and set the bubble radius fields
+            float rightPixels = pointBuffer[0] + shapeHalf;
+            float topPixels = pointBuffer[1] + shapeHalf;
+            MPPointD topRightValues = trans.getValuesByTouchPoint(rightPixels, topPixels);
+            float xRadius = (float) topRightValues.x - entry.getX();
+            float yRadius = entry.getY() - (float) topRightValues.y;
+            entry.setDrawnRadii(xRadius, yRadius);
+            MPPointD.recycleInstance(topRightValues);
         }
     }
 
@@ -209,20 +231,37 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     private float[] _hsvBuffer = new float[3];
 
     @Override
+    @Deprecated
     public void drawHighlighted(Canvas c, Highlight[] indices) {
+        drawHighlights(c, new Highlights(indices));
+    }
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
 
         BubbleData bubbleData = mChart.getBubbleData();
 
         float phaseY = mAnimator.getPhaseY();
 
-        for (Highlight high : indices) {
-
+        for (Highlight high : highlights) {
             IBubbleDataSet set = bubbleData.getDataSetByIndex(high.getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            final BubbleEntry entry = set.getEntryForXValue(high.getX(), high.getY());
+            // if we know which entry the highlight comes from, don't go searching for it
+            BubbleEntry entry;
+            if (high.getDataIndex() >= 0)
+                entry = set.getEntryForIndex(high.getDataIndex());
+            else
+                // ok, search for it
+                entry = set.getEntryForXValue(high.getX(), high.getY());
 
             if (entry.getY() != high.getY())
                 continue;
@@ -266,7 +305,8 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
             if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
                 break;
 
-            final int originalColor = set.getColor((int) entry.getX());
+            final int originalColor = (entry instanceof ColorBubbleEntry) ?
+                    ((ColorBubbleEntry) entry).getColor() : set.getColor((int) entry.getX());
 
             Color.RGBToHSV(Color.red(originalColor), Color.green(originalColor),
                     Color.blue(originalColor), _hsvBuffer);

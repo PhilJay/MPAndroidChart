@@ -7,16 +7,23 @@ class ContentItem {
 
     final String name;
     final String desc;
-    boolean isSection = false;
+    final boolean isSection;
+    final int id;
+    final Class klass;
 
-    ContentItem(String n) {
+    ContentItem(String n, int id) {
         name = n;
         desc = "";
         isSection = true;
+        this.id = id;
+        this.klass = null;
     }
 
-    ContentItem(String n, String d) {
+    ContentItem(String n, String d, int id, Class klazz) {
         name = n;
         desc = d;
+        isSection = false;
+        this.id = id;
+        this.klass = klazz;
     }
 }

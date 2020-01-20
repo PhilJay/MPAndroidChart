@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
+import com.xxmassdeveloper.mpchartexample.AxisHighlightBubbleChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.BarChartActivitySinus;
@@ -25,10 +26,11 @@ import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.DynamicalAddingActivity;
 import com.xxmassdeveloper.mpchartexample.FilledLineActivity;
 import com.xxmassdeveloper.mpchartexample.HalfPieChartActivity;
+import com.xxmassdeveloper.mpchartexample.HighlightBubbleChart;
+import com.xxmassdeveloper.mpchartexample.HighlightMapActivity;
 import com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity1;
-import com.xxmassdeveloper.mpchartexample.LineChartActivity2;
 import com.xxmassdeveloper.mpchartexample.LineChartActivityColored;
 import com.xxmassdeveloper.mpchartexample.LineChartTime;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
@@ -51,6 +53,8 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements OnItemClickListener {
+    ArrayList<ContentItem> mActivities = new ArrayList<>();
+    int mPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,65 +68,69 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         // initialize the utilities
         Utils.init(this);
 
-        ArrayList<ContentItem> objects = new ArrayList<>();
+        addHeader("Highlight Axes");
+        addExample("Bubble Chart", "Highlight in two lines of code", HighlightBubbleChart.class);
+        addExample("Color Bubble Chart", "X Axis : change alpha; Y Axis: change size", AxisHighlightBubbleChartActivity.class);
+        addExample("Highlight Map Chart", "Touch right axis", HighlightMapActivity.class);
+
+        addHeader("Line Charts");
+
+        addExample("Basic", "Simple line chart.", LineChartActivity1.class);
+        addExample("Multiple", "Show multiple data sets.", MultiLineChartActivity.class);
+        addExample("Dual Axis", "Line chart with dual y-axes.", MultiLineChartActivity.class);
+        addExample("Inverted Axis", "Inverted y-axis.", InvertedLineChartActivity.class);
+        addExample("Cubic", "Line chart with a cubic line shape.", CubicLineChartActivity.class);
+        addExample("Colorful", "Colorful line chart.", LineChartActivityColored.class);
+        addExample("Performance", "Render 30.000 data points smoothly.", PerformanceLineChart.class);
+        addExample("Filled", "Colored area between two lines.", FilledLineActivity.class);
 
         ////
-        objects.add(0, new ContentItem("Line Charts"));
+        addHeader("Bar Charts");
 
-        objects.add(1, new ContentItem("Basic", "Simple line chart."));
-        objects.add(2, new ContentItem("Multiple", "Show multiple data sets."));
-        objects.add(3, new ContentItem("Dual Axis", "Line chart with dual y-axes."));
-        objects.add(4, new ContentItem("Inverted Axis", "Inverted y-axis."));
-        objects.add(5, new ContentItem("Cubic", "Line chart with a cubic line shape."));
-        objects.add(6, new ContentItem("Colorful", "Colorful line chart."));
-        objects.add(7, new ContentItem("Performance", "Render 30.000 data points smoothly."));
-        objects.add(8, new ContentItem("Filled", "Colored area between two lines."));
-
-        ////
-        objects.add(9, new ContentItem("Bar Charts"));
-
-        objects.add(10, new ContentItem("Basic", "Simple bar chart."));
-        objects.add(11, new ContentItem("Basic 2", "Variation of the simple bar chart."));
-        objects.add(12, new ContentItem("Multiple", "Show multiple data sets."));
-        objects.add(13, new ContentItem("Horizontal", "Render bar chart horizontally."));
-        objects.add(14, new ContentItem("Stacked", "Stacked bar chart."));
-        objects.add(15, new ContentItem("Negative", "Positive and negative values with unique colors."));
-        objects.add(16, new ContentItem("Stacked 2", "Stacked bar chart with negative values."));
-        objects.add(17, new ContentItem("Sine", "Sine function in bar chart format."));
+        addExample("Basic", "Simple bar chart.", BarChartActivity.class);
+        addExample("Basic 2", "Variation of the simple bar chart.", AnotherBarActivity.class);
+        addExample("Multiple", "Show multiple data sets.", BarChartActivityMultiDataset.class);
+        addExample("Horizontal", "Render bar chart horizontally.", HorizontalBarChartActivity.class);
+        addExample("Stacked", "Stacked bar chart.", StackedBarActivity.class);
+        addExample("Negative", "Positive and negative values with unique colors.", BarChartPositiveNegative.class);
+        addExample("Stacked 2", "Stacked bar chart with negative values.", StackedBarActivityNegative.class);
+        addExample("Sine", "Sine function in bar chart format.", BarChartActivitySinus.class);
 
         ////
-        objects.add(18, new ContentItem("Pie Charts"));
+        addHeader("Pie Charts");
 
-        objects.add(19, new ContentItem("Basic", "Simple pie chart."));
-        objects.add(20, new ContentItem("Value Lines", "Stylish lines drawn outward from slices."));
-        objects.add(21, new ContentItem("Half Pie", "180° (half) pie chart."));
-
-        ////
-        objects.add(22, new ContentItem("Other Charts"));
-
-        objects.add(23, new ContentItem("Combined Chart", "Bar and line chart together."));
-        objects.add(24, new ContentItem("Scatter Plot", "Simple scatter plot."));
-        objects.add(25, new ContentItem("Bubble Chart", "Simple bubble chart."));
-        objects.add(26, new ContentItem("Candlestick", "Simple financial chart."));
-        objects.add(27, new ContentItem("Radar Chart", "Simple web chart."));
+        addExample("Basic", "Simple pie chart.", PieChartActivity.class);
+        addExample("Value Lines", "Stylish lines drawn outward from slices.", PiePolylineChartActivity.class);
+        addExample("Half Pie", "180° (half) pie chart.", HalfPieChartActivity.class);
 
         ////
-        objects.add(28, new ContentItem("Scrolling Charts"));
+        addHeader("Other Charts");
 
-        objects.add(29, new ContentItem("Multiple", "Various types of charts as fragments."));
-        objects.add(30, new ContentItem("View Pager", "Swipe through different charts."));
-        objects.add(31, new ContentItem("Tall Bar Chart", "Bars bigger than your screen!"));
-        objects.add(32, new ContentItem("Many Bar Charts", "More bars than your screen can handle!"));
+        addExample("Combined Chart", "Bar and line chart together.", CombinedChartActivity.class);
+        addExample("Scatter Plot", "Simple scatter plot.", ScatterChartActivity.class);
+        addExample("Bubble Chart", "Simple bubble chart.", BubbleChartActivity.class);
+        addExample("Candlestick", "Simple financial chart.", CandleStickChartActivity.class);
+        addExample("Radar Chart", "Simple web chart.", RadarChartActivity.class);
 
         ////
-        objects.add(33, new ContentItem("Even More Line Charts"));
+        addHeader("Scrolling Charts");
 
-        objects.add(34, new ContentItem("Dynamic", "Build a line chart by adding points and sets."));
-        objects.add(35, new ContentItem("Realtime", "Add data points in realtime."));
-        objects.add(36, new ContentItem("Hourly", "Uses the current time to add a data point for each hour."));
-        //objects.add(37, new ContentItem("Realm.io Examples", "See more examples that use Realm.io mobile database."));
+        addExample("Multiple", "Various types of charts as fragments.", ListViewMultiChartActivity.class);
+        addExample("View Pager", "Swipe through different charts.", SimpleChartDemo.class);
+        addExample("Tall Bar Chart", "Bars bigger than your screen!", ScrollViewActivity.class);
+        addExample("Many Bar Charts", "More bars than your screen can handle!", ListViewBarChartActivity.class);
 
-        MyAdapter adapter = new MyAdapter(this, objects);
+        ////
+        addHeader("Even More Line Charts");
+
+        addExample("Dynamic", "Build a line chart by adding points and sets.", DynamicalAddingActivity.class);
+        addExample("Realtime", "Add data points in realtime.", RealtimeLineChartActivity.class);
+        addExample("Hourly", "Uses the current time to add a data point for each hour.", LineChartTime.class);
+        //addItem("Realm.io Examples", "See more examples that use Realm.io mobile database.", RealmMainActivity.class, position++));
+
+
+        MyAdapter adapter = new MyAdapter(this, mActivities);
+
 
         ListView lv = findViewById(R.id.listView1);
         lv.setAdapter(adapter);
@@ -132,109 +140,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> av, View v, int pos, long arg3) {
-
-        Intent i = null;
-
-        switch (pos) {
-            case 1:
-                i = new Intent(this, LineChartActivity1.class);
-                break;
-            case 2:
-                i = new Intent(this, MultiLineChartActivity.class);
-                break;
-            case 3:
-                i = new Intent(this, LineChartActivity2.class);
-                break;
-            case 4:
-                i = new Intent(this, InvertedLineChartActivity.class);
-                break;
-            case 5:
-                i = new Intent(this, CubicLineChartActivity.class);
-                break;
-            case 6:
-                i = new Intent(this, LineChartActivityColored.class);
-                break;
-            case 7:
-                i = new Intent(this, PerformanceLineChart.class);
-                break;
-            case 8:
-                i = new Intent(this, FilledLineActivity.class);
-                break;
-            case 10:
-                i = new Intent(this, BarChartActivity.class);
-                break;
-            case 11:
-                i = new Intent(this, AnotherBarActivity.class);
-                break;
-            case 12:
-                i = new Intent(this, BarChartActivityMultiDataset.class);
-                break;
-            case 13:
-                i = new Intent(this, HorizontalBarChartActivity.class);
-                break;
-            case 14:
-                i = new Intent(this, StackedBarActivity.class);
-                break;
-            case 15:
-                i = new Intent(this, BarChartPositiveNegative.class);
-                break;
-            case 16:
-                i = new Intent(this, StackedBarActivityNegative.class);
-                break;
-            case 17:
-                i = new Intent(this, BarChartActivitySinus.class);
-                break;
-            case 19:
-                i = new Intent(this, PieChartActivity.class);
-                break;
-            case 20:
-                i = new Intent(this, PiePolylineChartActivity.class);
-                break;
-            case 21:
-                i = new Intent(this, HalfPieChartActivity.class);
-                break;
-            case 23:
-                i = new Intent(this, CombinedChartActivity.class);
-                break;
-            case 24:
-                i = new Intent(this, ScatterChartActivity.class);
-                break;
-            case 25:
-                i = new Intent(this, BubbleChartActivity.class);
-                break;
-            case 26:
-                i = new Intent(this, CandleStickChartActivity.class);
-                break;
-            case 27:
-                i = new Intent(this, RadarChartActivity.class);
-                break;
-            case 29:
-                i = new Intent(this, ListViewMultiChartActivity.class);
-                break;
-            case 30:
-                i = new Intent(this, SimpleChartDemo.class);
-                break;
-            case 31:
-                i = new Intent(this, ScrollViewActivity.class);
-                break;
-            case 32:
-                i = new Intent(this, ListViewBarChartActivity.class);
-                break;
-            case 34:
-                i = new Intent(this, DynamicalAddingActivity.class);
-                break;
-            case 35:
-                i = new Intent(this, RealtimeLineChartActivity.class);
-                break;
-            case 36:
-                i = new Intent(this, LineChartTime.class);
-                break;
-            /*case 37:
-                i = new Intent(this, RealmMainActivity.class);
-                break;*/
-        }
-
-        if (i != null) startActivity(i);
+        ContentItem example = mActivities.get(pos);
+        if (example.klass == null)
+            return;
+        Intent intent = new Intent(this, mActivities.get(pos).klass);
+        startActivity(intent);
 
         overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
     }
@@ -271,5 +181,15 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         }
 
         return true;
+    }
+
+    private void addHeader(String name) {
+        ContentItem item = new ContentItem(name, mPosition);
+        mActivities.add(mPosition++, item);
+    }
+
+    private void addExample(String name, String description, Class klazz) {
+        ContentItem item = new ContentItem(name, description, mPosition, klazz);
+        mActivities.add(mPosition++, item);
     }
 }

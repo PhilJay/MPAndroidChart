@@ -8,6 +8,7 @@ import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.Utils;
@@ -151,8 +152,18 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Draws all highlight indicators for the values that are currently highlighted.
      *
+     * @deprecated use drawHighlights(highlights)
      * @param c
      * @param indices the highlighted values
      */
+    @Deprecated
     public abstract void drawHighlighted(Canvas c, Highlight[] indices);
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c canvas
+     * @param highlights highlights to draw
+     */
+    public abstract void drawHighlights(Canvas c, Highlights highlights);
 }

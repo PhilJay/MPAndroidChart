@@ -129,7 +129,7 @@ public class Entry extends BaseEntry implements Parcelable {
      */
     @Override
     public String toString() {
-        return "Entry, x: " + x + " y: " + getY();
+        return String.format("Entry: x= %.2f, y= %.2f", + x, getY());
     }
 
     @Override

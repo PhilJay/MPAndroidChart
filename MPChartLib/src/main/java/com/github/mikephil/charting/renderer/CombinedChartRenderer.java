@@ -10,6 +10,7 @@ import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
@@ -108,10 +109,20 @@ public class CombinedChartRenderer extends DataRenderer {
             renderer.drawExtras(c);
     }
 
-    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
-
     @Override
+    @Deprecated
     public void drawHighlighted(Canvas c, Highlight[] indices) {
+        drawHighlights(c, new Highlights(indices));
+    }
+
+    /**
+     * Draws the given highlights.
+     *
+     * @param c          canvas
+     * @param highlights highlights to draw
+     */
+    @Override
+    public void drawHighlights(Canvas c, Highlights highlights) {
 
         Chart chart = mChart.get();
         if (chart == null) return;
@@ -133,14 +144,7 @@ public class CombinedChartRenderer extends DataRenderer {
             int dataIndex = data == null ? -1
                     : ((CombinedData)chart.getData()).getAllData().indexOf(data);
 
-            mHighlightBuffer.clear();
-
-            for (Highlight h : indices) {
-                if (h.getDataIndex() == dataIndex || h.getDataIndex() == -1)
-                    mHighlightBuffer.add(h);
-            }
-
-            renderer.drawHighlighted(c, mHighlightBuffer.toArray(new Highlight[mHighlightBuffer.size()]));
+            renderer.drawHighlights(c, highlights);
         }
     }
 

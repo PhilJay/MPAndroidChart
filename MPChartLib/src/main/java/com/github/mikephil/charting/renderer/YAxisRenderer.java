@@ -11,12 +11,16 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
+
+import static com.github.mikephil.charting.components.YAxis.AxisDependency.LEFT;
 
 public class YAxisRenderer extends AxisRenderer {
 
@@ -64,7 +68,7 @@ public class YAxisRenderer extends AxisRenderer {
 
         float xPos = 0f;
 
-        if (dependency == AxisDependency.LEFT) {
+        if (dependency == LEFT) {
 
             if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
                 mAxisLabelPaint.setTextAlign(Align.RIGHT);
@@ -86,6 +90,8 @@ public class YAxisRenderer extends AxisRenderer {
         }
 
         drawYLabels(c, xPos, positions, yoffset);
+
+        drawHighlights(c, xPos, yoffset);
     }
 
     @Override
@@ -97,7 +103,7 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisLinePaint.setColor(mYAxis.getAxisLineColor());
         mAxisLinePaint.setStrokeWidth(mYAxis.getAxisLineWidth());
 
-        if (mYAxis.getAxisDependency() == AxisDependency.LEFT) {
+        if (mYAxis.getAxisDependency() == LEFT) {
             c.drawLine(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), mViewPortHandler.contentLeft(),
                     mViewPortHandler.contentBottom(), mAxisLinePaint);
         } else {
@@ -121,10 +127,9 @@ public class YAxisRenderer extends AxisRenderer {
 
         // draw
         for (int i = from; i < to; i++) {
-
             String text = mYAxis.getFormattedLabel(i);
-
             c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
+
         }
     }
 
@@ -343,5 +348,58 @@ public class YAxisRenderer extends AxisRenderer {
 
             c.restoreToCount(clipRestoreCount);
         }
+    }
+
+
+    private void drawHighlights(Canvas c, float xPos, float yOffset) {
+        for (Highlight h : mAxis.getHighlights())
+            drawHighlight(c, h, xPos, yOffset);
+    }
+
+    /**
+     * Draws a label at the highlight point.
+     *
+     * @param highlight
+     */
+    private void drawHighlight(Canvas c, Highlight highlight, float xPos, float yOffset) {
+        String formattedLabel = mYAxis.getValueFormatter().getAxisLabel(highlight.getY(), mYAxis);
+
+        Paint paint = new Paint(mAxisLabelPaint);
+        FSize size = Utils.calcTextSize(paint, formattedLabel);
+
+        float textX = xPos;
+        float textY = highlight.getYPx() + size.height / 2f;
+
+        if (!mViewPortHandler.isInBoundsY(textY)) {
+            // un-draw out-of-bounds highlight
+            highlight.setDraw(Float.NaN, Float.NaN);
+            return;
+        }
+
+        // draw a box
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(mHighlightFillColor);
+
+        float left, right, top, bottom;
+        if (mYAxis.getAxisDependency() == LEFT) {
+            right = Math.min(mViewPortHandler.contentLeft(), textX + mHighlightFillPadding.right);
+            left = textX - size.width;
+            bottom = textY;
+            top = bottom - size.height;
+        } else {
+            left = Math.max(textX - mHighlightFillPadding.left, mViewPortHandler.contentRight());
+            right = textX + size.width;
+            bottom = textY;
+            top = textY - size.height;
+        }
+        FSize.recycleInstance(size);
+
+        top -= mHighlightFillPadding.top;
+        bottom += mHighlightFillPadding.bottom;
+        c.drawRect(left, top, right, bottom, paint);
+
+        // draw a label in the box
+        paint.setColor(mHighlightTextColor);
+        c.drawText(formattedLabel, textX, textY, paint);
     }
 }

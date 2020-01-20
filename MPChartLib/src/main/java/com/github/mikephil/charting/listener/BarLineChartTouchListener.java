@@ -2,7 +2,6 @@ package com.github.mikephil.charting.listener;
 
 import android.annotation.SuppressLint;
 import android.graphics.Matrix;
-import android.graphics.PointF;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -12,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
+import com.github.mikephil.charting.data.BaseEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
@@ -53,7 +54,11 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     private float mSavedYDist = 1f;
     private float mSavedDist = 1f;
 
-    private IDataSet mClosestDataSetToTouch;
+    /**
+     * Is the data set closest to the touch point inverted?
+     * Used by zoom and drag methods.
+     */
+    private boolean mIsInverted;
 
     /**
      * used for tracking velocity of dragging
@@ -296,15 +301,24 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     /**
      * Saves the current Matrix state and the touch-start point.
      *
+     * We do this so that we know if the axis associated with the touch point is inverted.
+     * getDataSetByTouchPoint runs an expensive search. We only run this if there is at
+     * least one inverted axis on the chart.
+     *
      * @param event
      */
     private void saveTouchStart(MotionEvent event) {
-
         mSavedMatrix.set(mMatrix);
         mTouchStartPoint.x = event.getX();
         mTouchStartPoint.y = event.getY();
 
-        mClosestDataSetToTouch = mChart.getDataSetByTouchPoint(event.getX(), event.getY());
+        mIsInverted = false;
+        if (mChart.isAnyAxisInverted()) {
+            IBarLineScatterCandleBubbleDataSet closest = mChart.getDataSetByTouchPoint(event.getX(), event.getY());
+            if (closest != null)
+                mChart.isInverted(closest.getAxisDependency());
+        }
+
     }
 
     /**
@@ -321,7 +335,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         OnChartGestureListener l = mChart.getOnChartGestureListener();
 
         // check if axis is inverted
-        if (inverted()) {
+        if (mIsInverted) {
 
             // if there is an inverted horizontalbarchart
             if (mChart instanceof HorizontalBarChart) {
@@ -521,23 +535,13 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         float yTrans = 0f;
 
         // check if axis is inverted
-        if (inverted()) {
+        if (mIsInverted) {
             yTrans = -(y - vph.offsetTop());
         } else {
             yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
         }
 
         return MPPointF.getInstance(xTrans, yTrans);
-    }
-
-    /**
-     * Returns true if the current touch situation should be interpreted as inverted, false if not.
-     *
-     * @return
-     */
-    private boolean inverted() {
-        return (mClosestDataSetToTouch == null && mChart.isAnyAxisInverted()) || (mClosestDataSetToTouch != null
-                && mChart.isInverted(mClosestDataSetToTouch.getAxisDependency()));
     }
 
     /**
@@ -607,7 +611,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-
         mLastGesture = ChartGesture.SINGLE_TAP;
 
         OnChartGestureListener l = mChart.getOnChartGestureListener();

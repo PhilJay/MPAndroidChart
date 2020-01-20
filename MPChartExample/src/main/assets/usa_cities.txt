@@ -1,0 +1,897 @@
+city,city_ascii,lat,lng,country,iso2,iso3,admin_name,capital,population
+New York,New York,40.6943,-73.9249,United States,US,USA,New York,,19164071
+Los Angeles,Los Angeles,34.114,-118.4068,United States,US,USA,California,,12740381
+Chicago,Chicago,41.8373,-87.6861,United States,US,USA,Illinois,,8639278
+Miami,Miami,25.784,-80.2102,United States,US,USA,Florida,,6247425
+Dallas,Dallas,32.7938,-96.7659,United States,US,USA,Texas,,5634307
+Philadelphia,Philadelphia,40.0076,-75.134,United States,US,USA,Pennsylvania,,5591554
+Houston,Houston,29.7871,-95.3936,United States,US,USA,Texas,,5424720
+Washington,Washington,38.9047,-77.0163,United States,US,USA,District of Columbia,primary,5191844
+Atlanta,Atlanta,33.7627,-84.4231,United States,US,USA,Georgia,admin,5080712
+Boston,Boston,42.3189,-71.0838,United States,US,USA,Massachusetts,admin,4556916
+Phoenix,Phoenix,33.5722,-112.0891,United States,US,USA,Arizona,admin,4054083
+San Francisco,San Francisco,37.7561,-122.4429,United States,US,USA,California,,3548847
+Seattle,Seattle,47.6217,-122.3238,United States,US,USA,Washington,,3541236
+Detroit,Detroit,42.3834,-83.1024,United States,US,USA,Michigan,,3520589
+San Diego,San Diego,32.8312,-117.1225,United States,US,USA,California,,3181172
+Minneapolis,Minneapolis,44.9635,-93.2679,United States,US,USA,Minnesota,,2866604
+Tampa,Tampa,27.9937,-82.4454,United States,US,USA,Florida,,2744107
+Denver,Denver,39.7621,-104.8759,United States,US,USA,Colorado,admin,2741534
+Brooklyn,Brooklyn,40.6501,-73.9496,United States,US,USA,New York,,2629150
+Queens,Queens,40.7498,-73.7976,United States,US,USA,New York,,2333054
+Baltimore,Baltimore,39.3051,-76.6144,United States,US,USA,Maryland,,2181206
+Saint Louis,Saint Louis,38.6358,-90.2451,United States,US,USA,Missouri,,2096990
+Riverside,Riverside,33.9382,-117.3949,United States,US,USA,California,,2065627
+Las Vegas,Las Vegas,36.2288,-115.2603,United States,US,USA,Nevada,,2044731
+Portland,Portland,45.5372,-122.65,United States,US,USA,Oregon,,2027629
+San Antonio,San Antonio,29.4722,-98.5247,United States,US,USA,Texas,,1976787
+Sacramento,Sacramento,38.5666,-121.4683,United States,US,USA,California,admin,1830061
+San Jose,San Jose,37.302,-121.8488,United States,US,USA,California,,1804359
+Orlando,Orlando,28.4801,-81.3448,United States,US,USA,Florida,,1757288
+Cleveland,Cleveland,41.4766,-81.6805,United States,US,USA,Ohio,,1731637
+Pittsburgh,Pittsburgh,40.4396,-79.9763,United States,US,USA,Pennsylvania,,1722206
+Manhattan,Manhattan,40.7834,-73.9662,United States,US,USA,New York,,1643734
+Cincinnati,Cincinnati,39.1412,-84.506,United States,US,USA,Ohio,,1634573
+Austin,Austin,30.3038,-97.7545,United States,US,USA,Texas,admin,1633847
+Kansas City,Kansas City,39.1239,-94.5541,United States,US,USA,Missouri,,1590762
+Indianapolis,Indianapolis,39.7771,-86.1458,United States,US,USA,Indiana,admin,1550488
+Columbus,Columbus,39.9859,-82.9852,United States,US,USA,Ohio,admin,1495146
+Virginia Beach,Virginia Beach,36.7335,-76.0435,United States,US,USA,Virginia,,1487505
+Bronx,Bronx,40.8501,-73.8662,United States,US,USA,New York,,1455720
+Charlotte,Charlotte,35.208,-80.8308,United States,US,USA,North Carolina,,1438351
+Milwaukee,Milwaukee,43.064,-87.9669,United States,US,USA,Wisconsin,,1377104
+Providence,Providence,41.8229,-71.4186,United States,US,USA,Rhode Island,admin,1198789
+Jacksonville,Jacksonville,30.3322,-81.6749,United States,US,USA,Florida,,1141459
+Memphis,Memphis,35.1047,-89.9773,United States,US,USA,Tennessee,,1069661
+Nashville,Nashville,36.1714,-86.7844,United States,US,USA,Tennessee,admin,1065078
+Salt Lake City,Salt Lake City,40.7774,-111.9301,United States,US,USA,Utah,admin,1061156
+Richmond,Richmond,37.5294,-77.4755,United States,US,USA,Virginia,admin,1041877
+New Orleans,New Orleans,30.0687,-89.9288,United States,US,USA,Louisiana,,1024421
+Raleigh,Raleigh,35.8323,-78.6441,United States,US,USA,North Carolina,admin,1005457
+Louisville,Louisville,38.1662,-85.6488,United States,US,USA,Kentucky,,1003412
+Oklahoma City,Oklahoma City,35.4677,-97.5138,United States,US,USA,Oklahoma,admin,948154
+Bridgeport,Bridgeport,41.1909,-73.1958,United States,US,USA,Connecticut,,934289
+Buffalo,Buffalo,42.9016,-78.8487,United States,US,USA,New York,,920136
+Hartford,Hartford,41.7661,-72.6834,United States,US,USA,Connecticut,,913587
+Tucson,Tucson,32.1558,-110.8777,United States,US,USA,Arizona,,860333
+Fort Worth,Fort Worth,32.7813,-97.3466,United States,US,USA,Texas,,854113
+El Paso,El Paso,31.8478,-106.431,United States,US,USA,Texas,,845059
+Honolulu,Honolulu,21.3293,-157.846,United States,US,USA,Hawaii,admin,836995
+McAllen,McAllen,26.2203,-98.2457,United States,US,USA,Texas,,798187
+Omaha,Omaha,41.2634,-96.0453,United States,US,USA,Nebraska,,792463
+Albuquerque,Albuquerque,35.1055,-106.6476,United States,US,USA,New Mexico,,759517
+Birmingham,Birmingham,33.5276,-86.7986,United States,US,USA,Alabama,,749299
+Dayton,Dayton,39.7798,-84.1999,United States,US,USA,Ohio,,718772
+Rochester,Rochester,43.1681,-77.6162,United States,US,USA,New York,,714852
+Sarasota,Sarasota,27.3391,-82.5439,United States,US,USA,Florida,,701487
+Fresno,Fresno,36.7834,-119.7933,United States,US,USA,California,,690895
+Allentown,Allentown,40.5962,-75.4756,United States,US,USA,Pennsylvania,,678169
+Tulsa,Tulsa,36.1284,-95.9037,United States,US,USA,Oklahoma,,674211
+Concord,Concord,37.9722,-122.0016,United States,US,USA,California,,649437
+Springfield,Springfield,42.1155,-72.5395,United States,US,USA,Massachusetts,,625300
+Colorado Springs,Colorado Springs,38.8673,-104.7605,United States,US,USA,Colorado,,624789
+Cape Coral,Cape Coral,26.644,-81.9961,United States,US,USA,Florida,,617896
+Charleston,Charleston,32.8137,-79.9643,United States,US,USA,South Carolina,,613847
+Mission Viejo,Mission Viejo,33.6095,-117.655,United States,US,USA,California,,602851
+Albany,Albany,42.6664,-73.7987,United States,US,USA,New York,admin,596419
+Grand Rapids,Grand Rapids,42.9615,-85.6557,United States,US,USA,Michigan,,595467
+Baton Rouge,Baton Rouge,30.4422,-91.1314,United States,US,USA,Louisiana,admin,589675
+Knoxville,Knoxville,35.969,-83.9498,United States,US,USA,Tennessee,,581787
+Ogden,Ogden,41.2281,-111.9677,United States,US,USA,Utah,,571457
+Columbia,Columbia,34.0366,-80.9043,United States,US,USA,South Carolina,admin,571249
+Bakersfield,Bakersfield,35.3528,-119.0354,United States,US,USA,California,,567585
+Akron,Akron,41.0802,-81.5219,United States,US,USA,Ohio,,565311
+New Haven,New Haven,41.3112,-72.9245,United States,US,USA,Connecticut,,563460
+Provo,Provo,40.2458,-111.6457,United States,US,USA,Utah,,501690
+Worcester,Worcester,42.2705,-71.8079,United States,US,USA,Massachusetts,,495856
+Toledo,Toledo,41.6639,-83.582,United States,US,USA,Ohio,,492237
+Mesa,Mesa,33.4016,-111.718,United States,US,USA,Arizona,,484587
+Palm Bay,Palm Bay,27.9861,-80.6628,United States,US,USA,Florida,,483098
+Wichita,Wichita,37.6894,-97.344,United States,US,USA,Kansas,,482205
+Des Moines,Des Moines,41.5725,-93.6104,United States,US,USA,Iowa,admin,476689
+Murrieta,Murrieta,33.572,-117.1909,United States,US,USA,California,,476630
+Staten Island,Staten Island,40.5834,-74.1496,United States,US,USA,New York,,476015
+Long Beach,Long Beach,33.8059,-118.161,United States,US,USA,California,,470130
+Greenville,Greenville,34.8364,-82.3649,United States,US,USA,South Carolina,,462640
+Little Rock,Little Rock,34.7255,-92.3584,United States,US,USA,Arkansas,admin,442554
+Harrisburg,Harrisburg,40.2752,-76.8843,United States,US,USA,Pennsylvania,admin,438995
+Madison,Madison,43.0809,-89.3921,United States,US,USA,Wisconsin,admin,434967
+Denton,Denton,33.2165,-97.1411,United States,US,USA,Texas,,432200
+Reno,Reno,39.5487,-119.8486,United States,US,USA,Nevada,,427007
+Port Saint Lucie,Port Saint Lucie,27.2795,-80.3882,United States,US,USA,Florida,,422966
+Oakland,Oakland,37.7903,-122.2165,United States,US,USA,California,,420005
+Winston-Salem,Winston-Salem,36.1029,-80.261,United States,US,USA,North Carolina,,412490
+Syracuse,Syracuse,43.0409,-76.1438,United States,US,USA,New York,,407208
+Chattanooga,Chattanooga,35.0657,-85.2488,United States,US,USA,Tennessee,,403618
+Indio,Indio,33.7346,-116.2347,United States,US,USA,California,,402166
+Lancaster,Lancaster,40.0421,-76.3012,United States,US,USA,Pennsylvania,,401205
+Spokane,Spokane,47.6671,-117.433,United States,US,USA,Washington,,400936
+Durham,Durham,35.9801,-78.9045,United States,US,USA,North Carolina,,400379
+Palm Coast,Palm Coast,29.5403,-81.2468,United States,US,USA,Florida,,395224
+Arlington,Arlington,32.6998,-97.1251,United States,US,USA,Texas,,392772
+Poughkeepsie,Poughkeepsie,41.6949,-73.921,United States,US,USA,New York,,391552
+Stockton,Stockton,37.9766,-121.3111,United States,US,USA,California,,390117
+Augusta,Augusta,33.3644,-82.0708,United States,US,USA,Georgia,admin,389215
+Scranton,Scranton,41.4043,-75.6649,United States,US,USA,Pennsylvania,,387448
+Oxnard,Oxnard,34.1961,-119.1821,United States,US,USA,California,,385837
+Bonita Springs,Bonita Springs,26.3557,-81.7859,United States,US,USA,Florida,,382869
+Boise,Boise,43.5991,-116.2306,United States,US,USA,Idaho,admin,379410
+Modesto,Modesto,37.6371,-121.003,United States,US,USA,California,,377755
+Youngstown,Youngstown,41.0994,-80.6463,United States,US,USA,Ohio,,372039
+Kissimmee,Kissimmee,28.3042,-81.4164,United States,US,USA,Florida,,365099
+Aurora,Aurora,39.7085,-104.7274,United States,US,USA,Colorado,,361710
+Pensacola,Pensacola,30.4427,-87.1886,United States,US,USA,Florida,,352187
+Anaheim,Anaheim,33.839,-117.8572,United States,US,USA,California,,351043
+Lancaster,Lancaster,34.6934,-118.1753,United States,US,USA,California,,348760
+Victorville,Victorville,34.5277,-117.3537,United States,US,USA,California,,346449
+Jackson,Jackson,32.3163,-90.2124,United States,US,USA,Mississippi,admin,342607
+Corpus Christi,Corpus Christi,27.7173,-97.3822,United States,US,USA,Texas,,341570
+Flint,Flint,43.0235,-83.6921,United States,US,USA,Michigan,,338616
+Fayetteville,Fayetteville,36.0713,-94.166,United States,US,USA,Arkansas,,336152
+Santa Ana,Santa Ana,33.7366,-117.8819,United States,US,USA,California,,334217
+Greensboro,Greensboro,36.096,-79.8275,United States,US,USA,North Carolina,,331894
+Fort Wayne,Fort Wayne,41.0885,-85.1436,United States,US,USA,Indiana,,326814
+Ann Arbor,Ann Arbor,42.2757,-83.7312,United States,US,USA,Michigan,,324421
+Mobile,Mobile,30.6782,-88.1161,United States,US,USA,Alabama,,322496
+Santa Rosa,Santa Rosa,38.4465,-122.7059,United States,US,USA,California,,321699
+Lansing,Lansing,42.7142,-84.5598,United States,US,USA,Michigan,admin,318278
+Fayetteville,Fayetteville,35.0847,-78.9777,United States,US,USA,North Carolina,,316764
+Lexington,Lexington,38.0423,-84.4587,United States,US,USA,Kentucky,,312495
+Huntsville,Huntsville,34.699,-86.6412,United States,US,USA,Alabama,,307319
+Saint Paul,Saint Paul,44.9477,-93.104,United States,US,USA,Minnesota,admin,302398
+Fort Collins,Fort Collins,40.5487,-105.0656,United States,US,USA,Colorado,,301581
+Antioch,Antioch,37.9789,-121.7958,United States,US,USA,California,,300780
+Asheville,Asheville,35.5703,-82.5536,United States,US,USA,North Carolina,,299892
+Trenton,Trenton,40.2237,-74.764,United States,US,USA,New Jersey,admin,293697
+Henderson,Henderson,36.0145,-115.0362,United States,US,USA,Nevada,,292969
+Shreveport,Shreveport,32.4659,-93.7959,United States,US,USA,Louisiana,,291749
+Davenport,Davenport,41.5558,-90.6052,United States,US,USA,Iowa,,288233
+Springfield,Springfield,37.1943,-93.2916,United States,US,USA,Missouri,,287124
+Lakeland,Lakeland,28.0556,-81.9542,United States,US,USA,Florida,,286876
+Rockford,Rockford,42.2594,-89.0646,United States,US,USA,Illinois,,286727
+Round Lake Beach,Round Lake Beach,42.379,-88.0811,United States,US,USA,Illinois,,286350
+Plano,Plano,33.0502,-96.7487,United States,US,USA,Texas,,286057
+Newark,Newark,40.7242,-74.1724,United States,US,USA,New Jersey,,281764
+Lincoln,Lincoln,40.8102,-96.6808,United States,US,USA,Nebraska,admin,280741
+Savannah,Savannah,32.0282,-81.1784,United States,US,USA,Georgia,,280692
+South Bend,South Bend,41.6771,-86.269,United States,US,USA,Indiana,,279698
+Canton,Canton,40.8082,-81.3678,United States,US,USA,Ohio,,272768
+Lafayette,Lafayette,30.2097,-92.0314,United States,US,USA,Louisiana,,267376
+Chula Vista,Chula Vista,32.6281,-117.0144,United States,US,USA,California,,267172
+Santa Clarita,Santa Clarita,34.4119,-118.5036,United States,US,USA,California,,266958
+Irvine,Irvine,33.6772,-117.7738,United States,US,USA,California,,266122
+Peoria,Peoria,40.7518,-89.6153,United States,US,USA,Illinois,,265218
+Reading,Reading,40.34,-75.9266,United States,US,USA,Pennsylvania,,264736
+Jersey City,Jersey City,40.7161,-74.0683,United States,US,USA,New Jersey,,264152
+Eugene,Eugene,44.0562,-123.1172,United States,US,USA,Oregon,,263860
+Columbus,Columbus,32.51,-84.8771,United States,US,USA,Georgia,,263737
+Lubbock,Lubbock,33.5665,-101.8867,United States,US,USA,Texas,,261076
+Saint Petersburg,Saint Petersburg,27.7931,-82.6652,United States,US,USA,Florida,,260999
+Laredo,Laredo,27.5536,-99.489,United States,US,USA,Texas,,256752
+Anchorage,Anchorage,61.1508,-149.1091,United States,US,USA,Alaska,,256724
+Montgomery,Montgomery,32.347,-86.2663,United States,US,USA,Alabama,admin,256554
+Salem,Salem,44.9231,-123.0245,United States,US,USA,Oregon,admin,256175
+Myrtle Beach,Myrtle Beach,33.7095,-78.8844,United States,US,USA,South Carolina,,256079
+Tallahassee,Tallahassee,30.4549,-84.2527,United States,US,USA,Florida,admin,252825
+Chandler,Chandler,33.2828,-111.8517,United States,US,USA,Arizona,,247477
+Scottsdale,Scottsdale,33.6872,-111.865,United States,US,USA,Arizona,,246645
+Glendale,Glendale,33.5797,-112.2246,United States,US,USA,Arizona,,245895
+Norfolk,Norfolk,36.8945,-76.259,United States,US,USA,Virginia,,245115
+Concord,Concord,35.3939,-80.6358,United States,US,USA,North Carolina,,244273
+Killeen,Killeen,31.0758,-97.7286,United States,US,USA,Texas,,243947
+Atlantic City,Atlantic City,39.3795,-74.4524,United States,US,USA,New Jersey,,243285
+Wilmington,Wilmington,34.21,-77.886,United States,US,USA,North Carolina,,242770
+North Las Vegas,North Las Vegas,36.288,-115.0901,United States,US,USA,Nevada,,238702
+Irving,Irving,32.8584,-96.9702,United States,US,USA,Texas,,238289
+Chesapeake,Chesapeake,36.6778,-76.3024,United States,US,USA,Virginia,,237940
+Gilbert,Gilbert,33.3103,-111.7463,United States,US,USA,Arizona,,237133
+Hialeah,Hialeah,25.8696,-80.3045,United States,US,USA,Florida,,236387
+Garland,Garland,32.91,-96.6305,United States,US,USA,Texas,,234943
+Evansville,Evansville,37.9882,-87.5339,United States,US,USA,Indiana,,233353
+Fremont,Fremont,37.5256,-121.987,United States,US,USA,California,,233136
+York,York,39.9651,-76.7315,United States,US,USA,Pennsylvania,,232796
+Winter Haven,Winter Haven,28.0126,-81.7021,United States,US,USA,Florida,,231412
+Visalia,Visalia,36.3271,-119.3265,United States,US,USA,California,,231159
+Nashua,Nashua,42.7492,-71.491,United States,US,USA,New Hampshire,,230061
+Kennewick,Kennewick,46.1979,-119.1732,United States,US,USA,Washington,,229624
+Brownsville,Brownsville,25.9981,-97.4566,United States,US,USA,Texas,,228534
+McKinney,McKinney,33.1989,-96.6678,United States,US,USA,Texas,,223422
+Gulfport,Gulfport,30.4271,-89.0703,United States,US,USA,Mississippi,,222131
+Appleton,Appleton,44.2775,-88.3896,United States,US,USA,Wisconsin,,221379
+Thousand Oaks,Thousand Oaks,34.1914,-118.8755,United States,US,USA,California,,218548
+San Bernardino,San Bernardino,34.1412,-117.2936,United States,US,USA,California,,216239
+Roanoke,Roanoke,37.2784,-79.9581,United States,US,USA,Virginia,,215793
+Hickory,Hickory,35.7425,-81.323,United States,US,USA,North Carolina,,215120
+Kalamazoo,Kalamazoo,42.2749,-85.5882,United States,US,USA,Michigan,,214583
+Bremerton,Bremerton,47.5436,-122.7121,United States,US,USA,Washington,,214549
+Avondale,Avondale,33.3858,-112.3236,United States,US,USA,Arizona,,214235
+Tacoma,Tacoma,47.2431,-122.4531,United States,US,USA,Washington,,211277
+Fontana,Fontana,34.0967,-117.4599,United States,US,USA,California,,209665
+Green Bay,Green Bay,44.5151,-87.9895,United States,US,USA,Wisconsin,,208670
+Portland,Portland,43.6772,-70.2713,United States,US,USA,Maine,,206193
+Amarillo,Amarillo,35.1999,-101.8297,United States,US,USA,Texas,,205821
+Moreno Valley,Moreno Valley,33.9244,-117.2045,United States,US,USA,California,,205499
+College Station,College Station,30.5857,-96.296,United States,US,USA,Texas,,204710
+Norwich,Norwich,41.5495,-72.0882,United States,US,USA,Connecticut,,204360
+Santa Barbara,Santa Barbara,34.4285,-119.7202,United States,US,USA,California,,203655
+Fargo,Fargo,46.8654,-96.829,United States,US,USA,North Dakota,,202146
+Aurora,Aurora,41.7638,-88.2901,United States,US,USA,Illinois,,201110
+Glendale,Glendale,34.1818,-118.2468,United States,US,USA,California,,200831
+Yonkers,Yonkers,40.9466,-73.8674,United States,US,USA,New York,,200807
+Huntington Beach,Huntington Beach,33.696,-118.0023,United States,US,USA,California,,200652
+Gainesville,Gainesville,29.6814,-82.3454,United States,US,USA,Florida,,198702
+Huntington,Huntington,38.4109,-82.4344,United States,US,USA,West Virginia,,198419
+Olympia,Olympia,47.0417,-122.8958,United States,US,USA,Washington,admin,194532
+Salinas,Salinas,36.6881,-121.6316,United States,US,USA,California,,193126
+Deltona,Deltona,28.9051,-81.2134,United States,US,USA,Florida,,192730
+Waterbury,Waterbury,41.5583,-73.0361,United States,US,USA,Connecticut,,190855
+Grand Prairie,Grand Prairie,32.6869,-97.0209,United States,US,USA,Texas,,190682
+Erie,Erie,42.1167,-80.0731,United States,US,USA,Pennsylvania,,190443
+North Port,North Port,27.0577,-82.1976,United States,US,USA,Florida,,190003
+Overland Park,Overland Park,38.8871,-94.6871,United States,US,USA,Kansas,,188966
+Hagerstown,Hagerstown,39.6401,-77.7217,United States,US,USA,Maryland,,186377
+Waco,Waco,31.5597,-97.1882,United States,US,USA,Texas,,185680
+Spartanburg,Spartanburg,34.9437,-81.9256,United States,US,USA,South Carolina,,185031
+Cedar Rapids,Cedar Rapids,41.9667,-91.6781,United States,US,USA,Iowa,,184610
+Tempe,Tempe,33.3881,-111.9318,United States,US,USA,Arizona,,182498
+Newport News,Newport News,37.1052,-76.5185,United States,US,USA,Virginia,,181825
+Lorain,Lorain,41.4409,-82.184,United States,US,USA,Ohio,,179926
+Clarksville,Clarksville,36.5696,-87.3428,United States,US,USA,Tennessee,,179367
+Fort Lauderdale,Fort Lauderdale,26.1412,-80.1464,United States,US,USA,Florida,,178752
+Gastonia,Gastonia,35.2495,-81.1856,United States,US,USA,North Carolina,,178477
+Sioux Falls,Sioux Falls,43.5382,-96.7315,United States,US,USA,South Dakota,,177629
+High Point,High Point,35.9899,-79.9937,United States,US,USA,North Carolina,,177412
+Danbury,Danbury,41.4016,-73.471,United States,US,USA,Connecticut,,176649
+Rancho Cucamonga,Rancho Cucamonga,34.1246,-117.5662,United States,US,USA,California,,176534
+Santa Cruz,Santa Cruz,36.9788,-122.0346,United States,US,USA,California,,176037
+Oceanside,Oceanside,33.2247,-117.3083,United States,US,USA,California,,175464
+Hemet,Hemet,33.7352,-116.9946,United States,US,USA,California,,175066
+Garden Grove,Garden Grove,33.7787,-117.9601,United States,US,USA,California,,174858
+Vancouver,Vancouver,45.6352,-122.5972,United States,US,USA,Washington,,174826
+Ontario,Ontario,34.0393,-117.6064,United States,US,USA,California,,173212
+Vallejo,Vallejo,38.1134,-122.2359,United States,US,USA,California,,172697
+Nampa,Nampa,43.5833,-116.5641,United States,US,USA,Idaho,,169761
+Elk Grove,Elk Grove,38.416,-121.3841,United States,US,USA,California,,169743
+Pembroke Pines,Pembroke Pines,26.0127,-80.3384,United States,US,USA,Florida,,168587
+Medford,Medford,42.3372,-122.8537,United States,US,USA,Oregon,,167922
+Corona,Corona,33.8623,-117.5642,United States,US,USA,California,,166785
+Ocala,Ocala,29.1803,-82.1487,United States,US,USA,Florida,,165111
+Fredericksburg,Fredericksburg,38.2992,-77.4871,United States,US,USA,Virginia,,164610
+Peoria,Peoria,33.7844,-112.2989,United States,US,USA,Arizona,,164173
+Frisco,Frisco,33.1551,-96.8219,United States,US,USA,Texas,,163656
+Marysville,Marysville,48.0812,-122.1559,United States,US,USA,Washington,,163547
+Cary,Cary,35.7815,-78.8162,United States,US,USA,North Carolina,,162320
+Murfreesboro,Murfreesboro,35.851,-86.4093,United States,US,USA,Tennessee,,161634
+Muskegon,Muskegon,43.228,-86.256,United States,US,USA,Michigan,,161058
+Springfield,Springfield,39.7713,-89.6538,United States,US,USA,Illinois,admin,160570
+Manchester,Manchester,42.9844,-71.4445,United States,US,USA,New Hampshire,,159744
+Hayward,Hayward,37.6327,-122.0776,United States,US,USA,California,,158937
+Lafayette,Lafayette,40.399,-86.8592,United States,US,USA,Indiana,,157955
+Port Arthur,Port Arthur,29.8554,-93.9264,United States,US,USA,Texas,,157732
+Palmdale,Palmdale,34.5945,-118.1058,United States,US,USA,California,,157356
+Alexandria,Alexandria,38.8184,-77.0861,United States,US,USA,Virginia,,155810
+Champaign,Champaign,40.1148,-88.2731,United States,US,USA,Illinois,,155368
+Gainesville,Gainesville,34.2903,-83.8299,United States,US,USA,Georgia,,154859
+Lakewood,Lakewood,39.6977,-105.117,United States,US,USA,Colorado,,154393
+Pasadena,Pasadena,29.6583,-95.1498,United States,US,USA,Texas,,153351
+Lake Charles,Lake Charles,30.203,-93.215,United States,US,USA,Louisiana,,153097
+Tuscaloosa,Tuscaloosa,33.2349,-87.5268,United States,US,USA,Alabama,,153060
+Sunnyvale,Sunnyvale,37.3846,-122.0261,United States,US,USA,California,,152771
+Pomona,Pomona,34.0585,-117.7625,United States,US,USA,California,,152494
+Binghamton,Binghamton,42.1014,-75.9092,United States,US,USA,New York,,152392
+Frederick,Frederick,39.4334,-77.4154,United States,US,USA,Maryland,,152047
+Hollywood,Hollywood,26.0293,-80.1679,United States,US,USA,Florida,,151998
+Kansas City,Kansas City,39.1234,-94.7443,United States,US,USA,Kansas,,151709
+Escondido,Escondido,33.1349,-117.0721,United States,US,USA,California,,151613
+New Bedford,New Bedford,41.6697,-70.9428,United States,US,USA,Massachusetts,,149390
+Topeka,Topeka,39.0347,-95.6955,United States,US,USA,Kansas,admin,149220
+Odessa,Odessa,31.8831,-102.3407,United States,US,USA,Texas,,149088
+Warner Robins,Warner Robins,32.5981,-83.6528,United States,US,USA,Georgia,,148686
+Joliet,Joliet,41.5201,-88.1503,United States,US,USA,Illinois,,148262
+Beaumont,Beaumont,30.0849,-94.1451,United States,US,USA,Texas,,147935
+Panama City,Panama City,30.1985,-85.6153,United States,US,USA,Florida,,147788
+Torrance,Torrance,33.8346,-118.3417,United States,US,USA,California,,147195
+Elkhart,Elkhart,41.6919,-85.962,United States,US,USA,Indiana,,147181
+Naperville,Naperville,41.7483,-88.1656,United States,US,USA,Illinois,,147122
+Paterson,Paterson,40.9147,-74.1624,United States,US,USA,New Jersey,,147000
+Charleston,Charleston,38.3484,-81.6323,United States,US,USA,West Virginia,admin,146462
+Leesburg,Leesburg,28.7674,-81.8983,United States,US,USA,Florida,,146398
+Houma,Houma,29.5799,-90.7058,United States,US,USA,Louisiana,,146174
+Fairfield,Fairfield,38.2593,-122.0319,United States,US,USA,California,,145665
+Mesquite,Mesquite,32.7621,-96.5888,United States,US,USA,Texas,,143736
+Merced,Merced,37.3057,-120.4779,United States,US,USA,California,,143272
+Midland,Midland,32.0278,-102.1107,United States,US,USA,Texas,,142680
+Pasadena,Pasadena,34.1598,-118.1389,United States,US,USA,California,,142059
+Bellevue,Bellevue,47.5953,-122.155,United States,US,USA,Washington,,141400
+Pueblo,Pueblo,38.2701,-104.613,United States,US,USA,Colorado,,141280
+Tyler,Tyler,32.3184,-95.3065,United States,US,USA,Texas,,140857
+Fullerton,Fullerton,33.8841,-117.9279,United States,US,USA,California,,140721
+Orange,Orange,33.8038,-117.8219,United States,US,USA,California,,140504
+Santa Maria,Santa Maria,34.9334,-120.4433,United States,US,USA,California,,139270
+Columbia,Columbia,38.9475,-92.3263,United States,US,USA,Missouri,,138675
+Miramar,Miramar,25.9773,-80.3357,United States,US,USA,Florida,,138449
+Yuma,Yuma,32.599,-114.5489,United States,US,USA,Arizona,,137936
+Athens,Athens,33.9508,-83.3689,United States,US,USA,Georgia,,137582
+Harlingen,Harlingen,26.1914,-97.6977,United States,US,USA,Texas,,137119
+Thornton,Thornton,39.9202,-104.9445,United States,US,USA,Colorado,,136703
+West Valley City,West Valley City,40.6889,-112.0115,United States,US,USA,Utah,,136574
+Olathe,Olathe,38.884,-94.8194,United States,US,USA,Kansas,,135473
+Hampton,Hampton,37.0551,-76.3629,United States,US,USA,Virginia,,135410
+Grand Junction,Grand Junction,39.0881,-108.5675,United States,US,USA,Colorado,,135389
+Warren,Warren,42.4934,-83.027,United States,US,USA,Michigan,,135125
+Bloomington,Bloomington,40.4756,-88.9698,United States,US,USA,Illinois,,135015
+Las Cruces,Las Cruces,32.3265,-106.7893,United States,US,USA,New Mexico,,134050
+Yakima,Yakima,46.5926,-120.5492,United States,US,USA,Washington,,133687
+Carrollton,Carrollton,32.9885,-96.9001,United States,US,USA,Texas,,133351
+Mauldin,Mauldin,34.7864,-82.2997,United States,US,USA,South Carolina,,132708
+Surprise,Surprise,33.6802,-112.4525,United States,US,USA,Arizona,,132677
+Roseville,Roseville,38.7683,-121.3164,United States,US,USA,California,,132671
+Sterling Heights,Sterling Heights,42.581,-83.0304,United States,US,USA,Michigan,,132427
+Greeley,Greeley,40.415,-104.7697,United States,US,USA,Colorado,,131900
+Racine,Racine,42.7274,-87.8135,United States,US,USA,Wisconsin,,131517
+Coral Springs,Coral Springs,26.2702,-80.2593,United States,US,USA,Florida,,130059
+Stamford,Stamford,41.1035,-73.5583,United States,US,USA,Connecticut,,129113
+Elizabeth,Elizabeth,40.6655,-74.1918,United States,US,USA,New Jersey,,128640
+Kent,Kent,47.3887,-122.2128,United States,US,USA,Washington,,127514
+Greenville,Greenville,35.5958,-77.3764,United States,US,USA,North Carolina,,127464
+Simi Valley,Simi Valley,34.2663,-118.749,United States,US,USA,California,,127308
+Boulder,Boulder,40.0274,-105.2514,United States,US,USA,Colorado,,127190
+Johnson City,Johnson City,36.3404,-82.3803,United States,US,USA,Tennessee,,127134
+Burlington,Burlington,36.0761,-79.4692,United States,US,USA,North Carolina,,126491
+Santa Clara,Santa Clara,37.3646,-121.9679,United States,US,USA,California,,125948
+Fort Smith,Fort Smith,35.3494,-94.3695,United States,US,USA,Arkansas,,125699
+Kenosha,Kenosha,42.5861,-87.8755,United States,US,USA,Wisconsin,,124580
+Bellingham,Bellingham,48.7534,-122.4683,United States,US,USA,Washington,,123933
+Lynchburg,Lynchburg,37.4004,-79.1911,United States,US,USA,Virginia,,123795
+South Lyon,South Lyon,42.4613,-83.6526,United States,US,USA,Michigan,,123555
+Billings,Billings,45.7892,-108.5498,United States,US,USA,Montana,,121550
+Berkeley,Berkeley,37.8723,-122.276,United States,US,USA,California,,121240
+Round Rock,Round Rock,30.5253,-97.6659,United States,US,USA,Texas,,120892
+Duluth,Duluth,46.7797,-92.1334,United States,US,USA,Minnesota,,120418
+Redding,Redding,40.5698,-122.365,United States,US,USA,California,,120288
+Yuba City,Yuba City,39.1357,-121.6381,United States,US,USA,California,,120159
+Saginaw,Saginaw,43.4199,-83.95,United States,US,USA,Michigan,,120088
+Leominster,Leominster,42.5209,-71.7717,United States,US,USA,Massachusetts,,119538
+Seaside,Seaside,36.6224,-121.8191,United States,US,USA,California,,118670
+Monroe,Monroe,32.5184,-92.0775,United States,US,USA,Louisiana,,117673
+Arvada,Arvada,39.8321,-105.1508,United States,US,USA,Colorado,,117453
+Independence,Independence,39.0871,-94.3503,United States,US,USA,Missouri,,117030
+Iowa City,Iowa City,41.6558,-91.5304,United States,US,USA,Iowa,,116891
+Kingsport,Kingsport,36.522,-82.5452,United States,US,USA,Tennessee,,116745
+Dover,Dover,39.16,-75.5204,United States,US,USA,Delaware,,116114
+El Monte,El Monte,34.0739,-118.0291,United States,US,USA,California,,115807
+Rock Hill,Rock Hill,34.9413,-81.026,United States,US,USA,South Carolina,,115755
+Abilene,Abilene,32.4543,-99.7384,United States,US,USA,Texas,,115285
+Rochester,Rochester,44.0152,-92.4776,United States,US,USA,Minnesota,,114976
+Norman,Norman,35.2335,-97.3471,United States,US,USA,Oklahoma,,114444
+Clearwater,Clearwater,27.9787,-82.7623,United States,US,USA,Florida,,114361
+Utica,Utica,43.0961,-75.226,United States,US,USA,New York,,114350
+Bloomington,Bloomington,39.1637,-86.5257,United States,US,USA,Indiana,,114140
+Carlsbad,Carlsbad,33.1246,-117.2836,United States,US,USA,California,,113952
+Westminster,Westminster,39.8837,-105.0627,United States,US,USA,Colorado,,113875
+Texas City,Texas City,29.4127,-94.9658,United States,US,USA,Texas,,113847
+West Jordan,West Jordan,40.6024,-112.0008,United States,US,USA,Utah,,113699
+Saint Cloud,Saint Cloud,45.5339,-94.1718,United States,US,USA,Minnesota,,113649
+Pearland,Pearland,29.5585,-95.3201,United States,US,USA,Texas,,113570
+Richardson,Richardson,32.9717,-96.7092,United States,US,USA,Texas,,113347
+Downey,Downey,33.9379,-118.1312,United States,US,USA,California,,113267
+Miami Gardens,Miami Gardens,25.9433,-80.2425,United States,US,USA,Florida,,113058
+Temecula,Temecula,33.4928,-117.1315,United States,US,USA,California,,113054
+Costa Mesa,Costa Mesa,33.6667,-117.9135,United States,US,USA,California,,112822
+Waterloo,Waterloo,42.492,-92.3522,United States,US,USA,Iowa,,112635
+Elgin,Elgin,42.0385,-88.3227,United States,US,USA,Illinois,,112123
+Coeur d'Alene,Coeur d'Alene,47.7041,-116.7928,United States,US,USA,Idaho,,112088
+El Centro,El Centro,32.7873,-115.5578,United States,US,USA,California,,111733
+Gresham,Gresham,45.5023,-122.4414,United States,US,USA,Oregon,,111523
+Saint George,Saint George,37.0769,-113.5771,United States,US,USA,Utah,,111090
+Gilroy,Gilroy,37.0048,-121.5843,United States,US,USA,California,,111004
+Inglewood,Inglewood,33.9566,-118.3444,United States,US,USA,California,,110654
+Cambridge,Cambridge,42.3758,-71.1184,United States,US,USA,Massachusetts,,110651
+Lowell,Lowell,42.6389,-71.3217,United States,US,USA,Massachusetts,,110558
+Santa Fe,Santa Fe,35.6619,-105.9818,United States,US,USA,New Mexico,admin,110208
+Centennial,Centennial,39.5927,-104.8674,United States,US,USA,Colorado,,109932
+Richmond,Richmond,37.9477,-122.339,United States,US,USA,California,,109813
+Pompano Beach,Pompano Beach,26.2428,-80.1312,United States,US,USA,Florida,,109393
+North Charleston,North Charleston,32.9086,-80.0705,United States,US,USA,South Carolina,,109298
+Pottstown,Pottstown,40.2508,-75.6445,United States,US,USA,Pennsylvania,,109052
+Everett,Everett,47.9524,-122.1672,United States,US,USA,Washington,,109043
+Burlington,Burlington,44.4877,-73.2314,United States,US,USA,Vermont,,108331
+West Palm Beach,West Palm Beach,26.7468,-80.1315,United States,US,USA,Florida,,108161
+West Covina,West Covina,34.0555,-117.9112,United States,US,USA,California,,107847
+Broken Arrow,Broken Arrow,36.0367,-95.7808,United States,US,USA,Oklahoma,,107403
+Salisbury,Salisbury,38.3755,-75.5883,United States,US,USA,Maryland,,107026
+Sioux City,Sioux City,42.4959,-96.3901,United States,US,USA,Iowa,,106740
+Eau Claire,Eau Claire,44.8202,-91.4948,United States,US,USA,Wisconsin,,106681
+Clovis,Clovis,36.8283,-119.6851,United States,US,USA,California,,106583
+Daly City,Daly City,37.6863,-122.4684,United States,US,USA,California,,106472
+Norwalk,Norwalk,33.9069,-118.0829,United States,US,USA,California,,106178
+Turlock,Turlock,37.5053,-120.8588,United States,US,USA,California,,106100
+Sandy Springs,Sandy Springs,33.9366,-84.3703,United States,US,USA,Georgia,,105703
+Hillsboro,Hillsboro,45.5289,-122.9373,United States,US,USA,Oregon,,105164
+Lewisville,Lewisville,33.0453,-96.9823,United States,US,USA,Texas,,104659
+Burbank,Burbank,34.188,-118.3234,United States,US,USA,California,,104447
+Chico,Chico,39.7568,-121.816,United States,US,USA,California,,104302
+San Mateo,San Mateo,37.5522,-122.3122,United States,US,USA,California,,103959
+El Cajon,El Cajon,32.8017,-116.9604,United States,US,USA,California,,103768
+Rialto,Rialto,34.1128,-117.3885,United States,US,USA,California,,103314
+La Crosse,La Crosse,43.8234,-91.2279,United States,US,USA,Wisconsin,,102427
+League City,League City,29.4873,-95.109,United States,US,USA,Texas,,102010
+Davie,Davie,26.0789,-80.287,United States,US,USA,Florida,,101871
+Jacksonville,Jacksonville,34.7323,-77.3962,United States,US,USA,North Carolina,,101865
+Vista,Vista,33.1895,-117.2386,United States,US,USA,California,,101659
+Holland,Holland,42.7676,-86.0984,United States,US,USA,Michigan,,101421
+Renton,Renton,47.4757,-122.1904,United States,US,USA,Washington,,100953
+Longview,Longview,32.5192,-94.7622,United States,US,USA,Texas,,100852
+Temple,Temple,31.1077,-97.3899,United States,US,USA,Texas,,100641
+San Angelo,San Angelo,31.4424,-100.4503,United States,US,USA,Texas,,100472
+Logan,Logan,41.7403,-111.8418,United States,US,USA,Utah,,99909
+Charlottesville,Charlottesville,38.0374,-78.4856,United States,US,USA,Virginia,,99664
+Bend,Bend,44.0562,-121.3087,United States,US,USA,Oregon,,99634
+Wichita Falls,Wichita Falls,33.9072,-98.5293,United States,US,USA,Texas,,99596
+Allen,Allen,33.1087,-96.6735,United States,US,USA,Texas,,99179
+Vacaville,Vacaville,38.3592,-121.9686,United States,US,USA,California,,99059
+Sparks,Sparks,39.5727,-119.7131,United States,US,USA,Nevada,,98345
+Longmont,Longmont,40.1691,-105.0995,United States,US,USA,Colorado,,97835
+Middletown,Middletown,39.5032,-84.3659,United States,US,USA,Ohio,,97742
+Beaverton,Beaverton,45.4779,-122.8168,United States,US,USA,Oregon,,97590
+Compton,Compton,33.893,-118.2275,United States,US,USA,California,,97550
+Orem,Orem,40.2988,-111.699,United States,US,USA,Utah,,97499
+Bismarck,Bismarck,46.8127,-100.7694,United States,US,USA,North Dakota,admin,96857
+Federal Way,Federal Way,47.3091,-122.3358,United States,US,USA,Washington,,96757
+Spokane Valley,Spokane Valley,47.6625,-117.2345,United States,US,USA,Washington,,96340
+Idaho Falls,Idaho Falls,43.4878,-112.0359,United States,US,USA,Idaho,,96166
+Boca Raton,Boca Raton,26.3749,-80.1078,United States,US,USA,Florida,,96114
+Rio Rancho,Rio Rancho,35.2873,-106.6979,United States,US,USA,New Mexico,,96028
+Lawrence,Lawrence,38.9603,-95.2643,United States,US,USA,Kansas,,95800
+Manteca,Manteca,37.7938,-121.2271,United States,US,USA,California,,95797
+Brockton,Brockton,42.0821,-71.0242,United States,US,USA,Massachusetts,,95630
+Meridian,Meridian,43.6182,-116.398,United States,US,USA,Idaho,,95623
+Mandeville,Mandeville,30.375,-90.0906,United States,US,USA,Louisiana,,95576
+South Gate,South Gate,33.9448,-118.1926,United States,US,USA,California,,95538
+San Marcos,San Marcos,33.135,-117.1743,United States,US,USA,California,,95261
+Portsmouth,Portsmouth,36.8468,-76.354,United States,US,USA,Virginia,,95252
+Vineland,Vineland,39.4652,-74.9981,United States,US,USA,New Jersey,,94943
+Roswell,Roswell,34.0391,-84.3513,United States,US,USA,Georgia,,94598
+Dearborn,Dearborn,42.3127,-83.213,United States,US,USA,Michigan,,94444
+Slidell,Slidell,30.2881,-89.7828,United States,US,USA,Louisiana,,94320
+Tracy,Tracy,37.7254,-121.4447,United States,US,USA,California,,94277
+Prescott Valley,Prescott Valley,34.5983,-112.3178,United States,US,USA,Arizona,,94154
+Livonia,Livonia,42.3972,-83.3733,United States,US,USA,Michigan,,94041
+Sunrise,Sunrise,26.1547,-80.2998,United States,US,USA,Florida,,93734
+Hesperia,Hesperia,34.3974,-117.3144,United States,US,USA,California,,93724
+Quincy,Quincy,42.2516,-71.0183,United States,US,USA,Massachusetts,,93688
+Blacksburg,Blacksburg,37.23,-80.4277,United States,US,USA,Virginia,,93560
+Terre Haute,Terre Haute,39.4654,-87.3763,United States,US,USA,Indiana,,92841
+Carson,Carson,33.8374,-118.2559,United States,US,USA,California,,92797
+Plantation,Plantation,26.126,-80.2617,United States,US,USA,Florida,,92706
+Lynn,Lynn,42.4778,-70.9662,United States,US,USA,Massachusetts,,92697
+Florence,Florence,34.1782,-79.785,United States,US,USA,South Carolina,,92614
+Santa Monica,Santa Monica,34.0232,-118.4813,United States,US,USA,California,,92478
+Lawton,Lawton,34.6171,-98.4204,United States,US,USA,Oklahoma,,92299
+Miami Beach,Miami Beach,25.8171,-80.1396,United States,US,USA,Florida,,91917
+Lafayette,Lafayette,39.9946,-105.0996,United States,US,USA,Colorado,,91767
+Westminster,Westminster,33.7523,-117.9938,United States,US,USA,California,,91565
+Dover,Dover,43.1887,-70.8845,United States,US,USA,New Hampshire,,91514
+Albany,Albany,31.5776,-84.1762,United States,US,USA,Georgia,,91284
+Portsmouth,Portsmouth,43.058,-70.7826,United States,US,USA,New Hampshire,,91193
+Edmond,Edmond,35.6689,-97.4159,United States,US,USA,Oklahoma,,91191
+Carmel,Carmel,39.9658,-86.1461,United States,US,USA,Indiana,,91065
+Hanford,Hanford,36.326,-119.6539,United States,US,USA,California,,90515
+San Leandro,San Leandro,37.7071,-122.1601,United States,US,USA,California,,90465
+Fishers,Fishers,39.959,-85.968,United States,US,USA,Indiana,,90127
+Livermore,Livermore,37.6863,-121.7607,United States,US,USA,California,,89840
+Decatur,Decatur,39.8555,-88.9337,United States,US,USA,Illinois,,89653
+Lees Summit,Lees Summit,38.9172,-94.3816,United States,US,USA,Missouri,,89467
+Suffolk,Suffolk,36.6953,-76.6398,United States,US,USA,Virginia,,89273
+Muncie,Muncie,40.1989,-85.395,United States,US,USA,Indiana,,89186
+Newton,Newton,42.3317,-71.2085,United States,US,USA,Massachusetts,,89045
+Missoula,Missoula,46.8687,-114.0089,United States,US,USA,Montana,,89017
+Fall River,Fall River,41.7136,-71.1014,United States,US,USA,Massachusetts,,88930
+Rapid City,Rapid City,44.0709,-103.22,United States,US,USA,South Dakota,,88533
+Menifee,Menifee,33.6909,-117.1849,United States,US,USA,California,,88531
+Norwalk,Norwalk,41.1144,-73.4215,United States,US,USA,Connecticut,,88438
+Jackson,Jackson,42.243,-84.4038,United States,US,USA,Michigan,,88394
+Auburn,Auburn,32.6084,-85.4897,United States,US,USA,Alabama,,88379
+Waukegan,Waukegan,42.3697,-87.8716,United States,US,USA,Illinois,,88182
+Sugar Land,Sugar Land,29.5956,-95.6283,United States,US,USA,Texas,,88177
+Hawthorne,Hawthorne,33.9147,-118.3476,United States,US,USA,California,,88031
+Bowling Green,Bowling Green,36.9725,-86.4371,United States,US,USA,Kentucky,,87976
+Chino,Chino,33.9836,-117.6653,United States,US,USA,California,,87776
+Napa,Napa,38.2982,-122.3011,United States,US,USA,California,,87733
+Kirkland,Kirkland,47.6996,-122.1982,United States,US,USA,Washington,,87701
+Dalton,Dalton,34.7688,-84.9711,United States,US,USA,Georgia,,87688
+Edinburg,Edinburg,26.3183,-98.1622,United States,US,USA,Texas,,87650
+Citrus Heights,Citrus Heights,38.6948,-121.288,United States,US,USA,California,,87432
+State College,State College,40.791,-77.8568,United States,US,USA,Pennsylvania,,87374
+Whittier,Whittier,33.9678,-118.0188,United States,US,USA,California,,86883
+Newport Beach,Newport Beach,33.6151,-117.8669,United States,US,USA,California,,86688
+Anderson,Anderson,40.0875,-85.6921,United States,US,USA,Indiana,,86565
+O'Fallon,O'Fallon,38.7853,-90.7178,United States,US,USA,Missouri,,86274
+Joplin,Joplin,37.0766,-94.5016,United States,US,USA,Missouri,,86144
+Clifton,Clifton,40.8631,-74.1575,United States,US,USA,New Jersey,,85845
+Alhambra,Alhambra,34.084,-118.1355,United States,US,USA,California,,85474
+Bloomington,Bloomington,44.8306,-93.315,United States,US,USA,Minnesota,,85319
+Hoover,Hoover,33.3761,-86.8065,United States,US,USA,Alabama,,84978
+Redwood City,Redwood City,37.5026,-122.2251,United States,US,USA,California,,84950
+Port Huron,Port Huron,42.9823,-82.4387,United States,US,USA,Michigan,,84361
+Mount Pleasant,Mount Pleasant,32.8532,-79.8269,United States,US,USA,South Carolina,,84170
+Johns Creek,Johns Creek,34.0333,-84.2027,United States,US,USA,Georgia,,83873
+Troy,Troy,42.5817,-83.1458,United States,US,USA,Michigan,,83641
+Mission,Mission,26.204,-98.3251,United States,US,USA,Texas,,83563
+Bryan,Bryan,30.6661,-96.367,United States,US,USA,Texas,,83260
+Lake Forest,Lake Forest,33.6606,-117.6712,United States,US,USA,California,,83240
+Buena Park,Buena Park,33.8572,-118.0046,United States,US,USA,California,,83156
+Springfield,Springfield,39.9304,-83.7961,United States,US,USA,Ohio,,83115
+Largo,Largo,27.9088,-82.7714,United States,US,USA,Florida,,83065
+Alexandria,Alexandria,31.2923,-92.47,United States,US,USA,Louisiana,,82995
+Cicero,Cicero,41.8445,-87.7593,United States,US,USA,Illinois,,82992
+Conroe,Conroe,30.3174,-95.4705,United States,US,USA,Texas,,82286
+Madera,Madera,36.964,-120.0803,United States,US,USA,California,,82278
+Pleasanton,Pleasanton,37.666,-121.8805,United States,US,USA,California,,82270
+Hattiesburg,Hattiesburg,31.3073,-89.3169,United States,US,USA,Mississippi,,81995
+Williamsburg,Williamsburg,37.2691,-76.7075,United States,US,USA,Virginia,,81840
+Warwick,Warwick,41.7061,-71.4334,United States,US,USA,Rhode Island,,81579
+Westland,Westland,42.3192,-83.3806,United States,US,USA,Michigan,,81545
+Somerville,Somerville,42.3908,-71.1013,United States,US,USA,Massachusetts,,81322
+Melbourne,Melbourne,28.1152,-80.653,United States,US,USA,Florida,,81185
+Lakewood,Lakewood,33.8471,-118.1222,United States,US,USA,California,,81138
+Farmington Hills,Farmington Hills,42.486,-83.3771,United States,US,USA,Michigan,,81129
+Cranston,Cranston,41.7658,-71.4858,United States,US,USA,Rhode Island,,81034
+Texarkana,Texarkana,33.4487,-94.0814,United States,US,USA,Texas,,80888
+Alton,Alton,38.9033,-90.1523,United States,US,USA,Illinois,,80871
+Saint Joseph,Saint Joseph,39.7598,-94.821,United States,US,USA,Missouri,,80849
+Mountain View,Mountain View,37.4001,-122.0796,United States,US,USA,California,,80447
+Tustin,Tustin,33.7309,-117.8106,United States,US,USA,California,,80395
+Lawrence,Lawrence,42.7003,-71.1626,United States,US,USA,Massachusetts,,80209
+Valdosta,Valdosta,30.8503,-83.2789,United States,US,USA,Georgia,,79844
+Deerfield Beach,Deerfield Beach,26.305,-80.1278,United States,US,USA,Florida,,79764
+Brooklyn Park,Brooklyn Park,45.1112,-93.3505,United States,US,USA,Minnesota,,79707
+New Rochelle,New Rochelle,40.9305,-73.7836,United States,US,USA,New York,,79557
+Parma,Parma,41.3842,-81.7286,United States,US,USA,Ohio,,79425
+Cheyenne,Cheyenne,41.1418,-104.7943,United States,US,USA,Wyoming,admin,79217
+Kokomo,Kokomo,40.464,-86.1277,United States,US,USA,Indiana,,79048
+Alameda,Alameda,37.767,-122.2673,United States,US,USA,California,,78906
+Chino Hills,Chino Hills,33.9508,-117.7254,United States,US,USA,California,,78822
+Kankakee,Kankakee,41.1019,-87.8643,United States,US,USA,Illinois,,78682
+Newark,Newark,40.0703,-82.4252,United States,US,USA,Ohio,,78563
+Springdale,Springdale,36.1897,-94.1574,United States,US,USA,Arkansas,,78557
+Florence,Florence,34.83,-87.6658,United States,US,USA,Alabama,,78321
+Anderson,Anderson,34.521,-82.6477,United States,US,USA,South Carolina,,78138
+Wheeling,Wheeling,40.0753,-80.6951,United States,US,USA,West Virginia,,78088
+Flagstaff,Flagstaff,35.1867,-111.6175,United States,US,USA,Arizona,,78065
+Lebanon,Lebanon,40.3412,-76.4228,United States,US,USA,Pennsylvania,,77839
+Bellflower,Bellflower,33.888,-118.1271,United States,US,USA,California,,77790
+Milpitas,Milpitas,37.4338,-121.8921,United States,US,USA,California,,77528
+Auburn,Auburn,47.3039,-122.2108,United States,US,USA,Washington,,77472
+Pharr,Pharr,26.1687,-98.1904,United States,US,USA,Texas,,77320
+Folsom,Folsom,38.6751,-121.1476,United States,US,USA,California,,77271
+Watsonville,Watsonville,36.9206,-121.7706,United States,US,USA,California,,77266
+Goodyear,Goodyear,33.2613,-112.3622,United States,US,USA,Arizona,,77258
+Plymouth,Plymouth,45.0225,-93.4617,United States,US,USA,Minnesota,,77216
+Battle Creek,Battle Creek,42.2985,-85.2295,United States,US,USA,Michigan,,77174
+Fort Myers,Fort Myers,26.6197,-81.8306,United States,US,USA,Florida,,77146
+Hammond,Hammond,41.617,-87.4908,United States,US,USA,Indiana,,77134
+Elizabethtown,Elizabethtown,37.7033,-85.8771,United States,US,USA,Kentucky,,77016
+Altoona,Altoona,40.5084,-78.401,United States,US,USA,Pennsylvania,,76943
+Loveland,Loveland,40.4168,-105.0622,United States,US,USA,Colorado,,76897
+Lake Jackson,Lake Jackson,29.052,-95.4518,United States,US,USA,Texas,,76721
+Upland,Upland,34.1178,-117.6603,United States,US,USA,California,,76684
+Porterville,Porterville,36.0636,-119.0332,United States,US,USA,California,,76512
+Baldwin Park,Baldwin Park,34.0829,-117.972,United States,US,USA,California,,76464
+Gary,Gary,41.5906,-87.3472,United States,US,USA,Indiana,,76424
+Anniston,Anniston,33.6713,-85.8137,United States,US,USA,Alabama,,76350
+Perris,Perris,33.7897,-117.2233,United States,US,USA,California,,76331
+Saint Augustine,Saint Augustine,29.8979,-81.31,United States,US,USA,Florida,,76129
+Baytown,Baytown,29.7607,-94.9628,United States,US,USA,Texas,,75992
+Layton,Layton,41.0773,-111.9618,United States,US,USA,Utah,,75655
+San Ramon,San Ramon,37.7625,-121.9366,United States,US,USA,California,,75639
+Boynton Beach,Boynton Beach,26.5282,-80.0812,United States,US,USA,Florida,,75569
+Wyoming,Wyoming,42.8909,-85.7067,United States,US,USA,Michigan,,75567
+Davis,Davis,38.5552,-121.7365,United States,US,USA,California,,75553
+Arlington Heights,Arlington Heights,42.0955,-87.9825,United States,US,USA,Illinois,,75525
+Hilton Head Island,Hilton Head Island,32.1896,-80.7499,United States,US,USA,South Carolina,,75328
+Union City,Union City,37.603,-122.0187,United States,US,USA,California,,75322
+Bethlehem,Bethlehem,40.6266,-75.3679,United States,US,USA,Pennsylvania,,75293
+Oshkosh,Oshkosh,44.0242,-88.561,United States,US,USA,Wisconsin,,75057
+Evanston,Evanston,42.0463,-87.6942,United States,US,USA,Illinois,,74895
+Franklin,Franklin,35.9215,-86.8522,United States,US,USA,Tennessee,,74794
+Zephyrhills,Zephyrhills,28.2404,-82.1796,United States,US,USA,Florida,,74712
+Missouri City,Missouri City,29.5634,-95.5377,United States,US,USA,Texas,,74561
+Bolingbrook,Bolingbrook,41.6911,-88.1012,United States,US,USA,Illinois,,74518
+Schaumburg,Schaumburg,42.0307,-88.0838,United States,US,USA,Illinois,,74446
+Camden,Camden,39.9361,-75.1072,United States,US,USA,New Jersey,,74420
+Wausau,Wausau,44.9616,-89.6439,United States,US,USA,Wisconsin,,74186
+Camarillo,Camarillo,34.223,-119.0325,United States,US,USA,California,,74152
+New Braunfels,New Braunfels,29.6995,-98.1152,United States,US,USA,Texas,,73959
+Jackson,Jackson,35.6535,-88.8351,United States,US,USA,Tennessee,,73860
+Flower Mound,Flower Mound,33.0344,-97.1147,United States,US,USA,Texas,,73547
+Sumter,Sumter,33.9393,-80.3929,United States,US,USA,South Carolina,,73468
+Mansfield,Mansfield,40.7655,-82.5276,United States,US,USA,Ohio,,73450
+Rochester Hills,Rochester Hills,42.6645,-83.1563,United States,US,USA,Michigan,,73422
+Morgantown,Morgantown,39.6379,-79.9468,United States,US,USA,West Virginia,,73183
+Southfield,Southfield,42.4765,-83.2605,United States,US,USA,Michigan,,73100
+Owensboro,Owensboro,37.7574,-87.1181,United States,US,USA,Kentucky,,73011
+Winchester,Winchester,39.1734,-78.1745,United States,US,USA,Virginia,,72928
+San Marcos,San Marcos,29.8766,-97.9311,United States,US,USA,Texas,,72928
+Jonesboro,Jonesboro,35.8211,-90.6793,United States,US,USA,Arkansas,,72838
+New Britain,New Britain,41.6758,-72.7862,United States,US,USA,Connecticut,,72558
+Apple Valley,Apple Valley,34.5329,-117.2102,United States,US,USA,California,,72553
+Harrisonburg,Harrisonburg,38.4362,-78.8735,United States,US,USA,Virginia,,72470
+Waukesha,Waukesha,43.0088,-88.2462,United States,US,USA,Wisconsin,,72363
+Conway,Conway,35.0754,-92.4696,United States,US,USA,Arkansas,,72360
+Rancho Cordova,Rancho Cordova,38.5739,-121.2521,United States,US,USA,California,,72326
+Dothan,Dothan,31.2335,-85.4066,United States,US,USA,Alabama,,71899
+Lauderhill,Lauderhill,26.1605,-80.2241,United States,US,USA,Florida,,71626
+Cleveland,Cleveland,35.1816,-84.8709,United States,US,USA,Tennessee,,71601
+Lodi,Lodi,38.1218,-121.2933,United States,US,USA,California,,71515
+Wilmington,Wilmington,39.7349,-75.5286,United States,US,USA,Delaware,,71442
+Pawtucket,Pawtucket,41.8743,-71.3744,United States,US,USA,Rhode Island,,71427
+Wenatchee,Wenatchee,47.4251,-120.329,United States,US,USA,Washington,,71426
+Redlands,Redlands,34.0512,-117.171,United States,US,USA,California,,71288
+Lynwood,Lynwood,33.924,-118.2017,United States,US,USA,California,,71187
+Pittsburg,Pittsburg,38.019,-121.897,United States,US,USA,California,,70679
+Passaic,Passaic,40.8574,-74.1281,United States,US,USA,New Jersey,,70635
+Pasco,Pasco,46.2499,-119.1271,United States,US,USA,Washington,,70579
+Bristol,Bristol,36.5572,-82.2144,United States,US,USA,Tennessee,,70560
+Pocatello,Pocatello,42.8716,-112.466,United States,US,USA,Idaho,,70445
+Sheboygan,Sheboygan,43.7448,-87.7317,United States,US,USA,Wisconsin,,70436
+Janesville,Janesville,42.6855,-89.0137,United States,US,USA,Wisconsin,,70299
+Lima,Lima,40.7409,-84.1121,United States,US,USA,Ohio,,70296
+Weston,Weston,26.1003,-80.4052,United States,US,USA,Florida,,70015
+West Bend,West Bend,43.4184,-88.1823,United States,US,USA,Wisconsin,,69810
+North Richland Hills,North Richland Hills,32.8605,-97.218,United States,US,USA,Texas,,69798
+Decatur,Decatur,34.5733,-86.9919,United States,US,USA,Alabama,,69660
+Hammond,Hammond,30.5059,-90.4561,United States,US,USA,Louisiana,,69616
+Maple Grove,Maple Grove,45.1088,-93.4626,United States,US,USA,Minnesota,,69576
+Union City,Union City,40.7675,-74.0323,United States,US,USA,New Jersey,,69296
+Saint Charles,Saint Charles,38.7957,-90.5155,United States,US,USA,Missouri,,69293
+Casper,Casper,42.843,-106.3205,United States,US,USA,Wyoming,,69224
+Walnut Creek,Walnut Creek,37.9025,-122.0398,United States,US,USA,California,,69122
+South Jordan,South Jordan,40.5571,-111.9783,United States,US,USA,Utah,,69034
+Daphne,Daphne,30.6291,-87.8872,United States,US,USA,Alabama,,68940
+Cedar Park,Cedar Park,30.5133,-97.818,United States,US,USA,Texas,,68918
+Dubuque,Dubuque,42.5007,-90.7064,United States,US,USA,Iowa,,68873
+Victoria,Victoria,28.8284,-96.9848,United States,US,USA,Texas,,68845
+Woodbury,Woodbury,44.9056,-92.9231,United States,US,USA,Minnesota,,68820
+Palatine,Palatine,42.1181,-88.043,United States,US,USA,Illinois,,68766
+Mount Vernon,Mount Vernon,48.4203,-122.3114,United States,US,USA,Washington,,68613
+Carbondale,Carbondale,37.7219,-89.2237,United States,US,USA,Illinois,,68540
+Bossier City,Bossier City,32.5227,-93.6665,United States,US,USA,Louisiana,,68485
+Mount Vernon,Mount Vernon,40.9136,-73.8291,United States,US,USA,New York,,68344
+Yorba Linda,Yorba Linda,33.889,-117.7714,United States,US,USA,California,,68235
+Weirton,Weirton,40.406,-80.5671,United States,US,USA,West Virginia,,68173
+Homestead,Homestead,25.4664,-80.4472,United States,US,USA,Florida,,67996
+Redondo Beach,Redondo Beach,33.8574,-118.3766,United States,US,USA,California,,67867
+Ames,Ames,42.0262,-93.6275,United States,US,USA,Iowa,,67841
+Gaithersburg,Gaithersburg,39.1347,-77.213,United States,US,USA,Maryland,,67776
+Bay City,Bay City,43.5903,-83.8886,United States,US,USA,Michigan,,67712
+DeKalb,DeKalb,41.9299,-88.7478,United States,US,USA,Illinois,,67501
+Hanover,Hanover,39.8118,-76.9835,United States,US,USA,Pennsylvania,,67480
+Delray Beach,Delray Beach,26.455,-80.0905,United States,US,USA,Florida,,67371
+Georgetown,Georgetown,30.6669,-97.694,United States,US,USA,Texas,,67140
+Kenner,Kenner,30.0109,-90.2549,United States,US,USA,Louisiana,,67089
+Palo Alto,Palo Alto,37.3917,-122.1465,United States,US,USA,California,,67024
+Fairbanks,Fairbanks,64.8353,-147.6533,United States,US,USA,Alaska,,66996
+South San Francisco,South San Francisco,37.6537,-122.4197,United States,US,USA,California,,66980
+Saratoga Springs,Saratoga Springs,43.0674,-73.7775,United States,US,USA,New York,,66945
+Petaluma,Petaluma,38.2423,-122.6267,United States,US,USA,California,,66940
+Rockville,Rockville,39.0834,-77.1553,United States,US,USA,Maryland,,66940
+Sherman,Sherman,33.6266,-96.6195,United States,US,USA,Texas,,66791
+Daytona Beach,Daytona Beach,29.1959,-81.0935,United States,US,USA,Florida,,66645
+Broomfield,Broomfield,39.9541,-105.0526,United States,US,USA,Colorado,,66529
+Grand Forks,Grand Forks,47.912,-97.0751,United States,US,USA,North Dakota,,66487
+Eagan,Eagan,44.8168,-93.1638,United States,US,USA,Minnesota,,66428
+Los Lunas,Los Lunas,34.8092,-106.7663,United States,US,USA,New Mexico,,66411
+North Little Rock,North Little Rock,34.7813,-92.2378,United States,US,USA,Arkansas,,66278
+Bayonne,Bayonne,40.6659,-74.1141,United States,US,USA,New Jersey,,66238
+Great Falls,Great Falls,47.5016,-111.2993,United States,US,USA,Montana,,65960
+Rocky Mount,Rocky Mount,35.9675,-77.8047,United States,US,USA,North Carolina,,65851
+Mansfield,Mansfield,32.5692,-97.1208,United States,US,USA,Texas,,65631
+Corvallis,Corvallis,44.5697,-123.2781,United States,US,USA,Oregon,,65465
+Michigan City,Michigan City,41.7098,-86.8705,United States,US,USA,Indiana,,65356
+Alpharetta,Alpharetta,34.0704,-84.2739,United States,US,USA,Georgia,,65338
+Parkersburg,Parkersburg,39.2624,-81.5419,United States,US,USA,West Virginia,,65331
+Laguna Niguel,Laguna Niguel,33.5275,-117.705,United States,US,USA,California,,65328
+San Clemente,San Clemente,33.4498,-117.6103,United States,US,USA,California,,65309
+Tamarac,Tamarac,26.2057,-80.2547,United States,US,USA,Florida,,65199
+Shawnee,Shawnee,39.0158,-94.8076,United States,US,USA,Kansas,,65194
+Longview,Longview,46.1471,-122.9642,United States,US,USA,Washington,,65156
+Elmira,Elmira,42.0938,-76.8097,United States,US,USA,New York,,65104
+Rogers,Rogers,36.3172,-94.1515,United States,US,USA,Arkansas,,65021
+Schenectady,Schenectady,42.8025,-73.9276,United States,US,USA,New York,,64913
+Johnstown,Johnstown,40.3258,-78.9194,United States,US,USA,Pennsylvania,,64842
+East Orange,East Orange,40.7651,-74.2118,United States,US,USA,New Jersey,,64789
+Buckeye,Buckeye,33.4318,-112.643,United States,US,USA,Arizona,,64629
+West Des Moines,West Des Moines,41.5527,-93.7803,United States,US,USA,Iowa,,64560
+Skokie,Skokie,42.036,-87.74,United States,US,USA,Illinois,,64270
+Lake Elsinore,Lake Elsinore,33.6847,-117.3346,United States,US,USA,California,,64205
+Eden Prairie,Eden Prairie,44.8487,-93.4595,United States,US,USA,Minnesota,,63914
+Wellington,Wellington,26.6464,-80.2708,United States,US,USA,Florida,,63900
+Jupiter,Jupiter,26.9195,-80.1123,United States,US,USA,Florida,,63813
+Glens Falls,Glens Falls,43.3109,-73.6459,United States,US,USA,New York,,63793
+Sammamish,Sammamish,47.6045,-122.0446,United States,US,USA,Washington,,63773
+Pico Rivera,Pico Rivera,33.9902,-118.0888,United States,US,USA,California,,63635
+Beloit,Beloit,42.523,-89.0184,United States,US,USA,Wisconsin,,63470
+Monessen,Monessen,40.1519,-79.8828,United States,US,USA,Pennsylvania,,63467
+Montebello,Montebello,34.0155,-118.1107,United States,US,USA,California,,63335
+Encinitas,Encinitas,33.0492,-117.2613,United States,US,USA,California,,63131
+Waltham,Waltham,42.3889,-71.2423,United States,US,USA,Massachusetts,,63002
+Blaine,Blaine,45.1696,-93.2078,United States,US,USA,Minnesota,,62892
+Haverhill,Haverhill,42.7838,-71.0871,United States,US,USA,Massachusetts,,62873
+Rocklin,Rocklin,38.8078,-121.2491,United States,US,USA,California,,62787
+Tulare,Tulare,36.1996,-119.34,United States,US,USA,California,,62779
+Council Bluffs,Council Bluffs,41.2369,-95.8518,United States,US,USA,Iowa,,62524
+Sebring,Sebring,27.4771,-81.453,United States,US,USA,Florida,,62473
+Redmond,Redmond,47.6776,-122.1176,United States,US,USA,Washington,,62458
+Gadsden,Gadsden,34.009,-86.0156,United States,US,USA,Alabama,,62402
+San Luis Obispo,San Luis Obispo,35.2671,-120.6689,United States,US,USA,California,,62391
+Coon Rapids,Coon Rapids,45.1756,-93.3095,United States,US,USA,Minnesota,,62359
+North Miami,North Miami,25.9008,-80.1686,United States,US,USA,Florida,,62139
+Hamilton,Hamilton,39.3938,-84.5652,United States,US,USA,Ohio,,62127
+Rowlett,Rowlett,32.9165,-96.5494,United States,US,USA,Texas,,61999
+Lakeville,Lakeville,44.6777,-93.2522,United States,US,USA,Minnesota,,61938
+Springfield,Springfield,44.0538,-122.981,United States,US,USA,Oregon,,61893
+Beckley,Beckley,37.7878,-81.1841,United States,US,USA,West Virginia,,61693
+La Habra,La Habra,33.9278,-117.9513,United States,US,USA,California,,61664
+Moore,Moore,35.3294,-97.4758,United States,US,USA,Oklahoma,,61415
+Burnsville,Burnsville,44.7648,-93.2794,United States,US,USA,Minnesota,,61290
+Taylor,Taylor,42.226,-83.2688,United States,US,USA,Michigan,,61177
+Eastvale,Eastvale,33.9617,-117.5803,United States,US,USA,California,,61151
+National City,National City,32.6654,-117.0983,United States,US,USA,California,,61147
+Lehi,Lehi,40.414,-111.8729,United States,US,USA,Utah,,61130
+Mankato,Mankato,44.172,-93.9782,United States,US,USA,Minnesota,,61115
+Port Orange,Port Orange,29.1084,-81.0136,United States,US,USA,Florida,,61105
+Monterey Park,Monterey Park,34.0497,-118.1325,United States,US,USA,California,,61075
+Rome,Rome,34.2657,-85.1863,United States,US,USA,Georgia,,61019
+Marietta,Marietta,33.9532,-84.542,United States,US,USA,Georgia,,60941
+Malden,Malden,42.4305,-71.0576,United States,US,USA,Massachusetts,,60840
+Lakewood,Lakewood,47.1627,-122.5299,United States,US,USA,Washington,,60665
+Cupertino,Cupertino,37.3167,-122.0465,United States,US,USA,California,,60643
+Brentwood,Brentwood,37.9356,-121.719,United States,US,USA,California,,60532
+Albany,Albany,44.6274,-123.0966,United States,US,USA,Oregon,,60463
+Taylorsville,Taylorsville,40.657,-111.9493,United States,US,USA,Utah,,60436
+Benton Harbor,Benton Harbor,42.116,-86.4484,United States,US,USA,Michigan,,60298
+Noblesville,Noblesville,40.0354,-86.0056,United States,US,USA,Indiana,,60183
+Bristol,Bristol,41.6812,-72.9407,United States,US,USA,Connecticut,,60147
+Morristown,Morristown,36.2043,-83.3,United States,US,USA,Tennessee,,60098
+West Allis,West Allis,43.0068,-88.0296,United States,US,USA,Wisconsin,,60087
+Gardena,Gardena,33.8944,-118.3073,United States,US,USA,California,,60048
+Goldsboro,Goldsboro,35.3777,-77.9721,United States,US,USA,North Carolina,,59969
+La Mesa,La Mesa,32.7703,-117.0203,United States,US,USA,California,,59948
+Saint Clair Shores,Saint Clair Shores,42.4922,-82.8957,United States,US,USA,Michigan,,59775
+Pontiac,Pontiac,42.6493,-83.2878,United States,US,USA,Michigan,,59698
+Meriden,Meriden,41.5367,-72.7943,United States,US,USA,Connecticut,,59622
+Dublin,Dublin,37.7161,-121.8962,United States,US,USA,California,,59583
+Coconut Creek,Coconut Creek,26.2803,-80.1842,United States,US,USA,Florida,,59405
+Midland,Midland,43.6239,-84.2316,United States,US,USA,Michigan,,59343
+Bangor,Bangor,44.8322,-68.7906,United States,US,USA,Maine,,59259
+Chapel Hill,Chapel Hill,35.9271,-79.0387,United States,US,USA,North Carolina,,59246
+Pflugerville,Pflugerville,30.4544,-97.6053,United States,US,USA,Texas,,59245
+Novi,Novi,42.4786,-83.4893,United States,US,USA,Michigan,,59211
+Woodland,Woodland,38.6712,-121.75,United States,US,USA,California,,59117
+Royal Oak,Royal Oak,42.5084,-83.1539,United States,US,USA,Michigan,,59006
+San Rafael,San Rafael,37.9905,-122.5222,United States,US,USA,California,,58954
+Huntington Park,Huntington Park,33.98,-118.2167,United States,US,USA,California,,58879
+Orland Park,Orland Park,41.6075,-87.8618,United States,US,USA,Illinois,,58862
+Lewiston,Lewiston,44.0915,-70.1681,United States,US,USA,Maine,,58664
+Ankeny,Ankeny,41.7279,-93.6033,United States,US,USA,Iowa,,58627
+Bartlett,Bartlett,35.2337,-89.8195,United States,US,USA,Tennessee,,58622
+Sanford,Sanford,28.7892,-81.276,United States,US,USA,Florida,,58605
+Arcadia,Arcadia,34.1342,-118.0373,United States,US,USA,California,,58523
+Jefferson City,Jefferson City,38.5677,-92.1757,United States,US,USA,Missouri,admin,58439
+Columbus,Columbus,39.2094,-85.9178,United States,US,USA,Indiana,,58406
+Bowie,Bowie,38.9577,-76.7421,United States,US,USA,Maryland,,58393
+White Plains,White Plains,41.022,-73.7548,United States,US,USA,New York,,58241
+Des Plaines,Des Plaines,42.0343,-87.9008,United States,US,USA,Illinois,,58141
+Staunton,Staunton,38.1593,-79.0608,United States,US,USA,Virginia,,58077
+Doral,Doral,25.815,-80.3565,United States,US,USA,Florida,,57947
+Margate,Margate,26.2465,-80.2119,United States,US,USA,Florida,,57870
+Santee,Santee,32.8555,-116.9848,United States,US,USA,California,,57834
+Hot Springs,Hot Springs,34.4915,-93.0488,United States,US,USA,Arkansas,,57744
+Castle Rock,Castle Rock,39.3761,-104.8536,United States,US,USA,Colorado,,57666
+Casa Grande,Casa Grande,32.907,-111.7623,United States,US,USA,Arizona,,57635
+Carson City,Carson City,39.1512,-119.7474,United States,US,USA,Nevada,admin,57522
+Middletown,Middletown,41.4458,-74.4228,United States,US,USA,New York,,57478
+Manhattan,Manhattan,39.1883,-96.605,United States,US,USA,Kansas,,57442
+Midwest City,Midwest City,35.463,-97.371,United States,US,USA,Oklahoma,,57305
+Saint Peters,Saint Peters,38.7825,-90.6061,United States,US,USA,Missouri,,57289
+Medford,Medford,42.4234,-71.1087,United States,US,USA,Massachusetts,,57213
+Titusville,Titusville,28.5725,-80.8193,United States,US,USA,Florida,,57193
+Hendersonville,Hendersonville,36.3063,-86.5997,United States,US,USA,Tennessee,,57050
+New Brunswick,New Brunswick,40.487,-74.445,United States,US,USA,New Jersey,,56910
+Taunton,Taunton,41.9036,-71.0943,United States,US,USA,Massachusetts,,56843
+Tinley Park,Tinley Park,41.5671,-87.8049,United States,US,USA,Illinois,,56831
+Diamond Bar,Diamond Bar,33.9992,-117.8161,United States,US,USA,California,,56793
+Smyrna,Smyrna,33.864,-84.5169,United States,US,USA,Georgia,,56664
+Pittsfield,Pittsfield,42.4517,-73.2605,United States,US,USA,Massachusetts,,56628
+Greenwood,Greenwood,39.6019,-86.1073,United States,US,USA,Indiana,,56545
+Fountain Valley,Fountain Valley,33.7105,-117.9514,United States,US,USA,California,,56529
+Walla Walla,Walla Walla,46.0678,-118.3364,United States,US,USA,Washington,,56509
+Oak Lawn,Oak Lawn,41.7139,-87.7528,United States,US,USA,Illinois,,56257
+East Stroudsburg,East Stroudsburg,41.0023,-75.1779,United States,US,USA,Pennsylvania,,56230
+Novato,Novato,38.092,-122.5576,United States,US,USA,California,,56004
+Chicopee,Chicopee,42.1764,-72.5719,United States,US,USA,Massachusetts,,55991
+Kingston,Kingston,41.9295,-73.9968,United States,US,USA,New York,,55793
+Dearborn Heights,Dearborn Heights,42.3164,-83.2769,United States,US,USA,Michigan,,55761
+Berwyn,Berwyn,41.8433,-87.7909,United States,US,USA,Illinois,,55748
+Bradenton,Bradenton,27.49,-82.5746,United States,US,USA,Florida,,55687
+Hempstead,Hempstead,40.7043,-73.6193,United States,US,USA,New York,,55555
+Watertown,Watertown,43.9734,-75.9094,United States,US,USA,New York,,55436
+Shoreline,Shoreline,47.7563,-122.3425,United States,US,USA,Washington,,55333
+Kettering,Kettering,39.6956,-84.1495,United States,US,USA,Ohio,,55306
+Hazleton,Hazleton,40.9504,-75.9724,United States,US,USA,Pennsylvania,,55301
+Grants Pass,Grants Pass,42.4334,-123.3318,United States,US,USA,Oregon,,55265
+Cape Girardeau,Cape Girardeau,37.3107,-89.5595,United States,US,USA,Missouri,,55253
+Cartersville,Cartersville,34.1631,-84.8007,United States,US,USA,Georgia,,55195
+Williamsport,Williamsport,41.2398,-77.0371,United States,US,USA,Pennsylvania,,55100
+Ithaca,Ithaca,42.4442,-76.5032,United States,US,USA,New York,,54992
+Richland,Richland,46.2828,-119.2939,United States,US,USA,Washington,,54989
+Highland,Highland,34.1113,-117.1653,United States,US,USA,California,,54939
+Paramount,Paramount,33.8976,-118.1651,United States,US,USA,California,,54909
+Commerce City,Commerce City,39.8638,-104.8434,United States,US,USA,Colorado,,54869
+Huntersville,Huntersville,35.4055,-80.8741,United States,US,USA,North Carolina,,54839
+Fond du Lac,Fond du Lac,43.7719,-88.4396,United States,US,USA,Wisconsin,,54811
+Euless,Euless,32.8507,-97.0798,United States,US,USA,Texas,,54769
+Colton,Colton,34.0538,-117.3254,United States,US,USA,California,,54712
+Lake Havasu City,Lake Havasu City,34.5006,-114.3115,United States,US,USA,Arizona,,54662
+Arroyo Grande,Arroyo Grande,35.1243,-120.5849,United States,US,USA,California,,54542
+West Haven,West Haven,41.2738,-72.9669,United States,US,USA,Connecticut,,54516
+Rosemead,Rosemead,34.0688,-118.0823,United States,US,USA,California,,54500
+Blue Springs,Blue Springs,39.0124,-94.2722,United States,US,USA,Missouri,,54431
+Hoboken,Hoboken,40.7452,-74.0279,United States,US,USA,New Jersey,,54379
+Normal,Normal,40.522,-88.9877,United States,US,USA,Illinois,,54264
+Brunswick,Brunswick,31.145,-81.474,United States,US,USA,Georgia,,54213
+Mount Prospect,Mount Prospect,42.0653,-87.937,United States,US,USA,Illinois,,54171
+Eagle Pass,Eagle Pass,28.7118,-100.4832,United States,US,USA,Texas,,54091
+Cathedral City,Cathedral City,33.8363,-116.4662,United States,US,USA,California,,54056
+Delano,Delano,35.767,-119.2637,United States,US,USA,California,,54030
+Palm Beach Gardens,Palm Beach Gardens,26.8489,-80.1654,United States,US,USA,Florida,,53778
+Elyria,Elyria,41.3761,-82.1063,United States,US,USA,Ohio,,53715
+Grand Island,Grand Island,40.9214,-98.3585,United States,US,USA,Nebraska,,53556
+Lewiston,Lewiston,46.3936,-116.9935,United States,US,USA,Idaho,,53520
+Bellevue,Bellevue,41.1536,-95.9357,United States,US,USA,Nebraska,,53505
+Twin Falls,Twin Falls,42.5631,-114.4637,United States,US,USA,Idaho,,53412
+Wheaton,Wheaton,41.856,-88.1083,United States,US,USA,Illinois,,53389
+West New York,West New York,40.7856,-74.0093,United States,US,USA,New Jersey,,53343
+Yucaipa,Yucaipa,34.0335,-117.0426,United States,US,USA,California,,53309
+Southaven,Southaven,34.9514,-89.9787,United States,US,USA,Mississippi,,53214
+Revere,Revere,42.4188,-71.004,United States,US,USA,Massachusetts,,53157
+Caldwell,Caldwell,43.6458,-116.6595,United States,US,USA,Idaho,,53149
+Beaufort,Beaufort,32.4487,-80.7102,United States,US,USA,South Carolina,,53086
+Lompoc,Lompoc,34.6617,-120.4714,United States,US,USA,California,,53062
+West Sacramento,West Sacramento,38.5556,-121.5504,United States,US,USA,California,,52981
+Lenexa,Lenexa,38.9608,-94.802,United States,US,USA,Kansas,,52903
+Bloomsburg,Bloomsburg,41.0027,-76.4561,United States,US,USA,Pennsylvania,,52637
+Leesburg,Leesburg,39.1057,-77.5543,United States,US,USA,Virginia,,52607
+DeSoto,DeSoto,32.5992,-96.8634,United States,US,USA,Texas,,52599
+City of Milford (balance),City of Milford (balance),41.2253,-73.0624,United States,US,USA,Connecticut,,52536
+Perth Amboy,Perth Amboy,40.5204,-74.2724,United States,US,USA,New Jersey,,52499
+Peabody,Peabody,42.5335,-70.9724,United States,US,USA,Massachusetts,,52491
+Brookhaven,Brookhaven,33.8746,-84.3315,United States,US,USA,Georgia,,52444
+Bozeman,Bozeman,45.6828,-111.0545,United States,US,USA,Montana,,52391
+Minnetonka,Minnetonka,44.9324,-93.4601,United States,US,USA,Minnesota,,52369
+Palm Desert,Palm Desert,33.7378,-116.3696,United States,US,USA,California,,52231
+Placentia,Placentia,33.8807,-117.8553,United States,US,USA,California,,52228
+Pinellas Park,Pinellas Park,27.8586,-82.7075,United States,US,USA,Florida,,52137
+Grapevine,Grapevine,32.9343,-97.0744,United States,US,USA,Texas,,51971
+Apple Valley,Apple Valley,44.7456,-93.2006,United States,US,USA,Minnesota,,51957
+Chambersburg,Chambersburg,39.9315,-77.6556,United States,US,USA,Pennsylvania,,51948
+Sierra Vista,Sierra Vista,31.5631,-110.3153,United States,US,USA,Arizona,,51927
+Tigard,Tigard,45.4243,-122.7827,United States,US,USA,Oregon,,51902
+Glendora,Glendora,34.1449,-117.8466,United States,US,USA,California,,51851
+Florissant,Florissant,38.7996,-90.3269,United States,US,USA,Missouri,,51776
+Oak Park,Oak Park,41.8872,-87.7899,United States,US,USA,Illinois,,51774
+Hoffman Estates,Hoffman Estates,42.0638,-88.1463,United States,US,USA,Illinois,,51738
+Kentwood,Kentwood,42.8852,-85.5925,United States,US,USA,Michigan,,51689
+Hinesville,Hinesville,31.8269,-81.6216,United States,US,USA,Georgia,,51673
+New Bern,New Bern,35.0956,-77.0723,United States,US,USA,North Carolina,,51491
+Aliso Viejo,Aliso Viejo,33.5792,-117.729,United States,US,USA,California,,51424
+Edina,Edina,44.8913,-93.3602,United States,US,USA,Minnesota,,51350
+Parker,Parker,39.5075,-104.7746,United States,US,USA,Colorado,,51163
+Burien,Burien,47.4761,-122.3393,United States,US,USA,Washington,,50997
+Minot,Minot,48.2375,-101.2779,United States,US,USA,North Dakota,,50845
+Coral Gables,Coral Gables,25.7037,-80.2715,United States,US,USA,Florida,,50815
+Plainfield,Plainfield,40.6153,-74.4159,United States,US,USA,New Jersey,,50636
+Cerritos,Cerritos,33.8677,-118.0686,United States,US,USA,California,,50555
+Lakewood,Lakewood,41.4824,-81.8008,United States,US,USA,Ohio,,50279
+Poway,Poway,32.9872,-117.0201,United States,US,USA,California,,50077

@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
@@ -537,7 +540,7 @@ public abstract class Utils {
                 mDrawableBoundsCache.left,
                 mDrawableBoundsCache.top,
                 mDrawableBoundsCache.left + width,
-                mDrawableBoundsCache.top + width);
+                mDrawableBoundsCache.top + height);
 
         int saveId = canvas.save();
         // translate to the correct position and draw
@@ -550,11 +553,46 @@ public abstract class Utils {
     private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
     public static void drawXAxisValue(Canvas c, String text, float x, float y,
-                                      Paint paint,
-                                      MPPointF anchor, float angleDegrees) {
+                                       Paint paint,
+                                       MPPointF anchor, float angleDegrees) {
 
+        Paint.Align originalAlign = paint.getTextAlign();
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        // offsets: offsetX, offsetY, translateX, translateY
+        RectF offsets = computeXAxisOffsets(text, x, y, paint, anchor, angleDegrees);
+
+        if (angleDegrees != 0f) {
+            c.save();
+            c.translate(offsets.right, offsets.bottom);
+            c.rotate(angleDegrees);
+
+            c.drawText(text, offsets.left, offsets.top, paint);
+
+            c.restore();
+        } else {
+            c.drawText(text, offsets.left, offsets.top, paint);
+        }
+
+        paint.setTextAlign(originalAlign);
+    }
+
+    /**
+     * Computes offset and tranlation for an axis label.
+     *
+     * @param text axis label
+     * @param x x position in pixels
+     * @param y y position in pixels
+     * @param paint paint to draw with
+     * @param anchor point to rotate around
+     * @param angleDegrees rotations angle
+     * @return RectF: offsetX, offsetY, translateX, translateY
+     */
+    public static RectF computeXAxisOffsets(String text, float x, float y, Paint paint, MPPointF anchor, float angleDegrees) {
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
+        float translateX = 0.f;
+        float translateY = 0.f;
 
         final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
         paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
@@ -568,8 +606,8 @@ public abstract class Utils {
         drawOffsetY += -mFontMetricsBuffer.ascent;
 
         // To have a consistent point of reference, we always draw left-aligned
-        Paint.Align originalTextAlign = paint.getTextAlign();
-        paint.setTextAlign(Paint.Align.LEFT);
+        Paint p = new Paint(paint);
+        p.setTextAlign(Paint.Align.LEFT);
 
         if (angleDegrees != 0.f) {
 
@@ -577,8 +615,8 @@ public abstract class Utils {
             drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
             drawOffsetY -= lineHeight * 0.5f;
 
-            float translateX = x;
-            float translateY = y;
+            translateX = x;
+            translateY = y;
 
             // Move the "outer" rect relative to the anchor, assuming its centered
             if (anchor.x != 0.5f || anchor.y != 0.5f) {
@@ -592,13 +630,7 @@ public abstract class Utils {
                 FSize.recycleInstance(rotatedSize);
             }
 
-            c.save();
-            c.translate(translateX, translateY);
-            c.rotate(angleDegrees);
 
-            c.drawText(text, drawOffsetX, drawOffsetY, paint);
-
-            c.restore();
         } else {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
@@ -609,10 +641,9 @@ public abstract class Utils {
             drawOffsetX += x;
             drawOffsetY += y;
 
-            c.drawText(text, drawOffsetX, drawOffsetY, paint);
         }
 
-        paint.setTextAlign(originalTextAlign);
+        return new RectF(drawOffsetX, drawOffsetY, translateX, translateY);
     }
 
     public static void drawMultilineText(Canvas c, StaticLayout textLayout,
@@ -772,4 +803,100 @@ public abstract class Utils {
     public static int getSDKInt() {
         return android.os.Build.VERSION.SDK_INT;
     }
+
+    /**
+     * Finds the closest float to target in a pre-sorted float[].
+     *
+     * Note that the y-axis sometimes has values that are not valid. Be sure to
+     * limit the search to valid values by specifying 'from' and 'to'.
+     *
+     * @param target float to look for
+     * @param floats sorted array of floats
+     * @param from the first index to examine
+     * @param to the last index to examine
+     * @return closest float, or -1 if not found
+     */
+    public static int findClosestIndexTo(float target, float[] floats, int from, int to) {
+        if (floats == null || floats.length == 0) return -1;
+        if (floats.length == 1)  return from;
+        if (target < floats[0])  return from;
+        if (target > floats[to - 1]) return to;
+
+        int lo = from;
+        int hi = Math.min(to, floats.length - 1);
+        while (lo <= hi) {
+            int mid = (lo + hi) / 2;
+            if (target < floats[mid]) {
+                hi = mid - 1;
+            } else if (target > floats[mid]) {
+                lo = mid + 1;
+            } else {
+                return mid;
+            }
+        }
+        // lo > hi
+        int result = floats[lo] - target < target - floats[hi] ? lo : hi;
+        return floats[lo] - target < target - floats[hi] ? lo : hi;
+    }
+
+    /**
+     * Draws a rectangle and a label for an x-axis highlight.
+     *
+     * The default rectangle barely encloses the text. Use 'padding' to expand / contract it
+     *
+     * @param c canvas
+     * @param label formatted label
+     * @param loc touch point
+     * @param size text size
+     * @param padding extra rectangle padding
+     * @param anchor roataion point
+     * @param paint paint to determine text format
+     * @param textColor color of text
+     * @param fillColor color of rectangle
+     *
+     * @return drawn coordinates
+     */
+    public static PointF drawXAxisHighlight(Canvas c, String label, float x, float y,
+                                          RectF padding, MPPointF anchor,
+                                          Paint paint, int textColor, int fillColor,
+                                            float angleDegrees) {
+
+        // draw a rectangle
+        Paint highlightPaint = new Paint(paint);
+        highlightPaint.setColor(fillColor);
+        highlightPaint.setStyle(Paint.Style.FILL);
+        highlightPaint.setTextAlign(Paint.Align.LEFT);
+
+        // off: x, y, translateX, translateY
+        RectF offsets = Utils.computeXAxisOffsets(label, x, y, paint, anchor, angleDegrees);
+        FSize size = calcTextSize(highlightPaint, label);
+
+        // rectangle location
+        float left = offsets.left - padding.left;
+        float right = offsets.left + size.width + padding.right;
+        float bottom = offsets.top + padding.bottom;
+        float top = offsets.top - size.height - padding.top;
+
+        if (angleDegrees != 0f) {
+            c.save();
+            c.translate(offsets.right, offsets.bottom);
+            c.rotate(angleDegrees);
+
+            c.drawRect(left, top, right, bottom, highlightPaint);
+
+            // draw the label in the rectangle
+            highlightPaint.setColor(textColor);
+            c.drawText(label, offsets.left, offsets.top, highlightPaint);
+
+            c.restore();
+        } else {
+            c.drawRect(left, top, right, bottom, highlightPaint);
+
+            highlightPaint.setColor(textColor);
+            c.drawText(label, offsets.left, offsets.top, highlightPaint);
+        }
+        FSize.recycleInstance(size);
+        return new PointF(offsets.left, offsets.top);
+    }
+
 }

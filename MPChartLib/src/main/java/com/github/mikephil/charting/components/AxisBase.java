@@ -6,10 +6,14 @@ import android.util.Log;
 
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlights;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Base-class of all axes (previously called labels).
@@ -17,6 +21,22 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 public abstract class AxisBase extends ComponentBase {
+
+    /**
+     * Highlights for this axis.
+     */
+    protected Highlights mHighlights;
+
+    /**
+     * Are highlights enabled for this axis?
+     */
+    protected boolean mHighlightEnabled = false;
+
+    /**
+     * If true, the highlight value is rendered in front of
+     * the axis labels in a different color.
+     */
+    protected boolean mDrawHighlightValue = false;
 
     /**
      * custom formatter that is used instead of the auto-formatter if set
@@ -139,12 +159,12 @@ public abstract class AxisBase extends ComponentBase {
     /**
      * don't touch this direclty, use setter
      */
-    public float mAxisMaximum = 0f;
+    protected float mAxisMaximum = 0f;
 
     /**
      * don't touch this directly, use setter
      */
-    public float mAxisMinimum = 0f;
+    protected float mAxisMinimum = 0f;
 
     /**
      * the total range of values this axis covers
@@ -154,11 +174,12 @@ public abstract class AxisBase extends ComponentBase {
     /**
      * default constructor
      */
-    public AxisBase() {
+    protected AxisBase() {
         this.mTextSize = Utils.convertDpToPixel(10f);
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(5f);
         this.mLimitLines = new ArrayList<LimitLine>();
+        this.mHighlights = new Highlights();
     }
 
     /**
@@ -779,4 +800,71 @@ public abstract class AxisBase extends ComponentBase {
     {
         this.mSpaceMax = mSpaceMax;
     }
+
+    /**
+     * Returns the highlights for this axis.
+     * @return highlights
+     */
+    @NonNull
+    public Highlights getHighlights() {
+        return mHighlights;
+    }
+
+    public boolean hasHighlight() {
+        return !mHighlights.isEmpty();
+    }
+
+    /**
+     * Clears the highlights for this axis.
+     */
+    public void clearHighlights() {
+        mHighlights.clear();
+    }
+
+    /**
+     * Adds a highlight if highlights are enabled.
+     *
+     * @param highlight highlight
+     * @return true if added
+     */
+    public boolean addHighlight(Highlight highlight) {
+        if (mHighlightEnabled)
+            return mHighlights.add(highlight);
+        else return false;
+    }
+
+    public boolean isHighlightEnabled() {
+        return mHighlightEnabled;
+    }
+
+    public void setHighlightEnabled(boolean mHighlightEnabled) {
+        this.mHighlightEnabled = mHighlightEnabled;
+    }
+
+    public boolean isDrawHighlightValue() {
+        return mDrawHighlightValue;
+    }
+
+    public void setDrawHighlightValue(boolean mDrawHighlightValue) {
+        this.mDrawHighlightValue = mDrawHighlightValue;
+    }
+
+    /**
+     * Are multiple highlights enabled?
+     *
+     * @return true if multiple highlights enabled
+     */
+    public boolean isMultipleHighlightsEnabled() {
+        return mHighlights.isMultipleHighlightsEnabled();
+    }
+
+    /**
+     * Sets the multiple highlights enabled flag.
+     * @param enabled enabled if true
+     */
+    public void setMultipleHighlightsEnabled(boolean enabled) {
+        mHighlights.setMultipleHighlightsEnabled(enabled);
+    }
+
+
 }

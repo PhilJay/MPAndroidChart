@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.RectF;
 
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.utils.MPPointD;
@@ -31,9 +32,24 @@ public abstract class AxisRenderer extends Renderer {
     protected Paint mGridPaint;
 
     /**
-     * paint for the x-label values
+     * Paint for the x-label values.
      */
     protected Paint mAxisLabelPaint;
+
+    /**
+     * Color for the x-label highlight text.
+     */
+    protected int mHighlightTextColor = Color.CYAN;
+
+    /**
+     * Paint for the box surrounding the highlight label.
+     */
+    protected int mHighlightFillColor = Color.BLACK;
+
+    /**
+     * Additional padding for the highlight box
+     */
+    protected RectF mHighlightFillPadding = new RectF(10f, 10f, 10f, 10f);
 
     /**
      * paint for the line surrounding the chart
@@ -284,4 +300,39 @@ public abstract class AxisRenderer extends Renderer {
      * @param c
      */
     public abstract void renderLimitLines(Canvas c);
+
+    /**
+     * Sets the color of the axis labels.
+     *
+     * @param color color
+     */
+    public void setAxisLabelColor(int color) {
+        mAxisLabelPaint.setColor(color);
+    }
+
+    /**
+     * Set the color of the highlighted labels.
+     *
+     * @param color
+     */
+    public void setHighlightTextColor(int color) {
+        mHighlightTextColor = color;
+    }
+
+    /**
+     * Sets the color of the highlight fill box.
+     *
+     * @param color
+     */
+    public void setHighlightFillColor(int color) {
+        mHighlightFillColor = color;
+    }
+
+    public void setHighlightFillPadding(RectF padding) {
+        mHighlightFillPadding = padding;
+    }
+
+    public void setHighlightFillPadding(float left, float top, float right, float bottom) {
+        mHighlightFillPadding = new RectF(left, top, right, bottom);
+    }
 }
