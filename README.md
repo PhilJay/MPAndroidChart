@@ -23,21 +23,7 @@
 1. [License](#licence)
 1. [Creators](#creators)
 
-## [Realtime Graphing Solution | SciChart](https://scichart.com/android-chart-features?source=MPAndroidChart)
-
-<img align="left" width="190" height="190" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/left.png">
-<img align="right" width="90" height="90" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/right.png">
-
-MPAndroidChart is free software, as a result **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme realtime performance and tech support, we recommend
-<a href="https://scichart.com/android-chart-features?source=MPAndroidChart" target="_blank">SciChart Android</a>.
-
-<img align="right" width="270" height="60" style="margin:0px 0px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/bottom.png">
-
-All MPAndroidChart users are entitled to a special **discount of 5%** off the <a href="https://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART&source=MPAndroidChart" target="_blank">SciChart store</a>, using the following discount code: **MPANDROIDCHART**
-
-<br/>
-
-## [Bi-Weekly Coding Newsletter](https://weeklycoding.com)
+## [Coding Newsletter](https://weeklycoding.com)
 
 Sign up for my [coding newsletter](https://weeklycoding.com) to get quick updates on Kotlin and Android development related topics.
 
