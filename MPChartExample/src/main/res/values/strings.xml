@@ -27,6 +27,7 @@
     <string name="actionToggleFilled">Toggle Filled</string>
     <string name="actionToggleCircles">Toggle Circles</string>
     <string name="actionToggleCandleShadow">Toggle Shadow Color</string>
+    <string name="actionToggleSliceBorders">Toggle Slice Borders</string>
 
     <string name="actionToggleCubic">Toggle Cubic</string>
     <string name="actionToggleStepped">Toggle Stepped</string>

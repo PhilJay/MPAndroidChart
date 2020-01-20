@@ -70,5 +70,14 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
      * */
     boolean isValueLineVariableLength();
 
+    /**
+     * The width used for drawing borders around the slices.
+     */
+    float getSliceBorderWidth();
+
+    /**
+     * The color drawing borders around the slices.
+     */
+    int getSliceBorderColor();
 }
 
