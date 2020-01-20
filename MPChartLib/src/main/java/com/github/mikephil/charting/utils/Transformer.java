@@ -123,7 +123,7 @@ public class Transformer {
         return valuePoints;
     }
 
-    protected float[] valuePointsForGenerateTransformedValuesBubble = new float[1];
+    protected float[] valuePointsForGenerateTransformedValuesBubble = new float[2];
 
     /**
      * Transforms an List of Entry into a float array containing the x and
@@ -136,6 +136,9 @@ public class Transformer {
 
         final int count = (to - from + 1) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
 
+        if (count < 0) {
+            return valuePointsForGenerateTransformedValuesBubble;
+        }
         if (valuePointsForGenerateTransformedValuesBubble.length != count) {
             valuePointsForGenerateTransformedValuesBubble = new float[count];
         }
