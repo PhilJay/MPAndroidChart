@@ -61,13 +61,13 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     @Override
     public void calcMinMax() {
 
-        if (mValues == null || mValues.isEmpty())
-            return;
-
         mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;
         mXMax = -Float.MAX_VALUE;
         mXMin = Float.MAX_VALUE;
+
+        if (mValues == null || mValues.isEmpty())
+            return;
 
         for (T e : mValues) {
             calcMinMax(e);
@@ -76,12 +76,11 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     @Override
     public void calcMinMaxY(float fromX, float toX) {
-
-        if (mValues == null || mValues.isEmpty())
-            return;
-
         mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;
+        
+        if (mValues == null || mValues.isEmpty())
+            return;
 
         int indexFrom = getEntryIndex(fromX, Float.NaN, Rounding.DOWN);
         int indexTo = getEntryIndex(toX, Float.NaN, Rounding.UP);
