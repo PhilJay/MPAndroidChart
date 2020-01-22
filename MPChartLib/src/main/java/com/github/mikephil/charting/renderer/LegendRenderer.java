@@ -90,6 +90,7 @@ public class LegendRenderer extends Renderer {
             for (int i = 0; i < data.getDataSetCount(); i++) {
 
                 IDataSet dataSet = data.getDataSetByIndex(i);
+                if (dataSet == null) continue;
 
                 List<Integer> clrs = dataSet.getColors();
                 int entryCount = dataSet.getEntryCount();
