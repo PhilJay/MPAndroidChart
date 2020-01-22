@@ -468,7 +468,9 @@ public class PieChartRenderer extends DataRenderer {
 
             int entryCount = dataSet.getEntryCount();
 
-            mValueLinePaint.setColor(dataSet.getValueLineColor());
+            boolean isUseValueColorForLineEnabled = dataSet.isUseValueColorForLineEnabled();
+            int valueLineColor = dataSet.getValueLineColor();
+
             mValueLinePaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getValueLineWidth()));
 
             final float sliceSpace = getSliceSpace(dataSet);
@@ -565,12 +567,15 @@ public class PieChartRenderer extends DataRenderer {
                         labelPty = pt2y;
                     }
 
-                    if (dataSet.getValueLineColor() != ColorTemplate.COLOR_NONE) {
+                    int lineColor = ColorTemplate.COLOR_NONE;
 
-                        if (dataSet.isUsingSliceColorAsValueLineColor()) {
-                            mValueLinePaint.setColor(dataSet.getColor(j));
-                        }
+                    if (isUseValueColorForLineEnabled)
+                        lineColor = dataSet.getColor(j);
+                    else if (valueLineColor != ColorTemplate.COLOR_NONE)
+                        lineColor = valueLineColor;
 
+                    if (lineColor != ColorTemplate.COLOR_NONE) {
+                        mValueLinePaint.setColor(lineColor);
                         c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
                         c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
                     }

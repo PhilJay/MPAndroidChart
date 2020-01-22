@@ -38,14 +38,14 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
     PieDataSet.ValuePosition getYValuePosition();
 
     /**
-     * When valuePosition is OutsideSlice, use slice colors as line color if true
-     * */
-    boolean isUsingSliceColorAsValueLineColor();
-
-    /**
      * When valuePosition is OutsideSlice, indicates line color
      * */
     int getValueLineColor();
+
+    /**
+     * When valuePosition is OutsideSlice and enabled, line will have the same color as the slice
+     * */
+    boolean isUseValueColorForLineEnabled();
 
     /**
      *  When valuePosition is OutsideSlice, indicates line width
