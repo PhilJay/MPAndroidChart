@@ -367,7 +367,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
                     if (value.getX() != closestXValue)
                         break;
 
-                    if (Math.abs(value.getY() - closestToY) < Math.abs(closestYValue - closestToY)) {
+                    if (Math.abs(value.getY() - closestToY) <= Math.abs(closestYValue - closestToY)) {
                         closestYValue = closestToY;
                         closestYIndex = closest;
                     }
