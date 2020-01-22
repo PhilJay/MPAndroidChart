@@ -427,6 +427,26 @@ public class YAxis extends AxisBase {
         float min = dataMin;
         float max = dataMax;
 
+        // Make sure max is greater than min
+        // Discussion: https://github.com/danielgindi/Charts/pull/3650#discussion_r221409991
+        if (min > max)
+        {
+            if (mCustomAxisMax && mCustomAxisMin)
+            {
+                float t = min;
+                min = max;
+                max = t;
+            }
+            else if (mCustomAxisMax)
+            {
+                min = max < 0f ? max * 1.5f : max * 0.5f;
+            }
+            else if (mCustomAxisMin)
+            {
+                max = min < 0f ? min * 0.5f : min * 1.5f;
+            }
+        }
+
         float range = Math.abs(max - min);
 
         // in case all values are equal
