@@ -214,10 +214,13 @@ public abstract class AxisRenderer extends Renderer {
             double f;
             int i;
 
-            if (interval != 0.0) {
+            if (interval != 0.0 && last != first) {
                 for (f = first; f <= last; f += interval) {
                     ++n;
                 }
+            }
+            else if (last == first && n == 0) {
+                n = 1;
             }
 
             mAxis.mEntryCount = n;
