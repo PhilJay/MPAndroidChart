@@ -174,9 +174,12 @@ public abstract class AxisRenderer extends Renderer {
         double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
         int intervalSigDigit = (int) (interval / intervalMagnitude);
         if (intervalSigDigit > 5) {
-            // Use one order of magnitude higher, to avoid intervals like 0.9 or
-            // 90
-            interval = Math.floor(10 * intervalMagnitude);
+            // Use one order of magnitude higher, to avoid intervals like 0.9 or 90
+            // if it's 0.0 after floor(), we use the old value
+            interval = Math.floor(10.0 * intervalMagnitude) == 0.0
+                    ? interval
+                    : Math.floor(10.0 * intervalMagnitude);
+
         }
 
         int n = mAxis.isCenterAxisLabelsEnabled() ? 1 : 0;
