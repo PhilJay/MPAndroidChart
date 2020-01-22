@@ -74,6 +74,11 @@ public class YAxis extends AxisBase {
     private YAxisLabelPosition mPosition = YAxisLabelPosition.OUTSIDE_CHART;
 
     /**
+     * the horizontal offset of the y-label
+     */
+    private float mXLabelOffset = 0.0f;
+
+    /**
      * enum for the position of the y-labels relative to the chart
      */
     public enum YAxisLabelPosition {
@@ -172,6 +177,22 @@ public class YAxis extends AxisBase {
      */
     public void setPosition(YAxisLabelPosition pos) {
         mPosition = pos;
+    }
+
+    /**
+     * returns the horizontal offset of the y-label
+     */
+    public float getLabelXOffset() {
+        return mXLabelOffset;
+    }
+
+    /**
+     * sets the horizontal offset of the y-label
+     *
+     * @param xOffset
+     */
+    public void setLabelXOffset(float xOffset) {
+        mXLabelOffset = xOffset;
     }
 
     /**

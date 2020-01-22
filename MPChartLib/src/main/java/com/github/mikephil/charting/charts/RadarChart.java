@@ -84,6 +84,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         super.init();
 
         mYAxis = new YAxis(AxisDependency.LEFT);
+        mYAxis.setLabelXOffset(10f);
 
         mWebLineWidth = Utils.convertDpToPixel(1.5f);
         mInnerWebLineWidth = Utils.convertDpToPixel(0.75f);

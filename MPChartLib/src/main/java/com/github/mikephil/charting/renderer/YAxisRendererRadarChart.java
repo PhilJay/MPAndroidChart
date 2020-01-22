@@ -163,6 +163,8 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
                 ? mYAxis.mEntryCount
                 : (mYAxis.mEntryCount - 1);
 
+        float xOffset = mYAxis.getLabelXOffset();
+
         for (int j = from; j < to; j++) {
 
             float r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
@@ -171,7 +173,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             String label = mYAxis.getFormattedLabel(j);
 
-            c.drawText(label, pOut.x + 10, pOut.y, mAxisLabelPaint);
+            c.drawText(label, pOut.x + xOffset, pOut.y, mAxisLabelPaint);
         }
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
