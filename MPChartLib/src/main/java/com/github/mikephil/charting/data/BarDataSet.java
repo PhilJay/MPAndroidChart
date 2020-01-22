@@ -38,9 +38,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * array of labels used to describe the different values of the stacked bars
      */
-    private String[] mStackLabels = new String[]{
-            "Stack"
-    };
+    private String[] mStackLabels = new String[]{};
 
     public BarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
