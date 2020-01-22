@@ -40,8 +40,8 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     @Override
     public DataSet<PieEntry> copy() {
         List<PieEntry> entries = new ArrayList<>();
-        for (int i = 0; i < mValues.size(); i++) {
-            entries.add(mValues.get(i).copy());
+        for (int i = 0; i < mEntries.size(); i++) {
+            entries.add(mEntries.get(i).copy());
         }
         PieDataSet copied = new PieDataSet(entries, getLabel());
         copy(copied);
