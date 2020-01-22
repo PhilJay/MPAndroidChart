@@ -200,7 +200,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         // calculate the correct offset depending on the draw position of the value
                         float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
                         posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
-                        negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
+                        negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus)
+                                - (buffer.buffer[j + 2] - buffer.buffer[j]);
 
                         if (isInverted) {
                             posOffset = -posOffset - valueTextWidth;
