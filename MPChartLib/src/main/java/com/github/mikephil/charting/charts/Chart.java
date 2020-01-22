@@ -398,8 +398,23 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             boolean hasText = !TextUtils.isEmpty(mNoDataText);
 
             if (hasText) {
-                MPPointF c = getCenter();
-                canvas.drawText(mNoDataText, c.x, c.y, mInfoPaint);
+                MPPointF pt = getCenter();
+
+                switch (mInfoPaint.getTextAlign()) {
+                    case LEFT:
+                        pt.x = 0;
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+                        break;
+
+                    case RIGHT:
+                        pt.x *= 2.0;
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+                        break;
+
+                    default:
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+                        break;
+                }
             }
 
             return;
@@ -1160,6 +1175,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setNoDataTextTypeface(Typeface tf) {
         mInfoPaint.setTypeface(tf);
+    }
+
+    /**
+     * alignment of the no data text
+     *
+     * @param align
+     */
+    public void setNoDataTextAlignment(Align align) {
+        mInfoPaint.setTextAlign(align);
     }
 
     /**
