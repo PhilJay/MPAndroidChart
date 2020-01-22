@@ -857,7 +857,10 @@ public class PieChartRenderer extends DataRenderer {
 
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
-            mRenderPaint.setColor(set.getColor(index));
+            Integer highlightColor = set.getHighlightColor();
+            if (highlightColor == null)
+                highlightColor = set.getColor(index);
+            mRenderPaint.setColor(highlightColor);
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :

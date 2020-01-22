@@ -1,5 +1,7 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
+import android.support.annotation.Nullable;
+
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
@@ -69,6 +71,12 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
      * When valuePosition is OutsideSlice, this allows variable line length
      * */
     boolean isValueLineVariableLength();
+
+    /**
+     * Gets the color for the highlighted sector
+     * */
+    @Nullable
+    Integer getHighlightColor();
 
 }
 
