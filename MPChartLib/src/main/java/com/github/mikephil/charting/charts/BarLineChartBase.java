@@ -394,66 +394,70 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         offsets.top = 0.f;
         offsets.bottom = 0.f;
 
-        // setup offsets for legend
-        if (mLegend != null && mLegend.isEnabled() && !mLegend.isDrawInsideEnabled()) {
-            switch (mLegend.getOrientation()) {
-                case VERTICAL:
+        if (mLegend == null || !mLegend.isEnabled() || mLegend.isDrawInsideEnabled())
+            return;
 
-                    switch (mLegend.getHorizontalAlignment()) {
-                        case LEFT:
-                            offsets.left += Math.min(mLegend.mNeededWidth,
-                                    mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent())
-                                    + mLegend.getXOffset();
-                            break;
+        switch (mLegend.getOrientation()) {
+            case VERTICAL:
 
-                        case RIGHT:
-                            offsets.right += Math.min(mLegend.mNeededWidth,
-                                    mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent())
-                                    + mLegend.getXOffset();
-                            break;
+                switch (mLegend.getHorizontalAlignment()) {
+                    case LEFT:
+                        offsets.left += Math.min(mLegend.mNeededWidth,
+                                mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent())
+                                + mLegend.getXOffset();
+                        break;
 
-                        case CENTER:
+                    case RIGHT:
+                        offsets.right += Math.min(mLegend.mNeededWidth,
+                                mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent())
+                                + mLegend.getXOffset();
+                        break;
 
-                            switch (mLegend.getVerticalAlignment()) {
-                                case TOP:
-                                    offsets.top += Math.min(mLegend.mNeededHeight,
-                                            mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
-                                            + mLegend.getYOffset();
-                                    break;
+                    case CENTER:
 
-                                case BOTTOM:
-                                    offsets.bottom += Math.min(mLegend.mNeededHeight,
-                                            mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
-                                            + mLegend.getYOffset();
-                                    break;
+                        switch (mLegend.getVerticalAlignment()) {
+                            case TOP:
+                                offsets.top += Math.min(mLegend.mNeededHeight,
+                                        mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
+                                        + mLegend.getYOffset();
+                                break;
 
-                                default:
-                                    break;
-                            }
-                    }
+                            case BOTTOM:
+                                offsets.bottom += Math.min(mLegend.mNeededHeight,
+                                        mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
+                                        + mLegend.getYOffset();
+                                break;
 
-                    break;
+                            default:
+                                break;
+                        }
+                }
 
-                case HORIZONTAL:
+                break;
 
-                    switch (mLegend.getVerticalAlignment()) {
-                        case TOP:
-                            offsets.top += Math.min(mLegend.mNeededHeight,
-                                    mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
-                                    + mLegend.getYOffset();
-                            break;
+            case HORIZONTAL:
 
-                        case BOTTOM:
-                            offsets.bottom += Math.min(mLegend.mNeededHeight,
-                                    mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
-                                    + mLegend.getYOffset();
-                            break;
+                switch (mLegend.getVerticalAlignment()) {
+                    case TOP:
+                        offsets.top += Math.min(mLegend.mNeededHeight,
+                                mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
+                                + mLegend.getYOffset();
 
-                        default:
-                            break;
-                    }
-                    break;
-            }
+
+                        break;
+
+                    case BOTTOM:
+                        offsets.bottom += Math.min(mLegend.mNeededHeight,
+                                mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
+                                + mLegend.getYOffset();
+
+
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
         }
     }
 
