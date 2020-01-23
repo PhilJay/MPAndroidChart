@@ -258,7 +258,7 @@ public class PieChartRenderer extends DataRenderer {
             }
 
             // Don't draw if it's highlighted, unless the chart uses rounded slices
-            if (mChart.needsHighlight(j) && !drawRoundedSlices) {
+            if (dataSet.isHighlightEnabled() && mChart.needsHighlight(j) && !drawRoundedSlices) {
                 angle += sliceAngle * phaseX;
                 continue;
             }
@@ -830,8 +830,7 @@ public class PieChartRenderer extends DataRenderer {
                 continue;
 
             IPieDataSet set = mChart.getData()
-                    .getDataSetByIndex(indices[i]
-                            .getDataSetIndex());
+                    .getDataSetByIndex(indices[i].getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())
                 continue;
