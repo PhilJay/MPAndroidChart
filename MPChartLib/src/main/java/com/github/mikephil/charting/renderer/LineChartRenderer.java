@@ -323,8 +323,10 @@ public class LineChartRenderer extends LineRadarRenderer {
         // more than 1 color
         if (dataSet.getColors().size() > 1) {
 
-            if (mLineBuffer.length <= pointsPerEntryPair * 2)
-                mLineBuffer = new float[pointsPerEntryPair * 4];
+            int numberOfFloats = pointsPerEntryPair * 2;
+
+            if (mLineBuffer.length <= numberOfFloats)
+                mLineBuffer = new float[numberOfFloats * 2];
 
             int max = mXBounds.min + mXBounds.range;
 
@@ -359,16 +361,26 @@ public class LineChartRenderer extends LineRadarRenderer {
                     mLineBuffer[3] = mLineBuffer[1];
                 }
 
+                // Determine the start and end coordinates of the line, and make sure they differ.
+                float firstCoordinateX = mLineBuffer[0];
+                float firstCoordinateY = mLineBuffer[1];
+                float lastCoordinateX = mLineBuffer[numberOfFloats - 2];
+                float lastCoordinateY = mLineBuffer[numberOfFloats - 1];
+
+                if (firstCoordinateX == lastCoordinateX &&
+                        firstCoordinateY == lastCoordinateY)
+                    continue;
+
                 trans.pointValuesToPixel(mLineBuffer);
 
-                if (!mViewPortHandler.isInBoundsRight(mLineBuffer[0]))
+                if (!mViewPortHandler.isInBoundsRight(firstCoordinateX))
                     break;
 
                 // make sure the lines don't do shitty things outside
                 // bounds
-                if (!mViewPortHandler.isInBoundsLeft(mLineBuffer[2])
-                        || (!mViewPortHandler.isInBoundsTop(mLineBuffer[1]) && !mViewPortHandler
-                        .isInBoundsBottom(mLineBuffer[3])))
+                if (!mViewPortHandler.isInBoundsLeft(lastCoordinateX) ||
+                        !mViewPortHandler.isInBoundsTop(lastCoordinateY) ||
+                        !mViewPortHandler.isInBoundsBottom(firstCoordinateY))
                     continue;
 
                 // get the color that is set for this line-segment
