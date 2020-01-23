@@ -326,7 +326,9 @@ public class LineChartRenderer extends LineRadarRenderer {
             if (mLineBuffer.length <= pointsPerEntryPair * 2)
                 mLineBuffer = new float[pointsPerEntryPair * 4];
 
-            for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
+            int max = mXBounds.min + mXBounds.range;
+
+            for (int j = mXBounds.min; j < max; j++) {
 
                 Entry e = dataSet.getEntryForIndex(j);
                 if (e == null) continue;
