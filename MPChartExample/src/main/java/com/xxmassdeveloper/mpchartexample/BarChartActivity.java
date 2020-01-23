@@ -164,12 +164,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
             set1.setDrawIcons(false);
 
-//            set1.setColors(ColorTemplate.MATERIAL_COLORS);
-
-            /*int startColor = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
-            int endColor = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
-            set1.setGradientColor(startColor, endColor);*/
-
             int startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
             int startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light);
             int startColor3 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
