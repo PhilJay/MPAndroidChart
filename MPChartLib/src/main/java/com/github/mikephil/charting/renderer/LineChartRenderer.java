@@ -379,8 +379,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                 // make sure the lines don't do shitty things outside
                 // bounds
                 if (!mViewPortHandler.isInBoundsLeft(lastCoordinateX) ||
-                        !mViewPortHandler.isInBoundsTop(lastCoordinateY) ||
-                        !mViewPortHandler.isInBoundsBottom(firstCoordinateY))
+                        !mViewPortHandler.isInBoundsTop(Math.max(firstCoordinateY, lastCoordinateY)) ||
+                        !mViewPortHandler.isInBoundsBottom(Math.min(firstCoordinateY, lastCoordinateY)))
                     continue;
 
                 // get the color that is set for this line-segment
