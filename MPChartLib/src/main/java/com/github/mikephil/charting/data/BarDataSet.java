@@ -38,9 +38,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * array of labels used to describe the different values of the stacked bars
      */
-    private String[] mStackLabels = new String[]{
-            "Stack"
-    };
+    private String[] mStackLabels = new String[]{};
 
     public BarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
@@ -54,8 +52,8 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     @Override
     public DataSet<BarEntry> copy() {
         List<BarEntry> entries = new ArrayList<BarEntry>();
-        for (int i = 0; i < mValues.size(); i++) {
-            entries.add(mValues.get(i).copy());
+        for (int i = 0; i < mEntries.size(); i++) {
+            entries.add(mEntries.get(i).copy());
         }
         BarDataSet copied = new BarDataSet(entries, getLabel());
         copy(copied);

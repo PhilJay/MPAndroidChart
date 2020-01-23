@@ -399,7 +399,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         // if a DataSet was removed
         if (removed) {
-            calcMinMax();
+            notifyDataChanged();
         }
 
         return removed;
@@ -526,7 +526,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             boolean removed = set.removeEntry(e);
 
             if (removed) {
-                calcMinMax();
+                notifyDataChanged();
             }
 
             return removed;

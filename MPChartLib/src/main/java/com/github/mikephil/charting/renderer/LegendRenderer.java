@@ -90,6 +90,7 @@ public class LegendRenderer extends Renderer {
             for (int i = 0; i < data.getDataSetCount(); i++) {
 
                 IDataSet dataSet = data.getDataSetByIndex(i);
+                if (dataSet == null) continue;
 
                 List<Integer> clrs = dataSet.getColors();
                 int entryCount = dataSet.getEntryCount();
@@ -100,10 +101,19 @@ public class LegendRenderer extends Renderer {
                     IBarDataSet bds = (IBarDataSet) dataSet;
                     String[] sLabels = bds.getStackLabels();
 
-                    for (int j = 0; j < clrs.size() && j < bds.getStackSize(); j++) {
+                    int minEntries = Math.min(clrs.size(), bds.getStackSize());
+
+                    for (int j = 0; j < minEntries; j++) {
+                        String label;
+                        if (sLabels.length > 0) {
+                            int labelIndex = j % minEntries;
+                            label = labelIndex < sLabels.length ? sLabels[labelIndex] : null;
+                        } else {
+                            label = null;
+                        }
 
                         computedEntries.add(new LegendEntry(
-                                sLabels[j % sLabels.length],
+                                label,
                                 dataSet.getForm(),
                                 dataSet.getFormSize(),
                                 dataSet.getFormLineWidth(),

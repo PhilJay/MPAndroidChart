@@ -258,7 +258,7 @@ public class PieChartRenderer extends DataRenderer {
             }
 
             // Don't draw if it's highlighted, unless the chart uses rounded slices
-            if (mChart.needsHighlight(j) && !drawRoundedSlices) {
+            if (dataSet.isHighlightEnabled() && mChart.needsHighlight(j) && !drawRoundedSlices) {
                 angle += sliceAngle * phaseX;
                 continue;
             }
@@ -468,7 +468,9 @@ public class PieChartRenderer extends DataRenderer {
 
             int entryCount = dataSet.getEntryCount();
 
-            mValueLinePaint.setColor(dataSet.getValueLineColor());
+            boolean isUseValueColorForLineEnabled = dataSet.isUseValueColorForLineEnabled();
+            int valueLineColor = dataSet.getValueLineColor();
+
             mValueLinePaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getValueLineWidth()));
 
             final float sliceSpace = getSliceSpace(dataSet);
@@ -565,12 +567,15 @@ public class PieChartRenderer extends DataRenderer {
                         labelPty = pt2y;
                     }
 
-                    if (dataSet.getValueLineColor() != ColorTemplate.COLOR_NONE) {
+                    int lineColor = ColorTemplate.COLOR_NONE;
 
-                        if (dataSet.isUsingSliceColorAsValueLineColor()) {
-                            mValueLinePaint.setColor(dataSet.getColor(j));
-                        }
+                    if (isUseValueColorForLineEnabled)
+                        lineColor = dataSet.getColor(j);
+                    else if (valueLineColor != ColorTemplate.COLOR_NONE)
+                        lineColor = valueLineColor;
 
+                    if (lineColor != ColorTemplate.COLOR_NONE) {
+                        mValueLinePaint.setColor(lineColor);
                         c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
                         c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
                     }
@@ -825,8 +830,7 @@ public class PieChartRenderer extends DataRenderer {
                 continue;
 
             IPieDataSet set = mChart.getData()
-                    .getDataSetByIndex(indices[i]
-                            .getDataSetIndex());
+                    .getDataSetByIndex(indices[i].getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())
                 continue;
@@ -857,7 +861,10 @@ public class PieChartRenderer extends DataRenderer {
 
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
-            mRenderPaint.setColor(set.getColor(index));
+            Integer highlightColor = set.getHighlightColor();
+            if (highlightColor == null)
+                highlightColor = set.getColor(index);
+            mRenderPaint.setColor(highlightColor);
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :

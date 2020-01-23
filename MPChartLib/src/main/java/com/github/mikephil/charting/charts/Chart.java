@@ -398,8 +398,23 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             boolean hasText = !TextUtils.isEmpty(mNoDataText);
 
             if (hasText) {
-                MPPointF c = getCenter();
-                canvas.drawText(mNoDataText, c.x, c.y, mInfoPaint);
+                MPPointF pt = getCenter();
+
+                switch (mInfoPaint.getTextAlign()) {
+                    case LEFT:
+                        pt.x = 0;
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+                        break;
+
+                    case RIGHT:
+                        pt.x *= 2.0;
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+                        break;
+
+                    default:
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+                        break;
+                }
             }
 
             return;
@@ -554,9 +569,34 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * This method will call the listener.
      * @param x The x-value to highlight
      * @param dataSetIndex The dataset index to search in
+     * @param dataIndex The data index to search in (only used in CombinedChartView currently)
+     */
+    public void highlightValue(float x, int dataSetIndex, int dataIndex) {
+        highlightValue(x, dataSetIndex, dataIndex, true);
+    }
+
+    /**
+     * Highlights any y-value at the given x-value in the given DataSet.
+     * Provide -1 as the dataSetIndex to undo all highlighting.
+     * This method will call the listener.
+     * @param x The x-value to highlight
+     * @param dataSetIndex The dataset index to search in
      */
     public void highlightValue(float x, int dataSetIndex) {
-        highlightValue(x, dataSetIndex, true);
+        highlightValue(x, dataSetIndex, -1, true);
+    }
+
+    /**
+     * Highlights the value at the given x-value and y-value in the given DataSet.
+     * Provide -1 as the dataSetIndex to undo all highlighting.
+     * This method will call the listener.
+     * @param x The x-value to highlight
+     * @param y The y-value to highlight. Supply `NaN` for "any"
+     * @param dataSetIndex The dataset index to search in
+     * @param dataIndex The data index to search in (only used in CombinedChartView currently)
+     */
+    public void highlightValue(float x, float y, int dataSetIndex, int dataIndex) {
+        highlightValue(x, y, dataSetIndex, dataIndex, true);
     }
 
     /**
@@ -568,7 +608,19 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param dataSetIndex The dataset index to search in
      */
     public void highlightValue(float x, float y, int dataSetIndex) {
-        highlightValue(x, y, dataSetIndex, true);
+        highlightValue(x, y, dataSetIndex, -1, true);
+    }
+
+    /**
+     * Highlights any y-value at the given x-value in the given DataSet.
+     * Provide -1 as the dataSetIndex to undo all highlighting.
+     * @param x The x-value to highlight
+     * @param dataSetIndex The dataset index to search in
+     * @param dataIndex The data index to search in (only used in CombinedChartView currently)
+     * @param callListener Should the listener be called for this change
+     */
+    public void highlightValue(float x, int dataSetIndex, int dataIndex, boolean callListener) {
+        highlightValue(x, Float.NaN, dataSetIndex, dataIndex, callListener);
     }
 
     /**
@@ -579,7 +631,25 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param callListener Should the listener be called for this change
      */
     public void highlightValue(float x, int dataSetIndex, boolean callListener) {
-        highlightValue(x, Float.NaN, dataSetIndex, callListener);
+        highlightValue(x, Float.NaN, dataSetIndex, -1, callListener);
+    }
+
+    /**
+     * Highlights any y-value at the given x-value in the given DataSet.
+     * Provide -1 as the dataSetIndex to undo all highlighting.
+     * @param x The x-value to highlight
+     * @param y The y-value to highlight. Supply `NaN` for "any"
+     * @param dataSetIndex The dataset index to search in
+     * @param dataIndex The data index to search in (only used in CombinedChartView currently)
+     * @param callListener Should the listener be called for this change
+     */
+    public void highlightValue(float x, float y, int dataSetIndex, int dataIndex, boolean callListener) {
+
+        if (dataSetIndex < 0 || dataSetIndex >= mData.getDataSetCount()) {
+            highlightValue(null, callListener);
+        } else {
+            highlightValue(new Highlight(x, y, dataSetIndex, dataIndex), callListener);
+        }
     }
 
     /**
@@ -591,12 +661,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param callListener Should the listener be called for this change
      */
     public void highlightValue(float x, float y, int dataSetIndex, boolean callListener) {
-
-        if (dataSetIndex < 0 || dataSetIndex >= mData.getDataSetCount()) {
-            highlightValue(null, callListener);
-        } else {
-            highlightValue(new Highlight(x, y, dataSetIndex), callListener);
-        }
+        highlightValue(x, y, dataSetIndex, -1, callListener);
     }
 
     /**
@@ -1160,6 +1225,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setNoDataTextTypeface(Typeface tf) {
         mInfoPaint.setTypeface(tf);
+    }
+
+    /**
+     * alignment of the no data text
+     *
+     * @param align
+     */
+    public void setNoDataTextAlignment(Align align) {
+        mInfoPaint.setTextAlign(align);
     }
 
     /**

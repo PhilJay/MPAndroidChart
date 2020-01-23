@@ -703,8 +703,7 @@ public class Legend extends ComponentBase {
 
                         width += Utils.calcTextWidth(labelpaint, label);
 
-                        if (i < entryCount - 1)
-                            maxHeight += labelLineHeight + yEntrySpace;
+                        maxHeight += labelLineHeight + yEntrySpace;
                     } else {
                         wasStacked = true;
                         width += formSize;
