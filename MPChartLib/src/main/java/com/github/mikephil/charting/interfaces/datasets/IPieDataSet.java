@@ -20,7 +20,7 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
 
     /**
      * When enabled, slice spacing will be 0.0 when the smallest value is going to be
-     *   smaller than the slice spacing itself.
+     * smaller than the slice spacing itself.
      *
      * @return
      */
@@ -35,46 +35,47 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
     float getSelectionShift();
 
     PieDataSet.ValuePosition getXValuePosition();
+
     PieDataSet.ValuePosition getYValuePosition();
 
     /**
      * When valuePosition is OutsideSlice, indicates line color
-     * */
+     */
     int getValueLineColor();
 
     /**
      * When valuePosition is OutsideSlice and enabled, line will have the same color as the slice
-     * */
+     */
     boolean isUseValueColorForLineEnabled();
 
     /**
-     *  When valuePosition is OutsideSlice, indicates line width
-     *  */
+     * When valuePosition is OutsideSlice, indicates line width
+     */
     float getValueLineWidth();
 
     /**
      * When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
-     * */
+     */
     float getValueLinePart1OffsetPercentage();
 
     /**
      * When valuePosition is OutsideSlice, indicates length of first half of the line
-     * */
+     */
     float getValueLinePart1Length();
 
     /**
      * When valuePosition is OutsideSlice, indicates length of second half of the line
-     * */
+     */
     float getValueLinePart2Length();
 
     /**
      * When valuePosition is OutsideSlice, this allows variable line length
-     * */
+     */
     boolean isValueLineVariableLength();
 
     /**
      * Gets the color for the highlighted sector
-     * */
+     */
     @Nullable
     Integer getHighlightColor();
 
