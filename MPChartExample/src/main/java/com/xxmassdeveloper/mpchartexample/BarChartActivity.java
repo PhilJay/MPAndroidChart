@@ -32,7 +32,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.model.GradientColor;
+import com.github.mikephil.charting.utils.Fill;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
@@ -164,12 +164,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
             set1.setDrawIcons(false);
 
-//            set1.setColors(ColorTemplate.MATERIAL_COLORS);
-
-            /*int startColor = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
-            int endColor = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
-            set1.setGradientColor(startColor, endColor);*/
-
             int startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
             int startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light);
             int startColor3 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
@@ -181,14 +175,14 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             int endColor4 = ContextCompat.getColor(this, android.R.color.holo_red_dark);
             int endColor5 = ContextCompat.getColor(this, android.R.color.holo_orange_dark);
 
-            List<GradientColor> gradientColors = new ArrayList<>();
-            gradientColors.add(new GradientColor(startColor1, endColor1));
-            gradientColors.add(new GradientColor(startColor2, endColor2));
-            gradientColors.add(new GradientColor(startColor3, endColor3));
-            gradientColors.add(new GradientColor(startColor4, endColor4));
-            gradientColors.add(new GradientColor(startColor5, endColor5));
+            List<Fill> gradientFills = new ArrayList<>();
+            gradientFills.add(new Fill(startColor1, endColor1));
+            gradientFills.add(new Fill(startColor2, endColor2));
+            gradientFills.add(new Fill(startColor3, endColor3));
+            gradientFills.add(new Fill(startColor4, endColor4));
+            gradientFills.add(new Fill(startColor5, endColor5));
 
-            set1.setGradientColors(gradientColors);
+            set1.setFills(gradientFills);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
