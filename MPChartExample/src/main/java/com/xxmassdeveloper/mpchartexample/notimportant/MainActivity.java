@@ -26,7 +26,6 @@ import com.xxmassdeveloper.mpchartexample.DynamicalAddingActivity;
 import com.xxmassdeveloper.mpchartexample.FilledLineActivity;
 import com.xxmassdeveloper.mpchartexample.HalfPieChartActivity;
 import com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity;
-import com.xxmassdeveloper.mpchartexample.HorizontalBarNegativeChartActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity1;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity2;
@@ -179,9 +178,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 break;
             case 15:
                 i = new Intent(this, BarChartPositiveNegative.class);
-                break;
-            case 16:
-                i = new Intent(this, HorizontalBarNegativeChartActivity.class);
                 break;
             case 17:
                 i = new Intent(this, StackedBarActivityNegative.class);
