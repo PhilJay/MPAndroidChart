@@ -124,6 +124,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             mLegendRenderer.computeLegend(mData);
 
         calculateOffsets();
+
+        invalidate();
     }
 
     @Override
