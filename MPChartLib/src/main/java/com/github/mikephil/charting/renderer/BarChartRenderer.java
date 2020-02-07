@@ -144,7 +144,11 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         trans.pointValuesToPixel(buffer.buffer);
 
-        final boolean isCustomFill = dataSet.getFills().size() > 0;
+        boolean isCustomFill = false;
+        if(dataSet.getFills() != null) {
+            isCustomFill = !dataSet.getFills().isEmpty();
+        }
+
         final boolean isSingleColor = dataSet.getColors().size() == 1;
         final boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
 
