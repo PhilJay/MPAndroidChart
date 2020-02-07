@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/actionToggleValues"
+        android:title="@string/actionToggleValues">
+    </item>
+    <item
+        android:id="@+id/actionToggleFilled"
+        android:title="@string/actionToggleFilled">
+    </item>
+    <item
+        android:id="@+id/actionToggleCircles"
+        android:title="@string/actionToggleCircles">
+    </item>
+    <item
+        android:id="@+id/actionToggleHighlight"
+        android:title="@string/actionToggleHighlight">
+    </item>
+	<item
+        android:id="@+id/actionTogglePinch"
+        android:title="@string/actionTogglePinch">
+    </item>
+    <item
+        android:id="@+id/actionToggleAutoScaleMinMax"
+        android:title="@string/actionToggleAutoScale">
+    </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="@string/actionSave">
+    </item>
+</menu>

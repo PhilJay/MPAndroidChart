@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
@@ -57,10 +56,10 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
         computeAxisValues(min, max);
     }
-    
+
     @Override
     protected void computeSize() {
-        
+
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
 
@@ -156,7 +155,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
             if (mViewPortHandler.isInBoundsY(y)) {
 
-                String label = mXAxis.getValueFormatter().getFormattedValue(mXAxis.mEntries[i / 2], mXAxis);
+                String label = mXAxis.getValueFormatter().getAxisLabel(mXAxis.mEntries[i / 2], mXAxis);
                 drawLabel(c, label, pos, y, anchor, labelRotationAngleDegrees);
             }
         }

@@ -1,8 +1,4 @@
-
 package com.github.mikephil.charting.formatter;
-
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 
@@ -12,7 +8,7 @@ import java.text.DecimalFormat;
  *
  * @author Philipp Jahoda
  */
-public class DefaultValueFormatter implements IValueFormatter
+public class DefaultValueFormatter extends ValueFormatter
 {
 
     /**
@@ -52,7 +48,7 @@ public class DefaultValueFormatter implements IValueFormatter
     }
 
     @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+    public String getFormattedValue(float value) {
 
         // put more logic here ...
         // avoid memory allocations here (for performance reasons)

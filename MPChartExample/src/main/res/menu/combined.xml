@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/viewGithub"
+        android:title="@string/viewGithub">
+    </item>
+    <item
+        android:id="@+id/actionToggleLineValues"
+        android:title="@string/actionToggleLineValues">
+    </item>
+    <item
+        android:id="@+id/actionToggleBarValues"
+        android:title="@string/actionToggleBarValues">
+    </item>
+    <item
+        android:id="@+id/actionRemoveDataSet"
+        android:title="@string/actionRemoveDataSet">
+    </item>
+
+</menu>
