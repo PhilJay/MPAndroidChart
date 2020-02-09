@@ -112,7 +112,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
         trans.pointValuesToPixel(buffer.buffer);
 
-        final boolean isCustomFill = dataSet.getFills().size() > 0;
+        final boolean isCustomFill = dataSet.getFills() != null && !dataSet.getFills().isEmpty();
         final boolean isSingleColor = dataSet.getColors().size() == 1;
         final boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
 
