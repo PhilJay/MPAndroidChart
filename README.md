@@ -23,13 +23,9 @@
 1. [License](#licence)
 1. [Creators](#creators)
 
-## [Coding Newsletter](https://weeklycoding.com)
+## [Available for Hire](https://weeklycoding.com/about/)
 
-Sign up for my [coding newsletter](https://weeklycoding.com) to get quick updates on Kotlin and Android development related topics.
-
-<h2 id="quick-start">Quick Start :chart_with_upwards_trend:</h2>
-
-Add the library to your Android project, then check out the examples below!
+I'm available for hire, if you are interested in working with me, just [send me an email](mailto:philjay.librarysup@gmail.com).
 
 ### Gradle Setup
 
