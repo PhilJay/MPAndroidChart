@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.CandleData;
@@ -236,7 +237,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
     protected void drawMarkers(Canvas canvas) {
 
         // if there is no marker view or drawing marker is disabled
-        if (mMarker == null || !isDrawMarkersEnabled() || !valuesToHighlight())
+        if (mMarkers == null || !isDrawMarkersEnabled() || !valuesToHighlight())
             return;
 
         for (int i = 0; i < mIndicesToHighlight.length; i++) {
@@ -262,10 +263,11 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
                 continue;
 
             // callbacks to update the content
-            mMarker.refreshContent(e, highlight);
+            IMarker markerItem =  mMarkers.get(i % mMarkers.size());
+            markerItem.refreshContent(e, highlight);
 
             // draw the marker
-            mMarker.draw(canvas, pos[0], pos[1]);
+            markerItem.draw(canvas, pos[0], pos[1]);
         }
     }
 
