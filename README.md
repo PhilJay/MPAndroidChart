@@ -23,10 +23,6 @@
 1. [License](#licence)
 1. [Creators](#creators)
 
-## [Available for Hire](https://weeklycoding.com/about/)
-
-I'm available for hire, if you are interested in working with me, just [send me an email](mailto:philjay.librarysup@gmail.com).
-
 ### Gradle Setup
 
 ```gradle
