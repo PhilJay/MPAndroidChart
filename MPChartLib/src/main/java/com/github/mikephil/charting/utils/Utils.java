@@ -665,23 +665,13 @@ public abstract class Utils {
 
         if (angleDegrees != 0.f) {
 
-            // Move the text drawing rect in a way that it always rotates around its center
-            drawOffsetX -= drawWidth * 0.5f;
-            drawOffsetY -= drawHeight * 0.5f;
-
             float translateX = x;
             float translateY = y;
 
-            // Move the "outer" rect relative to the anchor, assuming its centered
-            if (anchor.x != 0.5f || anchor.y != 0.5f) {
-                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                        drawWidth,
-                        drawHeight,
-                        angleDegrees);
+            if (anchor.x != 0.f || anchor.y != 0.f) {
 
-                translateX -= rotatedSize.width * (anchor.x - 0.5f);
-                translateY -= rotatedSize.height * (anchor.y - 0.5f);
-                FSize.recycleInstance(rotatedSize);
+                translateX -= anchor.x;
+                translateY -= anchor.y;
             }
 
             c.save();
