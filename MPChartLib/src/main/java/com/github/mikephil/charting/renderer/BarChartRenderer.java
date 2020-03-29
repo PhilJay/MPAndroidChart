@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
+import android.view.Gravity;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.BarBuffer;
@@ -430,7 +431,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         if (Utils.isMultilineText(valueText)) {
             Utils.drawMultilineText(c, valueText, x, y,
                     new TextPaint(mValuePaint),
-                    new FSize(c.getWidth(), c.getHeight()), new MPPointF(0f, 0f), 0);
+                    new FSize(c.getWidth(), c.getHeight()), new MPPointF(0f, 0f), 0, Gravity.TOP);
         } else {
             c.drawText(valueText, x, y, mValuePaint);
         }

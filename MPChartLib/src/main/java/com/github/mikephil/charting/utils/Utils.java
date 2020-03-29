@@ -14,6 +14,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -629,7 +630,8 @@ public abstract class Utils {
     public static void drawMultilineText(Canvas c, StaticLayout textLayout,
                                          float x, float y,
                                          TextPaint paint,
-                                         MPPointF anchor, float angleDegrees) {
+                                         MPPointF anchor, float angleDegrees,
+                                         int gravity) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
@@ -639,19 +641,27 @@ public abstract class Utils {
         final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
 
         drawWidth = textLayout.getWidth();
-        drawHeight = textLayout.getLineCount() * lineHeight;
+        drawHeight = textLayout.getHeight();
 
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
-        // Android does not snap the bounds to line boundaries,
-        //  and draws from bottom to top.
-        // And we want to normalize it.
-        drawOffsetY += drawHeight;
+        if (gravity == Gravity.TOP) {
+            drawOffsetY += lineHeight / 4F;
+            drawOffsetY -= drawHeight;
+        } else if (gravity == Gravity.CENTER) {
+            drawOffsetY -= lineHeight / 4F;
+        } else {
+            // Android does not snap the bounds to line boundaries,
+            //  and draws from bottom to top.
+            // And we want to normalize it.
+            drawOffsetY += lineHeight / 2F;
+        }
 
-        // To have a consistent point of reference, we always draw left-aligned
+        // To have a consistent point of reference
         Paint.Align originalTextAlign = paint.getTextAlign();
-        paint.setTextAlign(Paint.Align.LEFT);
+        // When multiline text, align is center
+        paint.setTextAlign(Paint.Align.CENTER);
 
         if (angleDegrees != 0.f) {
 
@@ -707,16 +717,28 @@ public abstract class Utils {
                                          float x, float y,
                                          TextPaint paint,
                                          FSize constrainedToSize,
-                                         MPPointF anchor, float angleDegrees) {
+                                         MPPointF anchor, float angleDegrees,
+                                         int gravity) {
 
-        StaticLayout textLayout = new StaticLayout(
-                text, 0, text.length(),
-                paint,
-                (int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
-                Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
+        StaticLayout textLayout;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            textLayout = StaticLayout.Builder.obtain(
+                    text, 0, text.length(),
+                    paint,
+                    (int) Math.max(Math.ceil(constrainedToSize.width), 1.f))
+                    .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+                    .setLineSpacing(0.F, 1.0f)
+                    .setIncludePad(false)
+                    .build();
+        } else {
+            textLayout = new StaticLayout(
+                    text, 0, text.length(),
+                    paint,
+                    (int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
+                    Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
+        }
 
-
-        drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
+        drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees, gravity);
     }
 
     /**
