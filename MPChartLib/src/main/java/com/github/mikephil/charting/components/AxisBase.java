@@ -151,6 +151,39 @@ public abstract class AxisBase extends ComponentBase {
      */
     public float mAxisRange = 0f;
 
+    private int mAxisMinLabels = 2;
+    private int mAxisMaxLabels = 25;
+
+    /**
+     * The minumum number of labels on the axis
+     */
+    public int getAxisMinLabels() {
+        return mAxisMinLabels;
+    }
+
+    /**
+     * The minumum number of labels on the axis
+     */
+    public void setAxisMinLabels(int labels) {
+        if (labels > 0)
+            mAxisMinLabels = labels;
+    }
+
+    /**
+     * The maximum number of labels on the axis
+     */
+    public int getAxisMaxLabels() {
+        return mAxisMaxLabels;
+    }
+
+    /**
+     * The maximum number of labels on the axis
+     */
+    public void setAxisMaxLabels(int labels) {
+        if (labels > 0)
+            mAxisMaxLabels = labels;
+    }
+
     /**
      * default constructor
      */
@@ -314,10 +347,10 @@ public abstract class AxisBase extends ComponentBase {
      */
     public void setLabelCount(int count) {
 
-        if (count > 25)
-            count = 25;
-        if (count < 2)
-            count = 2;
+        if (count > getAxisMaxLabels())
+            count = getAxisMaxLabels();
+        if (count < getAxisMinLabels())
+            count = getAxisMinLabels();
 
         mLabelCount = count;
         mForceLabels = false;

@@ -57,7 +57,7 @@ public interface OnChartGestureListener {
     void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY);
 
     /**
-     * Callbacks when the chart is scaled / zoomed via pinch zoom gesture.
+     * Callbacks when the chart is scaled / zoomed via pinch zoom / double-tap gesture.
      *
      * @param me
      * @param scaleX scalefactor on the x-axis

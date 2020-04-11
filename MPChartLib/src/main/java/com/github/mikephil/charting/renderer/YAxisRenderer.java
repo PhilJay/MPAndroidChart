@@ -119,12 +119,17 @@ public class YAxisRenderer extends AxisRenderer {
                 ? mYAxis.mEntryCount
                 : (mYAxis.mEntryCount - 1);
 
+        float xOffset = mYAxis.getLabelXOffset();
+
         // draw
         for (int i = from; i < to; i++) {
 
             String text = mYAxis.getFormattedLabel(i);
 
-            c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
+            c.drawText(text,
+                    fixedPosition + xOffset,
+                    positions[i * 2 + 1] + offset,
+                    mAxisLabelPaint);
         }
     }
 

@@ -40,3 +40,5 @@ support questions here. We will close your issue without a response.
 If you have source code demonstrating this bug, create a Gist:
   https://help.github.com/articles/creating-gists/
 and link to it here. -->
+
+ADD A REWARD using [Speed](speedoss.com) to SOLVE this issue QUICKLY and SUPPORT this project.

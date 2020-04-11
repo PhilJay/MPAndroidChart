@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.Fill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,9 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * array of labels used to describe the different values of the stacked bars
      */
-    private String[] mStackLabels = new String[]{
-            "Stack"
-    };
+    private String[] mStackLabels = new String[]{};
+
+    protected List<Fill> mFills = null;
 
     public BarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
@@ -54,8 +55,8 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     @Override
     public DataSet<BarEntry> copy() {
         List<BarEntry> entries = new ArrayList<BarEntry>();
-        for (int i = 0; i < mValues.size(); i++) {
-            entries.add(mValues.get(i).copy());
+        for (int i = 0; i < mEntries.size(); i++) {
+            entries.add(mEntries.get(i).copy());
         }
         BarDataSet copied = new BarDataSet(entries, getLabel());
         copy(copied);
@@ -69,6 +70,67 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
         barDataSet.mBarBorderWidth = mBarBorderWidth;
         barDataSet.mStackLabels = mStackLabels;
         barDataSet.mHighLightAlpha = mHighLightAlpha;
+    }
+
+    @Override
+    public List<Fill> getFills() {
+        return mFills;
+    }
+
+    @Override
+    public Fill getFill(int index) {
+        return mFills.get(index % mFills.size());
+    }
+
+    /**
+     * This method is deprecated.
+     * Use getFills() instead.
+     */
+    @Deprecated
+    public List<Fill> getGradients() {
+        return mFills;
+    }
+
+    /**
+     * This method is deprecated.
+     * Use getFill(...) instead.
+     *
+     * @param index
+     */
+    @Deprecated
+    public Fill getGradient(int index) {
+        return getFill(index);
+    }
+
+    /**
+     * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
+     *
+     * @param startColor
+     * @param endColor
+     */
+    public void setGradientColor(int startColor, int endColor) {
+        mFills.clear();
+        mFills.add(new Fill(startColor, endColor));
+    }
+
+    /**
+     * This method is deprecated.
+     * Use setFills(...) instead.
+     *
+     * @param gradientColors
+     */
+    @Deprecated
+    public void setGradientColors(List<Fill> gradientColors) {
+        this.mFills = gradientColors;
+    }
+
+    /**
+     * Sets the fills for the bars in this dataset.
+     *
+     * @param fills
+     */
+    public void setFills(List<Fill> fills) {
+        this.mFills = fills;
     }
 
     /**
