@@ -223,7 +223,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             negOffset = -negOffset - valueTextWidth;
                         }
 
-                        if (dataSet.isDrawValuesEnabled()) {
+                        if (dataSet.isDrawValuesEnabled() && entry.isDrawValue()) {
                             drawValue(c,
                                     formattedValue,
                                     buffer.buffer[j + 2] + (val >= 0 ? posOffset : negOffset),
@@ -292,7 +292,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 negOffset = -negOffset - valueTextWidth;
                             }
 
-                            if (dataSet.isDrawValuesEnabled()) {
+                            if (dataSet.isDrawValuesEnabled() && entry.isDrawValue()) {
                                 drawValue(c, formattedValue,
                                         buffer.buffer[bufferIndex + 2]
                                                 + (entry.getY() >= 0 ? posOffset : negOffset),
@@ -379,7 +379,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 if (!mViewPortHandler.isInBoundsBottom(y))
                                     continue;
 
-                                if (dataSet.isDrawValuesEnabled()) {
+                                if (dataSet.isDrawValuesEnabled() && entry.isDrawValue()) {
                                     drawValue(c, formattedValue, x, y + halfTextHeight, color);
                                 }
 

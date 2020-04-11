@@ -173,7 +173,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                     BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
-                    if (dataSet.isDrawValuesEnabled()) {
+                    if (dataSet.isDrawValuesEnabled() && entry.isDrawValue()) {
                         drawValue(c, formatter.getBubbleLabel(entry), x, y + (0.5f * lineHeight), valueTextColor);
                     }
 

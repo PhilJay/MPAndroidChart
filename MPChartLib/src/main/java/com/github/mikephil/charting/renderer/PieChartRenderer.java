@@ -583,7 +583,9 @@ public class PieChartRenderer extends DataRenderer {
                     // draw everything, depending on settings
                     if (drawXOutside && drawYOutside) {
 
-                        drawValue(c, formattedValue, labelPtx, labelPty, dataSet.getValueTextColor(j));
+                        if (entry.isDrawValue()) {
+                            drawValue(c, formattedValue, labelPtx, labelPty, dataSet.getValueTextColor(j));
+                        }
 
                         if (j < data.getEntryCount() && entryLabel != null) {
                             drawEntryLabel(c, entryLabel, labelPtx, labelPty + lineHeight);
@@ -595,7 +597,9 @@ public class PieChartRenderer extends DataRenderer {
                         }
                     } else if (drawYOutside) {
 
-                        drawValue(c, formattedValue, labelPtx, labelPty + lineHeight / 2.f, dataSet.getValueTextColor(j));
+                        if (entry.isDrawValue()) {
+                            drawValue(c, formattedValue, labelPtx, labelPty + lineHeight / 2.f, dataSet.getValueTextColor(j));
+                        }
                     }
                 }
 
@@ -609,7 +613,9 @@ public class PieChartRenderer extends DataRenderer {
                     // draw everything, depending on settings
                     if (drawXInside && drawYInside) {
 
-                        drawValue(c, formattedValue, x, y, dataSet.getValueTextColor(j));
+                        if (entry.isDrawValue()) {
+                            drawValue(c, formattedValue, x, y, dataSet.getValueTextColor(j));
+                        }
 
                         if (j < data.getEntryCount() && entryLabel != null) {
                             drawEntryLabel(c, entryLabel, x, y + lineHeight);
@@ -620,7 +626,9 @@ public class PieChartRenderer extends DataRenderer {
                             drawEntryLabel(c, entryLabel, x, y + lineHeight / 2f);
                         }
                     } else if (drawYInside) {
-                        drawValue(c, formattedValue, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                        if (entry.isDrawValue()) {
+                            drawValue(c, formattedValue, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                        }
                     }
                 }
 
