@@ -13,19 +13,19 @@ import android.graphics.Paint.Align;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
-import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.RequiresApi;
+
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.IMarker;
@@ -442,18 +442,71 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             mDescPaint.setColor(mDescription.getTextColor());
             mDescPaint.setTextAlign(mDescription.getTextAlign());
 
+            String descriptionText = mDescription.getText();
+
+            float textHeight = mDescPaint.descent() - mDescPaint.ascent();
+            float textWidth;
+
+            if (TextUtils.isEmpty(descriptionText)) {
+                textWidth = 0f;
+            } else {
+                textWidth=  mDescPaint.measureText(descriptionText);
+            }
+
             float x, y;
 
             // if no position specified, draw on default position
             if (position == null) {
-                x = getWidth() - mViewPortHandler.offsetRight() - mDescription.getXOffset();
-                y = getHeight() - mViewPortHandler.offsetBottom() - mDescription.getYOffset();
+                //x = getWidth() - mViewPortHandler.offsetRight() - mDescription.getXOffset();
+                //y = getHeight() - mViewPortHandler.offsetBottom() - mDescription.getYOffset();
+
+                float xOffset = mDescription.getXOffset();
+                float yOffset = mDescription.getYOffset();
+
+                final int width = getWidth();
+                final int height = getHeight();
+
+                int gravity = mDescription.getGravity();
+                if (gravity == -1) {
+                    gravity = Gravity.RIGHT | Gravity.BOTTOM;
+                }
+
+                final int layoutDirection = 0;
+                final int absoluteGravity = Gravity.getAbsoluteGravity(gravity, layoutDirection);
+                final int verticalGravity = gravity & Gravity.VERTICAL_GRAVITY_MASK;
+
+                switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+                    case Gravity.CENTER_HORIZONTAL:
+                        x = mViewPortHandler.offsetLeft() + (mViewPortHandler.contentWidth() - textWidth) / 2 + xOffset;
+                        break;
+                    case Gravity.RIGHT:
+                        x = width - textWidth - mViewPortHandler.offsetRight() - xOffset;
+                        break;
+                    case Gravity.LEFT:
+                    default:
+                        x = mViewPortHandler.offsetLeft() + xOffset;
+                }
+
+                switch (verticalGravity) {
+                    case Gravity.TOP:
+                        y = mViewPortHandler.offsetTop() + yOffset;
+                        break;
+                    case Gravity.CENTER_VERTICAL:
+                        y = mViewPortHandler.offsetTop() + (mViewPortHandler.contentHeight() - textHeight) / 2 + yOffset;
+                        break;
+                    case Gravity.BOTTOM:
+                        y = height - mViewPortHandler.offsetBottom() - yOffset;
+                        break;
+                    default:
+                        y = mViewPortHandler.offsetTop() + textHeight + yOffset;
+                }
+
             } else {
                 x = position.x;
                 y = position.y;
             }
 
-            c.drawText(mDescription.getText(), x, y, mDescPaint);
+            c.drawText(descriptionText, x, y, mDescPaint);
         }
     }
 
