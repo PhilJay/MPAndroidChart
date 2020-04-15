@@ -154,6 +154,11 @@ public class LineChartRenderer extends LineRadarRenderer {
                 prev = cur;
                 cur = dataSet.getEntryForIndex(j);
 
+                if (!cur.isDrawValue()) {
+                    //不支持分段, 第一个不绘制的Value开始中断绘制.
+                    break;
+                }
+
                 final float cpx = (prev.getX())
                         + (cur.getX() - prev.getX()) / 2.0f;
 
@@ -217,7 +222,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             Entry next = cur;
             int nextIndex = -1;
 
-            if (cur == null) return;
+            if (cur == null || !cur.isDrawValue()) return;
 
             // let the spline start
             cubicPath.moveTo(cur.getX(), cur.getY() * phaseY);
@@ -227,6 +232,11 @@ public class LineChartRenderer extends LineRadarRenderer {
                 prevPrev = prev;
                 prev = cur;
                 cur = nextIndex == j ? next : dataSet.getEntryForIndex(j);
+
+                if (!cur.isDrawValue()) {
+                    //不支持分段, 第一个不绘制的Value开始中断绘制.
+                    break;
+                }
 
                 nextIndex = j + 1 < dataSet.getEntryCount() ? j + 1 : j;
                 next = dataSet.getEntryForIndex(nextIndex);
@@ -267,7 +277,19 @@ public class LineChartRenderer extends LineRadarRenderer {
         float fillMin = dataSet.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart);
 
-        spline.lineTo(dataSet.getEntryForIndex(bounds.min + bounds.range).getX(), fillMin);
+        Entry endEntry = null;
+        Entry curEntry = null;
+        for (int i = bounds.min; i <= bounds.min + bounds.range; i++) {
+            curEntry = dataSet.getEntryForIndex(i);
+            if (!curEntry.isDrawValue()) {
+                break;
+            }
+            endEntry = curEntry;
+        }
+
+        if (endEntry != null) {
+            spline.lineTo(endEntry.getX(), fillMin);
+        }
         spline.lineTo(dataSet.getEntryForIndex(bounds.min).getX(), fillMin);
         spline.close();
 
