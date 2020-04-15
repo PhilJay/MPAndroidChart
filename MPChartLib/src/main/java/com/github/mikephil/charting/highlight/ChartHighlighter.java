@@ -166,7 +166,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         if (entries.size() == 0) {
             // Try to find closest x-value and take all entries for that x-value
             final Entry closest = set.getEntryForXValue(xVal, Float.NaN, rounding);
-            if (closest != null)
+            if (closest != null && closest.isDrawValue())
             {
                 //noinspection unchecked
                 entries = set.getEntriesForXValue(closest.getX());

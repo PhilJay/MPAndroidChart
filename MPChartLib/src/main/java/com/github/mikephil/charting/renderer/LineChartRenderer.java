@@ -333,7 +333,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             for (int j = mXBounds.min; j < max; j++) {
 
                 Entry e = dataSet.getEntryForIndex(j);
-                if (e == null) continue;
+                if (e == null || !e.isDrawValue()) continue;
 
                 mLineBuffer[0] = e.getX();
                 mLineBuffer[1] = e.getY() * phaseY;
@@ -342,7 +342,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                     e = dataSet.getEntryForIndex(j + 1);
 
-                    if (e == null) break;
+                    if (e == null || !e.isDrawValue()) break;
 
                     if (isDrawSteppedEnabled) {
                         mLineBuffer[2] = e.getX();
@@ -398,7 +398,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             e1 = dataSet.getEntryForIndex(mXBounds.min);
 
-            if (e1 != null) {
+            if (e1 != null && e1.isDrawValue()) {
 
                 int j = 0;
                 for (int x = mXBounds.min; x <= mXBounds.range + mXBounds.min; x++) {
@@ -406,7 +406,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                     e1 = dataSet.getEntryForIndex(x == 0 ? 0 : (x - 1));
                     e2 = dataSet.getEntryForIndex(x);
 
-                    if (e1 == null || e2 == null) continue;
+                    if (e1 == null || e2 == null || !e2.isDrawValue()) continue;
 
                     mLineBuffer[j++] = e1.getX();
                     mLineBuffer[j++] = e1.getY() * phaseY;
@@ -515,6 +515,22 @@ public class LineChartRenderer extends LineRadarRenderer {
         for (int x = startIndex + 1; x <= endIndex; x++) {
 
             currentEntry = dataSet.getEntryForIndex(x);
+
+            if (!currentEntry.isDrawValue()) {
+                //当前不需要绘制value
+                if (previousEntry.isDrawValue()) {
+                    //上一个需要绘制value
+                    filled.lineTo(previousEntry.getX(), fillMin);
+                }
+                previousEntry = currentEntry;
+                continue;
+            }
+
+            if (!previousEntry.isDrawValue()) {
+                //上一次不需要绘制Value, 但是这次需要
+                filled.moveTo(previousEntry.getX(), fillMin);
+                filled.lineTo(previousEntry.getX(), previousEntry.getY() * phaseY);
+            }
 
             if (isDrawSteppedEnabled) {
                 filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
@@ -681,6 +697,10 @@ public class LineChartRenderer extends LineRadarRenderer {
                 Entry e = dataSet.getEntryForIndex(j);
 
                 if (e == null) break;
+
+                if (!e.isDrawValue()) {
+                    continue;
+                }
 
                 mCirclesBuffer[0] = e.getX();
                 mCirclesBuffer[1] = e.getY() * phaseY;
