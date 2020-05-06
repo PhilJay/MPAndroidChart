@@ -135,7 +135,12 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         // initialize the buffer
         BarBuffer buffer = mBarBuffers[index];
+        if(phaseX==null||phaseY==null){
+        buffer.setPhases(1.0f, 1.0f);
+        }else{
         buffer.setPhases(phaseX, phaseY);
+ }
+        
         buffer.setDataSet(index);
         buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
         buffer.setBarWidth(mChart.getBarData().getBarWidth());
