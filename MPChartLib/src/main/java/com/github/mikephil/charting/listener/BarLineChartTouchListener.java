@@ -448,6 +448,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      */
     private void performHighlightDrag(MotionEvent e) {
 
+        mChart.disableScroll();
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
 
         if (h != null && !h.equalTo(mLastHighlighted)) {
