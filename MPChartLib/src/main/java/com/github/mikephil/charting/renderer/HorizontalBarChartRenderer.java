@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
@@ -11,11 +10,12 @@ import com.github.mikephil.charting.buffer.BarBuffer;
 import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.Fill;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -112,13 +112,15 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
         trans.pointValuesToPixel(buffer.buffer);
 
+        final boolean isCustomFill = dataSet.getFills() != null && !dataSet.getFills().isEmpty();
         final boolean isSingleColor = dataSet.getColors().size() == 1;
+        final boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
 
         if (isSingleColor) {
             mRenderPaint.setColor(dataSet.getColor());
         }
 
-        for (int j = 0; j < buffer.size(); j += 4) {
+        for (int j = 0, pos = 0; j < buffer.size(); j += 4, pos++) {
 
             if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3]))
                 break;
@@ -132,8 +134,20 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                 mRenderPaint.setColor(dataSet.getColor(j / 4));
             }
 
-            c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3], mRenderPaint);
+            if (isCustomFill) {
+                dataSet.getFill(pos)
+                        .fillRect(
+                                c, mRenderPaint,
+                                buffer.buffer[j],
+                                buffer.buffer[j + 1],
+                                buffer.buffer[j + 2],
+                                buffer.buffer[j + 3],
+                                isInverted ? Fill.Direction.LEFT : Fill.Direction.RIGHT);
+            }
+            else {
+                c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                        buffer.buffer[j + 3], mRenderPaint);
+            }
 
             if (drawBorder) {
                 c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
@@ -167,7 +181,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                 applyValueTextStyle(dataSet);
                 final float halfTextHeight = Utils.calcTextHeight(mValuePaint, "10") / 2f;
 
-                IValueFormatter formatter = dataSet.getValueFormatter();
+                ValueFormatter formatter = dataSet.getValueFormatter();
 
                 // get the buffer
                 BarBuffer buffer = mBarBuffers[i];
@@ -196,12 +210,13 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                         BarEntry entry = dataSet.getEntryForIndex(j / 4);
                         float val = entry.getY();
-                        String formattedValue = formatter.getFormattedValue(val, entry, i, mViewPortHandler);
+                        String formattedValue = formatter.getBarLabel(entry);
 
                         // calculate the correct offset depending on the draw position of the value
                         float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
                         posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
-                        negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
+                        negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus)
+                                - (buffer.buffer[j + 2] - buffer.buffer[j]);
 
                         if (isInverted) {
                             posOffset = -posOffset - valueTextWidth;
@@ -265,9 +280,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[bufferIndex + 1]))
                                 continue;
 
-                            float val = entry.getY();
-                            String formattedValue = formatter.getFormattedValue(val,
-                                    entry, i, mViewPortHandler);
+                            String formattedValue = formatter.getBarLabel(entry);
 
                             // calculate the correct offset depending on the draw position of the value
                             float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
@@ -337,8 +350,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             for (int k = 0; k < transformed.length; k += 2) {
 
                                 final float val = vals[k / 2];
-                                String formattedValue = formatter.getFormattedValue(val,
-                                        entry, i, mViewPortHandler);
+                                String formattedValue = formatter.getBarStackedLabel(val, entry);
 
                                 // calculate the correct offset depending on the draw position of the value
                                 float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
@@ -396,7 +408,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         }
     }
 
-    protected void drawValue(Canvas c, String valueText, float x, float y, int color) {
+    @Override
+    public void drawValue(Canvas c, String valueText, float x, float y, int color) {
         mValuePaint.setColor(color);
         c.drawText(valueText, x, y, mValuePaint);
     }

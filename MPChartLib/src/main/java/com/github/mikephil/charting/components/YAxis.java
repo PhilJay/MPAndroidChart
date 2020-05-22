@@ -39,6 +39,16 @@ public class YAxis extends AxisBase {
     protected boolean mDrawZeroLine = false;
 
     /**
+     * flag indicating that auto scale min restriction should be used
+     */
+    private boolean mUseAutoScaleRestrictionMin = false;
+
+    /**
+     * flag indicating that auto scale max restriction should be used
+     */
+    private boolean mUseAutoScaleRestrictionMax = false;
+
+    /**
      * Color of the zero line
      */
     protected int mZeroLineColor = Color.GRAY;
@@ -62,6 +72,11 @@ public class YAxis extends AxisBase {
      * the position of the y-labels relative to the chart
      */
     private YAxisLabelPosition mPosition = YAxisLabelPosition.OUTSIDE_CHART;
+
+    /**
+     * the horizontal offset of the y-label
+     */
+    private float mXLabelOffset = 0.0f;
 
     /**
      * enum for the position of the y-labels relative to the chart
@@ -168,6 +183,22 @@ public class YAxis extends AxisBase {
      */
     public void setPosition(YAxisLabelPosition pos) {
         mPosition = pos;
+    }
+
+    /**
+     * returns the horizontal offset of the y-label
+     */
+    public float getLabelXOffset() {
+        return mXLabelOffset;
+    }
+
+    /**
+     * sets the horizontal offset of the y-label
+     *
+     * @param xOffset
+     */
+    public void setLabelXOffset(float xOffset) {
+        mXLabelOffset = xOffset;
     }
 
     /**
@@ -368,14 +399,65 @@ public class YAxis extends AxisBase {
             return false;
     }
 
+    /**
+     * Returns true if autoscale restriction for axis min value is enabled
+     */
+    @Deprecated
+    public boolean isUseAutoScaleMinRestriction( ) {
+        return mUseAutoScaleRestrictionMin;
+    }
+
+    /**
+     * Sets autoscale restriction for axis min value as enabled/disabled
+     */
+    @Deprecated
+    public void setUseAutoScaleMinRestriction( boolean isEnabled ) {
+        mUseAutoScaleRestrictionMin = isEnabled;
+    }
+
+    /**
+     * Returns true if autoscale restriction for axis max value is enabled
+     */
+    @Deprecated
+    public boolean isUseAutoScaleMaxRestriction() {
+        return mUseAutoScaleRestrictionMax;
+    }
+
+    /**
+     * Sets autoscale restriction for axis max value as enabled/disabled
+     */
+    @Deprecated
+    public void setUseAutoScaleMaxRestriction( boolean isEnabled ) {
+        mUseAutoScaleRestrictionMax = isEnabled;
+    }
+
+
     @Override
     public void calculate(float dataMin, float dataMax) {
 
-        // if custom, use value as is, else use data value
-        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
-        float max = mCustomAxisMax ? mAxisMaximum : dataMax;
+        float min = dataMin;
+        float max = dataMax;
 
-        // temporary range (before calculations)
+        // Make sure max is greater than min
+        // Discussion: https://github.com/danielgindi/Charts/pull/3650#discussion_r221409991
+        if (min > max)
+        {
+            if (mCustomAxisMax && mCustomAxisMin)
+            {
+                float t = min;
+                min = max;
+                max = t;
+            }
+            else if (mCustomAxisMax)
+            {
+                min = max < 0f ? max * 1.5f : max * 0.5f;
+            }
+            else if (mCustomAxisMin)
+            {
+                max = min < 0f ? min * 0.5f : min * 1.5f;
+            }
+        }
+
         float range = Math.abs(max - min);
 
         // in case all values are equal
@@ -384,21 +466,13 @@ public class YAxis extends AxisBase {
             min = min - 1f;
         }
 
-        // bottom-space only effects non-custom min
-        if (!mCustomAxisMin) {
+        // recalculate
+        range = Math.abs(max - min);
 
-            float bottomSpace = range / 100f * getSpaceBottom();
-            this.mAxisMinimum = (min - bottomSpace);
-        }
+        // calc extra spacing
+        this.mAxisMinimum = mCustomAxisMin ? this.mAxisMinimum : min - (range / 100f) * getSpaceBottom();
+        this.mAxisMaximum = mCustomAxisMax ? this.mAxisMaximum : max + (range / 100f) * getSpaceTop();
 
-        // top-space only effects non-custom max
-        if (!mCustomAxisMax) {
-
-            float topSpace = range / 100f * getSpaceTop();
-            this.mAxisMaximum = (max + topSpace);
-        }
-
-        // calc actual range
-        this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
+        this.mAxisRange = Math.abs(this.mAxisMinimum - this.mAxisMaximum);
     }
 }

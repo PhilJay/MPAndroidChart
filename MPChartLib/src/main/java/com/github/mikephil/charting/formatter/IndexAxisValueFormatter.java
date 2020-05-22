@@ -1,18 +1,11 @@
-
 package com.github.mikephil.charting.formatter;
 
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.ViewPortHandler;
-
-import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
  * This formatter is used for passing an array of x-axis labels, on whole x steps.
  */
-public class IndexAxisValueFormatter implements IAxisValueFormatter
+public class IndexAxisValueFormatter extends ValueFormatter
 {
     private String[] mValues = new String[] {};
     private int mValueCount = 0;
@@ -44,7 +37,8 @@ public class IndexAxisValueFormatter implements IAxisValueFormatter
             setValues(values.toArray(new String[values.size()]));
     }
 
-    public String getFormattedValue(float value, AxisBase axis) {
+    @Override
+    public String getFormattedValue(float value) {
         int index = Math.round(value);
 
         if (index < 0 || index >= mValueCount || index != (int)value)

@@ -2,7 +2,7 @@ package com.github.mikephil.charting.test;
 
 import com.github.mikephil.charting.utils.ObjectPool;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
