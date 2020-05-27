@@ -368,7 +368,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
                     boolean canZoomMoreX = isZoomingOut ?
                             h.canZoomOutMoreX() :
-                            h.canZoomInMoreX();
+                            (h.canZoomInMoreX() && mChart.getVisibleXRange() >= mChart.getVisibleXRangeMinimum());
 
                     boolean canZoomMoreY = isZoomingOut ?
                             h.canZoomOutMoreY() :
@@ -396,7 +396,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     boolean isZoomingOut = (scaleX < 1);
                     boolean canZoomMoreX = isZoomingOut ?
                             h.canZoomOutMoreX() :
-                            h.canZoomInMoreX();
+                            (h.canZoomInMoreX() && mChart.getVisibleXRange() >= mChart.getVisibleXRangeMinimum());
 
                     if (canZoomMoreX) {
 
