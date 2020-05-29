@@ -190,7 +190,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
                          sliceangle * j * phaseX + mChart.getRotationAngle(),
                          pOut);
 
-                if (dataSet.isDrawValuesEnabled()) {
+                if (dataSet.isDrawValuesEnabled() && entry.isDrawValue()) {
                     drawValue(c, formatter.getRadarLabel(entry), pOut.x, pOut.y - yoffset, dataSet.getValueTextColor(j));
                 }
 

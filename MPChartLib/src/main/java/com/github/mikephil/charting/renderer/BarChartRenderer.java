@@ -264,7 +264,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                         BarEntry entry = dataSet.getEntryForIndex(j / 4);
                         float val = entry.getY();
 
-                        if (dataSet.isDrawValuesEnabled()) {
+                        if (dataSet.isDrawValuesEnabled() && entry.isDrawValue()) {
                             drawValue(c, formatter.getBarLabel(entry), x, val >= 0 ?
                                             (buffer.buffer[j + 1] + posOffset) :
                                             (buffer.buffer[j + 3] + negOffset),
@@ -322,7 +322,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                                     || !mViewPortHandler.isInBoundsLeft(x))
                                 continue;
 
-                            if (dataSet.isDrawValuesEnabled()) {
+                            if (dataSet.isDrawValuesEnabled() && entry.isDrawValue()) {
                                 drawValue(c, formatter.getBarLabel(entry), x, buffer.buffer[bufferIndex + 1] +
                                                 (entry.getY() >= 0 ? posOffset : negOffset),
                                         color);
@@ -393,7 +393,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                                         || !mViewPortHandler.isInBoundsLeft(x))
                                     continue;
 
-                                if (dataSet.isDrawValuesEnabled()) {
+                                if (dataSet.isDrawValuesEnabled() && entry.isDrawValue()) {
                                     drawValue(c, formatter.getBarStackedLabel(val, entry), x, y, color);
                                 }
 

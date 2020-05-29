@@ -16,6 +16,9 @@ public abstract class BaseEntry {
     /** optional icon image */
     private Drawable mIcon = null;
 
+    /**单独控制是否绘制value*/
+    private boolean mDrawValue = true;
+
     public BaseEntry() {
 
     }
@@ -93,5 +96,13 @@ public abstract class BaseEntry {
      */
     public void setData(Object data) {
         this.mData = data;
+    }
+
+    public boolean isDrawValue() {
+        return mDrawValue;
+    }
+
+    public void setDrawValue(boolean mDrawValue) {
+        this.mDrawValue = mDrawValue;
     }
 }

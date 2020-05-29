@@ -1,6 +1,8 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
+import android.view.Gravity;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
@@ -23,7 +25,10 @@ public class Description extends ComponentBase {
     /**
      * the alignment of the description text
      */
-    private Paint.Align mTextAlign = Paint.Align.RIGHT;
+    private Paint.Align mTextAlign = Paint.Align.LEFT;
+
+    /**@see TextView#setGravity(int)*/
+    private int mGravity = Gravity.RIGHT | Gravity.BOTTOM;
 
     public Description() {
         super();
@@ -91,5 +96,13 @@ public class Description extends ComponentBase {
      */
     public Paint.Align getTextAlign() {
         return mTextAlign;
+    }
+
+    public int getGravity() {
+        return mGravity;
+    }
+
+    public void setGravity(int gravity) {
+        this.mGravity = gravity;
     }
 }
