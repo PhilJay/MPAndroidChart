@@ -60,6 +60,7 @@ public class PieChartRenderer extends DataRenderer {
     private RectF mCenterTextLastBounds = new RectF();
     private RectF[] mRectBuffer = {new RectF(), new RectF(), new RectF()};
 
+    private float labelRadius = 0f;
     /**
      * Bitmap for drawing the center hole
      */
@@ -112,6 +113,10 @@ public class PieChartRenderer extends DataRenderer {
 
     public Paint getPaintEntryLabels() {
         return mEntryLabelsPaint;
+    }
+
+    public void setLabelRadius(float labelRadius){
+        this.labelRadius = labelRadius;
     }
 
     @Override
@@ -429,8 +434,10 @@ public class PieChartRenderer extends DataRenderer {
                 rotationAngle += roundedRadius * 360 / (Math.PI * 2 * radius);
             }
         }
-
-        final float labelRadius = radius - labelRadiusOffset;
+        // if labelRadius is not setup or has value greater than radius take default value
+        if(labelRadius == 0f || labelRadius > radius){
+            labelRadius = radius - labelRadiusOffset;
+        }
 
         PieData data = mChart.getData();
         List<IPieDataSet> dataSets = data.getDataSets();
