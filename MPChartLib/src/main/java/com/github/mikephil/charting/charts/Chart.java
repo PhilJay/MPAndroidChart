@@ -229,9 +229,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 		mInfoPaint.setTextSize(Utils.convertDpToPixel(12f));
 
 		if (mLogEnabled) {
-			Log.i("", "Chart.init()");
-		}
-	}
+            Log.i("", "Chart.init()");
+
+        // enable being detected by ScreenReader
+        setFocusable(true);
+    }}
 
 	// public void initWithDummyData() {
 	// ColorTemplate template = new ColorTemplate();
@@ -1649,4 +1651,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	public void setUnbindEnabled(boolean enabled) {
 		this.mUnbind = enabled;
 	}
+
+    // region accessibility
+
+
+    // endregion
 }
