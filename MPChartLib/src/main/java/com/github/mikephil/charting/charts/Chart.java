@@ -237,6 +237,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         if (mLogEnabled)
             Log.i("", "Chart.init()");
+
+        // enable being detected by ScreenReader
+        setFocusable(true);
     }
 
     // public void initWithDummyData() {
@@ -1818,4 +1821,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     public void setUnbindEnabled(boolean enabled) {
         this.mUnbind = enabled;
     }
+
+    // region accessibility
+
+
+    // endregion
 }
