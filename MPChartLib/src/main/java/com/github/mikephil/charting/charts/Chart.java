@@ -176,6 +176,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     private String TAG = "abilityTag";
 
     /**
+     * Additional data on top of dynamically generated description. This can be set by the user.
+     */
+    private String accessibilitySummaryDescription = "";
+
+    /**
 	 * default constructor for initialization in code
 	 */
 	public Chart(Context context) {
@@ -1666,6 +1671,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public abstract String getAccessibilityDescription();
 
+    public String getAccessibilitySummaryDescription() {
+        return accessibilitySummaryDescription;
+    }
+
+    public void setAccessibilitySummaryDescription(String accessibilitySummaryDescription) {
+        this.accessibilitySummaryDescription = accessibilitySummaryDescription;
+    }
+
     @Override
     public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
 
@@ -1673,6 +1686,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         Log.d(TAG, "Dispatch called for Chart <View> and completed as " + completed);
 
         event.getText().add(getAccessibilityDescription());
+
+        // Add the user generated summary after the dynamic summary is complete.
+        if (!TextUtils.isEmpty(this.getAccessibilitySummaryDescription())) {
+            event.getText().add(this.getAccessibilitySummaryDescription());
+        }
 
         return true;
     }
