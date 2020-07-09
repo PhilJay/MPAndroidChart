@@ -8,6 +8,7 @@ import android.util.Log;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.BarHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
@@ -278,6 +279,29 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
     @Override
     public String getAccessibilityDescription() {
-        return "This is a bar chart";
+
+        BarData barData = getBarData();
+
+        int entryCount = barData.getEntryCount();
+
+        // Find the min and max index
+        IAxisValueFormatter yAxisValueFormatter = getAxisLeft().getValueFormatter();
+        String minVal = yAxisValueFormatter.getFormattedValue(barData.getYMin(), null);
+        String maxVal = yAxisValueFormatter.getFormattedValue(barData.getYMax(), null);
+
+        // Data range...
+        IAxisValueFormatter xAxisValueFormatter = getXAxis().getValueFormatter();
+        String minRange = xAxisValueFormatter.getFormattedValue(barData.getXMin(), null);
+        String maxRange = xAxisValueFormatter.getFormattedValue(barData.getXMax(), null);
+
+        String entries = entryCount == 1 ? "entry" : "entries";
+
+        // Format the values of min and max; to recite them back
+
+        String description = String.format("The bar chart has %d %s. " +
+                        "The minimum value is %s and maximum value is %s",
+                entryCount, entries, minVal, maxVal);
+
+        return description;
     }
 }
