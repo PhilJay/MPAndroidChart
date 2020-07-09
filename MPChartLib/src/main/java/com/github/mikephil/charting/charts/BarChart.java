@@ -255,4 +255,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
             notifyDataSetChanged();
         }
     }
+
+    @Override
+    public String getAccessibilityDescription() {
+        return "This is a bar chart";
+    }
 }
