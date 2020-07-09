@@ -47,4 +47,9 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
         }
         super.onDetachedFromWindow();
     }
+
+    @Override
+    public String getAccessibilityDescription() {
+        return "This is a line chart";
+    }
 }

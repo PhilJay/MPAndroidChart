@@ -74,4 +74,9 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
             return new ScatterShape[]{SQUARE, CIRCLE, TRIANGLE, CROSS, X, CHEVRON_UP, CHEVRON_DOWN};
         }
     }
+
+    @Override
+    public String getAccessibilityDescription() {
+        return "This is scatter chart";
+    }
 }

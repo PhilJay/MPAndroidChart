@@ -801,4 +801,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
         }
         super.onDetachedFromWindow();
     }
+
+    @Override
+    public String getAccessibilityDescription() {
+        return "This is a pie chart";
+    }
 }

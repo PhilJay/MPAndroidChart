@@ -266,4 +266,8 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 		}
 	}
 
+    @Override
+    public String getAccessibilityDescription() {
+        return "This is a combined chart";
+    }
 }

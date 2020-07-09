@@ -275,4 +275,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         this.mDrawRoundedBars = true;
         init();
     }
+
+    @Override
+    public String getAccessibilityDescription() {
+        return "This is a bar chart";
+    }
 }

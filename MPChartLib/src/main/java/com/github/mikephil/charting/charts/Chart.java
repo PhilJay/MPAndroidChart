@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityEvent;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
@@ -170,6 +171,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	private float mExtraTopOffset = 0.f, mExtraRightOffset = 0.f, mExtraBottomOffset = 0.f, mExtraLeftOffset = 0.f;
 
 	/**
+     * Tag for logging accessibility related content
+     */
+    private String TAG = "abilityTag";
+
+    /**
 	 * default constructor for initialization in code
 	 */
 	public Chart(Context context) {
@@ -1654,6 +1660,22 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     // region accessibility
 
+    /**
+     *
+     * @return accessibility description must be created for each chart
+     */
+    public abstract String getAccessibilityDescription();
+
+    @Override
+    public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
+
+        boolean completed = super.dispatchPopulateAccessibilityEvent(event);
+        Log.d(TAG, "Dispatch called for Chart <View> and completed as " + completed);
+
+        event.getText().add(getAccessibilityDescription());
+
+        return true;
+    }
 
     // endregion
 }
