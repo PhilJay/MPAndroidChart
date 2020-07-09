@@ -15,6 +15,8 @@ import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 
+import java.util.Locale;
+
 /**
  * Chart that draws bars.
  *
@@ -269,13 +271,19 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         String minVal = yAxisValueFormmater.getFormattedValue(barData.getYMin());
         String maxVal = yAxisValueFormmater.getFormattedValue(barData.getYMax());
 
+        // Data range...
+        ValueFormatter xAxisValueFormatter = getXAxis().getValueFormatter();
+        String minRange = xAxisValueFormatter.getFormattedValue(barData.getXMin());
+        String maxRange = xAxisValueFormatter.getFormattedValue(barData.getXMax());
+
         String entries = entryCount == 1 ? "entry" : "entries";
 
         // Format the values of min and max; to recite them back
 
-        String description = String.format("The bar chart has %d %s. " +
-                        "The minimum value is %s and maximum value is %s",
-                entryCount, entries, minVal, maxVal);
+        String description = String.format(Locale.getDefault(), "The bar chart has %d %s. " +
+                        "The minimum value is %s and maximum value is %s." +
+                        "Data ranges from %s to %s.",
+                entryCount, entries, minVal, maxVal, minRange, maxRange);
 
         return description;
     }
