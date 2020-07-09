@@ -262,7 +262,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
         BarData barData = getBarData();
 
-        int entryCount = barData.getDataSetCount();
+        int entryCount = barData.getEntryCount();
 
         // Find the min and max index
         ValueFormatter yAxisValueFormmater = getAxisLeft().getValueFormatter();
