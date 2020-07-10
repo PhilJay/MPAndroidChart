@@ -44,6 +44,6 @@ public class CandleStickChart extends BarLineChartBase<CandleData> implements Ca
 
     @Override
     public String getAccessibilityDescription() {
-        return "This is a candlestick";
+        return "This is a candlestick chart";
     }
 }

@@ -6,10 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.PieHighlighter;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
@@ -17,7 +19,9 @@ import com.github.mikephil.charting.renderer.PieChartRenderer;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * View that represents a pie chart. Draws cake like slices.
@@ -804,6 +808,24 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     @Override
     public String getAccessibilityDescription() {
-        return "This is a pie chart";
+
+        PieData pieData = getData();
+
+        int entryCount = pieData.getEntryCount();
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(String.format(Locale.getDefault(), "The pie chart has %d entries.",
+                entryCount));
+
+        for (int i = 0; i < entryCount; i++) {
+            PieEntry entry = pieData.getDataSet().getEntryForIndex(i);
+            float percentage = (entry.getValue() / pieData.getYValueSum()) * 100;
+            builder.append(String.format(Locale.getDefault(), "%s has %.2f percent pie taken",
+                    (TextUtils.isEmpty(entry.getLabel()) ? "No Label" : entry.getLabel()),
+                    percentage));
+        }
+
+        return builder.toString();
     }
 }
