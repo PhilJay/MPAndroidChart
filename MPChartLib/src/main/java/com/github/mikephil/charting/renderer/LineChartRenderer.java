@@ -101,7 +101,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 drawDataSet(c, set);
         }
 
-        c.drawBitmap(drawBitmap, 0, 0, mRenderPaint);
+        c.drawBitmap(drawBitmap, 0, 0, null);
     }
 
     protected void drawDataSet(Canvas c, ILineDataSet dataSet) {
