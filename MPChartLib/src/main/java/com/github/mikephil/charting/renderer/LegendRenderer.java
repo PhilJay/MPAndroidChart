@@ -354,7 +354,7 @@ public class LegendRenderer extends Renderer {
                     boolean drawingForm = e.form != Legend.LegendForm.NONE;
                     float formSize = Float.isNaN(e.formSize) ? defaultFormSize : Utils.convertDpToPixel(e.formSize);
 
-                    if (i < calculatedLabelBreakPoints.size() && calculatedLabelBreakPoints.get(i)) {
+                    if (calculatedLabelBreakPoints != null && i < calculatedLabelBreakPoints.size() && calculatedLabelBreakPoints.get(i)) {
                         posX = originPosX;
                         posY += labelLineHeight + labelLineSpacing;
                     }
