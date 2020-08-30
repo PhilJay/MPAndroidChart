@@ -463,9 +463,17 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                     y2 = -e.getNegativeSum();
 
                 } else {
+                    Range range;
+                    try {
+                        range = e.getRanges()[high.getStackIndex()];
+                    }
+                    catch (Exception ex) {
+                        Log.e("BarChartRenderer", ex.getMessage());
+                        ex.printStackTrace();
 
-                    Range range = e.getRanges()[high.getStackIndex()];
-
+                        return;
+                    }
+                    
                     y1 = range.from;
                     y2 = range.to;
                 }
