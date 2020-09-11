@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Property;
 import android.view.MotionEvent;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -482,7 +483,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
         setRotationAngle(fromangle);
 
-        ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle,
+        ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, ROTATION_ANGLE, fromangle,
                 toangle);
         spinAnimator.setDuration(durationmillis);
         spinAnimator.setInterpolator(easing);
@@ -496,4 +497,16 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
         });
         spinAnimator.start();
     }
+
+    private static final Property<PieRadarChartBase, Float> ROTATION_ANGLE = new Property<PieRadarChartBase, Float>(Float.class, "rotationAngle") {
+        @Override
+        public Float get(PieRadarChartBase object) {
+            return object.getRotationAngle();
+        }
+
+        @Override
+        public void set(PieRadarChartBase object, Float value) {
+            object.setRotationAngle(value);
+        }
+    };
 }
