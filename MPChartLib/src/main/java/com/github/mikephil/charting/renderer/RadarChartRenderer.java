@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
@@ -10,7 +11,6 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -174,8 +174,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
             // apply the text-styling defined by the DataSet
             applyValueTextStyle(dataSet);
 
-            ValueFormatter formatter = dataSet.getValueFormatter();
-
             MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
             iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
             iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
@@ -191,7 +189,15 @@ public class RadarChartRenderer extends LineRadarRenderer {
                          pOut);
 
                 if (dataSet.isDrawValuesEnabled()) {
-                    drawValue(c, formatter.getRadarLabel(entry), pOut.x, pOut.y - yoffset, dataSet.getValueTextColor(j));
+                    drawValue(c,
+                            dataSet.getValueFormatter(),
+                            entry.getY(),
+                            entry,
+                            i,
+                            pOut.x,
+                            pOut.y - yoffset,
+                            dataSet.getValueTextColor
+                                    (j));
                 }
 
                 if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
@@ -223,12 +229,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
         MPPointF.recycleInstance(pIcon);
-    }
-
-    @Override
-    public void drawValue(Canvas c, String valueText, float x, float y, int color) {
-        mValuePaint.setColor(color);
-        c.drawText(valueText, x, y, mValuePaint);
     }
 
     @Override

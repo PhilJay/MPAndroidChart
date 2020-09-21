@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting.charts;
 
 import android.animation.ValueAnimator;
@@ -34,7 +35,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.IHighlighter;
@@ -1021,7 +1022,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @return
      */
-    public ValueFormatter getDefaultValueFormatter() {
+    public IValueFormatter getDefaultValueFormatter() {
         return mDefaultValueFormatter;
     }
 

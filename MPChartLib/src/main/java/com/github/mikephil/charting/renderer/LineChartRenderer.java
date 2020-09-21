@@ -12,7 +12,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -295,7 +294,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         int entryCount = dataSet.getEntryCount();
 
-        final boolean isDrawSteppedEnabled = dataSet.getMode() == LineDataSet.Mode.STEPPED;
+        final boolean isDrawSteppedEnabled = dataSet.isDrawSteppedEnabled();
         final int pointsPerEntryPair = isDrawSteppedEnabled ? 4 : 2;
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
@@ -562,7 +561,6 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                 float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
                         .getPhaseY(), mXBounds.min, mXBounds.max);
-                ValueFormatter formatter = dataSet.getValueFormatter();
 
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
                 iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
@@ -582,7 +580,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
                     if (dataSet.isDrawValuesEnabled()) {
-                        drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2));
+                        drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, x,
+                                y - valOffset, dataSet.getValueTextColor(j / 2));
                     }
 
                     if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
@@ -602,12 +601,6 @@ public class LineChartRenderer extends LineRadarRenderer {
                 MPPointF.recycleInstance(iconsOffset);
             }
         }
-    }
-
-    @Override
-    public void drawValue(Canvas c, String valueText, float x, float y, int color) {
-        mValuePaint.setColor(color);
-        c.drawText(valueText, x, y, mValuePaint);
     }
 
     @Override

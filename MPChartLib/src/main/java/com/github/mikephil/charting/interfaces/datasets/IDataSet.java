@@ -1,13 +1,14 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
 import android.graphics.DashPathEffect;
+import android.graphics.PointF;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
 
 import java.util.List;
@@ -317,14 +318,14 @@ public interface IDataSet<T extends Entry> {
      *
      * @param f
      */
-    void setValueFormatter(ValueFormatter f);
+    void setValueFormatter(IValueFormatter f);
 
     /**
      * Returns the formatter used for drawing the values inside the chart.
      *
      * @return
      */
-    ValueFormatter getValueFormatter();
+    IValueFormatter getValueFormatter();
 
     /**
      * Returns true if the valueFormatter object of this DataSet is null.
