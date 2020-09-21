@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Bitmap;
@@ -21,7 +22,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -464,7 +465,7 @@ public class PieChartRenderer extends DataRenderer {
             float lineHeight = Utils.calcTextHeight(mValuePaint, "Q")
                     + Utils.convertDpToPixel(4f);
 
-            ValueFormatter formatter = dataSet.getValueFormatter();
+            IValueFormatter formatter = dataSet.getValueFormatter();
 
             int entryCount = dataSet.getEntryCount();
 
@@ -500,7 +501,6 @@ public class PieChartRenderer extends DataRenderer {
 
                 float value = mChart.isUsePercentValuesEnabled() ? entry.getY()
                         / yValueSum * 100f : entry.getY();
-                String formattedValue = formatter.getPieLabel(value, entry);
                 String entryLabel = entry.getLabel();
 
                 final float sliceXBase = (float) Math.cos(transformedAngle * Utils.FDEG2RAD);
@@ -583,7 +583,14 @@ public class PieChartRenderer extends DataRenderer {
                     // draw everything, depending on settings
                     if (drawXOutside && drawYOutside) {
 
-                        drawValue(c, formattedValue, labelPtx, labelPty, dataSet.getValueTextColor(j));
+                        drawValue(c,
+                                formatter,
+                                value,
+                                entry,
+                                0,
+                                labelPtx,
+                                labelPty,
+                                dataSet.getValueTextColor(j));
 
                         if (j < data.getEntryCount() && entryLabel != null) {
                             drawEntryLabel(c, entryLabel, labelPtx, labelPty + lineHeight);
@@ -595,7 +602,8 @@ public class PieChartRenderer extends DataRenderer {
                         }
                     } else if (drawYOutside) {
 
-                        drawValue(c, formattedValue, labelPtx, labelPty + lineHeight / 2.f, dataSet.getValueTextColor(j));
+                        drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet
+                                .getValueTextColor(j));
                     }
                 }
 
@@ -609,7 +617,7 @@ public class PieChartRenderer extends DataRenderer {
                     // draw everything, depending on settings
                     if (drawXInside && drawYInside) {
 
-                        drawValue(c, formattedValue, x, y, dataSet.getValueTextColor(j));
+                        drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
                         if (j < data.getEntryCount() && entryLabel != null) {
                             drawEntryLabel(c, entryLabel, x, y + lineHeight);
@@ -620,7 +628,8 @@ public class PieChartRenderer extends DataRenderer {
                             drawEntryLabel(c, entryLabel, x, y + lineHeight / 2f);
                         }
                     } else if (drawYInside) {
-                        drawValue(c, formattedValue, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+
+                        drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
                     }
                 }
 
@@ -648,12 +657,6 @@ public class PieChartRenderer extends DataRenderer {
         }
         MPPointF.recycleInstance(center);
         c.restore();
-    }
-
-    @Override
-    public void drawValue(Canvas c, String valueText, float x, float y, int color) {
-        mValuePaint.setColor(color);
-        c.drawText(valueText, x, y, mValuePaint);
     }
 
     /**

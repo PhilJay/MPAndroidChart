@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
@@ -10,7 +11,7 @@ import com.github.mikephil.charting.buffer.BarBuffer;
 import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
@@ -181,7 +182,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                 applyValueTextStyle(dataSet);
                 final float halfTextHeight = Utils.calcTextHeight(mValuePaint, "10") / 2f;
 
-                ValueFormatter formatter = dataSet.getValueFormatter();
+                IValueFormatter formatter = dataSet.getValueFormatter();
 
                 // get the buffer
                 BarBuffer buffer = mBarBuffers[i];
@@ -210,7 +211,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                         BarEntry entry = dataSet.getEntryForIndex(j / 4);
                         float val = entry.getY();
-                        String formattedValue = formatter.getBarLabel(entry);
+                        String formattedValue = formatter.getFormattedValue(val, entry, i, mViewPortHandler);
 
                         // calculate the correct offset depending on the draw position of the value
                         float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
@@ -280,7 +281,9 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[bufferIndex + 1]))
                                 continue;
 
-                            String formattedValue = formatter.getBarLabel(entry);
+                            float val = entry.getY();
+                            String formattedValue = formatter.getFormattedValue(val,
+                                    entry, i, mViewPortHandler);
 
                             // calculate the correct offset depending on the draw position of the value
                             float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
@@ -350,7 +353,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             for (int k = 0; k < transformed.length; k += 2) {
 
                                 final float val = vals[k / 2];
-                                String formattedValue = formatter.getBarStackedLabel(val, entry);
+                                String formattedValue = formatter.getFormattedValue(val,
+                                        entry, i, mViewPortHandler);
 
                                 // calculate the correct offset depending on the draw position of the value
                                 float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
@@ -408,8 +412,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         }
     }
 
-    @Override
-    public void drawValue(Canvas c, String valueText, float x, float y, int color) {
+    protected void drawValue(Canvas c, String valueText, float x, float y, int color) {
         mValuePaint.setColor(color);
         c.drawText(valueText, x, y, mValuePaint);
     }
