@@ -81,6 +81,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     private boolean mDragXEnabled = true;
     private boolean mDragYEnabled = true;
 
+    /**
+     * if true, fling gesture is enabled for the chart
+     */
+    private boolean mFlingEnabled = false;
+
     private boolean mScaleXEnabled = true;
     private boolean mScaleYEnabled = true;
 
@@ -1146,6 +1151,22 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public boolean isDragYEnabled() {
         return mDragYEnabled;
+    }
+
+    /**
+     * Set this to true to enable fling gesture for the chart
+     *
+     * @param enabled
+     */
+    public void setFlingEnabled(boolean enabled) { this.mFlingEnabled = enabled; }
+
+    /**
+     * Returns true if fling gesture is enabled for the chart, false if not.
+     *
+     * @return
+     */
+    public boolean isFlingEnabled() {
+        return mFlingEnabled;
     }
 
     /**
