@@ -49,6 +49,11 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     private int mWebAlpha = 150;
 
+	/**
+     * web inner transparency the grid is drawn with (0-255)
+     */
+    private int mWebAlphaInner = 150;
+
     /**
      * flag indicating if the web lines should be drawn or not
      */
@@ -241,7 +246,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Sets the transparency (alpha) value for all web lines, default: 150, 255
+     * Sets the transparency (alpha) value for web lines that comes from the center, default: 150, 255
      * = 100% opaque, 0 = 100% transparent
      *
      * @param alpha
@@ -251,12 +256,31 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the alpha value for all web lines.
+     * Returns the alpha value for web lines that comes from the center.
      *
      * @return
      */
     public int getWebAlpha() {
         return mWebAlpha;
+    }
+
+    /**
+     * Sets the transparency (alpha) value for inner web lines, default: 150, 255
+     * = 100% opaque, 0 = 100% transparent
+     *
+     * @param alpha
+     */
+    public void setWebAlphaInner(int alpha) {
+        mWebAlphaInner = alpha;
+    }
+
+    /**
+     * Returns the alpha value for inner web lines.
+     *
+     * @return
+     */
+    public int getWebAlphaInner() {
+        return mWebAlphaInner;
     }
 
     /**

@@ -271,7 +271,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
         // draw the inner-web
         mWebPaint.setStrokeWidth(mChart.getWebLineWidthInner());
         mWebPaint.setColor(mChart.getWebColorInner());
-        mWebPaint.setAlpha(mChart.getWebAlpha());
+        mWebPaint.setAlpha(mChart.getWebAlphaInner());
 
         int labelCount = mChart.getYAxis().mEntryCount;
 
