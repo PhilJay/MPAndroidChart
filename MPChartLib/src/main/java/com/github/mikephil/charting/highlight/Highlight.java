@@ -60,10 +60,18 @@ public class Highlight {
      */
     private float mDrawY;
 
+    public Highlight(float x, float y, int dataSetIndex, int dataIndex) {
+        this.mX = x;
+        this.mY = y;
+        this.mDataSetIndex = dataSetIndex;
+        this.mDataIndex = dataIndex;
+    }
+
     public Highlight(float x, float y, int dataSetIndex) {
         this.mX = x;
         this.mY = y;
         this.mDataSetIndex = dataSetIndex;
+        this.mDataIndex = -1;
     }
 
     public Highlight(float x, int dataSetIndex, int stackIndex) {

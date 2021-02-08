@@ -24,11 +24,11 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.StackedValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -78,7 +78,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         // change the position of the y-labels
         YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setValueFormatter(new MyValueFormatter("K"));
+        leftAxis.setValueFormatter(new MyAxisValueFormatter());
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         chart.getAxisRight().setEnabled(false);
 
@@ -142,7 +142,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             dataSets.add(set1);
 
             BarData data = new BarData(dataSets);
-            data.setValueFormatter(new StackedValueFormatter(false, "", 1));
+            data.setValueFormatter(new MyValueFormatter());
             data.setValueTextColor(Color.WHITE);
 
             chart.setData(data);

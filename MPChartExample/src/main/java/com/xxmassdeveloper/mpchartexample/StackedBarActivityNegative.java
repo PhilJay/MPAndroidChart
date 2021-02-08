@@ -1,3 +1,4 @@
+
 package com.xxmassdeveloper.mpchartexample;
 
 import android.Manifest;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -21,10 +23,12 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.text.DecimalFormat;
@@ -76,12 +80,12 @@ public class StackedBarActivityNegative extends DemoBase implements
         xAxis.setCenterAxisLabels(true);
         xAxis.setLabelCount(12);
         xAxis.setGranularity(10f);
-        xAxis.setValueFormatter(new ValueFormatter() {
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
 
             private final DecimalFormat format = new DecimalFormat("###");
 
             @Override
-            public String getFormattedValue(float value) {
+            public String getFormattedValue(float value, AxisBase axis) {
                 return format.format(value) + "-" + format.format(value + 10);
             }
         });
@@ -238,7 +242,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         Log.i("NOTING SELECTED", "");
     }
 
-    private class CustomFormatter extends ValueFormatter {
+    private class CustomFormatter implements IValueFormatter, IAxisValueFormatter {
 
         private final DecimalFormat mFormat;
 
@@ -246,8 +250,15 @@ public class StackedBarActivityNegative extends DemoBase implements
             mFormat = new DecimalFormat("###");
         }
 
+        // data
         @Override
-        public String getFormattedValue(float value) {
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            return mFormat.format(Math.abs(value)) + "m";
+        }
+
+        // YAxis
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
             return mFormat.format(Math.abs(value)) + "m";
         }
     }

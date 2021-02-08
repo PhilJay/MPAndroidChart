@@ -24,6 +24,7 @@
         <activity android:name="LineChartTime" />
         <activity android:name="BarChartActivity" />
 		<activity android:name="HorizontalBarChartActivity" />
+        <activity android:name="HorizontalBarNegativeChartActivity" />
         <activity android:name="PieChartActivity" />
         <activity android:name="PiePolylineChartActivity" />
         <activity android:name="MultiLineChartActivity" />

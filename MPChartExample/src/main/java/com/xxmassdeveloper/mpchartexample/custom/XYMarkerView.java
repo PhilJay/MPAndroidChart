@@ -1,3 +1,4 @@
+
 package com.xxmassdeveloper.mpchartexample.custom;
 
 import android.annotation.SuppressLint;
@@ -6,7 +7,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -22,11 +23,11 @@ import java.text.DecimalFormat;
 public class XYMarkerView extends MarkerView {
 
     private final TextView tvContent;
-    private final ValueFormatter xAxisValueFormatter;
+    private final IAxisValueFormatter xAxisValueFormatter;
 
     private final DecimalFormat format;
 
-    public XYMarkerView(Context context, ValueFormatter xAxisValueFormatter) {
+    public XYMarkerView(Context context, IAxisValueFormatter xAxisValueFormatter) {
         super(context, R.layout.custom_marker_view);
 
         this.xAxisValueFormatter = xAxisValueFormatter;
@@ -39,7 +40,7 @@ public class XYMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
-        tvContent.setText(String.format("x: %s, y: %s", xAxisValueFormatter.getFormattedValue(e.getX()), format.format(e.getY())));
+        tvContent.setText(String.format("x: %s, y: %s", xAxisValueFormatter.getFormattedValue(e.getX(), null), format.format(e.getY())));
 
         super.refreshContent(e, highlight);
     }

@@ -22,3 +22,6 @@ Instead, do the following:
 ### You have been warned!
 
 From now on, any issues asking for help will get closed with a link to this file.
+
+### Additional Context
+ADD A REWARD using [Speed](speedoss.com) to SOLVE this issue QUICKLY and SUPPORT this project.

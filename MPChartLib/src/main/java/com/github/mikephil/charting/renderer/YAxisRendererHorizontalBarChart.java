@@ -142,11 +142,16 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                 ? mYAxis.mEntryCount
                 : (mYAxis.mEntryCount - 1);
 
+        float xOffset = mYAxis.getLabelXOffset();
+
         for (int i = from; i < to; i++) {
 
             String text = mYAxis.getFormattedLabel(i);
 
-            c.drawText(text, positions[i * 2], fixedPosition - offset, mAxisLabelPaint);
+            c.drawText(text,
+                    positions[i * 2],
+                    fixedPosition - offset + xOffset,
+                    mAxisLabelPaint);
         }
     }
 

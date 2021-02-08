@@ -1,6 +1,8 @@
 package com.github.mikephil.charting.formatter;
 
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 
@@ -10,7 +12,7 @@ import java.text.DecimalFormat;
  * A formatter specifically for stacked BarChart that allows to specify whether the all stack values
  * or just the top value should be drawn.
  */
-public class StackedValueFormatter extends ValueFormatter
+public class StackedValueFormatter implements IValueFormatter
 {
 
     /**
@@ -21,7 +23,7 @@ public class StackedValueFormatter extends ValueFormatter
     /**
      * a string that should be appended behind the value
      */
-    private String mSuffix;
+    private String mAppendix;
 
     private DecimalFormat mFormat;
 
@@ -29,12 +31,12 @@ public class StackedValueFormatter extends ValueFormatter
      * Constructor.
      *
      * @param drawWholeStack if true, all stack values of the stacked bar entry are drawn, else only top
-     * @param suffix         a string that should be appended behind the value
+     * @param appendix       a string that should be appended behind the value
      * @param decimals       the number of decimal digits to use
      */
-    public StackedValueFormatter(boolean drawWholeStack, String suffix, int decimals) {
+    public StackedValueFormatter(boolean drawWholeStack, String appendix, int decimals) {
         this.mDrawWholeStack = drawWholeStack;
-        this.mSuffix = suffix;
+        this.mAppendix = appendix;
 
         StringBuffer b = new StringBuffer();
         for (int i = 0; i < decimals; i++) {
@@ -47,10 +49,12 @@ public class StackedValueFormatter extends ValueFormatter
     }
 
     @Override
-    public String getBarStackedLabel(float value, BarEntry entry) {
-        if (!mDrawWholeStack) {
+    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
-            float[] vals = entry.getYVals();
+        if (!mDrawWholeStack && entry instanceof BarEntry) {
+
+            BarEntry barEntry = (BarEntry) entry;
+            float[] vals = barEntry.getYVals();
 
             if (vals != null) {
 
@@ -58,7 +62,7 @@ public class StackedValueFormatter extends ValueFormatter
                 if (vals[vals.length - 1] == value) {
 
                     // return the "sum" across all stack values
-                    return mFormat.format(entry.getY()) + mSuffix;
+                    return mFormat.format(barEntry.getY()) + mAppendix;
                 } else {
                     return ""; // return empty
                 }
@@ -66,6 +70,6 @@ public class StackedValueFormatter extends ValueFormatter
         }
 
         // return the "proposed" value
-        return mFormat.format(value) + mSuffix;
+        return mFormat.format(value) + mAppendix;
     }
 }

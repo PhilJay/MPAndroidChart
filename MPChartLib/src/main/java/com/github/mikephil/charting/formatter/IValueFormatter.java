@@ -4,12 +4,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
- * Interface to format all values before they are drawn as labels.
+ * Interface that allows custom formatting of all values inside the chart before they are
+ * being drawn to the screen. Simply create your own formatting class and let
+ * it implement IValueFormatter. Then override the getFormattedValue(...) method
+ * and return whatever you want.
  *
  * @author Philipp Jahoda
- * @deprecated Extend {@link ValueFormatter} instead
  */
-@Deprecated
 public interface IValueFormatter
 {
 
@@ -23,9 +24,6 @@ public interface IValueFormatter
      * @param dataSetIndex    the index of the DataSet the entry in focus belongs to
      * @param viewPortHandler provides information about the current chart state (scale, translation, ...)
      * @return the formatted label ready for being drawn
-     *
-     * @deprecated Extend {@link ValueFormatter} and override an appropriate method
      */
-    @Deprecated
     String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler);
 }
