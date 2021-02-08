@@ -74,5 +74,5 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
      * False if all stacks in an entry share the same color returned by {@link #getValueTextColor(int)}
      * @return
      */
-    boolean isUseTextColorsonYAxis();
+    boolean isUseTextColorsOnYAxis();
 }
