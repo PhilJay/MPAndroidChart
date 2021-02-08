@@ -43,7 +43,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     protected List<Fill> mFills = null;
 
-    private boolean mValuesUseBarColor = false;
+    private boolean mUseTextColorsonYAxis = false;
 
     public BarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
@@ -300,16 +300,16 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     /**
-     * Call this with value true, if each stack value should use the same color as its stack bar.
-     * If false (default), all stacks in an entry share the same color returned by {@link #getValueTextColor(int)}
-     * @param valuesUseBarColor
+     * Call this with value true, if text colors instead of being indexed on the x axis,
+     * should be used to distinguish values on the y axis
+     * @param useTextColorsonYAxis
      */
-    public void setValuesUseBarColor(boolean valuesUseBarColor) {
-        mValuesUseBarColor = valuesUseBarColor;
+    public void setUseTextColorsonYAxis(boolean useTextColorsonYAxis) {
+        mUseTextColorsonYAxis = useTextColorsonYAxis;
     }
 
     @Override
-    public boolean isValuesUseBarColor() {
-        return mValuesUseBarColor;
+    public boolean isUseTextColorsonYAxis() {
+        return mUseTextColorsonYAxis;
     }
 }
