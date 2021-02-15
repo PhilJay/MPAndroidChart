@@ -1,3 +1,4 @@
+
 package com.xxmassdeveloper.mpchartexample;
 
 import android.content.Intent;
@@ -19,15 +20,10 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.CandleData;
-import com.github.mikephil.charting.data.CandleDataSet;
-import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -35,7 +31,7 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class CombinedChartActivityTest extends DemoBase {
+public class CombinedChartActivityTest2 extends DemoBase {
 
     private CombinedChart chart;
     private final int count = 12;
@@ -54,35 +50,126 @@ public class CombinedChartActivityTest extends DemoBase {
         chart.setBackgroundColor(Color.WHITE);
         chart.setDrawGridBackground(false);
 
-        if (chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart initialized with draw bar shadow enabled");
+        chart.setHighlightFullBarEnabled(true);
+        if (!chart.isHighlightFullBarEnabled()) {
+            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
         }
 
-        chart.setDrawBarShadow(false);
-
-        if (chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        chart.setHighlightFullBarEnabled(false);
+        if (chart.isHighlightFullBarEnabled()) {
+            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
         }
 
-        if (!chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart initialized with draw value disabled");
+        chart.setDrawValueAboveBar(false);
+        if (chart.isDrawValueAboveBarEnabled()) {
+            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
+        }
+
+        chart.setHighlightFullBarEnabled(true);
+        if (!chart.isHighlightFullBarEnabled()) {
+            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
         }
 
         chart.setDrawValueAboveBar(true);
-
         if (!chart.isDrawValueAboveBarEnabled()) {
             throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
         }
 
-        if (chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart initialized with highlightFullBar enabled");
+        chart.setDrawValueAboveBar(false);
+        if (chart.isDrawValueAboveBarEnabled()) {
+            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
         }
 
         chart.setHighlightFullBarEnabled(false);
-
         if (chart.isHighlightFullBarEnabled()) {
             throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
         }
+
+        chart.setDrawValueAboveBar(true);
+        if (!chart.isDrawValueAboveBarEnabled()) {
+            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
+        }
+
+        chart.setDrawBarShadow(true);
+        if (!chart.isDrawBarShadowEnabled()) {
+            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        }
+
+        chart.setHighlightFullBarEnabled(true);
+        if (!chart.isHighlightFullBarEnabled()) {
+            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
+        }
+
+        chart.setDrawBarShadow(false);
+        if (chart.isDrawBarShadowEnabled()) {
+            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        }
+
+        chart.setDrawBarShadow(true);
+        if (!chart.isDrawBarShadowEnabled()) {
+            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        }
+
+        chart.setDrawValueAboveBar(false);
+        if (chart.isDrawValueAboveBarEnabled()) {
+            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
+        }
+
+        chart.setDrawBarShadow(true);
+        if (!chart.isDrawBarShadowEnabled()) {
+            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        }
+
+        chart.setDrawBarShadow(false);
+        if (chart.isDrawBarShadowEnabled()) {
+            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        }
+
+        chart.setHighlightFullBarEnabled(false);
+        if (chart.isHighlightFullBarEnabled()) {
+            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
+        }
+
+        chart.setDrawBarShadow(false);
+        if (chart.isDrawBarShadowEnabled()) {
+            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        }
+
+        chart.setDrawBarShadow(true);
+        if (!chart.isDrawBarShadowEnabled()) {
+            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        }
+
+        chart.setDrawValueAboveBar(true);
+        if (!chart.isDrawValueAboveBarEnabled()) {
+            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
+        }
+
+        chart.setDrawValueAboveBar(false);
+        if (chart.isDrawValueAboveBarEnabled()) {
+            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
+        }
+
+        chart.setHighlightFullBarEnabled(true);
+        if (!chart.isHighlightFullBarEnabled()) {
+            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
+        }
+
+        chart.setDrawValueAboveBar(true);
+        if (!chart.isDrawValueAboveBarEnabled()) {
+            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
+        }
+
+        chart.setHighlightFullBarEnabled(false);
+        if (chart.isHighlightFullBarEnabled()) {
+            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
+        }
+
+        chart.setDrawBarShadow(false);
+        if (chart.isDrawBarShadowEnabled()) {
+            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
+        }
+
 
         // draw bars behind lines
         chart.setDrawOrder(new CombinedChart.DrawOrder[]{
@@ -118,23 +205,12 @@ public class CombinedChartActivityTest extends DemoBase {
         CombinedData data = new CombinedData();
 
         data.setData(generateLineData());
-        data.setData(generateBarData());
         data.setData(generateBubbleData());
-        data.setData(generateScatterData());
-        data.setData(generateCandleData());
         data.setValueTypeface(tfLight);
 
         xAxis.setAxisMaximum(data.getXMax() + 0.25f);
 
-        if (chart.getData() != null) {
-            throw new AssertionError("CombinedChart did not start with null data");
-        }
-
         chart.setData(data);
-
-        if (chart.getData() == null) {
-            throw new AssertionError("CombinedChart did not set data properly");
-        }
 
         chart.invalidate();
     }
@@ -160,84 +236,6 @@ public class CombinedChartActivityTest extends DemoBase {
         set.setValueTextColor(Color.rgb(240, 238, 70));
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        d.addDataSet(set);
-
-        return d;
-    }
-
-    private BarData generateBarData() {
-
-        ArrayList<BarEntry> entries1 = new ArrayList<>();
-        ArrayList<BarEntry> entries2 = new ArrayList<>();
-
-        for (int index = 0; index < count; index++) {
-            entries1.add(new BarEntry(0, getRandom(25, 25)));
-
-            // stacked
-            entries2.add(new BarEntry(0, new float[]{getRandom(13, 12), getRandom(13, 12)}));
-        }
-
-        BarDataSet set1 = new BarDataSet(entries1, "Bar 1");
-        set1.setColor(Color.rgb(60, 220, 78));
-        set1.setValueTextColor(Color.rgb(60, 220, 78));
-        set1.setValueTextSize(10f);
-        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-
-        BarDataSet set2 = new BarDataSet(entries2, "");
-        set2.setStackLabels(new String[]{"Stack 1", "Stack 2"});
-        set2.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255));
-        set2.setValueTextColor(Color.rgb(61, 165, 255));
-        set2.setValueTextSize(10f);
-        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
-
-        float groupSpace = 0.06f;
-        float barSpace = 0.02f; // x2 dataset
-        float barWidth = 0.45f; // x2 dataset
-        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
-
-        BarData d = new BarData(set1, set2);
-        d.setBarWidth(barWidth);
-
-        // make this BarData object grouped
-        d.groupBars(0, groupSpace, barSpace); // start at x = 0
-
-        return d;
-    }
-
-    private ScatterData generateScatterData() {
-
-        ScatterData d = new ScatterData();
-
-        ArrayList<Entry> entries = new ArrayList<>();
-
-        for (float index = 0; index < count; index += 0.5f)
-            entries.add(new Entry(index + 0.25f, getRandom(10, 55)));
-
-        ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
-        set.setColors(ColorTemplate.MATERIAL_COLORS);
-        set.setScatterShapeSize(7.5f);
-        set.setDrawValues(false);
-        set.setValueTextSize(10f);
-        d.addDataSet(set);
-
-        return d;
-    }
-
-    private CandleData generateCandleData() {
-
-        CandleData d = new CandleData();
-
-        ArrayList<CandleEntry> entries = new ArrayList<>();
-
-        for (int index = 0; index < count; index += 2)
-            entries.add(new CandleEntry(index + 1f, 90, 70, 85, 75f));
-
-        CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
-        set.setDecreasingColor(Color.rgb(142, 150, 175));
-        set.setShadowColor(Color.DKGRAY);
-        set.setBarSpace(0.3f);
-        set.setValueTextSize(10f);
-        set.setDrawValues(false);
         d.addDataSet(set);
 
         return d;

@@ -1,10 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MPChartExample" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
-    <module name="MPChartExample" />
+    <module name="MPAndroidChart.MPChartExample" />
     <option name="DEPLOY" value="true" />
     <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+    <option name="DEPLOY_AS_INSTANT" value="false" />
     <option name="ARTIFACT_NAME" value="" />
     <option name="PM_INSTALL_OPTIONS" value="" />
+    <option name="ALL_USERS" value="false" />
     <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
     <option name="ACTIVITY_EXTRA_FLAGS" value="" />
     <option name="MODE" value="default_activity" />
@@ -13,8 +15,6 @@
     <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
     <option name="FORCE_STOP_RUNNING_APP" value="true" />
     <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-    <option name="USE_LAST_SELECTED_DEVICE" value="false" />
-    <option name="PREFERRED_AVD" value="" />
     <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
     <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
     <option name="DEBUGGER_TYPE" value="Auto" />
@@ -42,11 +42,18 @@
     </Native>
     <Profilers>
       <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+      <option name="STARTUP_PROFILING_ENABLED" value="false" />
       <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
       <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sampled (Java)" />
+      <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+      <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
     </Profilers>
     <option name="DEEP_LINK" value="" />
     <option name="ACTIVITY_CLASS" value="" />
-    <method />
+    <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+    <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+    <method v="2">
+      <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+    </method>
   </configuration>
 </component>
