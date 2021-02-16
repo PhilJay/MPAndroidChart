@@ -20,7 +20,7 @@ import com.xxmassdeveloper.mpchartexample.BarChartActivitySinus;
 import com.xxmassdeveloper.mpchartexample.BarChartPositiveNegative;
 import com.xxmassdeveloper.mpchartexample.BubbleChartActivity;
 import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
-import com.xxmassdeveloper.mpchartexample.CombinedChartActivity;
+import com.xxmassdeveloper.mpchartexample.CombinedChartActivityTest1;
 import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.DynamicalAddingActivity;
 import com.xxmassdeveloper.mpchartexample.FilledLineActivity;
@@ -199,7 +199,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 i = new Intent(this, HalfPieChartActivity.class);
                 break;
             case 24:
-                i = new Intent(this, CombinedChartActivity.class);
+                //i = new Intent(this, CombinedChartActivity.class);
+                i = new Intent(this, CombinedChartActivityTest1.class);
                 break;
             case 25:
                 i = new Intent(this, ScatterChartActivity.class);
