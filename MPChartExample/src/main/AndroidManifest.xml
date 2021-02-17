@@ -47,6 +47,7 @@
         <activity android:name="CombinedChartActivity" />
         <activity android:name="CombinedChartActivityTest1" />
         <activity android:name="CombinedChartActivityTest2" />
+        <activity android:name="CombinedChartActivityTest3" />
         <activity android:name="PerformanceLineChart" />
         <activity android:name="BarChartActivitySinus" />
         <activity android:name="ScrollViewActivity" />

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -20,18 +21,29 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.CandleData;
+import com.github.mikephil.charting.data.CandleDataSet;
+import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
+import com.xxmassdeveloper.mpchartexample.notimportant.MainActivity;
+
+import org.junit.Assert;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class CombinedChartActivityTest2 extends DemoBase {
+public class CombinedChartActivityTest3 extends DemoBase {
 
     private CombinedChart chart;
     private final int count = 12;
@@ -43,138 +55,20 @@ public class CombinedChartActivityTest2 extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_combined);
 
-        setTitle("CombinedChartActivity - Test2");
+        setTitle("CombinedChartActivity - Test3");
 
         chart = findViewById(R.id.chart1);
         chart.getDescription().setEnabled(false);
         chart.setBackgroundColor(Color.WHITE);
         chart.setDrawGridBackground(false);
 
-        chart.setHighlightFullBarEnabled(true);
-        if (!chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
-        }
-
-        chart.setHighlightFullBarEnabled(false);
-        if (chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
-        }
-
-        chart.setDrawValueAboveBar(false);
-        if (chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
-        }
-
-        chart.setHighlightFullBarEnabled(true);
-        if (!chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
-        }
-
-        chart.setDrawValueAboveBar(true);
-        if (!chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
-        }
-
-        chart.setDrawValueAboveBar(false);
-        if (chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
-        }
-
-        chart.setHighlightFullBarEnabled(false);
-        if (chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
-        }
-
-        chart.setDrawValueAboveBar(true);
-        if (!chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
-        }
-
-        chart.setDrawBarShadow(true);
-        if (!chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
-        }
-
-        chart.setHighlightFullBarEnabled(true);
-        if (!chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
-        }
-
-        chart.setDrawBarShadow(false);
-        if (chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
-        }
-
-        chart.setDrawBarShadow(true);
-        if (!chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
-        }
-
-        chart.setDrawValueAboveBar(false);
-        if (chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
-        }
-
-        chart.setDrawBarShadow(true);
-        if (!chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
-        }
-
-        chart.setDrawBarShadow(false);
-        if (chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
-        }
-
-        chart.setHighlightFullBarEnabled(false);
-        if (chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
-        }
-
-        chart.setDrawBarShadow(false);
-        if (chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
-        }
-
-        chart.setDrawBarShadow(true);
-        if (!chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
-        }
-
-        chart.setDrawValueAboveBar(true);
-        if (!chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
-        }
-
-        chart.setDrawValueAboveBar(false);
-        if (chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
-        }
-
-        chart.setHighlightFullBarEnabled(true);
-        if (!chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
-        }
-
-        chart.setDrawValueAboveBar(true);
-        if (!chart.isDrawValueAboveBarEnabled()) {
-            throw new AssertionError("CombinedChart setDrawValueAboveBar did not overwrite original value");
-        }
-
-        chart.setHighlightFullBarEnabled(false);
-        if (chart.isHighlightFullBarEnabled()) {
-            throw new AssertionError("CombinedChart setHighlightFullBar did not overwrite original value");
-        }
-
-        chart.setDrawBarShadow(false);
-        if (chart.isDrawBarShadowEnabled()) {
-            throw new AssertionError("CombinedChart setDrawBarShadow did not overwrite original value");
-        }
 
 
         // draw bars behind lines
-        chart.setDrawOrder(new CombinedChart.DrawOrder[]{
+        CombinedChart.DrawOrder[] orders = new CombinedChart.DrawOrder[]{
                 CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BUBBLE, CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
-        });
+        };
+        chart.setDrawOrder(orders);
 
         Legend l = chart.getLegend();
         l.setWordWrapEnabled(true);
@@ -206,6 +100,9 @@ public class CombinedChartActivityTest2 extends DemoBase {
 
         data.setData(generateLineData());
         data.setData(generateBubbleData());
+        data.setData(generateBarData());
+        data.setData(generateCandleData());
+        data.setData(generateScatterData());
         data.setValueTypeface(tfLight);
 
         xAxis.setAxisMaximum(data.getXMax() + 0.25f);
@@ -213,6 +110,55 @@ public class CombinedChartActivityTest2 extends DemoBase {
         chart.setData(data);
 
         chart.invalidate();
+
+//        Highlight highlight = chart.getHighlightByTouchPoint(MPPointF.getInstance().x,MPPointF.getInstance().y);
+//
+//        System.out.println("highlight: " + highlight.getX() + " " + highlight.getY());
+
+
+        //Test for getDrawOrder
+        CombinedChart.DrawOrder[] drawOrders = chart.getDrawOrder();
+        Assert.assertArrayEquals(drawOrders,orders);
+
+        //Test for get value
+        try{
+            BarData barData = chart.getBarData();
+        }catch (Exception e){
+            throw new AssertionError("CombinedChart getBarData did not get data properly");
+        }
+
+        try{
+            BubbleData bubbleData = chart.getBubbleData();
+        }catch (Exception e){
+            throw new AssertionError("CombinedChart getBubbleData did not get data properly");
+        }
+
+        try{
+            CandleData candleData = chart.getCandleData();
+        }catch (Exception e){
+            throw new AssertionError("CombinedChart getCandleData did not get data properly");
+        }
+
+        try{
+            CombinedData combinedData = chart.getCombinedData();
+        }catch (Exception e){
+            throw new AssertionError("CombinedChart getCombinedData did not get data properly");
+        }
+
+        try{
+            LineData lineData = chart.getLineData();
+        }catch (Exception e){
+            throw new AssertionError("CombinedChart getLineData did not get data properly");
+        }
+
+        try{
+            ScatterData scatterData = chart.getScatterData();
+        }catch (Exception e){
+            throw new AssertionError("CombinedChart getScatterData did not get data properly");
+        }
+
+
+
     }
 
     private LineData generateLineData() {
@@ -241,6 +187,75 @@ public class CombinedChartActivityTest2 extends DemoBase {
         return d;
     }
 
+    private BarData generateBarData() {
+
+        List<BarEntry> barValues = new ArrayList<>();
+        for (int index = 0; index < count; index++)
+            barValues.add(new BarEntry(index + 0.5f, getRandom(15, 5)));
+
+        BarDataSet barDataSet = new BarDataSet(barValues, "BarDataSet");
+        BarData bar = new BarData(barDataSet);
+
+
+        barDataSet.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255));
+        barDataSet.setValueTextColor(Color.rgb(61, 165, 255));
+        barDataSet.setValueTextSize(10f);
+        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        return bar;
+    }
+
+    private ScatterData generateScatterData() {
+
+        List<Entry> scatterValues = new ArrayList<>();
+
+        for (int index = 0; index < count; index++)
+            scatterValues.add(new Entry(index + 0.5f, getRandom(15,60)));
+
+
+        ScatterDataSet scatterDataSet = new ScatterDataSet(scatterValues, "ScatterDataSet");
+        ScatterData scatter = new ScatterData(scatterDataSet);
+
+
+        scatterDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        scatterDataSet.setScatterShapeSize(8f);
+        scatterDataSet.setDrawValues(true);
+        scatterDataSet.setValueTextSize(10f);
+        scatterDataSet.setValueTextColor(Color.rgb(240, 238, 70));
+
+        scatterDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        return scatter;
+    }
+
+
+
+    private CandleData generateCandleData() {
+
+        // Candle Data
+        // CandleEntry(float x, float shadowH, float shadowL, float open, float close)
+        // y = (shadowH + shadowL) / 2f
+        List<CandleEntry> candleValues = new ArrayList<>();
+
+        for (int index = 0; index < count; index++){
+            float shadowL = getRandom(10, 70);
+            float close = shadowL + getRandom(10, 0);
+            float open = close + getRandom(10, 0);
+            float shadowH = open + getRandom(10, 0);
+            candleValues.add(new CandleEntry(index + 0.5f, shadowH, shadowL,open,close));
+        }
+        CandleDataSet candleDataSet = new CandleDataSet(candleValues, "CandleDataSet");
+        CandleData candle = new CandleData(candleDataSet);
+
+        candleDataSet.setDecreasingColor(Color.rgb(142, 150, 175));
+        candleDataSet.setShadowColor(Color.DKGRAY);
+        candleDataSet.setBarSpace(0.3f);
+        candleDataSet.setValueTextSize(10f);
+        candleDataSet.setDrawValues(false);
+        return candle;
+    }
+
     private BubbleData generateBubbleData() {
 
         BubbleData bd = new BubbleData();
@@ -264,15 +279,9 @@ public class CombinedChartActivityTest2 extends DemoBase {
         return bd;
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        startActivity(new Intent(this, CombinedChartActivityTest3.class));
-//    }
-
     @Override public void onBackPressed(){
         super.onBackPressed();
-        Intent i = new Intent(this, CombinedChartActivityTest3.class);
+        Intent i = new Intent(this, MainActivity.class);
         if (i != null) startActivity(i);
     }
 
