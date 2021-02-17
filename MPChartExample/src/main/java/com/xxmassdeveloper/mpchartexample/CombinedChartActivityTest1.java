@@ -28,13 +28,16 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
+import com.xxmassdeveloper.mpchartexample.notimportant.MainActivity;
 
+import org.junit.*;
 import java.util.ArrayList;
 
 public class CombinedChartActivityTest1 extends DemoBase {
 
     private CombinedChart chart;
     private final int count = 12;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class CombinedChartActivityTest1 extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_combined);
 
-        setTitle("CombinedChartActivity - Test");
+        setTitle("CombinedChartActivity - Test1");
 
         chart = findViewById(R.id.chart1);
         chart.getDescription().setEnabled(false);
@@ -196,14 +199,25 @@ public class CombinedChartActivityTest1 extends DemoBase {
         }
 
         chart.invalidate();
+
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        startActivity(new Intent(this, CombinedChartActivityTest2.class));
+    @Override public void onBackPressed(){
+        super.onBackPressed();
+        Intent i = new Intent(this, CombinedChartActivityTest2.class);
+        if (i != null) startActivity(i);
     }
+
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        startActivity(new Intent(this, CombinedChartActivityTest2.class));
+//    }
+    
 
     private LineData generateLineData() {
 
@@ -340,4 +354,6 @@ public class CombinedChartActivityTest1 extends DemoBase {
 
     @Override
     public void saveToGallery() { /* Intentionally left empty */ }
+
+
 }
