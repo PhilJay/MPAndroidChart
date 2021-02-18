@@ -76,10 +76,6 @@ public class CombinedChartActivityTest {
         assertFalse(chart.isHighlightFullBarEnabled());
 
         //set data
-        assertNotNull(chart.getData());
-        assertTrue(chart.getData() instanceof CombinedData);
-        assertTrue(chart.getBarData() instanceof BarData);
-
         CombinedData testData = new CombinedData();
         testData.setData(chart.getBarData());
         chart.setData(testData);
@@ -169,5 +165,23 @@ public class CombinedChartActivityTest {
 
         chart.setDrawBarShadow(false);
         assertFalse(chart.isDrawBarShadowEnabled());
+    }
+
+    @Test
+    public void testCase3() {
+        CombinedChartActivity activity = rule.getActivity();
+        View view = activity.findViewById(R.id.chart1);
+
+        assertNotNull(view);
+        assertTrue(view instanceof CombinedChart);
+
+        CombinedChart chart = (CombinedChart) view;
+
+        assertNotNull(chart.getBarData());
+        assertNotNull(chart.getBubbleData());
+        assertNotNull(chart.getCandleData());
+        assertNotNull(chart.getCombinedData());
+        assertNotNull(chart.getLineData());
+        assertNotNull(chart.getScatterData());
     }
 }
