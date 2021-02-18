@@ -87,4 +87,87 @@ public class CombinedChartActivityTest {
         assertNotNull(chart.getData());
         assertTrue(chart.getData() == testData);
     }
+
+    @Test
+    public void testCase2() {
+        CombinedChartActivity activity = rule.getActivity();
+        View view = activity.findViewById(R.id.chart1);
+
+        assertNotNull(view);
+        assertTrue(view instanceof CombinedChart);
+
+        CombinedChart chart = (CombinedChart) view;
+
+        chart.setHighlightFullBarEnabled(true);
+        assertTrue(chart.isHighlightFullBarEnabled());
+
+        chart.setHighlightFullBarEnabled(false);
+        assertFalse(chart.isHighlightFullBarEnabled());
+
+        chart.setDrawValueAboveBar(false);
+        assertFalse(chart.isDrawValueAboveBarEnabled());
+
+        chart.setHighlightFullBarEnabled(true);
+        assertTrue(chart.isHighlightFullBarEnabled());
+
+        chart.setDrawValueAboveBar(true);
+        assertTrue(chart.isDrawValueAboveBarEnabled());
+
+        chart.setDrawValueAboveBar(false);
+        assertFalse(chart.isDrawValueAboveBarEnabled());
+
+        chart.setHighlightFullBarEnabled(false);
+        assertFalse(chart.isHighlightFullBarEnabled());
+
+        chart.setDrawValueAboveBar(true);
+        assertTrue(chart.isDrawValueAboveBarEnabled());
+
+        chart.setDrawBarShadow(true);
+        assertTrue(chart.isDrawBarShadowEnabled());
+
+        chart.setHighlightFullBarEnabled(true);
+        assertTrue(chart.isHighlightFullBarEnabled());
+
+        chart.setDrawBarShadow(false);
+        assertFalse(chart.isDrawBarShadowEnabled());
+
+        chart.setDrawBarShadow(true);
+        assertTrue(chart.isDrawBarShadowEnabled());
+
+        chart.setDrawValueAboveBar(false);
+        assertFalse(chart.isDrawValueAboveBarEnabled());
+
+        chart.setDrawBarShadow(true);
+        assertTrue(chart.isDrawBarShadowEnabled());
+
+        chart.setDrawBarShadow(false);
+        assertFalse(chart.isDrawBarShadowEnabled());
+
+        chart.setHighlightFullBarEnabled(false);
+        assertFalse(chart.isHighlightFullBarEnabled());
+
+        chart.setDrawBarShadow(false);
+        assertFalse(chart.isDrawBarShadowEnabled());
+
+        chart.setDrawBarShadow(true);
+        assertTrue(chart.isDrawBarShadowEnabled());
+
+        chart.setDrawValueAboveBar(true);
+        assertTrue(chart.isDrawBarShadowEnabled());
+
+        chart.setDrawValueAboveBar(false);
+        assertFalse(chart.isDrawValueAboveBarEnabled());
+
+        chart.setHighlightFullBarEnabled(true);
+        assertTrue(chart.isHighlightFullBarEnabled());
+
+        chart.setDrawValueAboveBar(true);
+        assertTrue(chart.isDrawValueAboveBarEnabled());
+
+        chart.setHighlightFullBarEnabled(false);
+        assertFalse(chart.isHighlightFullBarEnabled());
+
+        chart.setDrawBarShadow(false);
+        assertFalse(chart.isDrawBarShadowEnabled());
+    }
 }
