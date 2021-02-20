@@ -1,0 +1,6 @@
+language: android
+dist: trusty
+android:
+  components:
+    - build-tools-28.0.3
+    - android-28
