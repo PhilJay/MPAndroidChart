@@ -1,6 +1,42 @@
 language: android
-dist: trusty
+sudo: required
+jdk: oraclejdk8
+
+env:
+  global:
+    - ANDROID_API_LEVEL=28
+    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+    - ANDROID_ABI=armeabi-v7a
+
 android:
   components:
-    - build-tools-28.0.3
-    - android-28
+    - tools
+    - platform-tools
+    - tools
+    - extra-android-m2repository
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
+before_install:
+  - touch $HOME/.android/repositories.cfg
+  - yes | sdkmanager "platforms;android-28"
+  - yes | sdkmanager "build-tools;28.0.3"
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
+
+before_script:
+  - chmod +x gradlew
+
+script:
+  - ./gradlew clean build
+  - ./gradlew test
