@@ -16,14 +16,14 @@ public class ObjectPoolTest {
 
     static class TestPoolable extends ObjectPool.Poolable{
 
-        private static ObjectPool<TestPoolable> pool;
+        private static final ObjectPool<TestPoolable> pool;
 
         static {
             pool = ObjectPool.create(4, new TestPoolable(0,0));
         }
 
-        public int foo = 0;
-        public int bar = 0;
+        public int foo;
+        public int bar;
 
         protected ObjectPool.Poolable instantiate(){
             return new TestPoolable(0,0);

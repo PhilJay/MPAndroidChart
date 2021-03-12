@@ -1,12 +1,8 @@
 package com.github.mikephil.charting.test;
 
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
