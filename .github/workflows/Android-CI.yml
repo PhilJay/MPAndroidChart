@@ -1,19 +1,75 @@
-name: CI Android
+name: PullRequest
 
 on: [pull_request]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  buildTest:
+    name: Build & Test JDK ${{ matrix.java_version }}
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        java_version: [ 11.0.3 ]
     steps:
-      - uses: actions/checkout@v2
-      - name: set up JDK 1.8
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+      - name: Install JDK ${{ matrix.java_version }}
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
-      - name: Build with Gradle
-        run: ./gradlew build
-      - name: Unit test
-        run: ./gradlew test --profile
+          java-version: ${{ matrix.java_version }}
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.1.1
+      - name: Build project
+        run: ./gradlew assembleDebug
+      - name: Run tests
+        run: ./gradlew test
+#      - name: Run instrumentation tests
+#        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.1
+#        with:
+#          cmd: ./gradlew :app:cAT
+#          api: 28
+#          tag: default
+#          abi: x86
+#      - name: Archive Espresso results
+#        uses: actions/upload-artifact@v2.2.2
+#        if: ${{ always() }}
+#        with:
+#          name: Chart-Espresso-report
+#          path: app/build/reports/androidTests/connected
+#      - name: Save logcat output
+#        uses: actions/upload-artifact@v2.2.2
+#        if: failure()
+#        with:
+#          name: Chart-logcat
+#          path: artifacts/logcat.log
+#      - name: Archive screenshots
+#        uses: actions/upload-artifact@v2.2.2
+#        with:
+#          name: Chart-Screenshots
+#          path: screenshots/adb
+  Check:
+    name: Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java_version: [ 11.0.3 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+      - name: Install JDK ${{ matrix.java_version }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java_version }}
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.1.1
+      - name: Code checks
+        run: ./gradlew check
+      - name: Archive Lint report
+        uses: actions/upload-artifact@v2.2.2
+        if: ${{ always() }}
+        with:
+          name: Chart-Lint-report
+          path: ./**/build/reports/lint-results.html
