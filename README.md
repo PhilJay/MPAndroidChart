@@ -5,7 +5,7 @@
 
 :zap: A powerful & easy to use chart library for Android :zap:
 
-## Table of Contents
+# Table of Contents
 1. [Quick Start](#quick-start)
     1. [Gradle](#gradle-setup)
     1. [Maven](#maven-setup)
