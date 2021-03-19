@@ -96,6 +96,7 @@ public class YAxisRenderer extends AxisRenderer {
 
         mAxisLinePaint.setColor(mYAxis.getAxisLineColor());
         mAxisLinePaint.setStrokeWidth(mYAxis.getAxisLineWidth());
+        mAxisLinePaint.setPathEffect(mYAxis.getAxisLineDashPathEffect());
 
         if (mYAxis.getAxisDependency() == AxisDependency.LEFT) {
             c.drawLine(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), mViewPortHandler.contentLeft(),
