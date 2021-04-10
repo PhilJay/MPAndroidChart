@@ -322,6 +322,11 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
     }
 
     @Override
+    public void onMarkerSingleTapped(MotionEvent me) {
+        Log.i("MarkerSingleTap", "Marker single-tapped.");
+    }
+
+    @Override
     public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
         Log.i("Fling", "Chart fling. VelocityX: " + velocityX + ", VelocityY: " + velocityY);
     }
@@ -351,4 +356,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {}
 }

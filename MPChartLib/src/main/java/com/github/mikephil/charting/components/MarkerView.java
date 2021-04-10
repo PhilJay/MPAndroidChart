@@ -2,6 +2,7 @@ package com.github.mikephil.charting.components;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -25,6 +26,7 @@ public class MarkerView extends RelativeLayout implements IMarker {
     private MPPointF mOffset = new MPPointF();
     private MPPointF mOffset2 = new MPPointF();
     private WeakReference<Chart> mWeakChart;
+    private Rect rect;
 
     /**
      * Constructor. Sets up the MarkerView with a custom layout resource.
@@ -117,13 +119,22 @@ public class MarkerView extends RelativeLayout implements IMarker {
 
     @Override
     public void draw(Canvas canvas, float posX, float posY) {
-
         MPPointF offset = getOffsetForDrawingAtPoint(posX, posY);
-
         int saveId = canvas.save();
         // translate to the correct position and draw
-        canvas.translate(posX + offset.x, posY + offset.y);
+        float drawingPosX = posX + offset.x;
+        float drawingPosY = posY + offset.y;
+        canvas.translate(drawingPosX, drawingPosY);
         draw(canvas);
         canvas.restoreToCount(saveId);
+        rect = new Rect((int) drawingPosX, (int) drawingPosY, (int) drawingPosX + getWidth(), (int) drawingPosY + getHeight());
+    }
+
+    @Override
+    public boolean isClickOnMarker(float posX, float posY) {
+        if(rect == null) {
+            return false;
+        }
+        return rect.contains((int) posX, (int) posY);
     }
 }

@@ -47,6 +47,13 @@ public interface OnChartGestureListener {
     void onChartSingleTapped(MotionEvent me);
 
     /**
+     * Callbacks when the marker is single-tapped.
+     *
+     * @param me
+     */
+    void onMarkerSingleTapped(MotionEvent me);
+
+    /**
      * Callbacks then a fling gesture is made on the chart.
      *
      * @param me1

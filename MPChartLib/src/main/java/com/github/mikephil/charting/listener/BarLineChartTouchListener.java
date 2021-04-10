@@ -619,7 +619,9 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
         OnChartGestureListener l = mChart.getOnChartGestureListener();
 
-        if (l != null) {
+        if (l != null && mChart != null && mChart.isDrawMarkersEnabled() && mChart.valuesToHighlight() && mChart.getMarker().isClickOnMarker(e.getX(), e.getY())) {
+            l.onMarkerSingleTapped(e);
+        } else if (l != null) {
             l.onChartSingleTapped(e);
         }
 
