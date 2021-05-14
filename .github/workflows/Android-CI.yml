@@ -5,8 +5,6 @@ on:
     branches:
       - master
   pull_request:
-    branches:
-      - master
 
 jobs:
   build:
@@ -18,8 +16,13 @@ jobs:
       - name: set up JDK 1.8
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          fetch-depth: 0
+      - name: Install JDK ${{ matrix.java_version }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: 11
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.1.1
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Unit test
-        run: ./gradlew test --profile
