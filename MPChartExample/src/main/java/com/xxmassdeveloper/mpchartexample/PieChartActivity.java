@@ -123,7 +123,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // the chart.
         for (int i = 0; i < count ; i++) {
             entries.add(new PieEntry((float) ((Math.random() * range) + range / 5),
-                    parties[i % parties.length],
+                    entries[i % entries.length],
                     getResources().getDrawable(R.drawable.star)));
         }
 
