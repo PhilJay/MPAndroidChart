@@ -82,9 +82,6 @@ Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) fi
 
 **This project needs you!** If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, **feel free to donate**. Your donation is highly appreciated (and I love food, coffee and beer). Thank you!
 
-[**Lightning Network (tippin.me)**](https://tippin.me/@PhilippJahoda)
-
-
 **PayPal**
 
 - [**Donate 5 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7G52RA87ED8NY): Thank's for creating this project, here's a coffee (or some beer) for you!
