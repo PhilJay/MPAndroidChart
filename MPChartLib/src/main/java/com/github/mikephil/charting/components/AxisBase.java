@@ -151,6 +151,11 @@ public abstract class AxisBase extends ComponentBase {
      * the total range of values this axis covers
      */
     public float mAxisRange = 0f;
+    
+    /**
+     * the axis title
+     */
+    private String title = "";
 
     private int mAxisMinLabels = 2;
     private int mAxisMaxLabels = 25;
@@ -813,4 +818,22 @@ public abstract class AxisBase extends ComponentBase {
     {
         this.mSpaceMax = mSpaceMax;
     }
+    
+    /**
+     * Sets the title of the axis.
+     *
+     * @param title
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * Gets the title of the axis.
+     *
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
 }

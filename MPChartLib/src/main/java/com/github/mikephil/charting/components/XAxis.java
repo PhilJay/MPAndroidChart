@@ -58,6 +58,12 @@ public class XAxis extends AxisBase {
     public enum XAxisPosition {
         TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
     }
+    
+    /**
+     * height of the x-axis title in pixels - this is automatically
+     * calculated by the computeSize() methods in the renderers
+     */
+    public int mTitleHeight = 1;
 
     public XAxis() {
         super();
