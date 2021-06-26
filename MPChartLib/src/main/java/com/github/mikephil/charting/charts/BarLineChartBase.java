@@ -53,6 +53,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected int mMaxVisibleCount = 100;
 
     /**
+     * the minimum visible range of xAxis
+     */
+    protected float mVisibleXRangeMinimum = 1;
+
+    /**
      * flag that indicates if auto scaling on the y axis is enabled
      */
     protected boolean mAutoScaleMinMaxEnabled = false;
@@ -776,8 +781,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param minXRange The minimum visible range of x-values.
      */
     public void setVisibleXRangeMinimum(float minXRange) {
+        mVisibleXRangeMinimum = minXRange;
         float xScale = mXAxis.mAxisRange / (minXRange);
         mViewPortHandler.setMaximumScaleX(xScale);
+    }
+
+    public float getVisibleXRangeMinimum() {
+        return mVisibleXRangeMinimum;
     }
 
     /**
@@ -789,6 +799,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param maxXRange
      */
     public void setVisibleXRange(float minXRange, float maxXRange) {
+        mVisibleXRangeMinimum = minXRange;
         float minScale = mXAxis.mAxisRange / minXRange;
         float maxScale = mXAxis.mAxisRange / maxXRange;
         mViewPortHandler.setMinMaxScaleX(minScale, maxScale);
