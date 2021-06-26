@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.Typeface;
+import android.os.Debug;
+import android.util.Log;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -23,6 +25,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class LegendRenderer extends Renderer {
 
@@ -41,6 +44,8 @@ public class LegendRenderer extends Renderer {
      */
     protected Legend mLegend;
 
+    protected  List<Float> mHistoricalCalculatedLabelSizesWidth;
+
     public LegendRenderer(ViewPortHandler viewPortHandler, Legend legend) {
         super(viewPortHandler);
 
@@ -52,6 +57,8 @@ public class LegendRenderer extends Renderer {
 
         mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendFormPaint.setStyle(Paint.Style.FILL);
+
+        mHistoricalCalculatedLabelSizesWidth = new ArrayList<>();
     }
 
     /**
@@ -214,8 +221,9 @@ public class LegendRenderer extends Renderer {
             if (mLegend.getExtraEntries() != null) {
                 Collections.addAll(computedEntries, mLegend.getExtraEntries());
             }
-
-            mLegend.setEntries(computedEntries);
+            synchronized (mLegend) {
+                mLegend.setEntries(computedEntries);
+            }
         }
 
         Typeface tf = mLegend.getTypeface();
@@ -319,7 +327,6 @@ public class LegendRenderer extends Renderer {
             case HORIZONTAL: {
 
                 List<FSize> calculatedLineSizes = mLegend.getCalculatedLineSizes();
-                List<FSize> calculatedLabelSizes = mLegend.getCalculatedLabelSizes();
                 List<Boolean> calculatedLabelBreakPoints = mLegend.getCalculatedLabelBreakPoints();
 
                 float posX = originPosX;
@@ -347,7 +354,7 @@ public class LegendRenderer extends Renderer {
                     boolean drawingForm = e.form != Legend.LegendForm.NONE;
                     float formSize = Float.isNaN(e.formSize) ? defaultFormSize : Utils.convertDpToPixel(e.formSize);
 
-                    if (i < calculatedLabelBreakPoints.size() && calculatedLabelBreakPoints.get(i)) {
+                    if (calculatedLabelBreakPoints != null && i < calculatedLabelBreakPoints.size() && calculatedLabelBreakPoints.get(i)) {
                         posX = originPosX;
                         posY += labelLineHeight + labelLineSpacing;
                     }
@@ -378,13 +385,15 @@ public class LegendRenderer extends Renderer {
                             posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -formToTextSpace :
                                     formToTextSpace;
 
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
-                            posX -= calculatedLabelSizes.get(i).width;
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
+                            posX -= getCalculatedLabelSizesWidth(i);
+                        }
 
                         drawLabel(c, posX, posY + labelLineHeight, e.label);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
-                            posX += calculatedLabelSizes.get(i).width;
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
+                            posX += getCalculatedLabelSizesWidth(i);
+                        }
 
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -xEntrySpace : xEntrySpace;
                     } else
@@ -472,6 +481,37 @@ public class LegendRenderer extends Renderer {
                 break;
 
             }
+        }
+    }
+
+    private float getCalculatedLabelSizesWidth(int i) {
+        synchronized(mLegend) {
+            float calculatedLabelSizesWidth;
+
+            int index = i;
+
+            try {
+                List<FSize> calculatedLabelSizes = mLegend.getCalculatedLabelSizes();
+
+                calculatedLabelSizesWidth = calculatedLabelSizes.get(index).width;
+                if (mHistoricalCalculatedLabelSizesWidth.size() <= index) {
+                    mHistoricalCalculatedLabelSizesWidth.add(calculatedLabelSizesWidth);
+                }
+
+            } catch (Exception ex) {
+                Log.e("LegendRenderer", "Could not get the width of the calculatedLabelSizes with the index " + index);
+                Log.e("LegendRenderer", ex.getMessage());
+                ex.printStackTrace();
+
+                if (mHistoricalCalculatedLabelSizesWidth.size() <= index) {
+                    Log.e("LegendRenderer", "No HistoricalCalculatedLabelSizeWidth is stored yet.");
+
+                    calculatedLabelSizesWidth = 0f;
+                } else {
+                    calculatedLabelSizesWidth = mHistoricalCalculatedLabelSizesWidth.get(index);
+                }
+            }
+            return calculatedLabelSizesWidth;
         }
     }
 
