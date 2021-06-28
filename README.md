@@ -26,8 +26,10 @@
 ### Gradle Setup
 
 ```gradle
-repositories {
-    maven { url 'https://jitpack.io' }
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
 
 dependencies {
