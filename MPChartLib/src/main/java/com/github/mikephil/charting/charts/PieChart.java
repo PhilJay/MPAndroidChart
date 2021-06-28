@@ -793,6 +793,13 @@ public class PieChart extends PieRadarChartBase<PieData> {
         this.mMinAngleForSlices = minAngle;
     }
 
+    /**
+     * Method that sets the label radius
+     */
+    public void setLabelRadius(float labelRadius){
+        ((PieChartRenderer) mRenderer).setLabelRadius(labelRadius);
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
