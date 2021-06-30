@@ -42,6 +42,14 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
         return high;
     }
 
+    @Override
+    public Highlight getHighlightByIndex(int index) {
+        if (mHighlightBuffer.size() <= index)
+            return null;
+
+        return mHighlightBuffer.get(index);
+    }
+
     /**
      * This method creates the Highlight object that also indicates which value of a stacked BarEntry has been
      * selected.

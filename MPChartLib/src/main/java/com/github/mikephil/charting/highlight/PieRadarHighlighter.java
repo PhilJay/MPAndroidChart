@@ -54,6 +54,14 @@ public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implement
         }
     }
 
+    @Override
+    public Highlight getHighlightByIndex(int index) {
+        if (mHighlightBuffer.size() <= index)
+            return null;
+
+        return mHighlightBuffer.get(index);
+    }
+
     /**
      * Returns the closest Highlight object of the given objects based on the touch position inside the chart.
      *
