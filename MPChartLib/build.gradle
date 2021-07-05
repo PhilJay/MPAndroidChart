@@ -1,7 +1,24 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven-publish'
 
-group='com.github.philjay'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.github.philjay'
+            artifactId = 'MPAndroidChart'
+            version = '1.0'
+            pom {
+                name = 'MPAndroidChart'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+        }
+    }
+}
 
 android {
     compileSdkVersion 28
