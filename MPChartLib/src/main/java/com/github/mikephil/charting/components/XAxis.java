@@ -50,7 +50,7 @@ public class XAxis extends AxisBase {
     /**
      * the position of the x-labels relative to the chart
      */
-    private XAxisPosition mPosition = XAxisPosition.TOP;
+    private XAxisPosition mPosition = XAxisPosition.BOTTOM;
 
     /**
      * enum for the position of the x-labels relative to the chart
