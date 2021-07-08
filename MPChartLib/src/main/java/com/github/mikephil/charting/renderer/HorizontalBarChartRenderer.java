@@ -383,8 +383,10 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 if (!mViewPortHandler.isInBoundsBottom(y))
                                     continue;
 
+                                int stackColor = dataSet.isUseTextColorsOnYAxis() ? dataSet.getValueTextColor(k / 2) : color;
+
                                 if (dataSet.isDrawValuesEnabled()) {
-                                    drawValue(c, formattedValue, x, y + halfTextHeight, color);
+                                    drawValue(c, formattedValue, x, y + halfTextHeight, stackColor);
                                 }
 
                                 if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {

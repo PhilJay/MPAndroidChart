@@ -393,6 +393,8 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                                         || !mViewPortHandler.isInBoundsLeft(x))
                                     continue;
 
+                                int stackColor = dataSet.isUseTextColorsOnYAxis() ? dataSet.getValueTextColor(k / 2) : color;
+
                                 if (dataSet.isDrawValuesEnabled()) {
                                     drawValue(c,
                                             dataSet.getValueFormatter(),
@@ -401,7 +403,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                                             i,
                                             x,
                                             y,
-                                            color);
+                                            stackColor);
                                 }
 
                                 if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {

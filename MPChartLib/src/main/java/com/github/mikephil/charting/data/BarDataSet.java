@@ -43,6 +43,8 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     protected List<Fill> mFills = null;
 
+    private boolean mUseTextColorsOnYAxis = false;
+
     public BarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
 
@@ -295,5 +297,18 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     @Override
     public String[] getStackLabels() {
         return mStackLabels;
+    }
+
+    /**
+     * Call this with value true, if text colors instead of being indexed on the x axis,
+     * should be used to distinguish values on the y axis
+     * @param useTextColorsonYAxis
+     */
+    public void setUseTextColorsOnYAxis(boolean useTextColorsonYAxis) {
+        mUseTextColorsOnYAxis = useTextColorsonYAxis;
+    }
+
+    public boolean isUseTextColorsOnYAxis() {
+        return mUseTextColorsOnYAxis;
     }
 }
