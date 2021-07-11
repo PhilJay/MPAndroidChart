@@ -140,65 +140,66 @@ public class HorizontalBarChart extends BarChart {
 
     @Override
     public void calculateOffsets() {
+        if (!mCustomViewPortEnabled) {
+            float offsetLeft = 0f, offsetRight = 0f, offsetTop = 0f, offsetBottom = 0f;
 
-        float offsetLeft = 0f, offsetRight = 0f, offsetTop = 0f, offsetBottom = 0f;
+            calculateLegendOffsets(mOffsetsBuffer);
 
-        calculateLegendOffsets(mOffsetsBuffer);
+            offsetLeft += mOffsetsBuffer.left;
+            offsetTop += mOffsetsBuffer.top;
+            offsetRight += mOffsetsBuffer.right;
+            offsetBottom += mOffsetsBuffer.bottom;
 
-        offsetLeft += mOffsetsBuffer.left;
-        offsetTop += mOffsetsBuffer.top;
-        offsetRight += mOffsetsBuffer.right;
-        offsetBottom += mOffsetsBuffer.bottom;
+            // offsets for y-labels
+            if (mAxisLeft.needsOffset()) {
+                offsetTop += mAxisLeft.getRequiredHeightSpace(mAxisRendererLeft.getPaintAxisLabels());
 
-        // offsets for y-labels
-        if (mAxisLeft.needsOffset()) {
-            offsetTop += mAxisLeft.getRequiredHeightSpace(mAxisRendererLeft.getPaintAxisLabels());
-        }
+            }
 
-        if (mAxisRight.needsOffset()) {
-            offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getPaintAxisLabels());
-        }
+            if (mAxisRight.needsOffset()) {
+                offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getPaintAxisLabels());
+            }
 
-        float xlabelwidth = mXAxis.mLabelRotatedWidth;
+            float xlabelwidth = mXAxis.mLabelRotatedWidth;
 
-        if (mXAxis.isEnabled()) {
+            if (mXAxis.isEnabled()) {
 
-            // offsets for x-labels
-            if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
+                // offsets for x-labels
+                if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
-                offsetLeft += xlabelwidth;
+                    offsetLeft += xlabelwidth;
 
-            } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
+                } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
-                offsetRight += xlabelwidth;
+                    offsetRight += xlabelwidth;
 
-            } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+                } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
 
-                offsetLeft += xlabelwidth;
-                offsetRight += xlabelwidth;
+                    offsetLeft += xlabelwidth;
+                    offsetRight += xlabelwidth;
+                }
+            }
+
+            offsetTop += getExtraTopOffset();
+            offsetRight += getExtraRightOffset();
+            offsetBottom += getExtraBottomOffset();
+            offsetLeft += getExtraLeftOffset();
+
+            float minOffset = Utils.convertDpToPixel(mMinOffset);
+
+            mViewPortHandler.restrainViewPort(
+                    Math.max(minOffset, offsetLeft),
+                    Math.max(minOffset, offsetTop),
+                    Math.max(minOffset, offsetRight),
+                    Math.max(minOffset, offsetBottom));
+
+            if (mLogEnabled) {
+                Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " +
+                        offsetRight + ", offsetBottom: "
+                        + offsetBottom);
+                Log.i(LOG_TAG, "Content: " + mViewPortHandler.getContentRect().toString());
             }
         }
-
-        offsetTop += getExtraTopOffset();
-        offsetRight += getExtraRightOffset();
-        offsetBottom += getExtraBottomOffset();
-        offsetLeft += getExtraLeftOffset();
-
-        float minOffset = Utils.convertDpToPixel(mMinOffset);
-
-        mViewPortHandler.restrainViewPort(
-                Math.max(minOffset, offsetLeft),
-                Math.max(minOffset, offsetTop),
-                Math.max(minOffset, offsetRight),
-                Math.max(minOffset, offsetBottom));
-
-        if (mLogEnabled) {
-            Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " +
-                    offsetRight + ", offsetBottom: "
-                    + offsetBottom);
-            Log.i(LOG_TAG, "Content: " + mViewPortHandler.getContentRect().toString());
-        }
-
         prepareOffsetMatrix();
         prepareValuePxMatrix();
     }
