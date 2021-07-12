@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.util.Property;
 import android.view.View;
 
 import com.github.mikephil.charting.utils.Transformer;
@@ -26,7 +27,7 @@ public abstract class AnimatedViewPortJob extends ViewPortJob implements ValueAn
         super(viewPortHandler, xValue, yValue, trans, v);
         this.xOrigin = xOrigin;
         this.yOrigin = yOrigin;
-        animator = ObjectAnimator.ofFloat(this, "phase", 0f, 1f);
+        animator = ObjectAnimator.ofFloat(this, PHASE, 0f, 1f);
         animator.setDuration(duration);
         animator.addUpdateListener(this);
         animator.addListener(this);
@@ -96,4 +97,16 @@ public abstract class AnimatedViewPortJob extends ViewPortJob implements ValueAn
     public void onAnimationUpdate(ValueAnimator animation) {
 
     }
+
+    private static final Property<AnimatedViewPortJob, Float> PHASE = new Property<AnimatedViewPortJob, Float>(Float.class, "phase") {
+        @Override
+        public Float get(AnimatedViewPortJob object) {
+            return object.getPhase();
+        }
+
+        @Override
+        public void set(AnimatedViewPortJob object, Float value) {
+            object.setPhase(value);
+        }
+    };
 }

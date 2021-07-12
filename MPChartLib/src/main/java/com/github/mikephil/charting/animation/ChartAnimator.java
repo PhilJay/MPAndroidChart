@@ -2,6 +2,8 @@ package com.github.mikephil.charting.animation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.util.Property;
+
 import androidx.annotation.RequiresApi;
 
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
@@ -35,7 +37,7 @@ public class ChartAnimator {
     @RequiresApi(11)
     private ObjectAnimator xAnimator(int duration, EasingFunction easing) {
 
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, PHASE_X, 0f, 1f);
         animatorX.setInterpolator(easing);
         animatorX.setDuration(duration);
 
@@ -45,7 +47,7 @@ public class ChartAnimator {
     @RequiresApi(11)
     private ObjectAnimator yAnimator(int duration, EasingFunction easing) {
 
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, PHASE_Y, 0f, 1f);
         animatorY.setInterpolator(easing);
         animatorY.setDuration(duration);
 
@@ -204,4 +206,28 @@ public class ChartAnimator {
         }
         mPhaseX = phase;
     }
+
+    private static final Property<ChartAnimator, Float> PHASE_X = new Property<ChartAnimator, Float>(Float.class, "phaseX") {
+        @Override
+        public Float get(ChartAnimator object) {
+            return object.getPhaseX();
+        }
+
+        @Override
+        public void set(ChartAnimator object, Float value) {
+            object.setPhaseX(value);
+        }
+    };
+
+    private static final Property<ChartAnimator, Float> PHASE_Y = new Property<ChartAnimator, Float>(Float.class, "phaseY") {
+        @Override
+        public Float get(ChartAnimator object) {
+            return object.getPhaseY();
+        }
+
+        @Override
+        public void set(ChartAnimator object, Float value) {
+            object.setPhaseY(value);
+        }
+    };
 }
