@@ -188,6 +188,11 @@ public abstract class AxisRenderer extends Renderer {
         if (mAxis.isForceLabelsEnabled()) {
 
             interval = (float) range / (float) (labelCount - 1);
+            // If granularity is enabled, then do not allow the interval to go below specified granularity.
+            // This is used to avoid repeated values when rounding values for display.
+            if (mAxis.isGranularityEnabled())
+                interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+
             mAxis.mEntryCount = labelCount;
 
             if (mAxis.mEntries.length < labelCount) {
