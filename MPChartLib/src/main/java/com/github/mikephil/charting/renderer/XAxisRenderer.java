@@ -344,7 +344,12 @@ public class XAxisRenderer extends AxisRenderer {
         mLimitLineSegmentsBuffer[0] = position[0];
         mLimitLineSegmentsBuffer[1] = mViewPortHandler.contentTop();
         mLimitLineSegmentsBuffer[2] = position[0];
-        mLimitLineSegmentsBuffer[3] = mViewPortHandler.contentBottom();
+
+        if(limitLine.getLabelPosition() == LimitLine.LimitLabelPosition.CENTER_BOTTOM) {
+            mLimitLineSegmentsBuffer[3] = mViewPortHandler.contentBottom() - limitLine.getTextSize();
+        } else {
+            mLimitLineSegmentsBuffer[3] = mViewPortHandler.contentBottom();
+        }
 
         mLimitLinePath.reset();
         mLimitLinePath.moveTo(mLimitLineSegmentsBuffer[0], mLimitLineSegmentsBuffer[1]);
@@ -391,6 +396,10 @@ public class XAxisRenderer extends AxisRenderer {
                 final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
                 c.drawText(label, position[0] - xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight,
                         mLimitLinePaint);
+            } else if (labelPosition == LimitLine.LimitLabelPosition.CENTER_BOTTOM) {
+
+                mLimitLinePaint.setTextAlign(Align.CENTER);
+                c.drawText(label, position[0], mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
             } else {
 
                 mLimitLinePaint.setTextAlign(Align.RIGHT);

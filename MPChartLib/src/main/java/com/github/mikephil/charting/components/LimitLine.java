@@ -40,7 +40,7 @@ public class LimitLine extends ComponentBase {
 
     /** enum that indicates the position of the LimitLine label */
     public enum LimitLabelPosition {
-        LEFT_TOP, LEFT_BOTTOM, RIGHT_TOP, RIGHT_BOTTOM
+        LEFT_TOP, LEFT_BOTTOM, RIGHT_TOP, RIGHT_BOTTOM, CENTER_BOTTOM
     }
 
     /**
