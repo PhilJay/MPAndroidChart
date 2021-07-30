@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -26,4 +27,14 @@ android {
 dependencies {
     implementation 'androidx.annotation:annotation:1.2.0'
     testImplementation 'junit:junit:4.13.2'
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+    }
 }
