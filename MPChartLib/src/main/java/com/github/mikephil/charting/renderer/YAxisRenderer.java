@@ -210,6 +210,7 @@ public class YAxisRenderer extends AxisRenderer {
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill y values, x values are not needed for y-labels
+            positions[i] = 0;
             positions[i + 1] = mYAxis.mEntries[i / 2];
         }
 
