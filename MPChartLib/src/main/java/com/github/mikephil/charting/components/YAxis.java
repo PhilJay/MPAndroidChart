@@ -225,6 +225,17 @@ public class YAxis extends AxisBase {
     }
 
     /**
+     * set this to true to enable drawing the bottom y-label entry. Disabling this can be helpful
+     * when the bottom y-label and
+     * left x-label interfere with each other. default: true
+     *
+     * @param enabled
+     */
+    public void setDrawBottomYLabelEntry(boolean enabled) {
+        mDrawBottomYLabelEntry = enabled;
+    }
+
+    /**
      * If this is set to true, the y-axis is inverted which means that low values are on top of
      * the chart, high values
      * on bottom.
