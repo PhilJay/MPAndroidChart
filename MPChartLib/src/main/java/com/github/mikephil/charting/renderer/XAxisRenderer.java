@@ -198,7 +198,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         for (int i = 0; i < positions.length; i += 2) {
 
-            float x = positions[i];
+            float x = positions[i] + mXAxis.getXOffset();
 
             if (mViewPortHandler.isInBoundsX(x)) {
 
