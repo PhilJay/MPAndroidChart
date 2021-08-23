@@ -674,7 +674,7 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void drawExtras(Canvas c) {
         drawHole(c);
-        c.drawBitmap(mDrawBitmap.get(), 0, 0, null);
+        drawBitmap(c);
         drawCenterText(c);
     }
 
@@ -718,6 +718,18 @@ public class PieChartRenderer extends DataRenderer {
                 mTransparentCirclePaint.setAlpha(alpha);
             }
             MPPointF.recycleInstance(center);
+        }
+    }
+
+    private void drawBitmap(Canvas c) {
+
+        if(mDrawBitmap != null) {
+
+            Bitmap drawBitmap = mDrawBitmap.get();
+
+            if(drawBitmap != null) {
+                c.drawBitmap(drawBitmap, 0, 0, null);
+            }
         }
     }
 
