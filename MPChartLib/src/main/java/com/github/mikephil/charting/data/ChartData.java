@@ -137,51 +137,13 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         mXMax = -Float.MAX_VALUE;
         mXMin = Float.MAX_VALUE;
 
-        for (T set : mDataSets) {
-            calcMinMax(set);
-        }
-
         mLeftAxisMax = -Float.MAX_VALUE;
         mLeftAxisMin = Float.MAX_VALUE;
         mRightAxisMax = -Float.MAX_VALUE;
         mRightAxisMin = Float.MAX_VALUE;
 
-        // left axis
-        T firstLeft = getFirstLeft(mDataSets);
-
-        if (firstLeft != null) {
-
-            mLeftAxisMax = firstLeft.getYMax();
-            mLeftAxisMin = firstLeft.getYMin();
-
-            for (T dataSet : mDataSets) {
-                if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
-                    if (dataSet.getYMin() < mLeftAxisMin)
-                        mLeftAxisMin = dataSet.getYMin();
-
-                    if (dataSet.getYMax() > mLeftAxisMax)
-                        mLeftAxisMax = dataSet.getYMax();
-                }
-            }
-        }
-
-        // right axis
-        T firstRight = getFirstRight(mDataSets);
-
-        if (firstRight != null) {
-
-            mRightAxisMax = firstRight.getYMax();
-            mRightAxisMin = firstRight.getYMin();
-
-            for (T dataSet : mDataSets) {
-                if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
-                    if (dataSet.getYMin() < mRightAxisMin)
-                        mRightAxisMin = dataSet.getYMin();
-
-                    if (dataSet.getYMax() > mRightAxisMax)
-                        mRightAxisMax = dataSet.getYMax();
-                }
-            }
+        for (T set : mDataSets) {
+            calcMinMax(set);
         }
     }
 
