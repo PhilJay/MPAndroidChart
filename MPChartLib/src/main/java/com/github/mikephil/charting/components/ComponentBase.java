@@ -4,7 +4,11 @@ package com.github.mikephil.charting.components;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class encapsulates everything both Axis, Legend and LimitLines have in common.
@@ -39,13 +43,13 @@ public abstract class ComponentBase {
     protected float mTextSize = Utils.convertDpToPixel(10f);
 
     /**
-     * the text color to use for the labels
+     * the text colors to use for the labels
      */
-    protected int mTextColor = Color.BLACK;
-
+    private List<Integer> mTextColors;
 
     public ComponentBase() {
-
+        mTextColors = new ArrayList<>();
+        mTextColors.add(Color.BLACK);
     }
 
     /**
@@ -139,7 +143,8 @@ public abstract class ComponentBase {
      * @param color
      */
     public void setTextColor(int color) {
-        mTextColor = color;
+        mTextColors.clear();
+        mTextColors.add(color);
     }
 
     /**
@@ -148,8 +153,48 @@ public abstract class ComponentBase {
      * @return
      */
     public int getTextColor() {
-        return mTextColor;
+        return mTextColors.get(0);
     }
+
+    /**
+     * Returns the text color that is set for the labels.
+     *
+     * @param index
+     * @return
+     */
+    public int getTextColor(int index) {
+        return mTextColors.get(index % mTextColors.size());
+    }
+
+    /**
+     * Sets the text colors to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param colors
+     */
+    public void setTextColors(List<Integer> colors) {
+        mTextColors = colors;
+    }
+
+    /**
+     * Sets the text colors to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param colors
+     */
+    public void setTextColors(int... colors) {
+        this.mTextColors = ColorTemplate.createColors(colors);
+    }
+
+    /**
+     * Returns the text colors that is set for the labels.
+     *
+     * @return
+     */
+    public List<Integer> getTextColors() {
+        return mTextColors;
+    }
+
 
     /**
      * Set this to true if this component should be enabled (should be drawn),
