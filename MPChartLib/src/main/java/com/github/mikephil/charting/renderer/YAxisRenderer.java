@@ -39,6 +39,8 @@ public class YAxisRenderer extends AxisRenderer {
             mZeroLinePaint.setStrokeWidth(1f);
             mZeroLinePaint.setStyle(Paint.Style.STROKE);
         }
+
+        mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
     }
 
     /**
@@ -52,7 +54,6 @@ public class YAxisRenderer extends AxisRenderer {
 
         float[] positions = getTransformedPositions();
 
-        mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
