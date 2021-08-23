@@ -5,23 +5,26 @@ import android.graphics.Paint;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
-/**
+/** This class details the text, position, and alignment
+ * of a {@link com.github.mikephil.charting.charts.Chart}
+ * description.
+ *
  * Created by Philipp Jahoda on 17/09/16.
  */
 public class Description extends ComponentBase {
 
     /**
-     * the text used in the description
+     * the text used in the description.
      */
     private String text = "Description Label";
 
     /**
-     * the custom position of the description text
+     * the custom position of the description text.
      */
     private MPPointF mPosition;
 
     /**
-     * the alignment of the description text
+     * the alignment of the description text.
      */
     private Paint.Align mTextAlign = Paint.Align.RIGHT;
 
@@ -34,9 +37,9 @@ public class Description extends ComponentBase {
 
     /**
      * Sets the text to be shown as the description.
-     * Never set this to null as this will cause nullpointer exception when drawing with Android Canvas.
+     * Never set this to null as this will cause {@link NullPointerException} when drawing with Android Canvas.
      *
-     * @param text
+     * @param text - the text to be displayed within the description.
      */
     public void setText(String text) {
         this.text = text;
@@ -45,7 +48,7 @@ public class Description extends ComponentBase {
     /**
      * Returns the description text.
      *
-     * @return
+     * @return the text of the description.
      */
     public String getText() {
         return text;
@@ -54,8 +57,8 @@ public class Description extends ComponentBase {
     /**
      * Sets a custom position for the description text in pixels on the screen.
      *
-     * @param x - xcoordinate
-     * @param y - ycoordinate
+     * @param x - xcoordinate, the horizontal position of the pixel on the screen.
+     * @param y - ycoordinate, the vertical position of the pixel on the screen.
      */
     public void setPosition(float x, float y) {
         if (mPosition == null) {
@@ -69,7 +72,7 @@ public class Description extends ComponentBase {
     /**
      * Returns the customized position of the description, or null if none set.
      *
-     * @return
+     * @return the {@link MPPointF} position.
      */
     public MPPointF getPosition() {
         return mPosition;
@@ -78,7 +81,7 @@ public class Description extends ComponentBase {
     /**
      * Sets the text alignment of the description text. Default RIGHT.
      *
-     * @param align
+     * @param align - the {@link Paint.Align} object that represents the text alignment.
      */
     public void setTextAlign(Paint.Align align) {
         this.mTextAlign = align;
@@ -87,7 +90,7 @@ public class Description extends ComponentBase {
     /**
      * Returns the text alignment of the description.
      *
-     * @return
+     * @return the {@link Paint.Align} object that represents the text alignment.
      */
     public Paint.Align getTextAlign() {
         return mTextAlign;
