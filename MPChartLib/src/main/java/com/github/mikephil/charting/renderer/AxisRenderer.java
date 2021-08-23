@@ -190,10 +190,8 @@ public abstract class AxisRenderer extends Renderer {
             interval = (float) range / (float) (labelCount - 1);
             mAxis.mEntryCount = labelCount;
 
-            if (mAxis.mEntries.length < labelCount) {
-                // Ensure stops contains at least numStops elements.
-                mAxis.mEntries = new float[labelCount];
-            }
+            // Ensure stops contains at least numStops elements.
+            mAxis.mEntries = new float[labelCount];
 
             float v = min;
 
@@ -228,10 +226,7 @@ public abstract class AxisRenderer extends Renderer {
 
             mAxis.mEntryCount = n;
 
-            if (mAxis.mEntries.length < n) {
-                // Ensure stops contains at least numStops elements.
-                mAxis.mEntries = new float[n];
-            }
+            mAxis.mEntries = new float[n];
 
             for (f = first, i = 0; i < n; f += interval, ++i) {
 
