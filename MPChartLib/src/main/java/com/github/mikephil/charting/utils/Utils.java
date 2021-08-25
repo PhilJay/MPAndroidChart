@@ -541,7 +541,7 @@ public abstract class Utils {
                 mDrawableBoundsCache.left,
                 mDrawableBoundsCache.top,
                 mDrawableBoundsCache.left + width,
-                mDrawableBoundsCache.top + width);
+                mDrawableBoundsCache.top + height);
 
         int saveId = canvas.save();
         // translate to the correct position and draw
