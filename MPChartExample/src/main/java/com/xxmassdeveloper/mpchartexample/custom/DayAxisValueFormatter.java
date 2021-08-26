@@ -1,12 +1,13 @@
 package com.xxmassdeveloper.mpchartexample.custom;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 /**
  * Created by philipp on 02/06/16.
  */
-public class DayAxisValueFormatter extends ValueFormatter
+public class DayAxisValueFormatter implements IAxisValueFormatter
 {
 
     private final String[] mMonths = new String[]{
@@ -20,7 +21,7 @@ public class DayAxisValueFormatter extends ValueFormatter
     }
 
     @Override
-    public String getFormattedValue(float value) {
+    public String getFormattedValue(float value, AxisBase axis) {
 
         int days = (int) value;
 
