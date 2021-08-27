@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -24,6 +25,15 @@ public class RadarDataSet extends LineRadarDataSet<RadarEntry> implements IRadar
     protected float mHighlightCircleInnerRadius = 3.0f;
     protected float mHighlightCircleOuterRadius = 4.0f;
     protected float mHighlightCircleStrokeWidth = 2.0f;
+
+    /**
+     * For data set with multiple value this may not be sufficient.
+     * It is better to use single valued list instead of this, which would
+     * provide a cleaner client API
+     */
+    @Deprecated
+    protected GradientColor mGradientColor = null;
+    protected List<GradientColor> mGradientColors = null;
 
     public RadarDataSet(List<RadarEntry> yVals, String label) {
         super(yVals, label);
@@ -118,5 +128,44 @@ public class RadarDataSet extends LineRadarDataSet<RadarEntry> implements IRadar
         radarDataSet.mHighlightCircleStrokeAlpha = mHighlightCircleStrokeAlpha;
         radarDataSet.mHighlightCircleStrokeColor = mHighlightCircleStrokeColor;
         radarDataSet.mHighlightCircleStrokeWidth = mHighlightCircleStrokeWidth;
+    }
+
+    @Override
+    public GradientColor getGradientColor() {
+        return mGradientColor;
+    }
+
+    @Override
+    public List<GradientColor> getGradientColors() {
+        return mGradientColors;
+    }
+
+    @Override
+    public GradientColor getGradientColor(int index) {
+        return mGradientColors.get(index % mGradientColors.size());
+    }
+
+    /**
+     * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
+     *
+     * @param startColor
+     * @param endColor
+     */
+    public void setGradientColor(int startColor, int endColor) {
+        mGradientColor = new GradientColor(startColor, endColor);
+    }
+
+    /**
+     * Sets the start and end color for gradient colors, ONLY color that should be used for this DataSet.
+     *
+     * @param gradientColors
+     */
+    public void setGradientColors(List<GradientColor> gradientColors) {
+        this.mGradientColors = gradientColors;
+    }
+
+    @Override
+    public boolean isGradientEnabled() {
+        return mGradientColor != null && mGradientColors != null && mGradientColors.size() > 0;
     }
 }

@@ -8,6 +8,11 @@ import com.github.mikephil.charting.utils.Fill;
 @Deprecated
 public class GradientColor extends Fill
 {
+    public GradientColor(int startColor, int endColor) {
+        setStartColor(startColor);
+        setEndColor(endColor);
+    }
+
     /**
      * Deprecated. Use `Fill.getGradientColors()`
      */

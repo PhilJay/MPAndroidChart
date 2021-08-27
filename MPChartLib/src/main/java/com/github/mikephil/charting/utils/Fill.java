@@ -246,7 +246,8 @@ public class Fill
     }
 
     public void fillPath(Canvas c, Path path, Paint paint,
-                         @Nullable RectF clipRect)
+                         float left, float top, float right, float bottom,
+                         Direction gradientDirection, @Nullable RectF clipRect)
     {
         switch (mType)
         {
@@ -290,10 +291,26 @@ public class Fill
                 if (mGradientColors == null) return;
 
                 LinearGradient gradient = new LinearGradient(
-                        0,
-                        0,
-                        c.getWidth(),
-                        c.getHeight(),
+                        (int) (gradientDirection == Direction.RIGHT
+                                ? right
+                                : gradientDirection == Direction.LEFT
+                                ? left
+                                : left),
+                        (int) (gradientDirection == Direction.UP
+                                ? bottom
+                                : gradientDirection == Direction.DOWN
+                                ? top
+                                : top),
+                        (int) (gradientDirection == Direction.RIGHT
+                                ? left
+                                : gradientDirection == Direction.LEFT
+                                ? right
+                                : left),
+                        (int) (gradientDirection == Direction.UP
+                                ? top
+                                : gradientDirection == Direction.DOWN
+                                ? bottom
+                                : top),
                         mGradientColors,
                         mGradientPositions,
                         android.graphics.Shader.TileMode.MIRROR);
