@@ -151,7 +151,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         mYAxisRenderer.renderAxisLabels(canvas);
 
-        mRenderer.drawValues(canvas);
+        // drawValues now moved to drawData()
+//        mRenderer.drawValues(canvas);
 
         mLegendRenderer.renderLegend(canvas);
 
@@ -327,8 +328,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     @Override
     protected float getRequiredBaseOffset() {
         return mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled() ?
-                mXAxis.mLabelRotatedWidth :
-                Utils.convertDpToPixel(10f);
+                mXAxis.mLabelRotatedWidth : 0f;
     }
 
     @Override
