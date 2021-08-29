@@ -2,6 +2,7 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
@@ -49,7 +50,13 @@ public class Legend extends ComponentBase {
         /**
          * Draw a horizontal line
          */
-        LINE
+        LINE,
+
+        /**
+         * Draw a custom shape
+         * sure {@link com.github.mikephil.charting.components.LegendEntry} customDrawable field not null
+         */
+        CUSTOM_DRAWABLE
     }
 
     public enum LegendHorizontalAlignment {
@@ -141,6 +148,11 @@ public class Legend extends ComponentBase {
      * the maximum relative size out of the whole chart view in percent
      */
     private float mMaxSizePercent = 0.95f;
+
+    /**
+     * the given drawable for drawing legend form
+     */
+    private Drawable mCustomDrawable;
 
     /**
      * default constructor
@@ -624,6 +636,14 @@ public class Legend extends ComponentBase {
      */
     public void setMaxSizePercent(float maxSize) {
         mMaxSizePercent = maxSize;
+    }
+
+    public Drawable getCustomDrawable() {
+        return mCustomDrawable;
+    }
+
+    public void setCustomDrawable(Drawable customDrawable) {
+        this.mCustomDrawable = customDrawable;
     }
 
     private List<FSize> mCalculatedLabelSizes = new ArrayList<>(16);
