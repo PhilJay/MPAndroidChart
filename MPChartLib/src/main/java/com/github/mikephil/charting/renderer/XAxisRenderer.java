@@ -32,6 +32,7 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setColor(Color.BLACK);
         mAxisLabelPaint.setTextAlign(Align.CENTER);
         mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
+        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
     }
 
     protected void setupGridPaint() {
@@ -78,7 +79,6 @@ public class XAxisRenderer extends AxisRenderer {
 
         String longest = mXAxis.getLongestLabel();
 
-        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
 
         final FSize labelSize = Utils.calcTextSize(mAxisLabelPaint, longest);
@@ -109,7 +109,6 @@ public class XAxisRenderer extends AxisRenderer {
 
         float yoffset = mXAxis.getYOffset();
 
-        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
