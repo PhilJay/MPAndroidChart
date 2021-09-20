@@ -42,6 +42,33 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     /**
+     * Return the axis label x position based on axis dependency and label position
+     * @param dependency
+     * @param labelPosition
+     * @return
+     */
+    private float calculateAxisLabelsXPosition(AxisDependency dependency, YAxisLabelPosition labelPosition) {
+        float viewPortBase = dependency == AxisDependency.LEFT ? mViewPortHandler.offsetLeft() : mViewPortHandler.contentRight();
+        float xOffset = mYAxis.getXOffset() * (labelPosition == YAxisLabelPosition.OUTSIDE_CHART ? -1 : 1);
+
+        return viewPortBase + xOffset;
+    }
+
+    /**
+     * Return the text align based on axis dependency and label position
+     * @param dependency
+     * @param labelPosition
+     * @return
+     */
+    private Align getAxisLabelTextAlign(AxisDependency dependency, YAxisLabelPosition labelPosition) {
+        if (dependency == AxisDependency.LEFT ^ labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
+            return Align.LEFT;
+        }
+
+        return Align.RIGHT;
+    }
+
+    /**
      * draws the y-axis labels to the screen
      */
     @Override
@@ -56,36 +83,15 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
-        float xoffset = mYAxis.getXOffset();
-        float yoffset = Utils.calcTextHeight(mAxisLabelPaint, "A") / 2.5f + mYAxis.getYOffset();
+        float yOffset = Utils.calcTextHeight(mAxisLabelPaint, "A") / 2.5f + mYAxis.getYOffset();
 
         AxisDependency dependency = mYAxis.getAxisDependency();
         YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
 
-        float xPos = 0f;
+        float xPos = calculateAxisLabelsXPosition(dependency, labelPosition);
+        mAxisLabelPaint.setTextAlign(getAxisLabelTextAlign(dependency, labelPosition));
 
-        if (dependency == AxisDependency.LEFT) {
-
-            if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-                mAxisLabelPaint.setTextAlign(Align.RIGHT);
-                xPos = mViewPortHandler.offsetLeft() - xoffset;
-            } else {
-                mAxisLabelPaint.setTextAlign(Align.LEFT);
-                xPos = mViewPortHandler.offsetLeft() + xoffset;
-            }
-
-        } else {
-
-            if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-                mAxisLabelPaint.setTextAlign(Align.LEFT);
-                xPos = mViewPortHandler.contentRight() + xoffset;
-            } else {
-                mAxisLabelPaint.setTextAlign(Align.RIGHT);
-                xPos = mViewPortHandler.contentRight() - xoffset;
-            }
-        }
-
-        drawYLabels(c, xPos, positions, yoffset);
+        drawYLabels(c, xPos, positions, yOffset);
     }
 
     @Override
