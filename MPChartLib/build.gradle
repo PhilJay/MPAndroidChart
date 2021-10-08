@@ -4,12 +4,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 30
-        versionCode 3
-        versionName '3.1.0'
+        targetSdkVersion 31
 
         consumerProguardFiles 'proguard-project.txt'
     }
