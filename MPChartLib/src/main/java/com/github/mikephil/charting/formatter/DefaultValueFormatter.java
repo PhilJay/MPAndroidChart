@@ -38,17 +38,18 @@ public class DefaultValueFormatter implements IValueFormatter
      * @param digits
      */
     public void setup(int digits) {
+        if (this.mDecimalDigits != digits) {
+            this.mDecimalDigits = digits;
 
-        this.mDecimalDigits = digits;
+            StringBuffer b = new StringBuffer();
+            for (int i = 0; i < digits; i++) {
+                if (i == 0)
+                    b.append(".");
+                b.append("0");
+            }
 
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < digits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
+            mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
         }
-
-        mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
     }
 
     @Override
