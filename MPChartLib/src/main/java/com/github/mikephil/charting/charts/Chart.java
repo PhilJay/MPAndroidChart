@@ -370,7 +370,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     protected void setupDefaultFormatter(float min, float max) {
 
-        float reference = 0f;
+        float reference;
 
         if (mData == null || mData.getEntryCount() < 2) {
 
