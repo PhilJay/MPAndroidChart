@@ -442,13 +442,33 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+        toggleCirclesColorOnGraphSelection(true);
         Log.i("Entry selected", e.toString());
-        Log.i("LOW HIGH", "low: " + chart.getLowestVisibleX() + ", high: " + chart.getHighestVisibleX());
-        Log.i("MIN MAX", "xMin: " + chart.getXChartMin() + ", xMax: " + chart.getXChartMax() + ", yMin: " + chart.getYChartMin() + ", yMax: " + chart.getYChartMax());
+        Log.i("LOW HIGH",
+                "low: " + chart.getLowestVisibleX() + ", high: " + chart.getHighestVisibleX());
+        Log.i("MIN MAX",
+                "xMin: " + chart.getXChartMin() + ", xMax: " + chart.getXChartMax() + ", yMin: "
+                        + chart.getYChartMin() + ", yMax: " + chart.getYChartMax());
     }
 
     @Override
     public void onNothingSelected() {
+        toggleCirclesColorOnGraphSelection(false);
         Log.i("Nothing selected", "Nothing selected.");
+    }
+
+    private void toggleCirclesColorOnGraphSelection(boolean isSelected) {
+        List<ILineDataSet> dataSets = chart.getData().getDataSets();
+        for (int i = 0; i < dataSets.size(); i++) {
+            ILineDataSet dataSet = dataSets.get(i);
+            if (dataSet instanceof LineDataSet) {
+                List<Integer> colors = new ArrayList<>();
+                for (int i1 = 0; i1 < dataSet.getEntryCount(); i1++) {
+                    colors.add(getResources().getColor(isSelected ? R.color.gray : R.color.black));
+                }
+                ((LineDataSet) dataSet).setCircleColors(colors);
+            }
+        }
+        chart.notifyDataSetChanged();
     }
 }

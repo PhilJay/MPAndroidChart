@@ -26,6 +26,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
+import java.util.WeakHashMap;
 
 public class LineChartRenderer extends LineRadarRenderer {
 
@@ -611,7 +612,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     /**
      * cache for the circle bitmaps of all datasets
      */
-    private HashMap<IDataSet, DataSetImageCache> mImageCaches = new HashMap<>();
+    private WeakHashMap<IDataSet, DataSetImageCache> mImageCaches = new WeakHashMap<>();
 
     /**
      * buffer for drawing the circles
@@ -660,12 +661,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 mImageCaches.put(dataSet, imageCache);
             }
 
-            boolean changeRequired = imageCache.init(dataSet);
-
-            // only fill the cache with new bitmaps if a change is required
-            if (changeRequired) {
-                imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole);
-            }
+            imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole);
 
             int boundsRangeCount = mXBounds.range + mXBounds.min;
 
@@ -767,28 +763,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         private Path mCirclePathBuffer = new Path();
 
         private Bitmap[] circleBitmaps;
-
-        /**
-         * Sets up the cache, returns true if a change of cache was required.
-         *
-         * @param set
-         * @return
-         */
-        protected boolean init(ILineDataSet set) {
-
-            int size = set.getCircleColorCount();
-            boolean changeRequired = false;
-
-            if (circleBitmaps == null) {
-                circleBitmaps = new Bitmap[size];
-                changeRequired = true;
-            } else if (circleBitmaps.length != size) {
-                circleBitmaps = new Bitmap[size];
-                changeRequired = true;
-            }
-
-            return changeRequired;
-        }
+        private int[] circleColors;
 
         /**
          * Fills the cache with bitmaps for the given dataset.
@@ -797,14 +772,16 @@ public class LineChartRenderer extends LineRadarRenderer {
          * @param drawCircleHole
          * @param drawTransparentCircleHole
          */
-        protected void fill(ILineDataSet set, boolean drawCircleHole, boolean drawTransparentCircleHole) {
-
+        protected void fill(ILineDataSet set, boolean drawCircleHole,
+                boolean drawTransparentCircleHole) {
+            init(set);
             int colorCount = set.getCircleColorCount();
             float circleRadius = set.getCircleRadius();
             float circleHoleRadius = set.getCircleHoleRadius();
 
             for (int i = 0; i < colorCount; i++) {
-
+                if (!changeRequired(set, colorCount, i))
+                    continue;
                 Bitmap.Config conf = Bitmap.Config.ARGB_4444;
                 Bitmap circleBitmap = Bitmap.createBitmap((int) (circleRadius * 2.1), (int) (circleRadius * 2.1), conf);
 
@@ -848,6 +825,27 @@ public class LineChartRenderer extends LineRadarRenderer {
                     }
                 }
             }
+        }
+
+        private void init(ILineDataSet set) {
+            int size = set.getCircleColorCount();
+
+            if (circleBitmaps == null) {
+                circleBitmaps = new Bitmap[size];
+            } else if (circleBitmaps.length != size) {
+                circleBitmaps = new Bitmap[size];
+            }
+        }
+
+        private boolean changeRequired(ILineDataSet set, int colorCount, int i) {
+            if (circleColors == null || circleColors.length != colorCount) {
+                circleColors = new int[colorCount];
+            }
+            if (circleColors[i] == set.getCircleColor(i)) {
+                return true;
+            }
+            circleColors[i] = set.getCircleColor(i);
+            return false;
         }
 
         /**
