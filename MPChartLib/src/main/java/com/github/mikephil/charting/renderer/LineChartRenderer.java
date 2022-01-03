@@ -657,7 +657,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             if (mImageCaches.containsKey(dataSet)) {
                 imageCache = mImageCaches.get(dataSet);
             } else {
-                imageCache = new DataSetImageCache(dataSet);
+                imageCache = new DataSetImageCache();
                 mImageCaches.put(dataSet, imageCache);
             }
 
@@ -765,16 +765,6 @@ public class LineChartRenderer extends LineRadarRenderer {
         private Bitmap[] circleBitmaps;
         private int[] circleColors;
 
-        DataSetImageCache(ILineDataSet set) {
-            int size = set.getCircleColorCount();
-
-            if (circleBitmaps == null) {
-                circleBitmaps = new Bitmap[size];
-            } else if (circleBitmaps.length != size) {
-                circleBitmaps = new Bitmap[size];
-            }
-        }
-
         /**
          * Fills the cache with bitmaps for the given dataset.
          *
@@ -782,8 +772,9 @@ public class LineChartRenderer extends LineRadarRenderer {
          * @param drawCircleHole
          * @param drawTransparentCircleHole
          */
-        protected void fill(ILineDataSet set, boolean drawCircleHole, boolean drawTransparentCircleHole) {
-
+        protected void fill(ILineDataSet set, boolean drawCircleHole,
+                boolean drawTransparentCircleHole) {
+            init(set);
             int colorCount = set.getCircleColorCount();
             float circleRadius = set.getCircleRadius();
             float circleHoleRadius = set.getCircleHoleRadius();
@@ -833,6 +824,16 @@ public class LineChartRenderer extends LineRadarRenderer {
                                 mCirclePaintInner);
                     }
                 }
+            }
+        }
+
+        private void init(ILineDataSet set) {
+            int size = set.getCircleColorCount();
+
+            if (circleBitmaps == null) {
+                circleBitmaps = new Bitmap[size];
+            } else if (circleBitmaps.length != size) {
+                circleBitmaps = new Bitmap[size];
             }
         }
 
