@@ -20,43 +20,47 @@ public class SquareShapeRenderer implements IShapeRenderer
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
                             float posX, float posY, Paint renderPaint) {
 
-        final float shapeSize = dataSet.getScatterShapeSize();
-        final float shapeHalf = shapeSize / 2f;
-        final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
-        final float shapeHoleSize = shapeHoleSizeHalf * 2.f;
-        final float shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.f;
-        final float shapeStrokeSizeHalf = shapeStrokeSize / 2.f;
+        final Shape shape = new Shape(dataSet);
 
-        final int shapeHoleColor = dataSet.getScatterShapeHoleColor();
+        /**
+         final float shapeSize = dataSet.getScatterShapeSize();
+         final float shapeHalf = shapeSize / 2f;
+         final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
+         final float shapeHoleSize = shapeHoleSizeHalf * 2.f;
+         final float shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.f;
+         final float shapeStrokeSizeHalf = shapeStrokeSize / 2.f;
 
-        if (shapeSize > 0.0) {
+         final int shapeHoleColor = dataSet.getScatterShapeHoleColor();
+         **/
+
+        if (shape.getShapeSize() > 0.0) {
             renderPaint.setStyle(Paint.Style.STROKE);
-            renderPaint.setStrokeWidth(shapeStrokeSize);
+            renderPaint.setStrokeWidth(shape.getShapeStrokeSize());
 
-            c.drawRect(posX - shapeHoleSizeHalf - shapeStrokeSizeHalf,
-                    posY - shapeHoleSizeHalf - shapeStrokeSizeHalf,
-                    posX + shapeHoleSizeHalf + shapeStrokeSizeHalf,
-                    posY + shapeHoleSizeHalf + shapeStrokeSizeHalf,
+            c.drawRect(posX - shape.getShapeHoleSizeHalf() - shape.getShapeStrokeSizeHalf(),
+                    posY - shape.getShapeHoleSizeHalf() - shape.getShapeStrokeSizeHalf(),
+                    posX + shape.getShapeHoleSizeHalf() + shape.getShapeStrokeSizeHalf(),
+                    posY + shape.getShapeHoleSizeHalf() + shape.getShapeStrokeSizeHalf(),
                     renderPaint);
 
-            if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
+            if (shape.getShapeHoleColor() != ColorTemplate.COLOR_NONE) {
                 renderPaint.setStyle(Paint.Style.FILL);
 
-                renderPaint.setColor(shapeHoleColor);
-                c.drawRect(posX - shapeHoleSizeHalf,
-                        posY - shapeHoleSizeHalf,
-                        posX + shapeHoleSizeHalf,
-                        posY + shapeHoleSizeHalf,
+                renderPaint.setColor(shape.getShapeHoleColor());
+                c.drawRect(posX - shape.getShapeHoleSizeHalf(),
+                        posY - shape.getShapeHoleSizeHalf(),
+                        posX + shape.getShapeHoleSizeHalf(),
+                        posY + shape.getShapeHoleSizeHalf(),
                         renderPaint);
             }
 
         } else {
             renderPaint.setStyle(Paint.Style.FILL);
 
-            c.drawRect(posX - shapeHalf,
-                    posY - shapeHalf,
-                    posX + shapeHalf,
-                    posY + shapeHalf,
+            c.drawRect(posX - shape.getShapeHalf(),
+                    posY - shape.getShapeHalf(),
+                    posX + shape.getShapeHalf(),
+                    posY + shape.getShapeHalf(),
                     renderPaint);
         }
     }

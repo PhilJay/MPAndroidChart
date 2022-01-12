@@ -19,33 +19,35 @@ public class CircleShapeRenderer implements IShapeRenderer
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
                             float posX, float posY, Paint renderPaint) {
 
-        final float shapeSize = dataSet.getScatterShapeSize();
-        final float shapeHalf = shapeSize / 2f;
-        final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
-        final float shapeHoleSize = shapeHoleSizeHalf * 2.f;
-        final float shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.f;
-        final float shapeStrokeSizeHalf = shapeStrokeSize / 2.f;
+        final Shape shape = new Shape(dataSet);
+        /**
+         final float shapeSize = dataSet.getScatterShapeSize();
+         final float shapeHalf = shapeSize / 2f;
+         final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
+         final float shapeHoleSize = shapeHoleSizeHalf * 2.f;
+         final float shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.f;
+         final float shapeStrokeSizeHalf = shapeStrokeSize / 2.f;
 
-        final int shapeHoleColor = dataSet.getScatterShapeHoleColor();
-
-        if (shapeSize > 0.0) {
+         final int shapeHoleColor = dataSet.getScatterShapeHoleColor();
+         **/
+        if (shape.getShapeSize() > 0.0) {
             renderPaint.setStyle(Paint.Style.STROKE);
-            renderPaint.setStrokeWidth(shapeStrokeSize);
+            renderPaint.setStrokeWidth(shape.getShapeStrokeSize());
 
             c.drawCircle(
                     posX,
                     posY,
-                    shapeHoleSizeHalf + shapeStrokeSizeHalf,
+                    shape.getShapeHoleSizeHalf() + shape.getShapeStrokeSizeHalf(),
                     renderPaint);
 
-            if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
+            if (shape.getShapeHoleColor() != ColorTemplate.COLOR_NONE) {
                 renderPaint.setStyle(Paint.Style.FILL);
 
-                renderPaint.setColor(shapeHoleColor);
+                renderPaint.setColor(shape.getShapeHoleColor());
                 c.drawCircle(
                         posX,
                         posY,
-                        shapeHoleSizeHalf,
+                        shape.getShapeHoleSizeHalf(),
                         renderPaint);
             }
         } else {
@@ -54,7 +56,7 @@ public class CircleShapeRenderer implements IShapeRenderer
             c.drawCircle(
                     posX,
                     posY,
-                    shapeHalf,
+                    shape.getShapeHalf(),
                     renderPaint);
         }
 
