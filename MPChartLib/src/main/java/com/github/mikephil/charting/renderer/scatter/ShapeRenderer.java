@@ -8,52 +8,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-public abstract class Shape implements IShapeRenderer {
-    private float shapeSize;
-    private float shapeHalf;
-    private float shapeHoleSizeHalf;
-    private float shapeHoleSize;
-    private float shapeStrokeSize;
-    private float shapeStrokeSizeHalf;
-    private int shapeHoleColor;
-
-    public Shape(IScatterDataSet dataSet) {
-        this.shapeSize = dataSet.getScatterShapeSize();
-        this.shapeHalf = shapeSize / 2f;
-        this.shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
-        this.shapeHoleSize = shapeHoleSizeHalf * 2.f;
-        this.shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.f;
-        this.shapeStrokeSizeHalf = shapeStrokeSize / 2.f;
-        this.shapeHoleColor = dataSet.getScatterShapeHoleColor();
-    }
-
-    public float getShapeSize() {
-        return shapeSize;
-    }
-
-    public float getShapeHalf() {
-        return shapeHalf;
-    }
-
-    public float getShapeHoleSizeHalf() {
-        return shapeHoleSizeHalf;
-    }
-
-    public float getShapeHoleSize() {
-        return shapeHoleSize;
-    }
-
-    public float getShapeStrokeSize() {
-        return shapeStrokeSize;
-    }
-
-    public float getShapeStrokeSizeHalf() {
-        return shapeStrokeSizeHalf;
-    }
-
-    public int getShapeHoleColor() {
-        return shapeHoleColor;
-    }
+public abstract class ShapeRenderer implements IShapeRenderer {
 
     @Override
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, float posX, float posY, Paint renderPaint) {
@@ -66,37 +21,30 @@ public abstract class Shape implements IShapeRenderer {
         final float shapeStrokeSizeHalf = shapeStrokeSize / 2.f;
 
         final int shapeHoleColor = dataSet.getScatterShapeHoleColor();
-         
-        if (shape.getShapeSize() > 0.0) {
+
+        if (shapeSize > 0.0) {
             renderPaint.setStyle(Paint.Style.STROKE);
-            renderPaint.setStrokeWidth(shape.getShapeStrokeSize());
+            renderPaint.setStrokeWidth(shapeStrokeSize);
 
-            c.drawCircle(
-                    posX,
-                    posY,
-                    shape.getShapeHoleSizeHalf() + shape.getShapeStrokeSizeHalf(),
-                    renderPaint);
+            render(c, shapeHoleSizeHalf,shapeStrokeSizeHalf, renderPaint, posX, posY);
 
-            if (shape.getShapeHoleColor() != ColorTemplate.COLOR_NONE) {
+            if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
                 renderPaint.setStyle(Paint.Style.FILL);
 
-                renderPaint.setColor(shape.getShapeHoleColor());
-                c.drawCircle(
-                        posX,
-                        posY,
-                        shape.getShapeHoleSizeHalf(),
-                        renderPaint);
+                renderPaint.setColor(shapeHoleColor);
+                renderHole(c, shapeHoleSizeHalf, renderPaint, posX, posY);
             }
         } else {
             renderPaint.setStyle(Paint.Style.FILL);
-
-            c.drawCircle(
-                    posX,
-                    posY,
-                    shape.getShapeHalf(),
-                    renderPaint);
+            renderHole(c, shapeHoleSizeHalf, renderPaint, posX, posY);
         }
 
     }
-    }
+
+    protected abstract void render(Canvas c, float shapeHoleSizeHalf, float shapeStrokeSizeHalf,
+                                   Paint renderPaint, float x, float y);
+
+    protected abstract void renderHole(Canvas c, float radius, Paint renderPaint,
+                                       float x, float y);
+
 }
