@@ -48,6 +48,11 @@ public class XAxis extends AxisBase {
     private boolean mAvoidFirstLastClipping = false;
 
     /**
+     * minimum spacing between labels in pixels
+     */
+    protected float mSpaceBetweenLabelsMin = 0;
+
+    /**
      * the position of the x-labels relative to the chart
      */
     private XAxisPosition mPosition = XAxisPosition.TOP;
@@ -63,6 +68,19 @@ public class XAxis extends AxisBase {
         super();
 
         mYOffset = Utils.convertDpToPixel(4.f); // -3
+    }
+
+    /**
+     * Returns minimum spacing between labels in pixels
+     */
+    public float getSpaceBetweenLabelsMin() { return mSpaceBetweenLabelsMin; }
+
+    /**
+     * Sets minimum spacing between labels in pixels
+     */
+    public void setSpaceBetweenLabelsMin(float space)
+    {
+        mSpaceBetweenLabelsMin = space;
     }
 
     /**

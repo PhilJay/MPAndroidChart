@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -115,73 +114,26 @@ public abstract class AxisRenderer extends Renderer {
      * @param min - the minimum value in the data object for this axis
      * @param max - the maximum value in the data object for this axis
      */
-    public void computeAxis(float min, float max, boolean inverted) {
+    public abstract void computeAxis(float min, float max, boolean inverted);
 
-        // calculate the starting and entry point of the y-labels (depending on
-        // zoom / contentrect bounds)
-        if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
-
-            MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
-            MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
-
-            if (!inverted) {
-
-                min = (float) p2.y;
-                max = (float) p1.y;
-            } else {
-
-                min = (float) p1.y;
-                max = (float) p2.y;
-            }
-
-            MPPointD.recycleInstance(p1);
-            MPPointD.recycleInstance(p2);
-        }
-
-        computeAxisValues(min, max);
-    }
 
     /**
-     * Sets up the axis values. Computes the desired number of labels between the two given extremes.
-     *
-     * @return
+     * Compute axis interval and desired number of labels between the two given extremes
+     * @param min
+     * @param max
      */
-    protected void computeAxisValues(float min, float max) {
+    protected abstract void computeAxisInterval(float min, float max);
 
-        float yMin = min;
-        float yMax = max;
-
-        int labelCount = mAxis.getLabelCount();
-        double range = Math.abs(yMax - yMin);
-
-        if (labelCount == 0 || range <= 0 || Double.isInfinite(range)) {
-            mAxis.mEntries = new float[]{};
-            mAxis.mCenteredEntries = new float[]{};
-            mAxis.mEntryCount = 0;
-            return;
-        }
-
-        // Find out how much spacing (in y value space) between axis values
-        double rawInterval = range / labelCount;
-        double interval = Utils.roundToNextSignificant(rawInterval);
-
-        // If granularity is enabled, then do not allow the interval to go below specified granularity.
-        // This is used to avoid repeated values when rounding values for display.
-        if (mAxis.isGranularityEnabled())
-            interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
-
-        // Normalize interval
-        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
-        int intervalSigDigit = (int) (interval / intervalMagnitude);
-        if (intervalSigDigit > 5) {
-            // Use one order of magnitude higher, to avoid intervals like 0.9 or 90
-            // if it's 0.0 after floor(), we use the old value
-            interval = Math.floor(10.0 * intervalMagnitude) == 0.0
-                    ? interval
-                    : Math.floor(10.0 * intervalMagnitude);
-
-        }
-
+    /**
+     * Setup axis entries and decimals based on the previously computed interval and labels count
+     * @param min
+     * @param max
+     * @param labelCount
+     * @param range
+     * @param interval
+     */
+    protected void computeAxisValues(float min, float max, int labelCount, double range, double interval) {
+        
         int n = mAxis.isCenterAxisLabelsEnabled() ? 1 : 0;
 
         // force label count
@@ -207,12 +159,12 @@ public abstract class AxisRenderer extends Renderer {
             // no forced count
         } else {
 
-            double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
+            double first = interval == 0.0 ? 0.0 : Math.ceil(min / interval) * interval;
             if(mAxis.isCenterAxisLabelsEnabled()) {
                 first -= interval;
             }
 
-            double last = interval == 0.0 ? 0.0 : Utils.nextUp(Math.floor(yMax / interval) * interval);
+            double last = interval == 0.0 ? 0.0 : Utils.nextUp(Math.floor(max / interval) * interval);
 
             double f;
             int i;
@@ -262,7 +214,7 @@ public abstract class AxisRenderer extends Renderer {
             }
         }
     }
-
+    
     /**
      * Draws the axis labels to the screen.
      *

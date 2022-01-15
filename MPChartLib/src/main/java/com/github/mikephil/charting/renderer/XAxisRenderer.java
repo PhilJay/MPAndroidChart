@@ -45,7 +45,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
-        if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutX()) {
+        if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutX()) {
 
             MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
             MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(), mViewPortHandler.contentTop());
@@ -64,14 +64,59 @@ public class XAxisRenderer extends AxisRenderer {
             MPPointD.recycleInstance(p2);
         }
 
-        computeAxisValues(min, max);
+        computeAxisInterval(min, max);
     }
 
     @Override
-    protected void computeAxisValues(float min, float max) {
-        super.computeAxisValues(min, max);
+    protected void computeAxisInterval(float min, float max) {
 
+        // Compute the longest label width first
         computeSize();
+
+        int labelCount = mXAxis.getLabelCount();
+        double range = Math.abs(max - min);
+
+        if (labelCount == 0 || range <= 0 || Double.isInfinite(range)) {
+            mXAxis.mEntries = new float[]{};
+            mXAxis.mCenteredEntries = new float[]{};
+            mXAxis.mEntryCount = 0;
+            return;
+        }
+
+        // Find out how much spacing (in x value space) between axis values
+        double rawInterval = range / labelCount;
+        double interval = Utils.roundToNextSignificant(rawInterval);
+
+        // Do not allow the interval go below the label width with spacing.
+        double labelMaxWidth = (mXAxis.mLabelRotatedWidth + mXAxis.getSpaceBetweenLabelsMin()) * range /  mViewPortHandler.contentWidth();
+        if (interval < labelMaxWidth)
+            interval = labelMaxWidth;
+
+        // If granularity is enabled, then do not allow the interval to go below specified granularity.
+        // This is used to avoid repeated values when rounding values for display.
+        if (mXAxis.isGranularityEnabled())
+            interval = interval < mXAxis.getGranularity() ? mXAxis.getGranularity() : interval;
+
+        // Perform rounding once again after interval was probably adjusted by label width and/or granularity checks.
+        rawInterval = interval;
+        interval = Utils.roundToNextSignificant(rawInterval);
+
+        // Normalize interval
+        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
+        int intervalSigDigit = (int) (interval / intervalMagnitude);
+        if (intervalSigDigit > 5) {
+            // Use one order of magnitude higher, to avoid intervals like 0.9 or 90
+            // if it's 0.0 after floor(), we use the old value
+            interval = Math.floor(10.0 * intervalMagnitude) == 0.0
+                    ? interval
+                    : Math.floor(10.0 * intervalMagnitude);
+
+            // If rounded down to current significant, round up to avoid label overlapping
+        } else if (interval < rawInterval) {
+            interval = (intervalSigDigit + 1) * intervalMagnitude;
+        }
+
+        computeAxisValues(min, max, labelCount, range, interval);
     }
 
     protected void computeSize() {
@@ -90,7 +135,6 @@ public class XAxisRenderer extends AxisRenderer {
                 labelWidth,
                 labelHeight,
                 mXAxis.getLabelRotationAngle());
-
 
         mXAxis.mLabelWidth = Math.round(labelWidth);
         mXAxis.mLabelHeight = Math.round(labelHeight);
