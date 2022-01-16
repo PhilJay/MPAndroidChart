@@ -112,9 +112,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             mGestureDetector.onTouchEvent(event);
         }
 
-        if (!mChart.isDragEnabled() && (!mChart.isScaleXEnabled() && !mChart.isScaleYEnabled()))
-            return true;
-
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
@@ -130,7 +127,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
             case MotionEvent.ACTION_POINTER_DOWN:
 
-                if (event.getPointerCount() >= 2) {
+                if (mChart.isScaleEnabled() && event.getPointerCount() >= 2) {
 
                     mChart.disableScroll();
 
@@ -178,43 +175,30 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
                     mChart.disableScroll();
 
-                    if (mChart.isScaleXEnabled() || mChart.isScaleYEnabled())
-                        performZoom(event);
+                    performZoom(event);
 
                 } else if (mTouchMode == NONE
                         && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
                         mTouchStartPoint.y)) > mDragTriggerDist) {
 
-                    if (mChart.isDragEnabled()) {
+                    if (mChart.isDragEnabled() && (!mChart.isFullyZoomedOut() || !mChart.hasNoDragOffset())) {
 
-                        boolean shouldPan = !mChart.isFullyZoomedOut() ||
-                                !mChart.hasNoDragOffset();
+                        float distanceX = Math.abs(event.getX() - mTouchStartPoint.x);
+                        float distanceY = Math.abs(event.getY() - mTouchStartPoint.y);
 
-                        if (shouldPan) {
+                        // Disable dragging in a direction that's disallowed
+                        if ((mChart.isDragXEnabled() || distanceY >= distanceX) &&
+                                (mChart.isDragYEnabled() || distanceY <= distanceX)) {
 
-                            float distanceX = Math.abs(event.getX() - mTouchStartPoint.x);
-                            float distanceY = Math.abs(event.getY() - mTouchStartPoint.y);
-
-                            // Disable dragging in a direction that's disallowed
-                            if ((mChart.isDragXEnabled() || distanceY >= distanceX) &&
-                                    (mChart.isDragYEnabled() || distanceY <= distanceX)) {
-
-                                mLastGesture = ChartGesture.DRAG;
-                                mTouchMode = DRAG;
-                            }
-
-                        } else {
-
-                            if (mChart.isHighlightPerDragEnabled()) {
-                                mLastGesture = ChartGesture.DRAG;
-
-                                if (mChart.isHighlightPerDragEnabled())
-                                    performHighlightDrag(event);
-                            }
+                            mLastGesture = ChartGesture.DRAG;
+                            mTouchMode = DRAG;
                         }
 
-                    }
+                    } else if (mChart.isHighlightPerDragEnabled()) {
 
+                        mLastGesture = ChartGesture.DRAG;
+                        performHighlightDrag(event);
+                    }
                 }
                 break;
 
@@ -246,7 +230,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     }
                 }
 
-                if (mTouchMode == X_ZOOM ||
+                if (mChart.isScaleEnabled() && mTouchMode == X_ZOOM ||
                         mTouchMode == Y_ZOOM ||
                         mTouchMode == PINCH_ZOOM ||
                         mTouchMode == POST_ZOOM) {
@@ -282,9 +266,11 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 break;
         }
 
-        // perform the transformation, update the chart
-        mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
 
+        if (mChart.isDragEnabled() || mChart.isScaleEnabled()) {
+            // perform the transformation, update the chart
+            mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
+        }
         return true; // indicate event was handled
     }
 
