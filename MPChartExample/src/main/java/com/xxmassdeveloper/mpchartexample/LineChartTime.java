@@ -92,6 +92,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setTextColor(Color.rgb(255, 192, 56));
         xAxis.setCenterAxisLabels(true);
         xAxis.setGranularity(1f); // one hour
+        xAxis.setDrawHighlightLabelsEnabled(true);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
             private final SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH);
@@ -114,6 +115,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         leftAxis.setAxisMaximum(170f);
         leftAxis.setYOffset(-9f);
         leftAxis.setTextColor(Color.rgb(255, 192, 56));
+        leftAxis.setDrawHighlightLabelsEnabled(true);
 
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);

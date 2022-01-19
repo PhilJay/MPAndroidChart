@@ -133,7 +133,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mXAxis.isEnabled())
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
-        mXAxisRenderer.renderAxisLabels(canvas);
+        mXAxisRenderer.renderAxisLabels(canvas, mIndicesToHighlight);
 
         if (mDrawWeb)
             mRenderer.drawExtras(canvas);
@@ -149,7 +149,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mYAxis.isEnabled() && !mYAxis.isDrawLimitLinesBehindDataEnabled())
             mYAxisRenderer.renderLimitLines(canvas);
 
-        mYAxisRenderer.renderAxisLabels(canvas);
+        mYAxisRenderer.renderAxisLabels(canvas, mIndicesToHighlight);
 
         mRenderer.drawValues(canvas);
 

@@ -11,6 +11,8 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -45,9 +47,9 @@ public class YAxisRenderer extends AxisRenderer {
      * draws the y-axis labels to the screen
      */
     @Override
-    public void renderAxisLabels(Canvas c) {
+    public void renderAxisLabels(Canvas c, Highlight[] indicesToHighlight) {
 
-        if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled())
+        if (!mYAxis.isEnabled() || (!mYAxis.isDrawLabelsEnabled() && !mYAxis.isDrawHighlightLabelsEnabled()))
             return;
 
         float[] positions = getTransformedPositions();
@@ -86,6 +88,7 @@ public class YAxisRenderer extends AxisRenderer {
         }
 
         drawYLabels(c, xPos, positions, yoffset);
+        drawHighlightLabels(c, xPos, yoffset, indicesToHighlight);
     }
 
     @Override
@@ -113,6 +116,9 @@ public class YAxisRenderer extends AxisRenderer {
      * @param positions
      */
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
+
+        if (!mYAxis.isDrawLabelsEnabled())
+            return;
 
         final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
         final int to = mYAxis.isDrawTopYLabelEntryEnabled()
@@ -347,6 +353,70 @@ public class YAxisRenderer extends AxisRenderer {
             }
 
             c.restoreToCount(clipRestoreCount);
+        }
+    }
+
+    /**
+     * Draws highlight labels
+     *
+     * @param c
+     * @param xPos
+     * @param yOffset
+     */
+    protected void drawHighlightLabels(Canvas c, float xPos, float yOffset, Highlight[] indicesToHighlight) {
+
+        if (!mYAxis.isDrawHighlightLabelsEnabled() || indicesToHighlight == null)
+            return;
+
+        for (Highlight high : indicesToHighlight) {
+
+            float yPos = high.getDrawY();
+
+            if (!mViewPortHandler.isInBoundsY(yPos))
+                continue;
+
+            String formattedLabel = mYAxis.getValueFormatter().getFormattedValue(high.getY(), mYAxis);
+            yPos += + yOffset;
+
+            // draw a rectangle
+            Paint paint = new Paint(mAxisLabelPaint);
+            paint.setColor(mYAxis.getHighlightFillColor());
+            paint.setStyle(Paint.Style.FILL);
+
+            FSize size = Utils.calcTextSize(paint, formattedLabel);
+
+            float left, right, top, bottom;
+            RectF padding = mYAxis.getHighlightFillPadding();
+
+            YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
+
+            if (mYAxis.getAxisDependency() == AxisDependency.LEFT) {
+                if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
+                    left = xPos - size.width - padding.left;
+                    right = Math.min(xPos + padding.right, mViewPortHandler.contentLeft());
+                } else {
+                    left = Math.max(xPos - padding.left, mViewPortHandler.contentLeft());
+                    right = xPos + size.width + padding.right;
+                }
+            } else {
+                if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
+                    left = Math.max(xPos - padding.left, mViewPortHandler.contentRight());
+                    right = xPos + size.width + padding.right;
+                } else {
+                    left = xPos - size.width - padding.left;
+                    right = Math.min(xPos + padding.right, mViewPortHandler.contentRight());
+                }
+            }
+            top = yPos - size.height - padding.top;
+            bottom = yPos + padding.bottom;
+
+            c.drawRect(left, top, right, bottom, paint);
+
+            // draw text in the rectangle
+            paint.setColor(mYAxis.getHighlightTextColor());
+            c.drawText(formattedLabel, xPos, yPos, paint);
+
+            FSize.recycleInstance(size);
         }
     }
 }

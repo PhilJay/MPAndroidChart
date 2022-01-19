@@ -3,6 +3,7 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.RectF;
 import android.util.Log;
 
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
@@ -184,6 +185,26 @@ public abstract class AxisBase extends ComponentBase {
         if (labels > 0)
             mAxisMaxLabels = labels;
     }
+
+    /**
+     * If true, the highlight value label is rendered in front of the axis labels
+     */
+    protected boolean mDrawHighlightLabelsEnabled = false;
+
+    /**
+     * Color for the x-label highlight text.
+     */
+    protected int mHighlightTextColor = Color.BLACK;
+
+    /**
+     * Paint for the box surrounding the highlight label.
+     */
+    protected int mHighlightFillColor = Color.WHITE;
+
+    /**
+     * Additional padding for the highlight box
+     */
+    protected RectF mHighlightFillPadding = new RectF(10f, 10f, 10f, 10f);
 
     /**
      * default constructor
@@ -812,5 +833,77 @@ public abstract class AxisBase extends ComponentBase {
     public void setSpaceMax(float mSpaceMax)
     {
         this.mSpaceMax = mSpaceMax;
+    }
+
+    /**
+     * @return true if drawing highlight labels in front of the axis labels is enabled
+     */
+    public boolean isDrawHighlightLabelsEnabled() {
+        return mDrawHighlightLabelsEnabled;
+    }
+
+    /**
+     * Set to true if drawing highlight labels in front of the axis labels should be enabled
+     *
+     * @param enabled
+     */
+    public void setDrawHighlightLabelsEnabled(boolean enabled) {
+        mDrawHighlightLabelsEnabled = enabled;
+    }
+
+    /**
+     * @return highlight label text color
+     */
+    public int getHighlightTextColor() { return mHighlightTextColor; }
+
+    /**
+     * Set highlight label text color
+     *
+     * @param color
+     */
+    public void setHighlightTextColor(int color) {
+        mHighlightTextColor = color;
+    }
+
+    /**
+     * @return highlight label fill color
+     */
+    public int getHighlightFillColor() { return mHighlightFillColor; }
+
+    /**
+     * Sets highlight label fill color
+     *
+     * @param color
+     */
+    public void setHighlightFillColor(int color) {
+        mHighlightFillColor = color;
+    }
+
+    /**
+     * @return highlight label fill padding
+     */
+    public RectF getHighlightFillPadding() { return mHighlightFillPadding; }
+
+    /**
+     * Sets the highlight label fill padding.
+     * The fill rectangle is restricted to stay within ViewPortHandler content bounds
+     * for axis of INSIDE_CHART labelPosition type,
+     * and outside of the bounds for OUTSIDE_CHART axis.
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setHighlightFillPadding(float left, float top, float right, float bottom) {
+        mHighlightFillPadding = new RectF(left, top, right, bottom);
+    }
+
+    /**
+     * Sets the highlight label fill padding.
+     *
+     * @param padding
+     */
+    public void setHighlightFillPadding(RectF padding) {
+        mHighlightFillPadding = padding;
     }
 }
