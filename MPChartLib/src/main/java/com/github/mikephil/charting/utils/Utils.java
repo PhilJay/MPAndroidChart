@@ -7,7 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
@@ -15,7 +15,6 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.SizeF;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -557,8 +556,43 @@ public abstract class Utils {
                                       Paint paint,
                                       MPPointF anchor, float angleDegrees) {
 
+        Paint.Align originalAlign = paint.getTextAlign();
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        // offsets: offsetX, offsetY, translateX, translateY
+        RectF offsets = computeXAxisOffsets(text, x, y, paint, anchor, angleDegrees);
+
+        if (angleDegrees != 0f) {
+            c.save();
+            c.translate(offsets.right, offsets.bottom);
+            c.rotate(angleDegrees);
+
+            c.drawText(text, offsets.left, offsets.top, paint);
+
+            c.restore();
+        } else {
+            c.drawText(text, offsets.left, offsets.top, paint);
+        }
+
+        paint.setTextAlign(originalAlign);
+    }
+
+    /**
+     * Computes offset and tranlation for an axis label.
+     *
+     * @param text axis label
+     * @param x x position in pixels
+     * @param y y position in pixels
+     * @param paint paint to draw with
+     * @param anchor point to rotate around
+     * @param angleDegrees rotations angle
+     * @return RectF: offsetX, offsetY, translateX, translateY
+     */
+    public static RectF computeXAxisOffsets(String text, float x, float y, Paint paint, MPPointF anchor, float angleDegrees) {
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
+        float translateX = 0.f;
+        float translateY = 0.f;
 
         final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
         paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
@@ -572,8 +606,8 @@ public abstract class Utils {
         drawOffsetY += -mFontMetricsBuffer.ascent;
 
         // To have a consistent point of reference, we always draw left-aligned
-        Paint.Align originalTextAlign = paint.getTextAlign();
-        paint.setTextAlign(Paint.Align.LEFT);
+        Paint p = new Paint(paint);
+        p.setTextAlign(Paint.Align.LEFT);
 
         if (angleDegrees != 0.f) {
 
@@ -581,8 +615,8 @@ public abstract class Utils {
             drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
             drawOffsetY -= lineHeight * 0.5f;
 
-            float translateX = x;
-            float translateY = y;
+            translateX = x;
+            translateY = y;
 
             // Move the "outer" rect relative to the anchor, assuming its centered
             if (anchor.x != 0.5f || anchor.y != 0.5f) {
@@ -596,13 +630,7 @@ public abstract class Utils {
                 FSize.recycleInstance(rotatedSize);
             }
 
-            c.save();
-            c.translate(translateX, translateY);
-            c.rotate(angleDegrees);
 
-            c.drawText(text, drawOffsetX, drawOffsetY, paint);
-
-            c.restore();
         } else {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
@@ -613,10 +641,9 @@ public abstract class Utils {
             drawOffsetX += x;
             drawOffsetY += y;
 
-            c.drawText(text, drawOffsetX, drawOffsetY, paint);
         }
 
-        paint.setTextAlign(originalTextAlign);
+        return new RectF(drawOffsetX, drawOffsetY, translateX, translateY);
     }
 
     public static void drawMultilineText(Canvas c, StaticLayout textLayout,
