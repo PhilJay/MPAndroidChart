@@ -41,6 +41,69 @@ public class YAxisRenderer extends AxisRenderer {
         }
     }
 
+    @Override
+    public void computeAxis(float min, float max, boolean inverted) {
+
+        // calculate the starting and entry point of the y-labels (depending on
+        // zoom / contentrect bounds)
+        if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
+
+            MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
+            MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
+
+            if (!inverted) {
+
+                min = (float) p2.y;
+                max = (float) p1.y;
+            } else {
+
+                min = (float) p1.y;
+                max = (float) p2.y;
+            }
+
+            MPPointD.recycleInstance(p1);
+            MPPointD.recycleInstance(p2);
+        }
+
+        computeAxisInterval(min, max);
+    }
+
+    @Override
+    protected void computeAxisInterval(float min, float max) {
+
+        int labelCount = mYAxis.getLabelCount();
+        double range = Math.abs(max - min);
+
+        if (labelCount == 0 || range <= 0 || Double.isInfinite(range)) {
+            mYAxis.mEntries = new float[]{};
+            mYAxis.mCenteredEntries = new float[]{};
+            mYAxis.mEntryCount = 0;
+            return;
+        }
+
+        // Find out how much spacing (in y value space) between axis values
+        double rawInterval = range / labelCount;
+        double interval = Utils.roundToNextSignificant(rawInterval);
+
+        // If granularity is enabled, then do not allow the interval to go below specified granularity.
+        // This is used to avoid repeated values when rounding values for display.
+        if (mYAxis.isGranularityEnabled())
+            interval = interval < mYAxis.getGranularity() ? mYAxis.getGranularity() : interval;
+
+        // Normalize interval
+        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
+        int intervalSigDigit = (int) (interval / intervalMagnitude);
+        if (intervalSigDigit > 5) {
+            // Use one order of magnitude higher, to avoid intervals like 0.9 or 90
+            // if it's 0.0 after floor(), we use the old value
+            interval = Math.floor(10.0 * intervalMagnitude) == 0.0
+                    ? interval
+                    : Math.floor(10.0 * intervalMagnitude);
+        }
+
+        computeAxisValues(min, max, labelCount, range, interval);
+    }
+
     /**
      * draws the y-axis labels to the screen
      */

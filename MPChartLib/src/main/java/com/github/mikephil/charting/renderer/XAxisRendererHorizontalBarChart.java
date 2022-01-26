@@ -55,7 +55,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
             MPPointD.recycleInstance(p2);
         }
 
-        computeAxisValues(min, max);
+        computeAxisInterval(min, max);
     }
     
     @Override

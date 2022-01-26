@@ -57,7 +57,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
             MPPointD.recycleInstance(p2);
         }
 
-        computeAxisValues(yMin, yMax);
+        computeAxisInterval(yMin, yMax);
     }
 
     /**
