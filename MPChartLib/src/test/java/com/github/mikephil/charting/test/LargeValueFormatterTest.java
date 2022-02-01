@@ -92,8 +92,6 @@ public class LargeValueFormatterTest {
         result = formatter.getFormattedValue(100000000000000000f, null);
         assertEquals("100q", result);
 
-        result = formatter.getFormattedValue(998900000000000000f, null);
-        assertEquals("14z", result);
     }
 
     @Test
@@ -106,12 +104,18 @@ public class LargeValueFormatterTest {
         result = formatter.getFormattedValue(-998999999999999f, null);
         assertEquals("-999t", result);
 
+        result = formatter.getFormattedValue(-6870000000000f, null);
+        assertEquals("-6.8t", result);
+
         result = formatter.getFormattedValue(-1000000000000f, null);
         assertEquals("-1t", result);
 
         // (-Trillion, -Billion]  (-10^12, -10^9]
         result = formatter.getFormattedValue(-999999999999f, null);
         assertEquals("-1t", result);
+
+        result = formatter.getFormattedValue(-22000000000f, null);
+        assertEquals("-22b", result);
 
         result = formatter.getFormattedValue(-1000000000f, null);
         assertEquals("-1b", result);
@@ -120,12 +124,18 @@ public class LargeValueFormatterTest {
         result = formatter.getFormattedValue(-999999999f, null);
         assertEquals("-1b", result);
 
+        result = formatter.getFormattedValue(-33000000f, null);
+        assertEquals("-33m", result);
+
         result = formatter.getFormattedValue(-1000000f, null);
         assertEquals("-1m", result);
 
         // (-Million, -Thousand] (-10^6, -10^3]
         result = formatter.getFormattedValue(-999999f, null);
         assertEquals("-1m", result);
+
+        result = formatter.getFormattedValue(-44000f, null);
+        assertEquals("-44k", result);
 
         result = formatter.getFormattedValue(-1000f, null);
         assertEquals("-1k", result);
@@ -134,12 +144,18 @@ public class LargeValueFormatterTest {
         result = formatter.getFormattedValue(-999f, null);
         assertEquals("-999", result);
 
+        result = formatter.getFormattedValue(6f, null);
+        assertEquals("6", result);
+
         result = formatter.getFormattedValue(999, null);
         assertEquals("999", result);
 
         // [Thousand, Million) [10^3, 10^6)
         result = formatter.getFormattedValue(1000, null);
         assertEquals("1k", result);
+
+        result = formatter.getFormattedValue(44400f, null);
+        assertEquals("44.4k", result);
 
         result = formatter.getFormattedValue(999999, null);
         assertEquals("1m", result);
@@ -148,6 +164,9 @@ public class LargeValueFormatterTest {
         result = formatter.getFormattedValue(1000000, null);
         assertEquals("1m", result);
 
+        result = formatter.getFormattedValue(33300000f, null);
+        assertEquals("33.3m", result);
+
         result = formatter.getFormattedValue(999999999, null);
         assertEquals("1b", result);
 
@@ -155,12 +174,18 @@ public class LargeValueFormatterTest {
         result = formatter.getFormattedValue(1000000000, null);
         assertEquals("1b", result);
 
+        result = formatter.getFormattedValue(22200000000f, null);
+        assertEquals("22.2b", result);
+
         result = formatter.getFormattedValue(999999999999f, null);
         assertEquals("1t", result);
 
         // [Trillion, Quadrillion) [10^12, 10^15)
         result = formatter.getFormattedValue(1000000000000f, null);
         assertEquals("1t", result);
+
+        result = formatter.getFormattedValue(6870000000000f, null);
+        assertEquals("6.87t", result);
 
         result = formatter.getFormattedValue(998999999999999f, null);
         assertEquals("999t", result);
