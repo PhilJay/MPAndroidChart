@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 32
     defaultConfig {
         applicationId "com.xxmassdeveloper.mpchartexample"
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 57
-        versionName '3.1.0'
+        targetSdkVersion 32
+        versionCode 59
+        versionName '3.1.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -20,7 +21,12 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation "androidx.appcompat:appcompat:1.4.1"
+    implementation 'com.google.android.material:material:1.5.0'
     implementation project(':MPChartLib')
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
