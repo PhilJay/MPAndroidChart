@@ -7,7 +7,7 @@ android {
         applicationId "com.xxmassdeveloper.mpchartexample"
         minSdkVersion 16
         targetSdkVersion 32
-        versionCode 59
+        versionCode 61
         versionName '3.1.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
