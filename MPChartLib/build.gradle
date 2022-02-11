@@ -4,11 +4,11 @@ apply plugin: 'com.android.library'
 group='com.github.philjay'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 32
     buildToolsVersion '28.0.3'
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 28
+        minSdkVersion 28
+        targetSdkVersion 32
         versionCode 3
         versionName '3.1.0'
     }
@@ -26,7 +26,6 @@ android {
 dependencies {
     implementation 'androidx.annotation:annotation:1.0.0'
     testImplementation 'junit:junit:4.12'
-    classpath 'com.android.tools.build:gradle:4.2.2'
 }
 
 task sourcesJar(type: Jar) {
