@@ -14,7 +14,7 @@ public class LimitLineTest {
         assertEquals(LimitLine.LimitLabelPosition.RIGHT_TOP, limitLine.getLabelPosition());
 
         // right top -> right top
-        limitLine.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_BOTTOM);
+        limitLine.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         assertEquals(LimitLine.LimitLabelPosition.RIGHT_TOP, limitLine.getLabelPosition());
 
         // right top <-> left top
