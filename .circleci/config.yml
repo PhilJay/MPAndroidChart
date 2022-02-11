@@ -44,5 +44,3 @@ jobs:
 
       # run tests!
       - run: ./gradlew test
-
-      - run: gradle test
