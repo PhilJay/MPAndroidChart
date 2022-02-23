@@ -34,7 +34,7 @@ public class YAxisTest {
         Float axisMinimum = yAxis.getAxisMinimum();
         Float axisMaximum = yAxis.getAxisMaximum();
         Float range = Math.abs(axisMinimum - axisMaximum);
-        assertEquals(2.3f, range);
+        assertEquals(2.4f, range);
 
         // neither are true
         yAxis.calculate(10, 2);
