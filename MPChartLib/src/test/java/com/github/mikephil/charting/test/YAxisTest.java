@@ -9,7 +9,7 @@ import com.github.mikephil.charting.components.YAxis;
 import org.junit.Test;
 
 public class YAxisTest {
-    //  calculate the offset between boarder of graph and the graph itself
+    //  calculate the offset between boarder of graph and the graph itself.
     @Test
     public void testComputeAxisValues() {
         YAxis yAxis = new YAxis();
