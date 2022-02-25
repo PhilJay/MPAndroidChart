@@ -1,7 +1,5 @@
-[![](https://jitpack.io/v/hannesa2/MPAndroidChart.svg)](https://jitpack.io/#hannesa2/MPAndroidChart)
+[![](https://jitpack.io/v/AppDevNext/MPAndroidChart.svg)](https://jitpack.io/#AppDevNext/MPAndroidChart)
 [![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
-
-![banner](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic_smaller.png)
 
 :zap: A powerful & easy to use chart library for Android :zap:
 
@@ -12,7 +10,6 @@
 1. [Documentation](#documentation)
 1. [Examples](#examples)
 1. [Questions](#report)
-1. [Donate](#donate)
 1. [Social Media](#social)
 1. [More Examples](#more-examples)
 1. [License](#licence)
@@ -26,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.hannesa2:MPAndroidChart:$latestVersion"
+    implementation "com.github.AppDevNext:MPAndroidChart:$latestVersion"
 }
 ```
 
