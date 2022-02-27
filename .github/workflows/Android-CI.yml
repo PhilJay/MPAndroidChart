@@ -1,6 +1,10 @@
 name: PullRequest
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   buildTest:
@@ -25,30 +29,30 @@ jobs:
         run: ./gradlew assembleDebug
       - name: Run tests
         run: ./gradlew test
-#      - name: Run instrumentation tests
-#        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.2
-#        with:
-#          cmd: ./gradlew :app:cAT
-#          api: 28
-#          tag: default
-#          abi: x86
-#      - name: Archive Espresso results
-#        uses: actions/upload-artifact@v2.3.1
-#        if: ${{ always() }}
-#        with:
-#          name: Chart-Espresso-report
-#          path: app/build/reports/androidTests/connected
-#      - name: Save logcat output
-#        uses: actions/upload-artifact@v2.3.1
-#        if: failure()
-#        with:
-#          name: Chart-logcat
-#          path: artifacts/logcat.log
-#      - name: Archive screenshots
-#        uses: actions/upload-artifact@v2.3.1
-#        with:
-#          name: Chart-Screenshots
-#          path: screenshots/adb
+  #      - name: Run instrumentation tests
+  #        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.2
+  #        with:
+  #          cmd: ./gradlew :app:cAT
+  #          api: 28
+  #          tag: default
+  #          abi: x86
+  #      - name: Archive Espresso results
+  #        uses: actions/upload-artifact@v2.3.1
+  #        if: ${{ always() }}
+  #        with:
+  #          name: Chart-Espresso-report
+  #          path: app/build/reports/androidTests/connected
+  #      - name: Save logcat output
+  #        uses: actions/upload-artifact@v2.3.1
+  #        if: failure()
+  #        with:
+  #          name: Chart-logcat
+  #          path: artifacts/logcat.log
+  #      - name: Archive screenshots
+  #        uses: actions/upload-artifact@v2.3.1
+  #        with:
+  #          name: Chart-Screenshots
+  #          path: screenshots/adb
   Check:
     name: Check
     runs-on: ubuntu-latest
