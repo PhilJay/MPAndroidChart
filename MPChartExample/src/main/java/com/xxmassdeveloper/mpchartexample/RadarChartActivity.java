@@ -29,6 +29,7 @@ import com.xxmassdeveloper.mpchartexample.custom.RadarMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RadarChartActivity extends DemoBase {
 
@@ -147,6 +148,13 @@ public class RadarChartActivity extends DemoBase {
         data.setValueTextColor(Color.WHITE);
 
         chart.setData(data);
+        List<Integer> colorList = new ArrayList<>();
+        colorList.add(Color.rgb(222, 166, 111));
+        colorList.add(Color.rgb(220, 206, 138));
+        colorList.add(Color.rgb(243, 255, 192));
+        colorList.add(Color.rgb(240, 255, 240));
+        colorList.add(Color.rgb(250, 255, 250));
+        chart.setLayerColorList(colorList);
         chart.invalidate();
     }
 
