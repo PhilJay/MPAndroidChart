@@ -16,6 +16,8 @@ import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererRadarChart;
 import com.github.mikephil.charting.utils.Utils;
 
+import java.util.List;
+
 /**
  * Implementation of the RadarChart, a "spidernet"-like chart. It works best
  * when displaying 5-10 entries per DataSet.
@@ -63,6 +65,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * the object reprsenting the y-axis labels
      */
     private YAxis mYAxis;
+
+    private List<Integer> colorList;
 
     protected YAxisRendererRadarChart mYAxisRenderer;
     protected XAxisRendererRadarChart mXAxisRenderer;
@@ -177,6 +181,25 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public float getSliceAngle() {
         return 360f / (float) mData.getMaxEntryCountSet().getEntryCount();
+    }
+
+
+    public void setLayerColorList(List<Integer> colorList) {
+        if (colorList == null || colorList.size() == 0) {
+            return;
+        }
+        this.colorList = colorList;
+    }
+
+    public boolean isCustomLayerColorEnable() {
+        if (mData == null) {
+            return false;
+        }
+        return colorList != null && colorList.size() == getYAxis().mEntryCount;
+    }
+
+    public List<Integer> getLayerColorList() {
+        return colorList;
     }
 
     @Override
