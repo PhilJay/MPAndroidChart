@@ -195,7 +195,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mData == null) {
             return false;
         }
-        return colorList != null && colorList.size() == mData.getEntryCount();
+        return colorList != null && colorList.size() == getYAxis().mEntryCount;
     }
 
     public List<Integer> getLayerColorList() {
