@@ -37,7 +37,6 @@ proguard/
 !.idea/
 .idea/*
 !codeStyleSettings.xml
-!/.idea/runConfigurations
 
 .directory
 
