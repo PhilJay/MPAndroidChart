@@ -6,7 +6,7 @@ android {
     compileSdkVersion 31
     defaultConfig {
         applicationId "com.xxmassdeveloper.mpchartexample"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 31
         versionCode 57
         versionName '3.1.0'
