@@ -791,10 +791,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             IDataSet set = mData.getDataSetByIndex(highlight.getDataSetIndex());
 
             Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
+
+            // make sure entry not null before using it
+            if (e == null)
+                continue;
+            
             int entryIndex = set.getEntryIndex(e);
 
-            // make sure entry not null
-            if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
+            if (entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
                 continue;
 
             float[] pos = getMarkerPosition(highlight);
