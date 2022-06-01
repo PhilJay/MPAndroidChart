@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
     defaultConfig {
         applicationId "com.xxmassdeveloper.mpchartexample"
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 57
         versionName '3.1.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
