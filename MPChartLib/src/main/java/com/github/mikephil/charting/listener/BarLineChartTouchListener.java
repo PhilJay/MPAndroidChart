@@ -108,7 +108,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             }
         }
 
-        if (mTouchMode == NONE) {
+        if (mChart.isFlingEnabled()) {
             mGestureDetector.onTouchEvent(event);
         }
 

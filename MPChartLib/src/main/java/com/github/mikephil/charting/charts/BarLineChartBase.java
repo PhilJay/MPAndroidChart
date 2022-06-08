@@ -85,6 +85,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     private boolean mScaleYEnabled = true;
 
     /**
+     * if true, fling gesture is enabled for the chart
+     */
+    private boolean mFlingEnabled = false;
+
+    /**
      * paint object for the (by default) lightgrey background of the grid
      */
     protected Paint mGridBackgroundPaint;
@@ -1167,6 +1172,22 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     public boolean isScaleYEnabled() {
         return mScaleYEnabled;
+    }
+
+    /**
+     * Set this to true to enable fling gesture for the chart
+     *
+     * @param enabled
+     */
+    public void setFlingEnabled(boolean enabled) { this.mFlingEnabled = enabled; }
+
+    /**
+     * Returns true if fling gesture is enabled for the chart, false if not.
+     *
+     * @return
+     */
+    public boolean isFlingEnabled() {
+        return mFlingEnabled;
     }
 
     /**
