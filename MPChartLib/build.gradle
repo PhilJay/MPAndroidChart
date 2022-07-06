@@ -18,6 +18,9 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true // this prevents "not mocked" error
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
