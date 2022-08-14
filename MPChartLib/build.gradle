@@ -1,16 +1,12 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
 group='com.github.philjay'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 32
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 28
-        versionCode 3
-        versionName '3.1.0'
+        targetSdkVersion 32
     }
     buildTypes {
         release {
@@ -24,13 +20,13 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.0.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.annotation:annotation:1.4.0'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+    archiveClassifier.set('sources')
 }
 
 task javadoc(type: Javadoc) {
@@ -41,7 +37,7 @@ task javadoc(type: Javadoc) {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
