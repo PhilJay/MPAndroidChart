@@ -36,7 +36,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
     /**
      * the width of the drawn data lines
      */
-    private float mLineWidth = 2.5f;
+    protected float mLineWidth = 2.5f;
 
     /**
      * if true, the data will also be drawn filled
