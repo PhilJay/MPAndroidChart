@@ -20,6 +20,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true // this prevents "not mocked" error
     }
+    namespace 'com.github.mikephil.charting'
 }
 
 dependencies {
