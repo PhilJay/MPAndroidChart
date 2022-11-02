@@ -19,13 +19,6 @@ jobs:
         with:
           distribution: "adopt"
           java-version: 11
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@main
-        with:
-          configuration: ".github/changelog-configuration.json"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get the version
         id: tagger
         uses: jimschubert/query-tag-action@v2
@@ -39,11 +32,13 @@ jobs:
         run: ./gradlew clean build
         env:
           VERSION: ${{ github.ref }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{steps.tagger.outputs.tag}}
           name: ${{steps.tagger.outputs.tag}}
+          generate_release_notes: true
           body: ${{steps.github_release.outputs.changelog}}
           files: MPChartLib/build/outputs/aar/MPChartLib-release.aar
         env:
