@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
 }
 
 android {
@@ -11,6 +12,7 @@ android {
         versionCode 57
         versionName '3.1.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments useTestStorageService: 'true'
     }
 
     buildTypes {
@@ -26,4 +28,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation 'com.google.android.material:material:1.7.0'
     implementation project(':MPChartLib')
+
+    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.4"
+    androidTestUtil "androidx.test.services:test-services:1.4.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
 }
+

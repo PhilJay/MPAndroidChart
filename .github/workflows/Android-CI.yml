@@ -29,31 +29,29 @@ jobs:
         run: ./gradlew assembleDebug
       - name: Run tests
         run: ./gradlew test
-  #      - name: Run instrumentation tests
-  #        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.4
-  #        with:
-  #          cmd: ./gradlew :app:cAT
-  #          api: 28
-  #          tag: default
-  #          abi: x86
-  #          cmdOptions: -noaudio -no-boot-anim -no-window
-  #      - name: Archive Espresso results
-  #        uses: actions/upload-artifact@v3.1.1
-  #        if: ${{ always() }}
-  #        with:
-  #          name: Chart-Espresso-report
-  #          path: app/build/reports/androidTests/connected
-  #      - name: Save logcat output
-  #        uses: actions/upload-artifact@v3.1.1
-  #        if: failure()
-  #        with:
-  #          name: Chart-logcat
-  #          path: artifacts/logcat.log
-  #      - name: Archive screenshots
-  #        uses: actions/upload-artifact@v3.1.1
-  #        with:
-  #          name: Chart-Screenshots
-  #          path: screenshots/adb
+      - name: Run instrumentation tests
+        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.4
+        with:
+          cmd: ./gradlew cAT --continue
+          api: 28
+          tag: default
+          abi: x86_64
+          cmdOptions: -noaudio -no-boot-anim -no-window
+      - name: Archive Espresso results
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: MPChart-Espresso-report
+          path: MPChartExample/build/reports/androidTests/connected
+          if-no-files-found: error
+      - name: Archive screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: MPChart-Screenshots
+          path: |
+            MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
+            MPChartExample/build/outputs/androidTest-results/connected
   Check:
     name: Check
     runs-on: ubuntu-latest
