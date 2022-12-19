@@ -34,9 +34,8 @@ proguard/
 *.iws
 
 # ecerything except code format settings
-!.idea/
 .idea/*
-!codeStyleSettings.xml
+!.idea/codeStyles/
 
 .directory
 
