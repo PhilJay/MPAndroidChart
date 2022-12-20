@@ -77,4 +77,4 @@ jobs:
         if: ${{ always() }}
         with:
           name: Chart-Lint-report
-          path: ./**/build/reports/lint-results.html
+          path: ./**/build/reports/lint-results*.html
