@@ -32,5 +32,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit-ktx:1.1.4"
     androidTestUtil "androidx.test.services:test-services:1.4.2"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.0'
 }
 
