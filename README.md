@@ -33,14 +33,6 @@ Download the [MPAndroidChart Example App](https://play.google.com/store/apps/det
 
 <br/>
 
-<h2 id="report">Questions & Issues :thinking:</h2>
-
-This repository's issue tracker is only for bugs and feature requests. The maintainers ask that you refrain from asking questions about how to use MPAndroidChart through the issue tracker.
-
-Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) first, then ask all your questions on [stackoverflow.com](https://stackoverflow.com/questions/tagged/mpandroidchart) for the fastest answer.
-
-<br/>
-
 <h2 id="more-examples">More Examples :+1:</h2>
 
 <br/>
