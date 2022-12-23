@@ -3,7 +3,7 @@
 
 :zap: A powerful & easy to use chart library for Android :zap:
 
-### Gradle Setup
+### Gradle Setup with jitpack.io
 
 ```gradle
 repositories {
@@ -12,6 +12,27 @@ repositories {
 
 dependencies {
     implementation "com.github.AppDevNext:MPAndroidChart:$latestVersion"
+}
+```
+### Gradle Setup with Github package 
+
+```gradle
+repositories {
+   ...
+   repositories {
+      maven {
+          name = "GitHubPackages"
+          url = "https://maven.pkg.github.com/AppDevNext/AndroidChart"
+          credentials {
+              username = System.getenv("GITHUBACTOR")
+              password = System.getenv("GITHUBTOKEN")
+          }
+      }
+   }
+}
+
+dependencies {
+    implementation "info.appdevnext:chart:$latestVersion"
 }
 ```
 

@@ -43,3 +43,9 @@ jobs:
           files: MPChartLib/build/outputs/aar/MPChartLib-release.aar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to github package
+        run: ./gradlew publish
+        env:
+          GITHUBACTOR: ${{ secrets.GITHUBACTOR }}
+          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
