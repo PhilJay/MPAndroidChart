@@ -3,6 +3,16 @@ plugins {
     id 'maven-publish'
 }
 
+// 2. Declare library details
+ext {
+    mGroupId = "info.appdevnext"
+    mArtifactId = "chart"
+    mVersionName = getTag()
+
+    mLibraryName = "Android Chart"
+    mLibraryDescription = "A powerful Android chart view / graph view library, supporting line- bar- pie- radar- bubble- and candlestick charts as well as scaling, dragging and animations"
+}
+
 android {
     compileSdkVersion 33
     defaultConfig {
@@ -32,11 +42,46 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 }
 
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
 project.afterEvaluate {
     publishing {
+//        publications {
+//            release(MavenPublication) {
+//                from components.release
+//            }
+//        }
+
         publications {
-            release(MavenPublication) {
+            maven(MavenPublication) {
+                groupId mGroupId
+                artifactId mArtifactId
+                version mVersionName
+
                 from components.release
+
+//                artifact androidSourcesJar
+//                artifact("$buildDir/outputs/aar/MPChartLib-release.aar")
+
+                pom {
+                    name = mLibraryName
+                    description = mLibraryDescription
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                version = getTag()
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/AppDevNext/AndroidChart"
+                credentials {
+                    username = System.getenv("GITHUBACTOR")
+                    password = System.getenv("GITHUBTOKEN")
+                }
             }
         }
     }
