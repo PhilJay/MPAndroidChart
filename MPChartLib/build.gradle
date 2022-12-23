@@ -9,6 +9,10 @@ android {
         minSdkVersion 19
         targetSdkVersion 33
 
+        // VERSION_NAME no longer available as of 4.1
+        // https://issuetracker.google.com/issues/158695880
+        buildConfigField 'String', 'VERSION_NAME', "\"${getTag()}\""
+
         consumerProguardFiles 'proguard-project.txt'
     }
     buildTypes {
