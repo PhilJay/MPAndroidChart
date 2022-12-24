@@ -3,7 +3,6 @@ plugins {
     id 'maven-publish'
 }
 
-// 2. Declare library details
 ext {
     mGroupId = "info.appdevnext"
     mArtifactId = "chart"
@@ -49,12 +48,6 @@ task androidSourcesJar(type: Jar) {
 
 project.afterEvaluate {
     publishing {
-//        publications {
-//            release(MavenPublication) {
-//                from components.release
-//            }
-//        }
-
         publications {
             maven(MavenPublication) {
                 groupId mGroupId
