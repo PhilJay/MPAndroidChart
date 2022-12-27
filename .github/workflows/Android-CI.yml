@@ -29,6 +29,8 @@ jobs:
         run: ./gradlew assembleDebug
       - name: Run tests
         run: ./gradlew test
+      - name: Test jitpack publish command
+        run: ./gradlew :MPChartLib:publishToMavenLocal
       - name: Run instrumentation tests
         uses: malinskiy/action-android/emulator-run-cmd@release/0.1.4
         with:
