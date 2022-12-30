@@ -34,8 +34,12 @@ jobs:
           VERSION: ${{ github.ref }}
 
       - name: Publish to github package
-        run: ./gradlew publish
+        run: |
+          signing/decrypt.sh
+          cat signing/gradle_secure.properties >> gradle.properties
+          ./gradlew publish
         env:
+          CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
           GITHUBACTOR: ${{ secrets.GITHUBACTOR }}
           GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
 
@@ -43,7 +47,7 @@ jobs:
         run: |
           signing/decrypt.sh
           cat signing/gradle_secure.properties >> gradle.properties
-          ./gradlew publish MPChartLib:publishMavenPublicationToMavenCentralRepository
+          ./gradlew MPChartLib:publishMavenPublicationToMavenCentralRepository
         env:
           CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
 
