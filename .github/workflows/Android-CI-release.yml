@@ -33,17 +33,6 @@ jobs:
         env:
           VERSION: ${{ github.ref }}
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{steps.tagger.outputs.tag}}
-          name: ${{steps.tagger.outputs.tag}}
-          generate_release_notes: true
-          body: ${{steps.github_release.outputs.changelog}}
-          files: MPChartLib/build/outputs/aar/MPChartLib-release.aar
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish to github package
         run: ./gradlew publish
         env:
@@ -57,3 +46,14 @@ jobs:
           ./gradlew publish MPChartLib:publishMavenPublicationToMavenCentralRepository
         env:
           CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{steps.tagger.outputs.tag}}
+          name: ${{steps.tagger.outputs.tag}}
+          generate_release_notes: true
+          body: ${{steps.github_release.outputs.changelog}}
+          files: MPChartLib/build/outputs/aar/MPChartLib-release.aar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
