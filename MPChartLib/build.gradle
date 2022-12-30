@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'maven-publish'
+    id "com.vanniktech.maven.publish" version "0.22.0"
 }
 
 ext {
@@ -46,35 +47,46 @@ task androidSourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
-project.afterEvaluate {
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                groupId mGroupId
-                artifactId mArtifactId
-                version mVersionName
+group = "info.mxtracks"
+version = "${getTag()}"
+println "Build version $version"
 
-                from components.release
-
-//                artifact androidSourcesJar
-//                artifact("$buildDir/outputs/aar/MPChartLib-release.aar")
-
-                pom {
-                    name = mLibraryName
-                    description = mLibraryDescription
-                }
+mavenPublishing {
+    pom {
+        name = "Android Chart"
+        description = "A powerful Android chart view / graph view library, supporting line- bar- pie- radar- bubble- and candlestick charts as well as scaling, dragging and animations"
+        inceptionYear = "2022"
+        url = "https://github.com/AppDevNext/AndroidChart/"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
             }
         }
+        developers {
+            developer {
+                id = "AppDevNext"
+                name = "AppDevNext"
+                url = "https://github.com/AppDevNext/"
+            }
+        }
+        scm {
+            url = "https://github.com/AppDevNext/AndroidChart/"
+            connection = "scm:git:git://github.com/AppDevNext/AndroidChart.git"
+            developerConnection = "scm:git:ssh://git@github.com/AppDevNext/AndroidChart.git"
+        }
+    }
 
-        repositories {
-            maven {
-                version = getTag()
-                name = "GitHubPackages"
-                url = "https://maven.pkg.github.com/AppDevNext/AndroidChart"
-                credentials {
-                    username = System.getenv("GITHUBACTOR")
-                    password = System.getenv("GITHUBTOKEN")
-                }
+    // Github packages
+    repositories {
+        maven {
+            version = version+"-SNAPSHOT"
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/AppDevNext/AndroidChart"
+            credentials {
+                username = System.getenv("GITHUBACTOR")
+                password = System.getenv("GITHUBTOKEN")
             }
         }
     }
