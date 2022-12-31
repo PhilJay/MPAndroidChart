@@ -14,25 +14,17 @@ dependencies {
     implementation "com.github.AppDevNext:MPAndroidChart:$latestVersion"
 }
 ```
-### Gradle Setup with Github package 
 
+### Gradle Setup with Sonartype [snapshot]
+
+Currently only from Sonartype snapshot staging
 ```gradle
 repositories {
-   ...
-   repositories {
-      maven {
-          name = "GitHubPackages"
-          url = "https://maven.pkg.github.com/AppDevNext/AndroidChart"
-          credentials {
-              username = System.getenv("GITHUBACTOR")
-              password = System.getenv("GITHUBTOKEN")
-          }
-      }
-   }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 dependencies {
-    implementation "info.appdevnext:chart:$latestVersion"
+    implementation 'info.mxtracks:chart:${latestVersion}-SNAPSHOT'
 }
 ```
 
