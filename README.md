@@ -1,5 +1,5 @@
 [![](https://jitpack.io/v/AppDevNext/MPAndroidChart.svg)](https://jitpack.io/#AppDevNext/MPAndroidChart)
-[![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
+[![API](https://img.shields.io/badge/API-19%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
 
 :zap: A powerful & easy to use chart library for Android :zap:
 
@@ -38,14 +38,6 @@ dependencies {
 
 <br/>
 
-<h2 id="documentation">Documentation :notebook_with_decorative_cover:</h2>
-
-See the [**documentation**](https://weeklycoding.com/mpandroidchart/) for examples and general use of MPAndroidChart.
-
-See the [**javadocs**](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v3.1.0/javadoc/) for more advanced documentation.
-
-<br/>
-
 <h2 id="examples">Examples :eyes:</h2>
 
 Download the [MPAndroidChart Example App](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) or look at the [source code](https://github.com/PhilJay/MPAndroidChart/tree/master/MPChartExample).
@@ -54,7 +46,7 @@ Download the [MPAndroidChart Example App](https://play.google.com/store/apps/det
 
 <br/>
 
-<h2 id="more-examples">More Examples :+1:</h2>
+<h2 id="more-examples">More Examples</h2>
 
 <br/>
 
