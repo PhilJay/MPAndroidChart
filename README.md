@@ -17,7 +17,7 @@ dependencies {
 
 ### Gradle Setup with Sonartype [snapshot]
 
-Currently only from Sonartype snapshot staging
+Currently only from Sonartype snapshot staging is provided
 ```gradle
 repositories {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
