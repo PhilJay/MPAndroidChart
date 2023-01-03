@@ -19,7 +19,7 @@ public class ChevronDownShapeRenderer implements IShapeRenderer
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
                      float posX, float posY, Paint renderPaint) {
 
-        final float shapeHalf = dataSet.getScatterShapeSize() / 2f;
+        final float shapeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeSize()) / 2f;
 
         renderPaint.setStyle(Paint.Style.STROKE);
         renderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
