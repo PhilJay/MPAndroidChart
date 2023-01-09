@@ -19,7 +19,7 @@ public class CircleShapeRenderer implements IShapeRenderer
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
                             float posX, float posY, Paint renderPaint) {
 
-        final float shapeSize = dataSet.getScatterShapeSize();
+        final float shapeSize = Utils.convertDpToPixel(dataSet.getScatterShapeSize());
         final float shapeHalf = shapeSize / 2f;
         final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
         final float shapeHoleSize = shapeHoleSizeHalf * 2.f;
