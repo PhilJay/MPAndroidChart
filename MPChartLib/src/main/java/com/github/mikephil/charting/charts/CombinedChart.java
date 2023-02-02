@@ -25,6 +25,7 @@ import com.github.mikephil.charting.renderer.CombinedChartRenderer;
  *
  * @author Philipp Jahoda
  */
+@SuppressWarnings("unused")
 public class CombinedChart extends BarLineChartBase<CombinedData> implements CombinedDataProvider {
 
 	/**
@@ -234,30 +235,28 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 			return;
 		}
 
-		for (int i = 0; i < mIndicesToHighlight.length; i++) {
-
-			Highlight highlight = mIndicesToHighlight[i];
+		for (Highlight highlight : mIndicesToHighlight) {
 
 			IDataSet set = mData.getDataSetByHighlight(highlight);
 
 			Entry e = mData.getEntryForHighlight(highlight);
-            if (e == null) {
-                continue;
-            }
+			if (e == null) {
+				continue;
+			}
 
 			int entryIndex = set.getEntryIndex(e);
 
 			// make sure entry not null
-            if (entryIndex > set.getEntryCount() * mAnimator.getPhaseX()) {
-                continue;
-            }
+			if (entryIndex > set.getEntryCount() * mAnimator.getPhaseX()) {
+				continue;
+			}
 
 			float[] pos = getMarkerPosition(highlight);
 
 			// check bounds
-            if (!mViewPortHandler.isInBounds(pos[0], pos[1])) {
-                continue;
-            }
+			if (!mViewPortHandler.isInBounds(pos[0], pos[1])) {
+				continue;
+			}
 
 			// callbacks to update the content
 			mMarker.refreshContent(e, highlight);
