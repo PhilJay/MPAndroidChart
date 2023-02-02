@@ -240,7 +240,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 			IDataSet set = mData.getDataSetByHighlight(highlight);
 
 			Entry e = mData.getEntryForHighlight(highlight);
-			if (e == null) {
+			if (e == null || set == null) {
 				continue;
 			}
 

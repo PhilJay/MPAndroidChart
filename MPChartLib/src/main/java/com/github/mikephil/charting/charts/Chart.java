@@ -751,7 +751,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 			Entry e = mData.getEntryForHighlight(highlight);
 
 			// make sure entry not null before using it
-			if (e == null) {
+			if (e == null || set == null) {
 				continue;
 			}
 
