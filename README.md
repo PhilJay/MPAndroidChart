@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.AppDevNext:MPAndroidChart:$latestVersion"
+    implementation "com.github.AppDevNext:AndroidChart:$latestVersion"
 }
 ```
 
