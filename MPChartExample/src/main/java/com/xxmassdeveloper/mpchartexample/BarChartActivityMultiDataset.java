@@ -154,10 +154,10 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             set2 = (BarDataSet) chart.getData().getDataSetByIndex(1);
             set3 = (BarDataSet) chart.getData().getDataSetByIndex(2);
             set4 = (BarDataSet) chart.getData().getDataSetByIndex(3);
-            set1.setValues(values1);
-            set2.setValues(values2);
-            set3.setValues(values3);
-            set4.setValues(values4);
+            set1.setEntries(values1);
+            set2.setEntries(values2);
+            set3.setEntries(values3);
+            set4.setEntries(values4);
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
 

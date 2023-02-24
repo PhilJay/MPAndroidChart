@@ -116,7 +116,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
+            set1.setEntries(values);
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
         } else {

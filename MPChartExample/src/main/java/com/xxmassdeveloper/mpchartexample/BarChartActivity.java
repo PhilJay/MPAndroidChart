@@ -156,7 +156,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
+            set1.setEntries(values);
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
 
