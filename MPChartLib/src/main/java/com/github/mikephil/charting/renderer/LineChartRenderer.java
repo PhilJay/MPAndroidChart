@@ -471,7 +471,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 int endIndex = currentEndIndex;
 
                 // Add a little extra to the path for drawables, larger data sets were showing space between adjacent drawables
-                if (drawable != null) {
+                if (drawable != null && dataSet.getEntryCount() > 200) {
 
                     startIndex = Math.max(0, currentStartIndex - 1);
                     endIndex = Math.min(endingIndex, currentEndIndex + 1);
