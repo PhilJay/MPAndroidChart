@@ -43,6 +43,12 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      */
     private boolean mDrawFilled = false;
 
+    private int mDrawFilledStartIndex = 0;
+
+    private int mDrawFilledEndIndex = 0;
+
+    private boolean mDrawFilledSection = false;
+
 
     public LineRadarDataSet(List<T> yVals, String label) {
         super(yVals, label);
@@ -120,8 +126,20 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
     }
 
     @Override
+    public void setDrawFilledSection(boolean filled, int filledStartIndex, int filledEndIndex) {
+        mDrawFilledSection = filled;
+        mDrawFilledStartIndex = filledStartIndex;
+        mDrawFilledEndIndex = filledEndIndex;
+    }
+
+    @Override
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
+    }
+
+    @Override
+    public boolean isDrawFilledSectionEnabled() {
+        return mDrawFilledSection;
     }
 
     protected void copy(LineRadarDataSet lineRadarDataSet) {

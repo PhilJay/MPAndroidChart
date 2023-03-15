@@ -46,6 +46,13 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
     boolean isDrawFilledEnabled();
 
     /**
+     * Returns true if filled section drawing is enabled, false if not
+     *
+     * @return
+     */
+    boolean isDrawFilledSectionEnabled();
+
+    /**
      * Set to true if the DataSet should be drawn filled (surface), and not just
      * as a line, disabling this will give great performance boost. Please note that this method
      * uses the canvas.clipPath(...) method for drawing the filled area.
@@ -55,4 +62,6 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
      * @param enabled
      */
     void setDrawFilled(boolean enabled);
+
+    void setDrawFilledSection(boolean enabled, int filledStartIndex, int filledEndIndex);
 }

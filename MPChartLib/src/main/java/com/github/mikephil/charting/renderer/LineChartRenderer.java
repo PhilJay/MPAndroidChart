@@ -319,6 +319,11 @@ public class LineChartRenderer extends LineRadarRenderer {
             drawLinearFill(c, dataSet, trans, mXBounds);
         }
 
+        // if drawing filled section is enabled
+        if (dataSet.isDrawFilledSectionEnabled() && entryCount > 0) {
+            drawLinearFillSection(c, dataSet, trans, 0, 0);
+        }
+
         // more than 1 color
         if (dataSet.getColors().size() > 1) {
 
@@ -463,6 +468,52 @@ public class LineChartRenderer extends LineRadarRenderer {
             currentStartIndex = startingIndex + (iterations * indexInterval);
             currentEndIndex = currentStartIndex + indexInterval;
             currentEndIndex = currentEndIndex > endingIndex ? endingIndex : currentEndIndex;
+
+            if (currentStartIndex <= currentEndIndex) {
+                generateFilledPath(dataSet, currentStartIndex, currentEndIndex, filled);
+
+                trans.pathValueToPixel(filled);
+
+                final Drawable drawable = dataSet.getFillDrawable();
+                if (drawable != null) {
+
+                    drawFilledPath(c, filled, drawable);
+                } else {
+
+                    drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
+                }
+            }
+
+            iterations++;
+
+        } while (currentStartIndex <= currentEndIndex);
+
+    }
+
+    /**
+     * Draws a filled section linear path on the canvas.
+     *
+     * @param c
+     * @param dataSet
+     * @param trans
+     * @param startingIndex
+     * @param endingIndex
+     */
+    protected void drawLinearFillSection(Canvas c, ILineDataSet dataSet, Transformer trans, int startingIndex, int endingIndex) {
+
+        final Path filled = mGenerateFilledPathBuffer;
+
+        final int indexInterval = 128;
+
+        int currentStartIndex = 0;
+        int currentEndIndex = indexInterval;
+        int iterations = 0;
+
+        // Doing this iteratively in order to avoid OutOfMemory errors that can happen on large bounds sets.
+        do {
+            currentStartIndex = startingIndex + (iterations * indexInterval);
+            currentEndIndex = currentStartIndex + indexInterval;
+            currentEndIndex = Math.min(currentEndIndex, endingIndex);
 
             if (currentStartIndex <= currentEndIndex) {
                 generateFilledPath(dataSet, currentStartIndex, currentEndIndex, filled);
