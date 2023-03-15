@@ -133,6 +133,11 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
     }
 
     @Override
+    public int[] getIndexesOfDrawFilledSection() {
+        return new int[]{ mDrawFilledStartIndex, mDrawFilledEndIndex };
+    }
+
+    @Override
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
     }

@@ -321,7 +321,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         // if drawing filled section is enabled
         if (dataSet.isDrawFilledSectionEnabled() && entryCount > 0) {
-            drawLinearFillSection(c, dataSet, trans, 0, 0);
+            int[] indexes = dataSet.getIndexesOfDrawFilledSection();
+            drawLinearFillSection(c, dataSet, trans, indexes[0], indexes[1]);
         }
 
         // more than 1 color
