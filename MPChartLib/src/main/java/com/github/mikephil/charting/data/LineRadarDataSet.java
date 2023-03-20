@@ -146,7 +146,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
 
     @Override
     public boolean isDrawFilledSectionEnabled() {
-        return mDrawFilledStartIndex < mDrawFilledEndIndex && mDrawFilledStartIndex > 0;
+        return mDrawFilledStartIndex < mDrawFilledEndIndex && mDrawFilledStartIndex >= 0;
     }
 
     protected void copy(LineRadarDataSet lineRadarDataSet) {
