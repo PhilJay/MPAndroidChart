@@ -63,7 +63,9 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
      */
     void setDrawFilled(boolean enabled);
 
-    void setDrawFilledSection(boolean enabled, int filledStartIndex, int filledEndIndex);
+    void setDrawFilledSection(int filledStartIndex, int filledEndIndex);
+
+    void disableFilledSection();
 
     int[] getIndexesOfDrawFilledSection();
 }

@@ -454,40 +454,10 @@ public class LineChartRenderer extends LineRadarRenderer {
      */
     protected void drawLinearFill(Canvas c, ILineDataSet dataSet, Transformer trans, XBounds bounds) {
 
-        final Path filled = mGenerateFilledPathBuffer;
-
         final int startingIndex = bounds.min;
         final int endingIndex = bounds.range + bounds.min;
-        final int indexInterval = 128;
 
-        int currentStartIndex = 0;
-        int currentEndIndex = indexInterval;
-        int iterations = 0;
-
-        // Doing this iteratively in order to avoid OutOfMemory errors that can happen on large bounds sets.
-        do {
-            currentStartIndex = startingIndex + (iterations * indexInterval);
-            currentEndIndex = currentStartIndex + indexInterval;
-            currentEndIndex = currentEndIndex > endingIndex ? endingIndex : currentEndIndex;
-
-            if (currentStartIndex <= currentEndIndex) {
-                generateFilledPath(dataSet, currentStartIndex, currentEndIndex, filled);
-
-                trans.pathValueToPixel(filled);
-
-                final Drawable drawable = dataSet.getFillDrawable();
-                if (drawable != null) {
-
-                    drawFilledPath(c, filled, drawable);
-                } else {
-
-                    drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
-                }
-            }
-
-            iterations++;
-
-        } while (currentStartIndex <= currentEndIndex);
+        drawLinearFillSection(c, dataSet, trans, startingIndex, endingIndex);
 
     }
 
