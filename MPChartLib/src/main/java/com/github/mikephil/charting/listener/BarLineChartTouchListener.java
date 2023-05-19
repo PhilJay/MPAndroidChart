@@ -481,9 +481,9 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         float resultScaleY = scaleY;
 
         if (calScaleY < h.getMinScaleY()) {
-            resultScaleY = h.getMinScaleX() / lastScaleY;
+            resultScaleY = h.getMinScaleY() / lastScaleY;
         } else if (calScaleY > h.getMaxScaleY()) {
-            resultScaleY = h.getMaxScaleX() / lastScaleY;
+            resultScaleY = h.getMaxScaleY() / lastScaleY;
         }
         return resultScaleY;
     }
