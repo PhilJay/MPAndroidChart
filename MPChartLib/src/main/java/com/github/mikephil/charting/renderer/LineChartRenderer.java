@@ -595,22 +595,24 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
-                    if (dataSet.isDrawValuesEnabled()) {
-                        drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, x,
-                                y - valOffset, dataSet.getValueTextColor(j / 2));
-                    }
+                    if (entry != null) {
+                        if (dataSet.isDrawValuesEnabled()) {
+                            drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, x,
+                                    y - valOffset, dataSet.getValueTextColor(j / 2));
+                        }
 
-                    if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+                        if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
 
-                        Drawable icon = entry.getIcon();
+                            Drawable icon = entry.getIcon();
 
-                        Utils.drawImage(
-                                c,
-                                icon,
-                                (int)(x + iconsOffset.x),
-                                (int)(y + iconsOffset.y),
-                                icon.getIntrinsicWidth(),
-                                icon.getIntrinsicHeight());
+                            Utils.drawImage(
+                                    c,
+                                    icon,
+                                    (int)(x + iconsOffset.x),
+                                    (int)(y + iconsOffset.y),
+                                    icon.getIntrinsicWidth(),
+                                    icon.getIntrinsicHeight());
+                        }
                     }
                 }
 
