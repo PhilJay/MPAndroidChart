@@ -188,6 +188,9 @@ public abstract class AxisRenderer extends Renderer {
         if (mAxis.isForceLabelsEnabled()) {
 
             interval = (float) range / (float) (labelCount - 1);
+            if (mAxis.isGranularityEnabled())
+                interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+
             mAxis.mEntryCount = labelCount;
 
             if (mAxis.mEntries.length < labelCount) {
@@ -196,6 +199,21 @@ public abstract class AxisRenderer extends Renderer {
             }
 
             float v = min;
+
+            float remainder = v % mAxis.getGranularity();
+            if (remainder > (mAxis.getGranularity()/2)){
+                v += (mAxis.getGranularity() - remainder);
+            }
+            else{
+                v -= remainder;
+            }
+            float remainderInterval = (float) (interval % mAxis.getGranularity());
+            if (remainderInterval > (mAxis.getGranularity()/2)){
+                interval += (mAxis.getGranularity() - remainderInterval);
+            }
+            else{
+                interval -= remainderInterval;
+            }
 
             for (int i = 0; i < labelCount; i++) {
                 mAxis.mEntries[i] = v;
