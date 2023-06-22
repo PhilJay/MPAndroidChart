@@ -3,6 +3,7 @@ package com.github.mikephil.charting.formatter;
 import com.github.mikephil.charting.components.AxisBase;
 
 import java.text.DecimalFormat;
+import android.util.Log;
 
 /**
  * Created by philipp on 02/06/16.
