@@ -382,4 +382,9 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     public float getYRange() {
         return mYAxis.mAxisRange;
     }
+
+    @Override
+    public String getAccessibilityDescription() {
+        return "This is a Radar chart";
+    }
 }

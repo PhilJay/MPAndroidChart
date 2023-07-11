@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityEvent;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
@@ -170,6 +171,16 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	private float mExtraTopOffset = 0.f, mExtraRightOffset = 0.f, mExtraBottomOffset = 0.f, mExtraLeftOffset = 0.f;
 
 	/**
+     * Tag for logging accessibility related content
+     */
+    private String TAG = "abilityTag";
+
+    /**
+     * Additional data on top of dynamically generated description. This can be set by the user.
+     */
+    private String accessibilitySummaryDescription = "";
+
+    /**
 	 * default constructor for initialization in code
 	 */
 	public Chart(Context context) {
@@ -229,9 +240,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 		mInfoPaint.setTextSize(Utils.convertDpToPixel(12f));
 
 		if (mLogEnabled) {
-			Log.i("", "Chart.init()");
-		}
-	}
+            Log.i("", "Chart.init()");
+
+        // enable being detected by ScreenReader
+        setFocusable(true);
+    }}
 
 	// public void initWithDummyData() {
 	// ColorTemplate template = new ColorTemplate();
@@ -1649,4 +1662,38 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	public void setUnbindEnabled(boolean enabled) {
 		this.mUnbind = enabled;
 	}
+
+    // region accessibility
+
+    /**
+     *
+     * @return accessibility description must be created for each chart
+     */
+    public abstract String getAccessibilityDescription();
+
+    public String getAccessibilitySummaryDescription() {
+        return accessibilitySummaryDescription;
+    }
+
+    public void setAccessibilitySummaryDescription(String accessibilitySummaryDescription) {
+        this.accessibilitySummaryDescription = accessibilitySummaryDescription;
+    }
+
+    @Override
+    public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
+
+        boolean completed = super.dispatchPopulateAccessibilityEvent(event);
+        Log.d(TAG, "Dispatch called for Chart <View> and completed as " + completed);
+
+        event.getText().add(getAccessibilityDescription());
+
+        // Add the user generated summary after the dynamic summary is complete.
+        if (!TextUtils.isEmpty(this.getAccessibilitySummaryDescription())) {
+            event.getText().add(this.getAccessibilitySummaryDescription());
+        }
+
+        return true;
+    }
+
+    // endregion
 }
