@@ -369,6 +369,7 @@ public class XAxisRenderer extends AxisRenderer {
             mLimitLinePaint.setColor(limitLine.getTextColor());
             mLimitLinePaint.setStrokeWidth(0.5f);
             mLimitLinePaint.setTextSize(limitLine.getTextSize());
+            mLimitLinePaint.setTypeface(limitLine.getTypeface());
 
 
             float xOffset = limitLine.getLineWidth() + limitLine.getXOffset();
