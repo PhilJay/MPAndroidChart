@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: "adopt"
-          java-version: 11
+          java-version: 17
       - name: Get the version
         id: tagger
         uses: jimschubert/query-tag-action@v2
