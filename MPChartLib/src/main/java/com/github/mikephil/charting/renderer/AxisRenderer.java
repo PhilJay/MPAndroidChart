@@ -188,6 +188,11 @@ public abstract class AxisRenderer extends Renderer {
         if (mAxis.isForceLabelsEnabled()) {
 
             interval = (float) range / (float) (labelCount - 1);
+            // When force label is enabled
+            // If granularity is enabled, then do not allow the interval to go below specified granularity.
+            if (mAxis.isGranularityEnabled())
+                interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+
             mAxis.mEntryCount = labelCount;
 
             // Ensure stops contains at least numStops elements.
