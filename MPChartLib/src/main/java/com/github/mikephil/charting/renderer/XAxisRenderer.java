@@ -178,7 +178,7 @@ public class XAxisRenderer extends AxisRenderer {
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
+        float[] positions;
 
         if (mXAxis.isShowSpecificLabelPositions()) {
             positions = new float[mXAxis.getSpecificLabelPositions().length * 2];
@@ -186,8 +186,8 @@ public class XAxisRenderer extends AxisRenderer {
                 positions[i] = mXAxis.getSpecificLabelPositions()[i / 2];
             }
         } else {
+            positions = new float[mXAxis.mEntryCount * 2];
             for (int i = 0; i < positions.length; i += 2) {
-
                 // only fill x values
                 if (centeringEnabled) {
                     positions[i] = mXAxis.mCenteredEntries[i / 2];
@@ -245,15 +245,26 @@ public class XAxisRenderer extends AxisRenderer {
 
         int clipRestoreCount = c.save();
         c.clipRect(getGridClippingRect());
-
-        if(mRenderGridLinesBuffer.length != mAxis.mEntryCount * 2){
-            mRenderGridLinesBuffer = new float[mXAxis.mEntryCount * 2];
+        
+        if (mAxis.isShowSpecificLabelPositions()) {
+            if (mRenderGridLinesBuffer.length != mAxis.getSpecificLabelPositions().length * 2) {
+                mRenderGridLinesBuffer = new float[mXAxis.getSpecificLabelPositions().length * 2];
+            }
+        } else {
+            if (mRenderGridLinesBuffer.length != mAxis.mEntryCount * 2) {
+                mRenderGridLinesBuffer = new float[mXAxis.mEntryCount * 2];
+            }
         }
         float[] positions = mRenderGridLinesBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
-            positions[i] = mXAxis.mEntries[i / 2];
-            positions[i + 1] = mXAxis.mEntries[i / 2];
+            if (mAxis.isShowSpecificLabelPositions()) {
+                positions[i] = mXAxis.getSpecificLabelPositions()[i / 2];
+                positions[i + 1] = mXAxis.getSpecificLabelPositions()[i / 2];
+            } else {
+                positions[i] = mXAxis.mEntries[i / 2];
+                positions[i + 1] = mXAxis.mEntries[i / 2];
+            }
         }
 
         mTrans.pointValuesToPixel(positions);
@@ -264,7 +275,6 @@ public class XAxisRenderer extends AxisRenderer {
         gridLinePath.reset();
 
         for (int i = 0; i < positions.length; i += 2) {
-
             drawGridLine(c, positions[i], positions[i + 1], gridLinePath);
         }
 
