@@ -180,10 +180,10 @@ public class XAxisRenderer extends AxisRenderer {
 
         float[] positions;
 
-        if (mXAxis.isShowSpecificLabelPositions()) {
-            positions = new float[mXAxis.getSpecificLabelPositions().length * 2];
+        if (mXAxis.isShowSpecificPositions()) {
+            positions = new float[mXAxis.getSpecificPositions().length * 2];
             for (int i = 0; i < positions.length; i += 2) {
-                positions[i] = mXAxis.getSpecificLabelPositions()[i / 2];
+                positions[i] = mXAxis.getSpecificPositions()[i / 2];
             }
         } else {
             positions = new float[mXAxis.mEntryCount * 2];
@@ -205,8 +205,8 @@ public class XAxisRenderer extends AxisRenderer {
 
             if (mViewPortHandler.isInBoundsX(x)) {
 
-                String label = mXAxis.isShowSpecificLabelPositions() ?
-                        mXAxis.getValueFormatter().getFormattedValue(mXAxis.getSpecificLabelPositions()[i / 2], mXAxis)
+                String label = mXAxis.isShowSpecificPositions() ?
+                        mXAxis.getValueFormatter().getFormattedValue(mXAxis.getSpecificPositions()[i / 2], mXAxis)
                         : mXAxis.getValueFormatter().getFormattedValue(mXAxis.mEntries[i / 2], mXAxis);
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
@@ -246,9 +246,9 @@ public class XAxisRenderer extends AxisRenderer {
         int clipRestoreCount = c.save();
         c.clipRect(getGridClippingRect());
         
-        if (mAxis.isShowSpecificLabelPositions()) {
-            if (mRenderGridLinesBuffer.length != mAxis.getSpecificLabelPositions().length * 2) {
-                mRenderGridLinesBuffer = new float[mXAxis.getSpecificLabelPositions().length * 2];
+        if (mAxis.isShowSpecificPositions()) {
+            if (mRenderGridLinesBuffer.length != mAxis.getSpecificPositions().length * 2) {
+                mRenderGridLinesBuffer = new float[mXAxis.getSpecificPositions().length * 2];
             }
         } else {
             if (mRenderGridLinesBuffer.length != mAxis.mEntryCount * 2) {
@@ -258,9 +258,9 @@ public class XAxisRenderer extends AxisRenderer {
         float[] positions = mRenderGridLinesBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
-            if (mAxis.isShowSpecificLabelPositions()) {
-                positions[i] = mXAxis.getSpecificLabelPositions()[i / 2];
-                positions[i + 1] = mXAxis.getSpecificLabelPositions()[i / 2];
+            if (mAxis.isShowSpecificPositions()) {
+                positions[i] = mXAxis.getSpecificPositions()[i / 2];
+                positions[i + 1] = mXAxis.getSpecificPositions()[i / 2];
             } else {
                 positions[i] = mXAxis.mEntries[i / 2];
                 positions[i + 1] = mXAxis.mEntries[i / 2];

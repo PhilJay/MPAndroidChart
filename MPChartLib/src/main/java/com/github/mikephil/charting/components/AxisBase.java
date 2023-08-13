@@ -186,14 +186,14 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * if true, then labels are displayed using specificLabelPositions instead of computed ones
+     * if true, then labels and lines are displayed using specificPositions instead of computed ones
      */
-    private boolean showSpecificLabelPositions = false;
+    private boolean showSpecificPositions = false;
 
     /**
-     * specify to which values labels must be displayed. has no effect if not used showSpecificLabelPositions set to true
+     * specify to which values labels and lines must be displayed. has no effect if not used showSpecificPositions set to true
      */
-    private float[] specificLabelPositions = new float[]{};
+    private float[] specificPositions = new float[]{};
 
     /**
      * default constructor
@@ -825,25 +825,25 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * if set to true, labels will be displayed at the specific positions passed in via setSpecificLabelPositions
+     * if set to true, labels and lines will be displayed at the specific positions passed in via setSpecificPositions
      */
-    public void setShowSpecificLabelPositions(boolean showSpecificLabelPositions)
+    public void setShowSpecificPositions(boolean showSpecificPositions)
     {
-        this.showSpecificLabelPositions = showSpecificLabelPositions;
+        this.showSpecificPositions = showSpecificPositions;
     }
 
-    public boolean isShowSpecificLabelPositions()
+    public boolean isShowSpecificPositions()
     {
-        return showSpecificLabelPositions;
+        return showSpecificPositions;
     }
 
-    public void setSpecificLabelPositions(float[] specificLabelPositions)
+    public void setSpecificPositions(float[] specificPositions)
     {
-        this.specificLabelPositions = specificLabelPositions;
+        this.specificPositions = specificPositions;
     }
 
-    public float[] getSpecificLabelPositions()
+    public float[] getSpecificPositions()
     {
-        return specificLabelPositions;
+        return specificPositions;
     }
 }

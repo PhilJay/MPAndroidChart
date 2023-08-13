@@ -123,11 +123,11 @@ public class YAxisRenderer extends AxisRenderer {
         final int from;
         final int to;
 
-        if (mYAxis.isShowSpecificLabelPositions()) {
+        if (mYAxis.isShowSpecificPositions()) {
             from = 0;
             to = mYAxis.isDrawTopYLabelEntryEnabled()
-                    ? mYAxis.getSpecificLabelPositions().length
-                    : (mYAxis.getSpecificLabelPositions().length - 1);
+                    ? mYAxis.getSpecificPositions().length
+                    : (mYAxis.getSpecificPositions().length - 1);
         } else {
             from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
             to = mYAxis.isDrawTopYLabelEntryEnabled()
@@ -140,8 +140,8 @@ public class YAxisRenderer extends AxisRenderer {
         // draw
         for (int i = from; i < to; i++) {
             String text;
-            if (mYAxis.isShowSpecificLabelPositions()) {
-                text = mYAxis.getValueFormatter().getFormattedValue(mYAxis.getSpecificLabelPositions()[i], mYAxis);
+            if (mYAxis.isShowSpecificPositions()) {
+                text = mYAxis.getValueFormatter().getFormattedValue(mYAxis.getSpecificPositions()[i], mYAxis);
             } else {
                 text = mYAxis.getFormattedLabel(i);
             }
@@ -223,9 +223,9 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected float[] getTransformedPositions() {
 
-        if (mYAxis.isShowSpecificLabelPositions()) {
-            if (mGetTransformedPositionsBuffer.length != mYAxis.getSpecificLabelPositions().length * 2) {
-                mGetTransformedPositionsBuffer = new float[mYAxis.getSpecificLabelPositions().length * 2];
+        if (mYAxis.isShowSpecificPositions()) {
+            if (mGetTransformedPositionsBuffer.length != mYAxis.getSpecificPositions().length * 2) {
+                mGetTransformedPositionsBuffer = new float[mYAxis.getSpecificPositions().length * 2];
             }
         } else {
             if (mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2) {
@@ -236,8 +236,8 @@ public class YAxisRenderer extends AxisRenderer {
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill y values, x values are not needed for y-labels
-            if (mYAxis.isShowSpecificLabelPositions()) {
-                positions[i + 1] = mYAxis.getSpecificLabelPositions()[i / 2];
+            if (mYAxis.isShowSpecificPositions()) {
+                positions[i + 1] = mYAxis.getSpecificPositions()[i / 2];
             } else {
                 positions[i + 1] = mYAxis.mEntries[i / 2];
             }
