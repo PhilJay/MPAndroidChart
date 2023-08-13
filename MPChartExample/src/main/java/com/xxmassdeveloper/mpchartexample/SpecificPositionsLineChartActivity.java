@@ -1,4 +1,3 @@
-
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
@@ -41,8 +40,7 @@ import java.util.List;
 
 import androidx.core.content.ContextCompat;
 
-public class SpecificPositionsLineChartActivity extends DemoBase implements OnSeekBarChangeListener,
-		OnChartGestureListener, OnChartValueSelectedListener {
+public class SpecificPositionsLineChartActivity extends DemoBase implements OnSeekBarChangeListener, OnChartGestureListener, OnChartValueSelectedListener {
 
 	private LineChart mChart;
 	private SeekBar mSeekBarX, mSeekBarY;
@@ -51,8 +49,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_linechart);
 
 		tvX = (TextView) findViewById(R.id.tvXMax);
@@ -184,8 +181,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 
 		switch (item.getItemId()) {
 			case R.id.actionToggleValues: {
-				List<ILineDataSet> sets = mChart.getData()
-						.getDataSets();
+				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
@@ -197,7 +193,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 				break;
 			}
 			case R.id.actionToggleHighlight: {
-				if(mChart.getData() != null) {
+				if (mChart.getData() != null) {
 					mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
 					mChart.invalidate();
 				}
@@ -205,82 +201,74 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 			}
 			case R.id.actionToggleFilled: {
 
-				List<ILineDataSet> sets = mChart.getData()
-						.getDataSets();
+				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					if (set.isDrawFilledEnabled())
+					if (set.isDrawFilledEnabled()) {
 						set.setDrawFilled(false);
-					else
+					} else {
 						set.setDrawFilled(true);
+					}
 				}
 				mChart.invalidate();
 				break;
 			}
 			case R.id.actionToggleCircles: {
-				List<ILineDataSet> sets = mChart.getData()
-						.getDataSets();
+				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					if (set.isDrawCirclesEnabled())
+					if (set.isDrawCirclesEnabled()) {
 						set.setDrawCircles(false);
-					else
+					} else {
 						set.setDrawCircles(true);
+					}
 				}
 				mChart.invalidate();
 				break;
 			}
 			case R.id.actionToggleCubic: {
-				List<ILineDataSet> sets = mChart.getData()
-						.getDataSets();
+				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER
-							? LineDataSet.Mode.LINEAR
-							:  LineDataSet.Mode.CUBIC_BEZIER);
+					set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.CUBIC_BEZIER);
 				}
 				mChart.invalidate();
 				break;
 			}
 			case R.id.actionToggleStepped: {
-				List<ILineDataSet> sets = mChart.getData()
-						.getDataSets();
+				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					set.setMode(set.getMode() == LineDataSet.Mode.STEPPED
-							? LineDataSet.Mode.LINEAR
-							:  LineDataSet.Mode.STEPPED);
+					set.setMode(set.getMode() == LineDataSet.Mode.STEPPED ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.STEPPED);
 				}
 				mChart.invalidate();
 				break;
 			}
 			case R.id.actionToggleHorizontalCubic: {
-				List<ILineDataSet> sets = mChart.getData()
-						.getDataSets();
+				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER
-							? LineDataSet.Mode.LINEAR
-							:  LineDataSet.Mode.HORIZONTAL_BEZIER);
+					set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.HORIZONTAL_BEZIER);
 				}
 				mChart.invalidate();
 				break;
 			}
 			case R.id.actionTogglePinch: {
-				if (mChart.isPinchZoomEnabled())
+				if (mChart.isPinchZoomEnabled()) {
 					mChart.setPinchZoom(false);
-				else
+				} else {
 					mChart.setPinchZoom(true);
+				}
 
 				mChart.invalidate();
 				break;
@@ -304,11 +292,10 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 			}
 			case R.id.actionSave: {
 				if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
-					Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
-							Toast.LENGTH_SHORT).show();
-				} else
-					Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT).show();
+				}
 
 				// mChart.saveToGallery("title"+System.currentTimeMillis())
 				break;
@@ -353,9 +340,8 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 
 		LineDataSet set1;
 
-		if (mChart.getData() != null &&
-				mChart.getData().getDataSetCount() > 0) {
-			set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
+		if (mChart.getData() != null && mChart.getData().getDataSetCount() > 0) {
+			set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
 			set1.setValues(values);
 			mChart.getData().notifyDataChanged();
 			mChart.notifyDataSetChanged();
@@ -381,8 +367,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 				// fill drawable only supported on api level 18 and above
 				Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
 				set1.setFillDrawable(drawable);
-			}
-			else {
+			} else {
 				set1.setFillColor(Color.BLACK);
 			}
 
@@ -407,8 +392,9 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 		Log.i("Gesture", "END, lastGesture: " + lastPerformedGesture);
 
 		// un-highlight values after the gesture is finished and no single-tap
-		if(lastPerformedGesture != ChartTouchListener.ChartGesture.SINGLE_TAP)
+		if (lastPerformedGesture != ChartTouchListener.ChartGesture.SINGLE_TAP) {
 			mChart.highlightValues(null); // or highlightTouch(null) for callback to onNothingSelected(...)
+		}
 	}
 
 	@Override
