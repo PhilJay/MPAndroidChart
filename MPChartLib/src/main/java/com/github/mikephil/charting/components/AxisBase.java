@@ -186,6 +186,16 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
+     * if true, then labels and lines are displayed using specificPositions instead of computed ones
+     */
+    private boolean showSpecificPositions = false;
+
+    /**
+     * specify to which values labels and lines must be displayed. has no effect if not used showSpecificPositions set to true
+     */
+    private float[] specificPositions = new float[]{};
+
+    /**
      * default constructor
      */
     public AxisBase() {
@@ -812,5 +822,28 @@ public abstract class AxisBase extends ComponentBase {
     public void setSpaceMax(float mSpaceMax)
     {
         this.mSpaceMax = mSpaceMax;
+    }
+
+    /**
+     * if set to true, labels and lines will be displayed at the specific positions passed in via setSpecificPositions
+     */
+    public void setShowSpecificPositions(boolean showSpecificPositions)
+    {
+        this.showSpecificPositions = showSpecificPositions;
+    }
+
+    public boolean isShowSpecificPositions()
+    {
+        return showSpecificPositions;
+    }
+
+    public void setSpecificPositions(float[] specificPositions)
+    {
+        this.specificPositions = specificPositions;
+    }
+
+    public float[] getSpecificPositions()
+    {
+        return specificPositions;
     }
 }
