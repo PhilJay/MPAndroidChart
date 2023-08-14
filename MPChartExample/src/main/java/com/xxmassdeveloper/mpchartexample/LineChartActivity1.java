@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
@@ -35,6 +34,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
+import com.xxmassdeveloper.mpchartexample.databinding.ActivityLinechartBinding;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -45,68 +45,61 @@ import java.util.List;
  */
 public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
-	private LineChart chart1;
-	private SeekBar seekBarX, seekBarY;
-	private TextView tvXMax, tvYMax;
+	private ActivityLinechartBinding binding;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		binding = ActivityLinechartBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
+
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_linechart);
 
 		setTitle("LineChartActivity1");
 
-		tvXMax = findViewById(R.id.tvXMax);
-		tvYMax = findViewById(R.id.tvYMax);
+		binding.seekBarX.setOnSeekBarChangeListener(this);
 
-		seekBarX = findViewById(R.id.seekBarX);
-		seekBarX.setOnSeekBarChangeListener(this);
-
-		seekBarY = findViewById(R.id.seekBarY);
-		seekBarY.setMax(180);
-		seekBarY.setOnSeekBarChangeListener(this);
-
-		chart1 = findViewById(R.id.chart1);
+		binding.seekBarY.setMax(180);
+		binding.seekBarY.setOnSeekBarChangeListener(this);
 
 		// background color
-		chart1.setBackgroundColor(Color.WHITE);
+		binding.chart1.setBackgroundColor(Color.WHITE);
 
 		// disable description text
-		chart1.getDescription().setEnabled(false);
+		binding.chart1.getDescription().setEnabled(false);
 
 		// enable touch gestures
-		chart1.setTouchEnabled(true);
+		binding.chart1.setTouchEnabled(true);
 
 		// set listeners
-		chart1.setOnChartValueSelectedListener(this);
-		chart1.setDrawGridBackground(false);
+		binding.chart1.setOnChartValueSelectedListener(this);
+		binding.chart1.setDrawGridBackground(false);
 
 		// create marker to display box when values are selected
 		MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
 
 		// Set the marker to the chart
-		mv.setChartView(chart1);
-		chart1.setMarker(mv);
+		mv.setChartView(binding.chart1);
+		binding.chart1.setMarker(mv);
 
 		// enable scaling and dragging
-		chart1.setDragEnabled(true);
-		chart1.setScaleEnabled(true);
+		binding.chart1.setDragEnabled(true);
+		binding.chart1.setScaleEnabled(true);
 
 		// force pinch zoom along both axis
-		chart1.setPinchZoom(true);
+		binding.chart1.setPinchZoom(true);
 
 		XAxis xAxis;
-		xAxis = chart1.getXAxis();
+		xAxis = binding.chart1.getXAxis();
 
 		// vertical grid lines
 		xAxis.enableGridDashedLine(10f, 10f, 0f);
 
 		YAxis yAxis;
-		yAxis = chart1.getAxisLeft();
+		yAxis = binding.chart1.getAxisLeft();
 
 		// disable dual axis (only use LEFT axis)
-		chart1.getAxisRight().setEnabled(false);
+		binding.chart1.getAxisRight().setEnabled(false);
 
 		// horizontal grid lines
 		yAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -146,15 +139,15 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		//xAxis.addLimitLine(llXAxis);
 
 		// add data
-		seekBarX.setProgress(45);
-		seekBarY.setProgress(180);
+		binding.seekBarX.setProgress(45);
+		binding.seekBarY.setProgress(180);
 		setData(45, 180);
 
 		// draw points over time
-		chart1.animateX(1500);
+		binding.chart1.animateX(1500);
 
 		// get the legend (only possible after setting data)
-		Legend l = chart1.getLegend();
+		Legend l = binding.chart1.getLegend();
 
 		// draw legend entries as lines
 		l.setForm(LegendForm.LINE);
@@ -172,12 +165,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
 		LineDataSet lineDataSet0;
 
-		if (chart1.getData() != null && chart1.getData().getDataSetCount() > 0) {
-			lineDataSet0 = (LineDataSet) chart1.getData().getDataSetByIndex(0);
+		if (binding.chart1.getData() != null && binding.chart1.getData().getDataSetCount() > 0) {
+			lineDataSet0 = (LineDataSet) binding.chart1.getData().getDataSetByIndex(0);
 			lineDataSet0.setEntries(values);
 			lineDataSet0.notifyDataSetChanged();
-			chart1.getData().notifyDataChanged();
-			chart1.notifyDataSetChanged();
+			binding.chart1.getData().notifyDataChanged();
+			binding.chart1.notifyDataSetChanged();
 		} else {
 			// create a dataset and give it a type
 			lineDataSet0 = new LineDataSet(values, "DataSet 1");
@@ -211,7 +204,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
 			// set the filled area
 			lineDataSet0.setDrawFilled(true);
-			lineDataSet0.setFillFormatter((dataSet, dataProvider) -> chart1.getAxisLeft().getAxisMinimum());
+			lineDataSet0.setFillFormatter((dataSet, dataProvider) -> binding.chart1.getAxisLeft().getAxisMinimum());
 
 			// set color of filled area
 			if (Utils.getSDKInt() >= 18) {
@@ -229,7 +222,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 			LineData data = new LineData(dataSets);
 
 			// set data
-			chart1.setData(data);
+			binding.chart1.setData(data);
 		}
 	}
 
@@ -249,7 +242,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				startActivity(i);
 			}
 			case R.id.actionToggleValues -> {
-				List<ILineDataSet> sets = chart1.getData().getDataSets();
+				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
@@ -257,10 +250,10 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 					set.setDrawValues(!set.isDrawValuesEnabled());
 				}
 
-				chart1.invalidate();
+				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleIcons -> {
-				List<ILineDataSet> sets = chart1.getData().getDataSets();
+				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
@@ -268,82 +261,82 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 					set.setDrawIcons(!set.isDrawIconsEnabled());
 				}
 
-				chart1.invalidate();
+				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleHighlight -> {
-				if (chart1.getData() != null) {
-					chart1.getData().setHighlightEnabled(!chart1.getData().isHighlightEnabled());
-					chart1.invalidate();
+				if (binding.chart1.getData() != null) {
+					binding.chart1.getData().setHighlightEnabled(!binding.chart1.getData().isHighlightEnabled());
+					binding.chart1.invalidate();
 				}
 			}
 			case R.id.actionToggleFilled -> {
 
-				List<ILineDataSet> sets = chart1.getData().getDataSets();
+				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setDrawFilled(!set.isDrawFilledEnabled());
 				}
-				chart1.invalidate();
+				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleCircles -> {
-				List<ILineDataSet> sets = chart1.getData().getDataSets();
+				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setDrawCircles(!set.isDrawCirclesEnabled());
 				}
-				chart1.invalidate();
+				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleCubic -> {
-				List<ILineDataSet> sets = chart1.getData().getDataSets();
+				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.CUBIC_BEZIER);
 				}
-				chart1.invalidate();
+				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleStepped -> {
-				List<ILineDataSet> sets = chart1.getData().getDataSets();
+				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.STEPPED ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.STEPPED);
 				}
-				chart1.invalidate();
+				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleHorizontalCubic -> {
-				List<ILineDataSet> sets = chart1.getData().getDataSets();
+				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.HORIZONTAL_BEZIER);
 				}
-				chart1.invalidate();
+				binding.chart1.invalidate();
 			}
 			case R.id.actionTogglePinch -> {
-				chart1.setPinchZoom(!chart1.isPinchZoomEnabled());
+				binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled());
 
-				chart1.invalidate();
+				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleAutoScaleMinMax -> {
-				chart1.setAutoScaleMinMaxEnabled(!chart1.isAutoScaleMinMaxEnabled());
-				chart1.notifyDataSetChanged();
+				binding.chart1.setAutoScaleMinMaxEnabled(!binding.chart1.isAutoScaleMinMaxEnabled());
+				binding.chart1.notifyDataSetChanged();
 			}
-			case R.id.animateX -> chart1.animateX(2000);
-			case R.id.animateY -> chart1.animateY(2000, Easing.EaseInCubic);
-			case R.id.animateXY -> chart1.animateXY(2000, 2000);
+			case R.id.animateX -> binding.chart1.animateX(2000);
+			case R.id.animateY -> binding.chart1.animateY(2000, Easing.EaseInCubic);
+			case R.id.animateXY -> binding.chart1.animateXY(2000, 2000);
 			case R.id.actionSave -> {
 				if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 					saveToGallery();
 				} else {
-					requestStoragePermission(chart1);
+					requestStoragePermission(binding.chart1);
 				}
 			}
 		}
@@ -353,18 +346,18 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-		tvXMax.setText(String.valueOf(seekBarX.getProgress()));
-		tvYMax.setText(String.valueOf(seekBarY.getProgress()));
+		binding.tvXMax.setText(String.valueOf(binding.seekBarX.getProgress()));
+		binding.tvYMax.setText(String.valueOf(binding.seekBarY.getProgress()));
 
-		setData(seekBarX.getProgress(), seekBarY.getProgress());
+		setData(binding.seekBarX.getProgress(), binding.seekBarY.getProgress());
 
 		// redraw
-		chart1.invalidate();
+		binding.chart1.invalidate();
 	}
 
 	@Override
 	protected void saveToGallery() {
-		saveToGallery(chart1, "LineChartActivity1");
+		saveToGallery(binding.chart1, "LineChartActivity1");
 	}
 
 	@Override
@@ -378,8 +371,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 	@Override
 	public void onValueSelected(Entry e, Highlight h) {
 		Log.i("Entry selected", e.toString());
-		Log.i("LOW HIGH", "low: " + chart1.getLowestVisibleX() + ", high: " + chart1.getHighestVisibleX());
-		Log.i("MIN MAX", "xMin: " + chart1.getXChartMin() + ", xMax: " + chart1.getXChartMax() + ", yMin: " + chart1.getYChartMin() + ", yMax: " + chart1.getYChartMax());
+		Log.i("LOW HIGH", "low: " + binding.chart1.getLowestVisibleX() + ", high: " + binding.chart1.getHighestVisibleX());
+		Log.i("MIN MAX", "xMin: " + binding.chart1.getXChartMin() + ", xMax: " + binding.chart1.getXChartMax() + ", yMin: " + binding.chart1.getYChartMin() + ", yMax: " + binding.chart1.getYChartMax());
 	}
 
 	@Override
