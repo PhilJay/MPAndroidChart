@@ -24,8 +24,6 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -89,24 +87,18 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		// force pinch zoom along both axis
 		binding.chart1.setPinchZoom(true);
 
-		XAxis xAxis;
-		xAxis = binding.chart1.getXAxis();
-
 		// vertical grid lines
-		xAxis.enableGridDashedLine(10f, 10f, 0f);
-
-		YAxis yAxis;
-		yAxis = binding.chart1.getAxisLeft();
+		binding.chart1.getXAxis().enableGridDashedLine(10f, 10f, 0f);
 
 		// disable dual axis (only use LEFT axis)
 		binding.chart1.getAxisRight().setEnabled(false);
 
 		// horizontal grid lines
-		yAxis.enableGridDashedLine(10f, 10f, 0f);
+		binding.chart1.getAxisLeft().enableGridDashedLine(10f, 10f, 0f);
 
 		// axis range
-		yAxis.setAxisMaximum(200f);
-		yAxis.setAxisMinimum(-50f);
+		binding.chart1.getAxisLeft().setAxisMaximum(200f);
+		binding.chart1.getAxisLeft().setAxisMinimum(-50f);
 
 		LimitLine llXAxis = new LimitLine(9f, "Index 10");
 		llXAxis.setLineWidth(4f);
@@ -115,27 +107,27 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		llXAxis.setTextSize(10f);
 		llXAxis.setTypeface(tfRegular);
 
-		LimitLine ll1 = new LimitLine(150f, "Upper Limit");
-		ll1.setLineWidth(4f);
-		ll1.enableDashedLine(10f, 10f, 0f);
-		ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
-		ll1.setTextSize(10f);
-		ll1.setTypeface(tfRegular);
+		LimitLine LimitLine1 = new LimitLine(150f, "Upper Limit");
+		LimitLine1.setLineWidth(4f);
+		LimitLine1.enableDashedLine(10f, 10f, 0f);
+		LimitLine1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
+		LimitLine1.setTextSize(10f);
+		LimitLine1.setTypeface(tfRegular);
 
-		LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
-		ll2.setLineWidth(4f);
-		ll2.enableDashedLine(10f, 10f, 0f);
-		ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-		ll2.setTextSize(10f);
-		ll2.setTypeface(tfRegular);
+		LimitLine LimitLine2 = new LimitLine(-30f, "Lower Limit");
+		LimitLine2.setLineWidth(4f);
+		LimitLine2.enableDashedLine(10f, 10f, 0f);
+		LimitLine2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
+		LimitLine2.setTextSize(10f);
+		LimitLine2.setTypeface(tfRegular);
 
 		// draw limit lines behind data instead of on top
-		yAxis.setDrawLimitLinesBehindData(true);
-		xAxis.setDrawLimitLinesBehindData(true);
+		binding.chart1.getAxisLeft().setDrawLimitLinesBehindData(true);
+		binding.chart1.getXAxis().setDrawLimitLinesBehindData(true);
 
 		// add limit lines
-		yAxis.addLimitLine(ll1);
-		yAxis.addLimitLine(ll2);
+		binding.chart1.getAxisLeft().addLimitLine(LimitLine1);
+		binding.chart1.getAxisLeft().addLimitLine(LimitLine2);
 		//xAxis.addLimitLine(llXAxis);
 
 		// add data
@@ -147,10 +139,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		binding.chart1.animateX(1500);
 
 		// get the legend (only possible after setting data)
-		Legend l = binding.chart1.getLegend();
-
-		// draw legend entries as lines
-		l.setForm(LegendForm.LINE);
+		Legend legend = binding.chart1.getLegend();
+		legend.setForm(LegendForm.LINE);
 	}
 
 	private void setData(int count, float range) {
@@ -245,18 +235,15 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
-
 					LineDataSet set = (LineDataSet) iSet;
 					set.setDrawValues(!set.isDrawValuesEnabled());
 				}
-
 				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleIcons -> {
 				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
-
 					LineDataSet set = (LineDataSet) iSet;
 					set.setDrawIcons(!set.isDrawIconsEnabled());
 				}
@@ -270,11 +257,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				}
 			}
 			case R.id.actionToggleFilled -> {
-
 				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
-
 					LineDataSet set = (LineDataSet) iSet;
 					set.setDrawFilled(!set.isDrawFilledEnabled());
 				}
@@ -284,7 +269,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
-
 					LineDataSet set = (LineDataSet) iSet;
 					set.setDrawCircles(!set.isDrawCirclesEnabled());
 				}
@@ -294,7 +278,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
-
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.CUBIC_BEZIER);
 				}
@@ -304,7 +287,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
-
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.STEPPED ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.STEPPED);
 				}
@@ -314,7 +296,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				List<ILineDataSet> sets = binding.chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
-
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.HORIZONTAL_BEZIER);
 				}
@@ -322,7 +303,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 			}
 			case R.id.actionTogglePinch -> {
 				binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled());
-
 				binding.chart1.invalidate();
 			}
 			case R.id.actionToggleAutoScaleMinMax -> {
