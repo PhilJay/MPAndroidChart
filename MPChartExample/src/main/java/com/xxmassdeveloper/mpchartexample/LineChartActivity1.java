@@ -47,7 +47,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
 	private LineChart chart1;
 	private SeekBar seekBarX, seekBarY;
-	private TextView tvX, tvY;
+	private TextView tvXMax, tvYMax;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +57,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
 		setTitle("LineChartActivity1");
 
-		tvX = findViewById(R.id.tvXMax);
-		tvY = findViewById(R.id.tvYMax);
+		tvXMax = findViewById(R.id.tvXMax);
+		tvYMax = findViewById(R.id.tvYMax);
 
 		seekBarX = findViewById(R.id.seekBarX);
 		seekBarX.setOnSeekBarChangeListener(this);
@@ -170,60 +170,60 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 			values.add(new Entry(i, val, ContextCompat.getDrawable(this, R.drawable.star)));
 		}
 
-		LineDataSet set1;
+		LineDataSet lineDataSet0;
 
 		if (chart1.getData() != null && chart1.getData().getDataSetCount() > 0) {
-			set1 = (LineDataSet) chart1.getData().getDataSetByIndex(0);
-			set1.setValues(values);
-			set1.notifyDataSetChanged();
+			lineDataSet0 = (LineDataSet) chart1.getData().getDataSetByIndex(0);
+			lineDataSet0.setValues(values);
+			lineDataSet0.notifyDataSetChanged();
 			chart1.getData().notifyDataChanged();
 			chart1.notifyDataSetChanged();
 		} else {
 			// create a dataset and give it a type
-			set1 = new LineDataSet(values, "DataSet 1");
+			lineDataSet0 = new LineDataSet(values, "DataSet 1");
 
-			set1.setDrawIcons(false);
+			lineDataSet0.setDrawIcons(false);
 
 			// draw dashed line
-			set1.enableDashedLine(10f, 5f, 0f);
+			lineDataSet0.enableDashedLine(10f, 5f, 0f);
 
 			// black lines and points
-			set1.setColor(Color.BLACK);
-			set1.setCircleColor(Color.BLACK);
+			lineDataSet0.setColor(Color.BLACK);
+			lineDataSet0.setCircleColor(Color.BLACK);
 
 			// line thickness and point size
-			set1.setLineWidth(1f);
-			set1.setCircleRadius(3f);
+			lineDataSet0.setLineWidth(1f);
+			lineDataSet0.setCircleRadius(3f);
 
 			// draw points as solid circles
-			set1.setDrawCircleHole(false);
+			lineDataSet0.setDrawCircleHole(false);
 
 			// customize legend entry
-			set1.setFormLineWidth(1f);
-			set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-			set1.setFormSize(15.f);
+			lineDataSet0.setFormLineWidth(1f);
+			lineDataSet0.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+			lineDataSet0.setFormSize(15.f);
 
 			// text size of values
-			set1.setValueTextSize(9f);
+			lineDataSet0.setValueTextSize(9f);
 
 			// draw selection line as dashed
-			set1.enableDashedHighlightLine(10f, 5f, 0f);
+			lineDataSet0.enableDashedHighlightLine(10f, 5f, 0f);
 
 			// set the filled area
-			set1.setDrawFilled(true);
-			set1.setFillFormatter((dataSet, dataProvider) -> chart1.getAxisLeft().getAxisMinimum());
+			lineDataSet0.setDrawFilled(true);
+			lineDataSet0.setFillFormatter((dataSet, dataProvider) -> chart1.getAxisLeft().getAxisMinimum());
 
 			// set color of filled area
 			if (Utils.getSDKInt() >= 18) {
 				// drawables only supported on api level 18 and above
 				Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
-				set1.setFillDrawable(drawable);
+				lineDataSet0.setFillDrawable(drawable);
 			} else {
-				set1.setFillColor(Color.BLACK);
+				lineDataSet0.setFillColor(Color.BLACK);
 			}
 
 			ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-			dataSets.add(set1); // add the data sets
+			dataSets.add(lineDataSet0); // add the data sets
 
 			// create a data object with the data sets
 			LineData data = new LineData(dataSets);
@@ -353,8 +353,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-		tvX.setText(String.valueOf(seekBarX.getProgress()));
-		tvY.setText(String.valueOf(seekBarY.getProgress()));
+		tvXMax.setText(String.valueOf(seekBarX.getProgress()));
+		tvYMax.setText(String.valueOf(seekBarY.getProgress()));
 
 		setData(seekBarX.getProgress(), seekBarY.getProgress());
 
