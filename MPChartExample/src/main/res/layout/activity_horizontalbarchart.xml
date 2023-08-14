@@ -8,10 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        android:layout_above="@+id/seekBar1" />
+        android:layout_above="@+id/seekBarX" />
 
     <SeekBar
-        android:id="@+id/seekBar2"
+        android:id="@+id/seekBarY"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -23,10 +23,10 @@
         android:paddingBottom="12dp" />
 
     <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/seekBarX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/seekBar2"
+        android:layout_above="@+id/seekBarY"
         android:layout_margin="8dp"
         android:layout_marginBottom="35dp"
         android:layout_toLeftOf="@+id/tvXMax"
@@ -38,7 +38,7 @@
         android:id="@+id/tvXMax"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/seekBar1"
+        android:layout_alignBottom="@+id/seekBarX"
         android:layout_alignParentRight="true"
         android:text="@string/dash"
         android:layout_marginBottom="15dp"
@@ -50,7 +50,7 @@
         android:id="@+id/tvYMax"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/seekBar2"
+        android:layout_alignBottom="@+id/seekBarY"
         android:layout_alignParentRight="true"
         android:text="@string/dash"
         android:layout_marginBottom="15dp"

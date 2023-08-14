@@ -52,10 +52,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         tvX = findViewById(R.id.tvXMax);
         tvY = findViewById(R.id.tvYMax);
 
-        seekBarX = findViewById(R.id.seekBar1);
+        seekBarX = findViewById(R.id.seekBarX);
         seekBarX.setOnSeekBarChangeListener(this);
 
-        seekBarY = findViewById(R.id.seekBar2);
+        seekBarY = findViewById(R.id.seekBarY);
         seekBarY.setOnSeekBarChangeListener(this);
 
         chart = findViewById(R.id.chart1);

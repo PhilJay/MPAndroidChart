@@ -56,8 +56,8 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 		tvX = (TextView) findViewById(R.id.tvXMax);
 		tvY = (TextView) findViewById(R.id.tvYMax);
 
-		mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-		mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+		mSeekBarX = (SeekBar) findViewById(R.id.seekBarX);
+		mSeekBarY = (SeekBar) findViewById(R.id.seekBarY);
 
 		mSeekBarX.setProgress(45);
 		mSeekBarY.setProgress(100);

@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.RectF;
@@ -15,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -56,8 +54,8 @@ public class HorizontalBarNegativeChartActivity extends DemoBase implements OnSe
         tvX = findViewById(R.id.tvXMax);
         tvY = findViewById(R.id.tvYMax);
 
-        seekBarX = findViewById(R.id.seekBar1);
-        seekBarY = findViewById(R.id.seekBar2);
+        seekBarX = findViewById(R.id.seekBarX);
+        seekBarY = findViewById(R.id.seekBarY);
 
         seekBarY.setOnSeekBarChangeListener(this);
         seekBarX.setOnSeekBarChangeListener(this);

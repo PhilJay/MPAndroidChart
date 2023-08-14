@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
-	private LineChart chart;
+	private LineChart chart1;
 	private SeekBar seekBarX, seekBarY;
 	private TextView tvX, tvY;
 
@@ -60,53 +60,53 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		tvX = findViewById(R.id.tvXMax);
 		tvY = findViewById(R.id.tvYMax);
 
-		seekBarX = findViewById(R.id.seekBar1);
+		seekBarX = findViewById(R.id.seekBarX);
 		seekBarX.setOnSeekBarChangeListener(this);
 
-		seekBarY = findViewById(R.id.seekBar2);
+		seekBarY = findViewById(R.id.seekBarY);
 		seekBarY.setMax(180);
 		seekBarY.setOnSeekBarChangeListener(this);
 
-		chart = findViewById(R.id.chart1);
+		chart1 = findViewById(R.id.chart1);
 
 		// background color
-		chart.setBackgroundColor(Color.WHITE);
+		chart1.setBackgroundColor(Color.WHITE);
 
 		// disable description text
-		chart.getDescription().setEnabled(false);
+		chart1.getDescription().setEnabled(false);
 
 		// enable touch gestures
-		chart.setTouchEnabled(true);
+		chart1.setTouchEnabled(true);
 
 		// set listeners
-		chart.setOnChartValueSelectedListener(this);
-		chart.setDrawGridBackground(false);
+		chart1.setOnChartValueSelectedListener(this);
+		chart1.setDrawGridBackground(false);
 
 		// create marker to display box when values are selected
 		MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
 
 		// Set the marker to the chart
-		mv.setChartView(chart);
-		chart.setMarker(mv);
+		mv.setChartView(chart1);
+		chart1.setMarker(mv);
 
 		// enable scaling and dragging
-		chart.setDragEnabled(true);
-		chart.setScaleEnabled(true);
+		chart1.setDragEnabled(true);
+		chart1.setScaleEnabled(true);
 
 		// force pinch zoom along both axis
-		chart.setPinchZoom(true);
+		chart1.setPinchZoom(true);
 
 		XAxis xAxis;
-		xAxis = chart.getXAxis();
+		xAxis = chart1.getXAxis();
 
 		// vertical grid lines
 		xAxis.enableGridDashedLine(10f, 10f, 0f);
 
 		YAxis yAxis;
-		yAxis = chart.getAxisLeft();
+		yAxis = chart1.getAxisLeft();
 
 		// disable dual axis (only use LEFT axis)
-		chart.getAxisRight().setEnabled(false);
+		chart1.getAxisRight().setEnabled(false);
 
 		// horizontal grid lines
 		yAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -151,10 +151,10 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		setData(45, 180);
 
 		// draw points over time
-		chart.animateX(1500);
+		chart1.animateX(1500);
 
 		// get the legend (only possible after setting data)
-		Legend l = chart.getLegend();
+		Legend l = chart1.getLegend();
 
 		// draw legend entries as lines
 		l.setForm(LegendForm.LINE);
@@ -172,12 +172,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
 		LineDataSet set1;
 
-		if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
-			set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+		if (chart1.getData() != null && chart1.getData().getDataSetCount() > 0) {
+			set1 = (LineDataSet) chart1.getData().getDataSetByIndex(0);
 			set1.setValues(values);
 			set1.notifyDataSetChanged();
-			chart.getData().notifyDataChanged();
-			chart.notifyDataSetChanged();
+			chart1.getData().notifyDataChanged();
+			chart1.notifyDataSetChanged();
 		} else {
 			// create a dataset and give it a type
 			set1 = new LineDataSet(values, "DataSet 1");
@@ -211,7 +211,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
 			// set the filled area
 			set1.setDrawFilled(true);
-			set1.setFillFormatter((dataSet, dataProvider) -> chart.getAxisLeft().getAxisMinimum());
+			set1.setFillFormatter((dataSet, dataProvider) -> chart1.getAxisLeft().getAxisMinimum());
 
 			// set color of filled area
 			if (Utils.getSDKInt() >= 18) {
@@ -229,7 +229,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 			LineData data = new LineData(dataSets);
 
 			// set data
-			chart.setData(data);
+			chart1.setData(data);
 		}
 	}
 
@@ -249,7 +249,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				startActivity(i);
 			}
 			case R.id.actionToggleValues -> {
-				List<ILineDataSet> sets = chart.getData().getDataSets();
+				List<ILineDataSet> sets = chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
@@ -257,10 +257,10 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 					set.setDrawValues(!set.isDrawValuesEnabled());
 				}
 
-				chart.invalidate();
+				chart1.invalidate();
 			}
 			case R.id.actionToggleIcons -> {
-				List<ILineDataSet> sets = chart.getData().getDataSets();
+				List<ILineDataSet> sets = chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
@@ -268,82 +268,82 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 					set.setDrawIcons(!set.isDrawIconsEnabled());
 				}
 
-				chart.invalidate();
+				chart1.invalidate();
 			}
 			case R.id.actionToggleHighlight -> {
-				if (chart.getData() != null) {
-					chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
-					chart.invalidate();
+				if (chart1.getData() != null) {
+					chart1.getData().setHighlightEnabled(!chart1.getData().isHighlightEnabled());
+					chart1.invalidate();
 				}
 			}
 			case R.id.actionToggleFilled -> {
 
-				List<ILineDataSet> sets = chart.getData().getDataSets();
+				List<ILineDataSet> sets = chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setDrawFilled(!set.isDrawFilledEnabled());
 				}
-				chart.invalidate();
+				chart1.invalidate();
 			}
 			case R.id.actionToggleCircles -> {
-				List<ILineDataSet> sets = chart.getData().getDataSets();
+				List<ILineDataSet> sets = chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setDrawCircles(!set.isDrawCirclesEnabled());
 				}
-				chart.invalidate();
+				chart1.invalidate();
 			}
 			case R.id.actionToggleCubic -> {
-				List<ILineDataSet> sets = chart.getData().getDataSets();
+				List<ILineDataSet> sets = chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.CUBIC_BEZIER);
 				}
-				chart.invalidate();
+				chart1.invalidate();
 			}
 			case R.id.actionToggleStepped -> {
-				List<ILineDataSet> sets = chart.getData().getDataSets();
+				List<ILineDataSet> sets = chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.STEPPED ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.STEPPED);
 				}
-				chart.invalidate();
+				chart1.invalidate();
 			}
 			case R.id.actionToggleHorizontalCubic -> {
-				List<ILineDataSet> sets = chart.getData().getDataSets();
+				List<ILineDataSet> sets = chart1.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
 					set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.HORIZONTAL_BEZIER);
 				}
-				chart.invalidate();
+				chart1.invalidate();
 			}
 			case R.id.actionTogglePinch -> {
-				chart.setPinchZoom(!chart.isPinchZoomEnabled());
+				chart1.setPinchZoom(!chart1.isPinchZoomEnabled());
 
-				chart.invalidate();
+				chart1.invalidate();
 			}
 			case R.id.actionToggleAutoScaleMinMax -> {
-				chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
-				chart.notifyDataSetChanged();
+				chart1.setAutoScaleMinMaxEnabled(!chart1.isAutoScaleMinMaxEnabled());
+				chart1.notifyDataSetChanged();
 			}
-			case R.id.animateX -> chart.animateX(2000);
-			case R.id.animateY -> chart.animateY(2000, Easing.EaseInCubic);
-			case R.id.animateXY -> chart.animateXY(2000, 2000);
+			case R.id.animateX -> chart1.animateX(2000);
+			case R.id.animateY -> chart1.animateY(2000, Easing.EaseInCubic);
+			case R.id.animateXY -> chart1.animateXY(2000, 2000);
 			case R.id.actionSave -> {
 				if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 					saveToGallery();
 				} else {
-					requestStoragePermission(chart);
+					requestStoragePermission(chart1);
 				}
 			}
 		}
@@ -359,12 +359,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		setData(seekBarX.getProgress(), seekBarY.getProgress());
 
 		// redraw
-		chart.invalidate();
+		chart1.invalidate();
 	}
 
 	@Override
 	protected void saveToGallery() {
-		saveToGallery(chart, "LineChartActivity1");
+		saveToGallery(chart1, "LineChartActivity1");
 	}
 
 	@Override
@@ -378,8 +378,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 	@Override
 	public void onValueSelected(Entry e, Highlight h) {
 		Log.i("Entry selected", e.toString());
-		Log.i("LOW HIGH", "low: " + chart.getLowestVisibleX() + ", high: " + chart.getHighestVisibleX());
-		Log.i("MIN MAX", "xMin: " + chart.getXChartMin() + ", xMax: " + chart.getXChartMax() + ", yMin: " + chart.getYChartMin() + ", yMax: " + chart.getYChartMax());
+		Log.i("LOW HIGH", "low: " + chart1.getLowestVisibleX() + ", high: " + chart1.getHighestVisibleX());
+		Log.i("MIN MAX", "xMin: " + chart1.getXChartMin() + ", xMax: " + chart1.getXChartMax() + ", yMin: " + chart1.getYChartMin() + ", yMax: " + chart1.getYChartMax());
 	}
 
 	@Override
