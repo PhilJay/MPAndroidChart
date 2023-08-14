@@ -30,9 +30,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Utils;
@@ -44,9 +42,6 @@ import java.util.List;
 
 /**
  * Example of a heavily customized {@link LineChart} with limit lines, custom line shapes, etc.
- *
- * @version 3.1.0
- * @since 1.7.4
  */
 public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
@@ -97,8 +92,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		// enable scaling and dragging
 		chart.setDragEnabled(true);
 		chart.setScaleEnabled(true);
-		// chart.setScaleXEnabled(true);
-		// chart.setScaleYEnabled(true);
 
 		// force pinch zoom along both axis
 		chart.setPinchZoom(true);
@@ -174,7 +167,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		for (int i = 0; i < count; i++) {
 
 			float val = (float) (Math.random() * range) - 30;
-			values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
+			values.add(new Entry(i, val, ContextCompat.getDrawable(this, R.drawable.star)));
 		}
 
 		LineDataSet set1;
@@ -218,12 +211,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
 			// set the filled area
 			set1.setDrawFilled(true);
-			set1.setFillFormatter(new IFillFormatter() {
-				@Override
-				public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-					return chart.getAxisLeft().getAxisMinimum();
-				}
-			});
+			set1.setFillFormatter((dataSet, dataProvider) -> chart.getAxisLeft().getAxisMinimum());
 
 			// set color of filled area
 			if (Utils.getSDKInt() >= 18) {
@@ -255,13 +243,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-			case R.id.viewGithub: {
+			case R.id.viewGithub -> {
 				Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java"));
 				startActivity(i);
-				break;
 			}
-			case R.id.actionToggleValues: {
+			case R.id.actionToggleValues -> {
 				List<ILineDataSet> sets = chart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -271,9 +258,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				}
 
 				chart.invalidate();
-				break;
 			}
-			case R.id.actionToggleIcons: {
+			case R.id.actionToggleIcons -> {
 				List<ILineDataSet> sets = chart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -283,47 +269,35 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 				}
 
 				chart.invalidate();
-				break;
 			}
-			case R.id.actionToggleHighlight: {
+			case R.id.actionToggleHighlight -> {
 				if (chart.getData() != null) {
 					chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
 					chart.invalidate();
 				}
-				break;
 			}
-			case R.id.actionToggleFilled: {
+			case R.id.actionToggleFilled -> {
 
 				List<ILineDataSet> sets = chart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					if (set.isDrawFilledEnabled()) {
-						set.setDrawFilled(false);
-					} else {
-						set.setDrawFilled(true);
-					}
+					set.setDrawFilled(!set.isDrawFilledEnabled());
 				}
 				chart.invalidate();
-				break;
 			}
-			case R.id.actionToggleCircles: {
+			case R.id.actionToggleCircles -> {
 				List<ILineDataSet> sets = chart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					if (set.isDrawCirclesEnabled()) {
-						set.setDrawCircles(false);
-					} else {
-						set.setDrawCircles(true);
-					}
+					set.setDrawCircles(!set.isDrawCirclesEnabled());
 				}
 				chart.invalidate();
-				break;
 			}
-			case R.id.actionToggleCubic: {
+			case R.id.actionToggleCubic -> {
 				List<ILineDataSet> sets = chart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -332,9 +306,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 					set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.CUBIC_BEZIER);
 				}
 				chart.invalidate();
-				break;
 			}
-			case R.id.actionToggleStepped: {
+			case R.id.actionToggleStepped -> {
 				List<ILineDataSet> sets = chart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -343,9 +316,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 					set.setMode(set.getMode() == LineDataSet.Mode.STEPPED ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.STEPPED);
 				}
 				chart.invalidate();
-				break;
 			}
-			case R.id.actionToggleHorizontalCubic: {
+			case R.id.actionToggleHorizontalCubic -> {
 				List<ILineDataSet> sets = chart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -354,42 +326,25 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 					set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.HORIZONTAL_BEZIER);
 				}
 				chart.invalidate();
-				break;
 			}
-			case R.id.actionTogglePinch: {
-				if (chart.isPinchZoomEnabled()) {
-					chart.setPinchZoom(false);
-				} else {
-					chart.setPinchZoom(true);
-				}
+			case R.id.actionTogglePinch -> {
+				chart.setPinchZoom(!chart.isPinchZoomEnabled());
 
 				chart.invalidate();
-				break;
 			}
-			case R.id.actionToggleAutoScaleMinMax: {
+			case R.id.actionToggleAutoScaleMinMax -> {
 				chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
 				chart.notifyDataSetChanged();
-				break;
 			}
-			case R.id.animateX: {
-				chart.animateX(2000);
-				break;
-			}
-			case R.id.animateY: {
-				chart.animateY(2000, Easing.EaseInCubic);
-				break;
-			}
-			case R.id.animateXY: {
-				chart.animateXY(2000, 2000);
-				break;
-			}
-			case R.id.actionSave: {
+			case R.id.animateX -> chart.animateX(2000);
+			case R.id.animateY -> chart.animateY(2000, Easing.EaseInCubic);
+			case R.id.animateXY -> chart.animateXY(2000, 2000);
+			case R.id.actionSave -> {
 				if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 					saveToGallery();
 				} else {
 					requestStoragePermission(chart);
 				}
-				break;
 			}
 		}
 		return true;

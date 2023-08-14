@@ -1,5 +1,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Typeface;
@@ -102,8 +103,6 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 
 		XAxis xAxis = mChart.getXAxis();
 		xAxis.enableGridDashedLine(10f, 10f, 0f);
-		//xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
-		//xAxis.addLimitLine(llXAxis); // add x-axis limit line
 
 		xAxis.setShowSpecificPositions(true);
 		xAxis.setSpecificPositions(new float[]{20, 30, 60});
@@ -142,15 +141,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 
 		mChart.getAxisRight().setEnabled(false);
 
-		//mChart.getViewPortHandler().setMaximumScaleY(2f);
-		//mChart.getViewPortHandler().setMaximumScaleX(2f);
-
-		// add data
 		setData(45, 100);
-
-//        mChart.setVisibleXRange(20);
-//        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
-//        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
 
 		mChart.animateX(2500);
 		//mChart.invalidate();
@@ -160,9 +151,6 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 
 		// modify the legend ...
 		l.setForm(LegendForm.LINE);
-
-		// // dont forget to refresh the drawing
-		// mChart.invalidate();
 	}
 
 	@Override
@@ -180,7 +168,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-			case R.id.actionToggleValues: {
+			case R.id.actionToggleValues -> {
 				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -190,47 +178,35 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 				}
 
 				mChart.invalidate();
-				break;
 			}
-			case R.id.actionToggleHighlight: {
+			case R.id.actionToggleHighlight -> {
 				if (mChart.getData() != null) {
 					mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
 					mChart.invalidate();
 				}
-				break;
 			}
-			case R.id.actionToggleFilled: {
+			case R.id.actionToggleFilled -> {
 
 				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					if (set.isDrawFilledEnabled()) {
-						set.setDrawFilled(false);
-					} else {
-						set.setDrawFilled(true);
-					}
+					set.setDrawFilled(!set.isDrawFilledEnabled());
 				}
 				mChart.invalidate();
-				break;
 			}
-			case R.id.actionToggleCircles: {
+			case R.id.actionToggleCircles -> {
 				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
 
 					LineDataSet set = (LineDataSet) iSet;
-					if (set.isDrawCirclesEnabled()) {
-						set.setDrawCircles(false);
-					} else {
-						set.setDrawCircles(true);
-					}
+					set.setDrawCircles(!set.isDrawCirclesEnabled());
 				}
 				mChart.invalidate();
-				break;
 			}
-			case R.id.actionToggleCubic: {
+			case R.id.actionToggleCubic -> {
 				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -239,9 +215,8 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 					set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.CUBIC_BEZIER);
 				}
 				mChart.invalidate();
-				break;
 			}
-			case R.id.actionToggleStepped: {
+			case R.id.actionToggleStepped -> {
 				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -250,9 +225,8 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 					set.setMode(set.getMode() == LineDataSet.Mode.STEPPED ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.STEPPED);
 				}
 				mChart.invalidate();
-				break;
 			}
-			case R.id.actionToggleHorizontalCubic: {
+			case R.id.actionToggleHorizontalCubic -> {
 				List<ILineDataSet> sets = mChart.getData().getDataSets();
 
 				for (ILineDataSet iSet : sets) {
@@ -261,36 +235,20 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 					set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER ? LineDataSet.Mode.LINEAR : LineDataSet.Mode.HORIZONTAL_BEZIER);
 				}
 				mChart.invalidate();
-				break;
 			}
-			case R.id.actionTogglePinch: {
-				if (mChart.isPinchZoomEnabled()) {
-					mChart.setPinchZoom(false);
-				} else {
-					mChart.setPinchZoom(true);
-				}
+			case R.id.actionTogglePinch -> {
+				mChart.setPinchZoom(!mChart.isPinchZoomEnabled());
 
 				mChart.invalidate();
-				break;
 			}
-			case R.id.actionToggleAutoScaleMinMax: {
+			case R.id.actionToggleAutoScaleMinMax -> {
 				mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
 				mChart.notifyDataSetChanged();
-				break;
 			}
-			case R.id.animateX: {
-				mChart.animateX(3000);
-				break;
-			}
-			case R.id.animateY: {
-				mChart.animateY(3000, Easing.EaseInCubic);
-				break;
-			}
-			case R.id.animateXY: {
-				mChart.animateXY(3000, 3000);
-				break;
-			}
-			case R.id.actionSave: {
+			case R.id.animateX -> mChart.animateX(3000);
+			case R.id.animateY -> mChart.animateY(3000, Easing.EaseInCubic);
+			case R.id.animateXY -> mChart.animateXY(3000, 3000);
+			case R.id.actionSave -> {
 				if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
 					Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show();
 				} else {
@@ -298,12 +256,12 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 				}
 
 				// mChart.saveToGallery("title"+System.currentTimeMillis())
-				break;
 			}
 		}
 		return true;
 	}
 
+	@SuppressLint("SetTextI18n")
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
@@ -330,7 +288,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 
 	private void setData(int count, float range) {
 
-		ArrayList<Entry> values = new ArrayList<Entry>();
+		ArrayList<Entry> values = new ArrayList<>();
 
 		for (int i = 0; i < count; i++) {
 
@@ -371,7 +329,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 				set1.setFillColor(Color.BLACK);
 			}
 
-			ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+			ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 			dataSets.add(set1); // add the datasets
 
 			// create a data object with the datasets
