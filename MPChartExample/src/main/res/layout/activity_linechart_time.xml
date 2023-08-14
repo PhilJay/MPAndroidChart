@@ -7,10 +7,10 @@
         android:id="@+id/chart1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/seekBar1" />
+        android:layout_above="@+id/seekBarX" />
 
     <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/seekBarX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

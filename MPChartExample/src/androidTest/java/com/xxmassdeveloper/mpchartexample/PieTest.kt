@@ -34,14 +34,14 @@ class PieTest {
                 .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
 
         for(x in 10..50 step 10) {
-            onView(withId(R.id.seekBar1)).perform(setProgress(x))
+            onView(withId(R.id.seekBarX)).perform(setProgress(x))
             onView(ViewMatchers.isRoot())
                     .captureToBitmap()
                     .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}1-${x}")
         }
 
         for(x in 50..200 step 50) {
-            onView(withId(R.id.seekBar2)).perform(setProgress(x))
+            onView(withId(R.id.seekBarY)).perform(setProgress(x))
             onView(ViewMatchers.isRoot())
                 .captureToBitmap()
                 .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}2-${x}")

@@ -52,7 +52,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         setTitle("LineChartTime");
 
         tvX = findViewById(R.id.tvXMax);
-        seekBarX = findViewById(R.id.seekBar1);
+        seekBarX = findViewById(R.id.seekBarX);
         seekBarX.setOnSeekBarChangeListener(this);
 
         chart = findViewById(R.id.chart1);
