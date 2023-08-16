@@ -19,7 +19,7 @@ class DataTools {
         private const val VAL_COUNT = 45
         private const val VAL_RANGE = 180f
 
-        private val VAL_100 = arrayOf(
+        private val VAL_102 = arrayOf(
             0.31704906,
             0.11076527,
             0.67421365,
@@ -119,7 +119,9 @@ class DataTools {
             0.47154334,
             0.43126026,
             0.65412974,
-            0.7053179
+            0.7053179,
+            0.77,
+            0.69
         )
 
         private val VAL_FIX = arrayOf(
@@ -131,7 +133,14 @@ class DataTools {
             44.768654, -25.790316, 5.9754066, 99.64748, 141.99321, -17.990795, 38.272446
         )
 
-        fun getValues(size: Int) = VAL_100.copyOf(size)
+        fun getValues(size: Int) = VAL_102.copyOf(size)
+
+        fun getMuchValues(size: Int): Array<Double?> {
+            var result = VAL_102.copyOf(VAL_102.size)
+            while (result.size < size)
+                result = result.plus(VAL_102.copyOf(VAL_102.size))
+            return result
+        }
 
         fun setData(context: Context, lineChart: LineChart, count: Int = VAL_COUNT, range: Float = VAL_RANGE) {
             Log.d("setData", "$count= range=$range")

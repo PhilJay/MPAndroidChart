@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name="LineChartActivity1" />
-        <activity android:name="LineChartActivity2" />
+        <activity android:name=".LineChartDualAxisActivity" />
         <activity android:name="LineChartTime" />
         <activity android:name="BarChartActivity" />
 		<activity android:name="HorizontalBarChartActivity" />

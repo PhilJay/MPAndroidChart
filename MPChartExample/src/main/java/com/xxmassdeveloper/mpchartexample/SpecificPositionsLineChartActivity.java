@@ -289,10 +289,10 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 	private void setData(int count, float range) {
 
 		ArrayList<Entry> values = new ArrayList<>();
-
+		Double[] sampleValues = DataTools.Companion.getValues(100);
 		for (int i = 0; i < count; i++) {
 
-			float val = (float) (Math.random() * range) + 3;
+			float val = (float) (sampleValues[i].floatValue() * range) + 3;
 			values.add(new Entry(i, val));
 		}
 
@@ -300,7 +300,7 @@ public class SpecificPositionsLineChartActivity extends DemoBase implements OnSe
 
 		if (mChart.getData() != null && mChart.getData().getDataSetCount() > 0) {
 			set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-			set1.setValues(values);
+			set1.setEntries(values);
 			mChart.getData().notifyDataChanged();
 			mChart.notifyDataSetChanged();
 		} else {

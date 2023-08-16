@@ -56,11 +56,11 @@ public class ScrollViewActivity extends DemoBase {
     }
 
     private void setData(int count) {
-
+        Double[] sampleValues = DataTools.Companion.getValues(count);
         ArrayList<BarEntry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * count) + 15;
+            float val = (float) (sampleValues[i].floatValue() * count) + 15;
             values.add(new BarEntry(i, (int) val));
         }
 

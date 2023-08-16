@@ -37,6 +37,7 @@ import java.util.List;
 
 public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
+    private static final int DEFAULT_VALUE = 12;
     private BarChart chart;
     private SeekBar seekBarX, seekBarY;
     private TextView tvX, tvY;
@@ -111,13 +112,13 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         tvY.setText(String.valueOf(seekBarY.getProgress()));
 
         ArrayList<BarEntry> values = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(100 + 2);
 
         for (int i = 0; i < seekBarX.getProgress(); i++) {
             float mul = (seekBarY.getProgress() + 1);
-            float val1 = (float) (Math.random() * mul) + mul / 3;
-            float val2 = (float) (Math.random() * mul) + mul / 3;
-            float val3 = (float) (Math.random() * mul) + mul / 3;
-
+            float val1 = (float) (sampleValues[i].floatValue() * mul) + mul / 3;
+            float val2 = (float) (sampleValues[i + 1].floatValue() * mul) + mul / 3;
+            float val3 = (float) (sampleValues[i + 2].floatValue() * mul) + mul / 3;
             values.add(new BarEntry(
                     i,
                     new float[]{val1, val2, val3},

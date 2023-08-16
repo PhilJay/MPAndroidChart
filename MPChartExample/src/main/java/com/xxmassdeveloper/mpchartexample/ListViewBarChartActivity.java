@@ -136,11 +136,12 @@ public class ListViewBarChartActivity extends DemoBase {
      * @return Bar data
      */
     private BarData generateData(int cnt) {
-
+        int count = 12;
         ArrayList<BarEntry> entries = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(count);
 
-        for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry(i, (float) (Math.random() * 70) + 30));
+        for (int i = 0; i < count; i++) {
+            entries.add(new BarEntry(i, (float) (sampleValues[i].floatValue() * 70) + 30));
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);

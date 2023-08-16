@@ -100,16 +100,17 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         chart.resetTracking();
 
         ArrayList<CandleEntry> values = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(100);
 
         for (int i = 0; i < progress; i++) {
             float multi = (seekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * 40) + multi;
+            float val = (float) (sampleValues[i].floatValue() * 40) + multi;
 
-            float high = (float) (Math.random() * 9) + 8f;
-            float low = (float) (Math.random() * 9) + 8f;
+            float high = (float) (sampleValues[i].floatValue() * 9) + 8f;
+            float low = (float) (sampleValues[i].floatValue() * 8) + 8f;
 
-            float open = (float) (Math.random() * 6) + 1f;
-            float close = (float) (Math.random() * 6) + 1f;
+            float open = (float) (sampleValues[i].floatValue() * 6) + 1f;
+            float close = (float) (sampleValues[i].floatValue() * 7) + 1f;
 
             boolean even = i % 2 == 0;
 

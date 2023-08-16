@@ -42,7 +42,7 @@ public class LineChartActivityColored extends DemoBase {
 
         for (int i = 0; i < charts.length; i++) {
 
-            LineData data = getData(36, 100);
+            LineData data = getData(100);
             data.setValueTypeface(mTf);
 
             // add some transparency to the color with "& 0x90FFFFFF"
@@ -103,12 +103,13 @@ public class LineChartActivityColored extends DemoBase {
         chart.animateX(2500);
     }
 
-    private LineData getData(int count, float range) {
-
+    private LineData getData(float range) {
+        int count = 36;
         ArrayList<Entry> values = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(count);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 3;
+            float val = (float) (sampleValues[i].floatValue() * range) + 3;
             values.add(new Entry(i, val));
         }
 

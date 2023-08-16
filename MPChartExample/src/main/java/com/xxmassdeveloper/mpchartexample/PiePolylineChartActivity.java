@@ -115,13 +115,13 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
     }
 
     private void setData(int count, float range) {
-
+        Double[] sampleValues = DataTools.Companion.getValues(count);
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry((float) (Math.random() * range) + range / 5, parties[i % parties.length]));
+            entries.add(new PieEntry((float) (sampleValues[i].floatValue() * range) + range / 5, parties[i % parties.length]));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");

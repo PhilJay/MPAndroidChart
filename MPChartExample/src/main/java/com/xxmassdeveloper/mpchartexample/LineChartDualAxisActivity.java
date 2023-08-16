@@ -40,7 +40,7 @@ import java.util.List;
  * @since 1.7.4
  * @version 3.1.0
  */
-public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListener,
+public class LineChartDualAxisActivity extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
 
     private LineChart chart;
@@ -54,7 +54,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart);
 
-        setTitle("LineChartActivity2");
+        setTitle("LineChart DualAxis");
 
         tvX = findViewById(R.id.tvXMax);
         tvY = findViewById(R.id.tvYMax);
@@ -136,23 +136,24 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
     private void setData(int count, float range) {
 
         ArrayList<Entry> values1 = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(count);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * (range / 2f)) + 50;
+            float val = (float) (sampleValues[i].floatValue() * (range / 2f)) + 50;
             values1.add(new Entry(i, val));
         }
 
         ArrayList<Entry> values2 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 450;
+            float val = (float) (sampleValues[i].floatValue() * range) + 450;
             values2.add(new Entry(i, val));
         }
 
         ArrayList<Entry> values3 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 500;
+            float val = (float) (sampleValues[i].floatValue() * range) + 500;
             values3.add(new Entry(i, val));
         }
 

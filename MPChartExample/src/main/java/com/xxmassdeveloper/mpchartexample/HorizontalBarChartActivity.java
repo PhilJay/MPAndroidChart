@@ -119,13 +119,13 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
     }
 
     private void setData(int count, float range) {
-
         float barWidth = 9f;
         float spaceForBar = 10f;
         ArrayList<BarEntry> values = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(100);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range);
+            float val = (float) (sampleValues[i].floatValue() * range);
             values.add(new BarEntry(i * spaceForBar, val,
                     getResources().getDrawable(R.drawable.star)));
         }

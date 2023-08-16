@@ -105,6 +105,7 @@ public class RadarChartActivity extends DemoBase {
         float mul = 80;
         float min = 20;
         int cnt = 5;
+        Double[] sampleValues = DataTools.Companion.getValues(cnt + 1);
 
         ArrayList<RadarEntry> entries1 = new ArrayList<>();
         ArrayList<RadarEntry> entries2 = new ArrayList<>();
@@ -112,10 +113,10 @@ public class RadarChartActivity extends DemoBase {
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < cnt; i++) {
-            float val1 = (float) (Math.random() * mul) + min;
+            float val1 = (float) (sampleValues[i].floatValue() * mul) + min;
             entries1.add(new RadarEntry(val1));
 
-            float val2 = (float) (Math.random() * mul) + min;
+            float val2 = (float) (sampleValues[i + 1].floatValue() * mul) + min;
             entries2.add(new RadarEntry(val2));
         }
 

@@ -27,7 +27,6 @@ import java.util.ArrayList;
  * This works by inverting the background and desired "fill" color. First, we draw the fill color
  * that we want between the lines as the actual background of the chart. Then, we fill the area
  * above the highest line and the area under the lowest line with the desired background color.
- *
  * This method makes it look like we filled the area between the lines, but really we are filling
  * the area OUTSIDE the lines!
  */
@@ -75,24 +74,25 @@ public class FilledLineActivity extends DemoBase {
         chart.getAxisRight().setEnabled(false);
 
         // add data
-        setData(100, 60);
+        setData(60);
 
         chart.invalidate();
     }
 
-    private void setData(int count, float range) {
-
+    private void setData(float range) {
+        int count = 100;
         ArrayList<Entry> values1 = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(count + 2);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 50;
+            float val = (float) (sampleValues[i].floatValue() * range) + 50;
             values1.add(new Entry(i, val));
         }
 
         ArrayList<Entry> values2 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 450;
+            float val = (float) (sampleValues[i+1].floatValue() * range) + 450;
             values2.add(new Entry(i, val));
         }
 
