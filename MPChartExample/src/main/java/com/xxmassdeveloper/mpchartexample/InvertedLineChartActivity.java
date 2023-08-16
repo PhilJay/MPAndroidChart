@@ -119,10 +119,11 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
     private void setData(int count, float range) {
 
         ArrayList<Entry> entries = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(count + 2);
 
         for (int i = 0; i < count; i++) {
-            float xVal = (float) (Math.random() * range);
-            float yVal = (float) (Math.random() * range);
+            float xVal = (float) (sampleValues[i].floatValue() * range);
+            float yVal = (float) (sampleValues[i + 1].floatValue() * range);
             entries.add(new Entry(xVal, yVal));
         }
 

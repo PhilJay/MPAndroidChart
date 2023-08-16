@@ -122,9 +122,10 @@ public class HorizontalBarNegativeChartActivity extends DemoBase implements OnSe
         float barWidth = 9f;
         float spaceForBar = 10f;
         ArrayList<BarEntry> values = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(count + 2);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range - range / 2);
+            float val = (float) (sampleValues[i].floatValue() * range - range / 2);
             values.add(new BarEntry(i * spaceForBar, val,
                     getResources().getDrawable(R.drawable.star)));
         }

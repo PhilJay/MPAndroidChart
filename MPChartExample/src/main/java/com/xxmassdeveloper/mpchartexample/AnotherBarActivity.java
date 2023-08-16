@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListener {
 
+    private static final int DEFAULT_VALUE = 10;
     private BarChart chart;
     private SeekBar seekBarX, seekBarY;
     private TextView tvX, tvY;
@@ -72,7 +73,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         chart.getAxisLeft().setDrawGridLines(false);
 
         // setting data
-        seekBarX.setProgress(10);
+        seekBarX.setProgress(DEFAULT_VALUE);
         seekBarY.setProgress(100);
 
         // add a nice and smooth animation
@@ -88,10 +89,11 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         tvY.setText(String.valueOf(seekBarY.getProgress()));
 
         ArrayList<BarEntry> values = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(100);
 
         for (int i = 0; i < seekBarX.getProgress(); i++) {
             float multi = (seekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * multi) + multi / 3;
+            float val = (float) (sampleValues[i].floatValue() * multi) + multi / 3;
             values.add(new BarEntry(i, val));
         }
 
@@ -100,7 +102,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
+            set1.setEntries(values);
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
         } else {

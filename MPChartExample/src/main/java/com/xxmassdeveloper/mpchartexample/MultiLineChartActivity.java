@@ -111,9 +111,10 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         for (int z = 0; z < 3; z++) {
 
             ArrayList<Entry> values = new ArrayList<>();
+            Double[] sampleValues = DataTools.Companion.getValues(100);
 
             for (int i = 0; i < progress; i++) {
-                double val = (Math.random() * seekBarY.getProgress()) + 3;
+                double val = (sampleValues[i].floatValue() * seekBarY.getProgress()) + 3;
                 values.add(new Entry(i, (float) val));
             }
 

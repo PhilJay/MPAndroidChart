@@ -138,12 +138,13 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         ArrayList<BarEntry> values4 = new ArrayList<>();
 
         float randomMultiplier = seekBarY.getProgress() * 100000f;
+        Double[] sampleValues = DataTools.Companion.getValues(100 + 2);
 
         for (int i = startYear; i < endYear; i++) {
-            values1.add(new BarEntry(i, (float) (Math.random() * randomMultiplier)));
-            values2.add(new BarEntry(i, (float) (Math.random() * randomMultiplier)));
-            values3.add(new BarEntry(i, (float) (Math.random() * randomMultiplier)));
-            values4.add(new BarEntry(i, (float) (Math.random() * randomMultiplier)));
+            values1.add(new BarEntry(i, (float) (sampleValues[i - startYear].floatValue() * randomMultiplier)));
+            values2.add(new BarEntry(i, (float) (sampleValues[i - startYear + 1].floatValue() * randomMultiplier)));
+            values3.add(new BarEntry(i, (float) (sampleValues[i - startYear + 2].floatValue() * randomMultiplier)));
+            values4.add(new BarEntry(i, (float) (sampleValues[i - startYear].floatValue() * randomMultiplier)));
         }
 
         BarDataSet set1, set2, set3, set4;

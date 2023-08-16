@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             add(0, ContentItem("Line Charts"))
             add(1, ContentItem("Basic", "Simple line chart.", LineChartActivity1::class.java))
             add(2, ContentItem("Multiple", "Show multiple data sets.", MultiLineChartActivity::class.java))
-            add(3, ContentItem("Dual Axis", "Line chart with dual y-axes.", LineChartActivity2::class.java))
+            add(3, ContentItem("Dual Axis", "Line chart with dual y-axes.", LineChartDualAxisActivity::class.java))
             add(4, ContentItem("Inverted Axis", "Inverted y-axis.", InvertedLineChartActivity::class.java))
             add(5, ContentItem("Cubic", "Line chart with a cubic line shape.", CubicLineChartActivity::class.java))
             add(6, ContentItem("Colorful", "Colorful line chart.", LineChartActivityColored::class.java))

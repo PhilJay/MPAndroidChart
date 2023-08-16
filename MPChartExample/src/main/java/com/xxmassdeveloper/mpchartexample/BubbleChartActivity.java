@@ -110,11 +110,12 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         ArrayList<BubbleEntry> values1 = new ArrayList<>();
         ArrayList<BubbleEntry> values2 = new ArrayList<>();
         ArrayList<BubbleEntry> values3 = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(100);
 
         for (int i = 0; i < count; i++) {
-            values1.add(new BubbleEntry(i, (float) (Math.random() * range), (float) (Math.random() * range), getResources().getDrawable(R.drawable.star)));
-            values2.add(new BubbleEntry(i, (float) (Math.random() * range), (float) (Math.random() * range), getResources().getDrawable(R.drawable.star)));
-            values3.add(new BubbleEntry(i, (float) (Math.random() * range), (float) (Math.random() * range)));
+            values1.add(new BubbleEntry(i, (float) (sampleValues[i+1] * range), (float) (sampleValues[i].floatValue() * range), getResources().getDrawable(R.drawable.star)));
+            values2.add(new BubbleEntry(i, (float) (sampleValues[i+2] * range), (float) (sampleValues[i+1].floatValue() * range), getResources().getDrawable(R.drawable.star)));
+            values3.add(new BubbleEntry(i, (float) (sampleValues[i] * range), (float) (sampleValues[i+2].floatValue() * range)));
         }
 
         // create a dataset and give it a type

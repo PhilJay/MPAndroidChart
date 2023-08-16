@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -25,17 +23,14 @@ import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.databinding.ActivityLinechartBinding;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -133,7 +128,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		// add data
 		binding.seekBarX.setProgress(45);
 		binding.seekBarY.setProgress(180);
-		setData(45, 180);
+		Log.d("setDataCreate", "$count=45 range=180f");
+		DataTools.Companion.setData(this, binding.chart1, 45, 180f);
 
 		// draw points over time
 		binding.chart1.animateX(1500);
@@ -141,79 +137,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 		// get the legend (only possible after setting data)
 		Legend legend = binding.chart1.getLegend();
 		legend.setForm(LegendForm.LINE);
-	}
-
-	private void setData(int count, float range) {
-		Log.d("setData", count + "= range=" + range);
-		ArrayList<Entry> values = new ArrayList<>();
-
-		for (int i = 0; i < count; i++) {
-			float val = (float) (Math.random() * range) - 30;
-			Log.v("setData", i + "=" + val);
-			values.add(new Entry(i, val, ContextCompat.getDrawable(this, R.drawable.star)));
-		}
-
-		LineDataSet lineDataSet0;
-
-		if (binding.chart1.getData() != null && binding.chart1.getData().getDataSetCount() > 0) {
-			lineDataSet0 = (LineDataSet) binding.chart1.getData().getDataSetByIndex(0);
-			lineDataSet0.setEntries(values);
-			lineDataSet0.notifyDataSetChanged();
-			binding.chart1.getData().notifyDataChanged();
-			binding.chart1.notifyDataSetChanged();
-		} else {
-			// create a dataset and give it a type
-			lineDataSet0 = new LineDataSet(values, "DataSet 1");
-
-			lineDataSet0.setDrawIcons(false);
-
-			// draw dashed line
-			lineDataSet0.enableDashedLine(10f, 5f, 0f);
-
-			// black lines and points
-			lineDataSet0.setColor(Color.BLACK);
-			lineDataSet0.setCircleColor(Color.BLACK);
-
-			// line thickness and point size
-			lineDataSet0.setLineWidth(1f);
-			lineDataSet0.setCircleRadius(3f);
-
-			// draw points as solid circles
-			lineDataSet0.setDrawCircleHole(false);
-
-			// customize legend entry
-			lineDataSet0.setFormLineWidth(1f);
-			lineDataSet0.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-			lineDataSet0.setFormSize(15.f);
-
-			// text size of values
-			lineDataSet0.setValueTextSize(9f);
-
-			// draw selection line as dashed
-			lineDataSet0.enableDashedHighlightLine(10f, 5f, 0f);
-
-			// set the filled area
-			lineDataSet0.setDrawFilled(true);
-			lineDataSet0.setFillFormatter((dataSet, dataProvider) -> binding.chart1.getAxisLeft().getAxisMinimum());
-
-			// set color of filled area
-			if (Utils.getSDKInt() >= 18) {
-				// drawables only supported on api level 18 and above
-				Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
-				lineDataSet0.setFillDrawable(drawable);
-			} else {
-				lineDataSet0.setFillColor(Color.BLACK);
-			}
-
-			ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-			dataSets.add(lineDataSet0); // add the data sets
-
-			// create a data object with the data sets
-			LineData data = new LineData(dataSets);
-
-			// set data
-			binding.chart1.setData(data);
-		}
 	}
 
 	@Override
@@ -325,11 +248,10 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
 		binding.tvXMax.setText(String.valueOf(binding.seekBarX.getProgress()));
 		binding.tvYMax.setText(String.valueOf(binding.seekBarY.getProgress()));
 
-		setData(binding.seekBarX.getProgress(), binding.seekBarY.getProgress());
+		DataTools.Companion.setData(this, binding.chart1, binding.seekBarX.getProgress(), binding.seekBarY.getProgress());
 
 		// redraw
 		binding.chart1.invalidate();

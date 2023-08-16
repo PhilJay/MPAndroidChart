@@ -118,11 +118,12 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     private void setData(int count, float range) {
         ArrayList<PieEntry> entries = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(100);
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count ; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * range) + range / 5),
+            entries.add(new PieEntry((float) ((sampleValues[i].floatValue() * range) + range / 5),
                     parties[i % parties.length],
                     getResources().getDrawable(R.drawable.star)));
         }

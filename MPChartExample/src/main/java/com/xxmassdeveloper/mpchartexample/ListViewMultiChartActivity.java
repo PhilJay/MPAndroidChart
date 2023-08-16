@@ -107,9 +107,11 @@ public class ListViewMultiChartActivity extends DemoBase {
     private LineData generateDataLine(int cnt) {
 
         ArrayList<Entry> values1 = new ArrayList<>();
+        int count = 12;
+        Double[] sampleValues = DataTools.Companion.getValues(count);
 
-        for (int i = 0; i < 12; i++) {
-            values1.add(new Entry(i, (int) (Math.random() * 65) + 40));
+        for (int i = 0; i < count; i++) {
+            values1.add(new Entry(i, (int) (sampleValues[i].floatValue() * 65) + 40));
         }
 
         LineDataSet d1 = new LineDataSet(values1, "New DataSet " + cnt + ", (1)");
@@ -120,7 +122,7 @@ public class ListViewMultiChartActivity extends DemoBase {
 
         ArrayList<Entry> values2 = new ArrayList<>();
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < count; i++) {
             values2.add(new Entry(i, values1.get(i).getY() - 30));
         }
 
@@ -145,11 +147,12 @@ public class ListViewMultiChartActivity extends DemoBase {
      * @return Bar data
      */
     private BarData generateDataBar(int cnt) {
-
+        int count = 12;
         ArrayList<BarEntry> entries = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(count);
 
-        for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry(i, (int) (Math.random() * 70) + 30));
+        for (int i = 0; i < count; i++) {
+            entries.add(new BarEntry(i, (int) (sampleValues[i].floatValue() * 70) + 30));
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
@@ -167,11 +170,12 @@ public class ListViewMultiChartActivity extends DemoBase {
      * @return Pie data
      */
     private PieData generateDataPie() {
-
+        int cnt = 4;
         ArrayList<PieEntry> entries = new ArrayList<>();
+        Double[] sampleValues = DataTools.Companion.getValues(cnt);
 
-        for (int i = 0; i < 4; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * 70) + 30), "Quarter " + (i+1)));
+        for (int i = 0; i < cnt; i++) {
+            entries.add(new PieEntry((float) ((sampleValues[i].floatValue() * 70) + 30), "Quarter " + (i+1)));
         }
 
         PieDataSet d = new PieDataSet(entries, "");

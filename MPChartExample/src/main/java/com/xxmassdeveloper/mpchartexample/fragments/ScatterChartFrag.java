@@ -41,7 +41,7 @@ public class ScatterChartFrag extends SimpleFragment {
         chart.setMarker(mv);
 
         chart.setDrawGridBackground(false);
-        chart.setData(generateScatterData(6, 10000, 200));
+        chart.setData(generateScatterData(6, 10000));
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setEnabled(true);
