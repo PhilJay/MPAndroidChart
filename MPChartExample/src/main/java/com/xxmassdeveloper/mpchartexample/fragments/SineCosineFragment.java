@@ -37,7 +37,7 @@ public class SineCosineFragment extends SimpleFragment {
         chart.setData(generateLineData());
         chart.animateX(3000);
 
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), "OpenSans-Light.ttf");
+        Typeface tf = Typeface.createFromAsset(requireContext().getAssets(), "OpenSans-Light.ttf");
 
         Legend l = chart.getLegend();
         l.setTypeface(tf);

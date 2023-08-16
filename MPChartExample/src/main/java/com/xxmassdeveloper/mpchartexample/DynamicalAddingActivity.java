@@ -70,7 +70,6 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             data.addDataSet(set);
         }
 
-        // choose a random dataSet
         int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
         ILineDataSet randomSet = data.getDataSetByIndex(randomDataSetIndex);
         float value = (float) (Math.random() * 50) + 50f * (randomDataSetIndex + 1);

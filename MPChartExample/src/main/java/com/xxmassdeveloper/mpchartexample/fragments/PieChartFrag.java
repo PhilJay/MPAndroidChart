@@ -33,7 +33,7 @@ public class PieChartFrag extends SimpleFragment {
         chart = v.findViewById(R.id.pieChart1);
         chart.getDescription().setEnabled(false);
 
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), "OpenSans-Light.ttf");
+        Typeface tf = Typeface.createFromAsset(requireContext().getAssets(), "OpenSans-Light.ttf");
 
         chart.setCenterTextTypeface(tf);
         chart.setCenterText(generateCenterText());

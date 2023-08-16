@@ -45,7 +45,7 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         chart.setDrawGridBackground(false);
         chart.setDrawBarShadow(false);
 
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), "OpenSans-Light.ttf");
+        Typeface tf = Typeface.createFromAsset(requireContext().getAssets(), "OpenSans-Light.ttf");
 
         chart.setData(generateBarData(1, 20000, 12));
 
