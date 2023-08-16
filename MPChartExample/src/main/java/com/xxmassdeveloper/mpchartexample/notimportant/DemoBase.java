@@ -7,10 +7,14 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.github.mikephil.charting.data.BubbleEntry;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,10 +50,6 @@ public abstract class DemoBase extends AppCompatActivity implements ActivityComp
 
         tfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         tfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
-    }
-
-    protected float getRandom(float range, float start) {
-        return (float) (Math.random() * range) + start;
     }
 
     @Override
