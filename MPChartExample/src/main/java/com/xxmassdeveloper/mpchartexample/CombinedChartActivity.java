@@ -41,7 +41,7 @@ import java.util.ArrayList;
 public class CombinedChartActivity extends DemoBase {
 
     private CombinedChart chart;
-    private final int count = 12;
+    private final int sampleCount = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,7 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<Entry> entries = new ArrayList<>();
 
-        for (int index = 0; index < count; index++)
+        for (int index = 0; index < sampleCount; index++)
             entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
 
         LineDataSet set = new LineDataSet(entries, "Line DataSet");
@@ -136,7 +136,7 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<BarEntry> entries1 = new ArrayList<>();
         ArrayList<BarEntry> entries2 = new ArrayList<>();
 
-        for (int index = 0; index < count; index++) {
+        for (int index = 0; index < sampleCount; index++) {
             entries1.add(new BarEntry(0, getRandom(25, 25)));
 
             // stacked
@@ -176,7 +176,7 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<Entry> entries = new ArrayList<>();
 
-        for (float index = 0; index < count; index += 0.5f)
+        for (float index = 0; index < sampleCount; index += 0.5f)
             entries.add(new Entry(index + 0.25f, getRandom(10, 55)));
 
         ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
@@ -195,7 +195,7 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<CandleEntry> entries = new ArrayList<>();
 
-        for (int index = 0; index < count; index += 2)
+        for (int index = 0; index < sampleCount; index += 2)
             entries.add(new CandleEntry(index + 1f, 90, 70, 85, 75f));
 
         CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
@@ -215,7 +215,7 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<BubbleEntry> entries = new ArrayList<>();
 
-        for (int index = 0; index < count; index++) {
+        for (int index = 0; index < sampleCount; index++) {
             float y = getRandom(10, 105);
             float size = getRandom(100, 105);
             entries.add(new BubbleEntry(index + 0.5f, y, size));
