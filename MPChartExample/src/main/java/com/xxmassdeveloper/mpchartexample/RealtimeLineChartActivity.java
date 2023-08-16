@@ -33,6 +33,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         OnChartValueSelectedListener {
 
     private LineChart chart;
+    Double[] sampleValues = DataTools.Companion.getValues(102);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,8 @@ public class RealtimeLineChartActivity extends DemoBase implements
                 data.addDataSet(set);
             }
 
-            data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
+            int cycleValue = (int) (set.getEntryCount() % 100.0);
+            data.addEntry(new Entry(set.getEntryCount(), (float) (sampleValues[cycleValue].floatValue() * 40) + 30f), 0);
             data.notifyDataChanged();
 
             // let the chart know it's data has changed
