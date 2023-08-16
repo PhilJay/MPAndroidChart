@@ -6,4 +6,4 @@ set -x
 GIT_DIFF_IMAGE_OUTPUT_DIR=$diffFiles git diff-image
 
 # set error when diffs are there
-#[ "$(ls -A $diffFiles)" ] && exit 1 || exit 0
+[ "$(ls -A $diffFiles)" ] && exit 1 || exit 0
