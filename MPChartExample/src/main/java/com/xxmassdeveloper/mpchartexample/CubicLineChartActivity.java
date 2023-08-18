@@ -105,7 +105,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
     private void setData(int count, float range) {
 
         ArrayList<Entry> values = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(100);
+        Double[] sampleValues = DataTools.Companion.getMuchValues(count);
 
         for (int i = 0; i < count; i++) {
             float val = (float) (sampleValues[i].floatValue() * (range + 1)) + 20;
