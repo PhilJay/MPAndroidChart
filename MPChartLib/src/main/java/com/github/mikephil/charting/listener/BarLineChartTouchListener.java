@@ -443,6 +443,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      */
     private float getLimitedScaleX(float scaleX, MPPointF t) {
         ViewPortHandler h = mChart.getViewPortHandler();
+		tempMatrix.set(mSavedMatrix);
         tempMatrix.postScale(scaleX, 1f, t.x, t.y);
 
         mSavedMatrix.getValues(matrixBuffer);
