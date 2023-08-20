@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         when (item.itemId) {
             R.id.viewGithub -> {
                 i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse("https://github.com/PhilJay/MPAndroidChart")
+                i.data = Uri.parse("https://github.com/AppDevNext/AndroidChart")
                 startActivity(i)
             }
             R.id.report -> {
