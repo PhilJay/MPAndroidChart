@@ -31,7 +31,7 @@
         <activity android:name="DrawChartActivity" />
         <activity android:name="ScatterChartActivity" />
         <activity android:name="BubbleChartActivity" />
-        <activity android:name=".fragments.SimpleChartDemo" />
+        <activity android:name=".fragments.ViewPagerSimpleChartDemo" />
         <activity android:name="ListViewBarChartActivity" />
         <activity android:name="ListViewMultiChartActivity" />
         <activity android:name="StackedBarActivity" />

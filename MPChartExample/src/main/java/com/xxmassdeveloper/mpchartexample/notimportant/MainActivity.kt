@@ -13,7 +13,7 @@ import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.utils.Utils
 import com.xxmassdeveloper.mpchartexample.*
-import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo
+import com.xxmassdeveloper.mpchartexample.fragments.ViewPagerSimpleChartDemo
 
 class MainActivity : AppCompatActivity(), OnItemClickListener {
 
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
 
             add(30, ContentItem("Scrolling Charts"))
             add(31, ContentItem("Multiple", "Various types of charts as fragments.", ListViewMultiChartActivity::class.java))
-            add(32, ContentItem("View Pager", "Swipe through different charts.", SimpleChartDemo::class.java))
+            add(32, ContentItem("View Pager", "Swipe through different charts.", ViewPagerSimpleChartDemo::class.java))
             add(33, ContentItem("Tall Bar Chart", "Bars bigger than your screen!", ScrollViewActivity::class.java))
             add(34, ContentItem("Many Bar Charts", "More bars than your screen can handle!", ListViewBarChartActivity::class.java))
 

@@ -18,7 +18,7 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase
 /**
  * Demonstrates how to keep your charts straight forward, simple and beautiful with the MPAndroidChart library.
  */
-class SimpleChartDemo : DemoBase() {
+class ViewPagerSimpleChartDemo : DemoBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
