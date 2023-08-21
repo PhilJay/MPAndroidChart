@@ -18,6 +18,9 @@ jobs:
         uses: actions/checkout@v3.5.3
         with:
           fetch-depth: 0
+          submodules: true
+      - name: prepare
+        run: brew install exiftool imagemagick
       - name: Install JDK ${{ matrix.java_version }}
         uses: actions/setup-java@v3
         with:
@@ -54,6 +57,19 @@ jobs:
           path: |
             MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
             MPChartExample/build/outputs/androidTest-results/connected
+      - name: Compare screenshots
+        run: |
+          ls -ls MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
+          cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator\(AVD\)\ -\ 9/* screenshotsToCompare
+          ./screenShotCompare.sh
+      - name: Archive screenshots diffs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: MPChart-Screenshots-diffs
+          path: |
+            screenshotDiffs
+
   Check:
     name: Check
     runs-on: ubuntu-latest

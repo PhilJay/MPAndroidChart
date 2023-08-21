@@ -1,0 +1,3 @@
+[submodule "git-diff-image"]
+	path = git-diff-image
+	url = git@github.com:ewanmellor/git-diff-image.git
