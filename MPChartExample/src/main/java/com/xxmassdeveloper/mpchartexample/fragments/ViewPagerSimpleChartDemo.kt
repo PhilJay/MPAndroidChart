@@ -69,7 +69,7 @@ class ViewPagerSimpleChartDemo : DemoBase() {
 
     private fun showSnackbar(text: String) {
         val viewPos : View = findViewById(android.R.id.content)
-        val snackbar = Snackbar.make(viewPos, text, Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(viewPos, text, Snackbar.LENGTH_SHORT)
         val view = snackbar.view
         when (val params = view.layoutParams) {
             is CoordinatorLayout.LayoutParams -> {
