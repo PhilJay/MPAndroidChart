@@ -136,7 +136,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
             if (count == 100) // initial
                 y = (valuesData[Math.round(x)]).floatValue() * 50 + 50;
             else
-                y = (float) (Math.random() * 50 + 50);
+                y = (float) (Math.random() * 50 + 50); // manually triggered
             values.add(new Entry(x, y)); // add one entry per hour
         }
 
