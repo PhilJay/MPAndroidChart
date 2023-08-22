@@ -27,15 +27,15 @@ class ViewPagerTest {
     fun smokeTestSimplyStart() {
         Thread.sleep(SHORT_DURATION_MS)
         onView(ViewMatchers.isRoot())
-                .captureToBitmap()
-                .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
+            .captureToBitmap()
+            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
 
         repeat(4) {
             onView(withId(R.id.pager)).perform(swipeLeft())
             Thread.sleep(SHORT_DURATION_MS)
             onView(ViewMatchers.isRoot())
-                    .captureToBitmap()
-                    .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${it}")
+                .captureToBitmap()
+                .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${it}")
         }
     }
 

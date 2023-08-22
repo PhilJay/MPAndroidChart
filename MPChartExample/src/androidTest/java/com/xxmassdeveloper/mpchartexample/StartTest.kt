@@ -44,20 +44,20 @@ class StartTest {
     @Test
     fun smokeTestSimplyStart() {
         Espresso.onView(ViewMatchers.isRoot())
-                .captureToBitmap()
-                .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
+            .captureToBitmap()
+            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
 
         MainActivity.menuItems.forEachIndexed { index, contentItem ->
             contentItem.clazz?.let {
                 println("Intended ${index}-${it.simpleName}")
 
                 onData(anything())
-                        .inAdapterView(allOf(withId(R.id.listView1), isCompletelyDisplayed()))
-                        .atPosition(index).perform(click())
+                    .inAdapterView(allOf(withId(R.id.listView1), isCompletelyDisplayed()))
+                    .atPosition(index).perform(click())
 
                 Espresso.onView(ViewMatchers.isRoot())
-                        .captureToBitmap()
-                        .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}")
+                    .captureToBitmap()
+                    .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}")
                 Intents.intended(hasComponent(it.name))
                 Espresso.pressBack()
             }
