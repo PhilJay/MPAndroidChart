@@ -6,7 +6,7 @@ jobs:
     name: "Validation"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v3.6.0
       - name: set up JDK
         uses: actions/setup-java@v3
         with:
