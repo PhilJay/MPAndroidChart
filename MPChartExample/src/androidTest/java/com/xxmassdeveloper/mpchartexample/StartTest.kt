@@ -53,7 +53,7 @@ class StartTest {
                 Log.d(nameRule.methodName, "Intended ${index}-${it.simpleName}")
 
                 onData(anything())
-                    .inAdapterView(allOf(withId(R.id.listView1), isCompletelyDisplayed()))
+                    .inAdapterView(allOf(withId(R.id.listViewMain), isCompletelyDisplayed()))
                     .atPosition(index).perform(click())
 
                 Espresso.onView(ViewMatchers.isRoot())

@@ -48,7 +48,7 @@ public class ListViewBarChartActivity extends DemoBase {
 
         setTitle("ListViewBarChartActivity");
 
-        ListView lv = findViewById(R.id.listView1);
+        ListView lv = findViewById(R.id.listViewMain);
 
         ArrayList<BarData> list = new ArrayList<>();
 

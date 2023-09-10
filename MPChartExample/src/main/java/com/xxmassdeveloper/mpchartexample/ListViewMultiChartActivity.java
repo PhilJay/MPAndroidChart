@@ -52,7 +52,7 @@ public class ListViewMultiChartActivity extends DemoBase {
 
         setTitle("ListViewMultiChartActivity");
 
-        ListView lv = findViewById(R.id.listView1);
+        ListView lv = findViewById(R.id.listViewMain);
 
         ArrayList<ChartItem> list = new ArrayList<>();
 
