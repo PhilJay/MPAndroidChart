@@ -14,10 +14,10 @@ ext {
 }
 
 android {
-    compileSdkVersion 33
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 33
+        compileSdk 34
+        targetSdkVersion 34
 
         // VERSION_NAME no longer available as of 4.1
         // https://issuetracker.google.com/issues/158695880
