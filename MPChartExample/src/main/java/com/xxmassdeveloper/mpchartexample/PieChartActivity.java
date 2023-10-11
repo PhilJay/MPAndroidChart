@@ -32,6 +32,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.renderer.PieChartRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -168,6 +169,10 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // undo all highlights
         chart.highlightValues(null);
+
+        PieChartRenderer renderer =(PieChartRenderer) chart.getRenderer();
+        renderer.setRoundedCornerRadius(10f);
+        dataSet.setSliceSpace(renderer.getRoundedCornerRadius()/2);
 
         chart.invalidate();
     }
