@@ -25,6 +25,7 @@
 		<activity android:name="HorizontalBarChartActivity" />
         <activity android:name="HorizontalBarNegativeChartActivity" />
         <activity android:name="PieChartActivity" />
+        <activity android:name=".PieChartRoundedActivity" />
         <activity android:name="PiePolylineChartActivity" />
         <activity android:name="MultiLineChartActivity" />
         <activity android:name="BarChartActivityMultiDataset" />
