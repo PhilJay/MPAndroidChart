@@ -290,4 +290,14 @@ public abstract class AxisRenderer extends Renderer {
      * @param c
      */
     public abstract void renderLimitLines(Canvas c);
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mAxis.setTextColor(color);
+    }
 }

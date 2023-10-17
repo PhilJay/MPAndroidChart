@@ -300,10 +300,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
         if (!valuesToHighlight())
             return false;
 
-        for (int i = 0; i < mIndicesToHighlight.length; i++)
-
-            // check if the xvalue for the given dataset needs highlight
-            if ((int) mIndicesToHighlight[i].getX() == index)
+        // check if the xvalue for the given dataset needs highlight
+        for (Highlight highlight : mIndicesToHighlight)
+            if ((int) highlight.getX() == index)
                 return true;
 
         return false;

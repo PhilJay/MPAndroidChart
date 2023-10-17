@@ -21,7 +21,7 @@ public class DataSetTest {
     @Test
     public void testCalcMinMax() {
 
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(10, 10));
         entries.add(new Entry(15, 2));
         entries.add(new Entry(21, 5));
@@ -58,7 +58,7 @@ public class DataSetTest {
     @Test
     public void testAddRemoveEntry() {
 
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(10, 10));
         entries.add(new Entry(15, 2));
         entries.add(new Entry(21, 5));
@@ -143,7 +143,7 @@ public class DataSetTest {
     @Test
     public void testGetEntryForXValue() {
 
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(10, 10));
         entries.add(new Entry(15, 5));
         entries.add(new Entry(21, 5));
@@ -183,7 +183,7 @@ public class DataSetTest {
     public void testGetEntryForXValueWithDuplicates() {
 
         // sorted list of values (by x position)
-        List<Entry> values = new ArrayList<Entry>();
+        List<Entry> values = new ArrayList<>();
         values.add(new Entry(0, 10));
         values.add(new Entry(1, 20));
         values.add(new Entry(2, 30));
