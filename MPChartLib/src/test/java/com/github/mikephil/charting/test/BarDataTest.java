@@ -5,6 +5,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class BarDataTest {
         List<BarEntry> values1 = new ArrayList<>();
         List<BarEntry> values2 = new ArrayList<>();
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             values1.add(new BarEntry(i, 50));
             values2.add(new BarEntry(i, 60));
         }
