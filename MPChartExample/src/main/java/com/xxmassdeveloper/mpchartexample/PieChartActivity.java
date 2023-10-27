@@ -75,13 +75,14 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         chart.setCenterText(generateCenterSpannableText());
 
         chart.setDrawHoleEnabled(true);
-        chart.setHoleColor(Color.WHITE);
+        chart.setHoleColor(Color.TRANSPARENT);
 
-        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleColor(Color.TRANSPARENT);
         chart.setTransparentCircleAlpha(110);
 
-        chart.setHoleRadius(58f);
-        chart.setTransparentCircleRadius(61f);
+        chart.setHoleRadius(50f);
+
+        chart.setTransparentCircleRadius(0f);
 
         chart.setDrawCenterText(true);
 
@@ -171,7 +172,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         chart.highlightValues(null);
 
         PieChartRenderer renderer =(PieChartRenderer) chart.getRenderer();
-        renderer.setRoundedCornerRadius(10f);
+        renderer.setRoundedCornerRadius(30f);
         dataSet.setSliceSpace(renderer.getRoundedCornerRadius()/2);
 
         chart.invalidate();

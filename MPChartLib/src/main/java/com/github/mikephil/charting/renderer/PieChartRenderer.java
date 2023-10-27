@@ -78,9 +78,10 @@ public class PieChartRenderer extends DataRenderer {
      */
     public void setRoundedCornerRadius(float radius){
         mRoundedCornerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRoundedCornerPaint.setStrokeWidth(radius);
         mRoundedCornerPaint.setStyle(Style.STROKE);
         mRoundedCornerPaint.setAntiAlias(true);
+        mRoundedCornerPaint.setStrokeWidth(radius);
+
     }
 
     /**
@@ -428,7 +429,7 @@ public class PieChartRenderer extends DataRenderer {
 
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
 
-            // Draw rounded corner path with paint object for the given radius
+            // Draw rounded corner path with paint object slice with the given radius
             if (getRoundedCornerRadius()>0) {
                 mBitmapCanvas.drawPath(mPathBuffer, mRoundedCornerPaint);
             }
