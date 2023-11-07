@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -23,12 +25,14 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.xxmassdeveloper.mpchartexample.custom.RadarMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RadarChartActivity extends DemoBase {
 
@@ -66,9 +70,11 @@ public class RadarChartActivity extends DemoBase {
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setTypeface(tfLight);
-        xAxis.setTextSize(9f);
+        xAxis.setTextSize(14f);
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
+        xAxis.setTextColor(Color.GREEN);
+
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
             private final String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
@@ -82,11 +88,13 @@ public class RadarChartActivity extends DemoBase {
 
         YAxis yAxis = chart.getYAxis();
         yAxis.setTypeface(tfLight);
-        yAxis.setLabelCount(5, false);
-        yAxis.setTextSize(9f);
+        yAxis.setLabelCount(3, true);
+        yAxis.setTextSize(14f);
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(80f);
-        yAxis.setDrawLabels(false);
+        yAxis.setAxisMaximum(100f);
+        yAxis.setDrawLabels(true);
+        yAxis.setTextColor(Color.GREEN);
+        yAxis.setCenterAxisLabels(true);
 
         Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -119,13 +127,17 @@ public class RadarChartActivity extends DemoBase {
         }
 
         RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
-        set1.setColor(Color.rgb(103, 110, 129));
+        set1.setColor(Color.GREEN);
         set1.setFillColor(Color.rgb(103, 110, 129));
         set1.setDrawFilled(true);
         set1.setFillAlpha(180);
         set1.setLineWidth(2f);
         set1.setDrawHighlightCircleEnabled(true);
         set1.setDrawHighlightIndicators(false);
+        set1.setHighlightCircleFillColor(Color.GREEN);
+
+
+        chart.setDrawMarkers(false);
 
         RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
         set2.setColor(Color.rgb(121, 162, 175));
@@ -138,7 +150,7 @@ public class RadarChartActivity extends DemoBase {
 
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(set1);
-        sets.add(set2);
+//        sets.add(set2);
 
         RadarData data = new RadarData(sets);
         data.setValueTypeface(tfLight);
@@ -146,7 +158,16 @@ public class RadarChartActivity extends DemoBase {
         data.setDrawValues(false);
         data.setValueTextColor(Color.WHITE);
 
+        chart.highlightValues(new Highlight[]{
+                new Highlight(0, entries1.get(0).getValue(), 0),
+                new Highlight(1, entries1.get(1).getValue(), 0),
+                new Highlight(2, entries1.get(2).getValue(), 0),
+                new Highlight(3, entries1.get(3).getValue(), 0),
+                new Highlight(4, entries1.get(4).getValue(), 0),
+        });
         chart.setData(data);
+
+
         chart.invalidate();
     }
 

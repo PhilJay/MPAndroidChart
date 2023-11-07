@@ -34,12 +34,12 @@ public class RadarChartRenderer extends LineRadarRenderer {
         mChart = chart;
 
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.STROKE);
-        mHighlightPaint.setStrokeWidth(2f);
+        mHighlightPaint.setStyle(Paint.Style.FILL);
+        mHighlightPaint.setStrokeWidth(4f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
 
         mWebPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mWebPaint.setStyle(Paint.Style.STROKE);
+        mWebPaint.setStyle(Paint.Style.FILL);
 
         mHighlightCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
@@ -388,7 +388,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         if (strokeColor != ColorTemplate.COLOR_NONE) {
             mHighlightCirclePaint.setColor(strokeColor);
-            mHighlightCirclePaint.setStyle(Paint.Style.STROKE);
+            mHighlightCirclePaint.setStyle(Paint.Style.FILL);
             mHighlightCirclePaint.setStrokeWidth(Utils.convertDpToPixel(strokeWidth));
             c.drawCircle(point.x, point.y, outerRadius, mHighlightCirclePaint);
         }

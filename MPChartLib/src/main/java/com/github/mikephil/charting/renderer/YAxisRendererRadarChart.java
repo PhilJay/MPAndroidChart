@@ -1,8 +1,14 @@
 package com.github.mikephil.charting.renderer;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
+import android.util.Log;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -164,16 +170,26 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
                 : (mYAxis.mEntryCount - 1);
 
         float xOffset = mYAxis.getLabelXOffset();
+        Paint mAxisLabelBackgroundPaint = new Paint();
+        mAxisLabelBackgroundPaint.setStyle(Paint.Style.FILL);
+        mAxisLabelBackgroundPaint.setColor(Color.rgb(60, 65, 82));
 
         for (int j = from; j < to; j++) {
-
             float r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
-
             Utils.getPosition(center, r, mChart.getRotationAngle(), pOut);
-
             String label = mYAxis.getFormattedLabel(j);
 
-            c.drawText(label, pOut.x + xOffset, pOut.y, mAxisLabelPaint);
+            if (j == from){
+                c.drawRect(pOut.x - 30f, pOut.y - 60f , pOut.x + 30f , pOut.y ,mAxisLabelBackgroundPaint);
+                c.drawText(label, pOut.x - 10f, pOut.y - 20f, mAxisLabelPaint);
+            }else {
+                c.drawRect(pOut.x - 30f, pOut.y -25f, pOut.x + 30f, pOut.y +25f,mAxisLabelBackgroundPaint);
+                if (mYAxis.mEntries[j] % 100 == 0){
+                    c.drawText(label, pOut.x - 40f, pOut.y + 10f, mAxisLabelPaint);
+                }else {
+                    c.drawText(label, pOut.x - 25f, pOut.y + 10f, mAxisLabelPaint);
+                }
+            }
         }
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
