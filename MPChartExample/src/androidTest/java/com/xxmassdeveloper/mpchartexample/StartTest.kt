@@ -1,5 +1,6 @@
 package com.xxmassdeveloper.mpchartexample
 
+import android.util.Log
 import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
@@ -49,7 +50,7 @@ class StartTest {
 
         MainActivity.menuItems.forEachIndexed { index, contentItem ->
             contentItem.clazz?.let {
-                println("Intended ${index}-${it.simpleName}")
+                Log.d(nameRule.methodName, "Intended ${index}-${it.simpleName}")
 
                 onData(anything())
                     .inAdapterView(allOf(withId(R.id.listView1), isCompletelyDisplayed()))
