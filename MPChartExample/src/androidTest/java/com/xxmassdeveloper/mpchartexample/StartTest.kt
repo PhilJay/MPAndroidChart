@@ -43,7 +43,7 @@ class StartTest {
     }
 
     @Test
-    fun smokeTestSimplyStart() {
+    fun smokeTestStart() {
         Espresso.onView(ViewMatchers.isRoot())
             .captureToBitmap()
             .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
