@@ -24,7 +24,7 @@ class ViewPagerTest {
     var nameRule = TestName()
 
     @Test
-    fun smokeTestSimplyStart() {
+    fun smokeTestViewPager() {
         Thread.sleep(SHORT_DURATION_MS)
         onView(ViewMatchers.isRoot())
             .captureToBitmap()
