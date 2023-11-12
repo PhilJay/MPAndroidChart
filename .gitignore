@@ -48,3 +48,6 @@ build/
 target/
 
 .DS_Store
+
+/screenshotDiffs
+/artifacts
