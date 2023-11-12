@@ -70,7 +70,12 @@ jobs:
           name: MPChart-Screenshots-diffs
           path: |
             screenshotDiffs
-
+      - name: Show git status
+        if: ${{ always() }}
+        run: |
+          git add screenshotsToCompare
+          git status
+          [ "$(git status -s -uno)" ] && exit 1 || exit 0
   Check:
     name: Check
     runs-on: ubuntu-latest
