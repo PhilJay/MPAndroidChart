@@ -19,7 +19,11 @@ class LineChart : BarLineChartBase<LineData?>, LineDataProvider {
     }
 
     override fun getLineData(): LineData {
-        return mData!!
+        mData?.let {
+            return it
+        } ?: run {
+            return LineData()
+        }
     }
 
     public override fun onDetachedFromWindow() {
