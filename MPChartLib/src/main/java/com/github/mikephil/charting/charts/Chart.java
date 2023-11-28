@@ -53,6 +53,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+
 /**
  * Baseclass of all Chart-Views.
  *
@@ -1311,6 +1313,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	/**
 	 * Returns the ChartData object that has been set for the chart.
 	 */
+	@NonNull
 	public T getData() {
 		return mData;
 	}

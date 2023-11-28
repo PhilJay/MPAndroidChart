@@ -18,13 +18,14 @@ class LineChart : BarLineChartBase<LineData?>, LineDataProvider {
         mRenderer = LineChartRenderer(this, mAnimator, mViewPortHandler)
     }
 
-    override fun getLineData(): LineData {
-        mData?.let {
-            return it
-        } ?: run {
-            return LineData()
+    override val lineData: LineData
+        get() {
+            mData?.let {
+                return it
+            } ?: run {
+                return LineData()
+            }
         }
-    }
 
     public override fun onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
