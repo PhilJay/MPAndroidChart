@@ -1055,7 +1055,7 @@ public class PieChartRenderer extends DataRenderer {
     }
 
     /**
-     * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
+     * Releases the drawing bitmap. This should be called when .
      */
     public void releaseBitmap() {
         if (mBitmapCanvas != null) {
