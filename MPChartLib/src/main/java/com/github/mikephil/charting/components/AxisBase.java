@@ -846,4 +846,14 @@ public abstract class AxisBase extends ComponentBase {
     {
         return specificPositions;
     }
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mTextColor = color;
+    }
 }
