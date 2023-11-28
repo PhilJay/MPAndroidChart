@@ -1686,4 +1686,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             mViewPortHandler.refresh(mViewPortHandler.getMatrixTouch(), this, true);
         }
     }
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mAxisRendererLeft.setTextColor(color);
+        mAxisRendererRight.setTextColor(color);
+        mXAxisRenderer.setTextColor(color);
+    }
 }

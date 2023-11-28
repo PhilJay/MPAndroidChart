@@ -603,7 +603,7 @@ public abstract class AxisBase extends ComponentBase {
      * @return
      */
     public boolean isGridDashedLineEnabled() {
-        return mGridDashPathEffect == null ? false : true;
+        return mGridDashPathEffect != null;
     }
 
     /**
@@ -655,7 +655,7 @@ public abstract class AxisBase extends ComponentBase {
      * @return
      */
     public boolean isAxisLineDashedLineEnabled() {
-        return mAxisLineDashPathEffect == null ? false : true;
+        return mAxisLineDashPathEffect != null;
     }
 
     /**
@@ -845,5 +845,15 @@ public abstract class AxisBase extends ComponentBase {
     public float[] getSpecificPositions()
     {
         return specificPositions;
+    }
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mTextColor = color;
     }
 }
