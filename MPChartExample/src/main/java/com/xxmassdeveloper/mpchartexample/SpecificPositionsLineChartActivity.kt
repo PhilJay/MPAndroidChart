@@ -140,61 +140,55 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                val sets = mChart!!.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                mChart!!.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.setDrawValues(!set.isDrawValuesEnabled)
                 }
                 mChart!!.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (mChart!!.data != null) {
-                    mChart!!.data.isHighlightEnabled = !mChart!!.data.isHighlightEnabled
+                mChart!!.data?.let {
+                    it.isHighlightEnabled = !it.isHighlightEnabled
                     mChart!!.invalidate()
                 }
             }
 
             R.id.actionToggleFilled -> {
-                val sets = mChart!!.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                mChart!!.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.setDrawFilled(!set.isDrawFilledEnabled)
                 }
                 mChart!!.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                val sets = mChart!!.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                mChart!!.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.setDrawCircles(!set.isDrawCirclesEnabled)
                 }
                 mChart!!.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                val sets = mChart!!.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                mChart!!.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.mode = if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
                 }
                 mChart!!.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                val sets = mChart!!.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                mChart!!.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.mode = if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
                 }
                 mChart!!.invalidate()
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                val sets = mChart!!.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                mChart!!.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.mode = if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
                 mChart!!.invalidate()
@@ -251,45 +245,51 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             val `val` = (sampleValues[i]!!.toFloat() * range) + 3
             values.add(Entry(i.toFloat(), `val`))
         }
-        val set1: LineDataSet
-        if (mChart!!.data != null && mChart!!.data.dataSetCount > 0) {
-            set1 = mChart!!.data.getDataSetByIndex(0) as LineDataSet
-            set1.entries = values
-            mChart!!.data.notifyDataChanged()
-            mChart!!.notifyDataSetChanged()
-        } else {
-            // create a dataset and give it a type
-            set1 = LineDataSet(values, "DataSet 1")
-
-            // set the line to be drawn like this "- - - - - -"
-            set1.enableDashedLine(10f, 5f, 0f)
-            set1.enableDashedHighlightLine(10f, 5f, 0f)
-            set1.color = Color.BLACK
-            set1.setCircleColor(Color.BLACK)
-            set1.lineWidth = 1f
-            set1.circleRadius = 3f
-            set1.setDrawCircleHole(false)
-            set1.valueTextSize = 9f
-            set1.setDrawFilled(true)
-            set1.formLineWidth = 1f
-            set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-            set1.formSize = 15f
-            if (Utils.getSDKInt() >= 18) {
-                // fill drawable only supported on api level 18 and above
-                val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)
-                set1.fillDrawable = drawable
-            } else {
-                set1.fillColor = Color.BLACK
-            }
-            val dataSets = ArrayList<ILineDataSet>()
-            dataSets.add(set1) // add the datasets
-
-            // create a data object with the datasets
-            val data = LineData(dataSets)
-
-            // set data
-            mChart!!.data = data
+        mChart!!.data?.let {
+            if (it.dataSetCount > 0) {
+                val set1 = it.getDataSetByIndex(0) as LineDataSet
+                set1.entries = values
+                it.notifyDataChanged()
+                mChart!!.notifyDataSetChanged()
+            } else
+                createDataset(values)
+        } ?: run {
+            createDataset(values)
         }
+    }
+
+    private fun createDataset(values: ArrayList<Entry>) {
+        // create a dataset and give it a type
+        val set11 = LineDataSet(values, "DataSet 1")
+
+        // set the line to be drawn like this "- - - - - -"
+        set11.enableDashedLine(10f, 5f, 0f)
+        set11.enableDashedHighlightLine(10f, 5f, 0f)
+        set11.color = Color.BLACK
+        set11.setCircleColor(Color.BLACK)
+        set11.lineWidth = 1f
+        set11.circleRadius = 3f
+        set11.setDrawCircleHole(false)
+        set11.valueTextSize = 9f
+        set11.setDrawFilled(true)
+        set11.formLineWidth = 1f
+        set11.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+        set11.formSize = 15f
+        if (Utils.getSDKInt() >= 18) {
+            // fill drawable only supported on api level 18 and above
+            val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)
+            set11.fillDrawable = drawable
+        } else {
+            set11.fillColor = Color.BLACK
+        }
+        val dataSets = ArrayList<ILineDataSet>()
+        dataSets.add(set11) // add the datasets
+
+        // create a data object with the datasets
+        val data = LineData(dataSets)
+
+        // set data
+        mChart!!.data = data
     }
 
     override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture) {

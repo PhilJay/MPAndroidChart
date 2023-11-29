@@ -139,70 +139,63 @@ class LineChartActivity1 : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             }
 
             R.id.actionToggleValues -> {
-                val sets = binding.chart1.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                binding.chart1.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.setDrawValues(!set.isDrawValuesEnabled)
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                val sets = binding.chart1.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                binding.chart1.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.setDrawIcons(!set.isDrawIconsEnabled)
+                    binding.chart1.invalidate()
                 }
-                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (binding.chart1.data != null) {
-                    binding.chart1.data.isHighlightEnabled = !binding.chart1.data.isHighlightEnabled
+                binding.chart1.data?.let {
+                    it.isHighlightEnabled = !it.isHighlightEnabled
                     binding.chart1.invalidate()
                 }
             }
 
             R.id.actionToggleFilled -> {
-                val sets = binding.chart1.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                binding.chart1.data?.dataSets?.let {
+                    val set = it as LineDataSet
                     set.setDrawFilled(!set.isDrawFilledEnabled)
+                    binding.chart1.invalidate()
                 }
-                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                val sets = binding.chart1.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                binding.chart1.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.setDrawCircles(!set.isDrawCirclesEnabled)
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                val sets = binding.chart1.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                binding.chart1.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.mode = if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                val sets = binding.chart1.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                binding.chart1.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.mode = if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                val sets = binding.chart1.data.dataSets
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                binding.chart1.data?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.mode = if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
                 binding.chart1.invalidate()

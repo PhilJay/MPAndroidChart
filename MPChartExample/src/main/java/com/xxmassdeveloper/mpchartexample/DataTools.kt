@@ -155,68 +155,78 @@ class DataTools {
                     values.add(Entry(i.toFloat(), value, ContextCompat.getDrawable(context, R.drawable.star)))
                 }
             }
-            val lineDataSet0: LineDataSet
-            if (lineChart.data != null && lineChart.data.dataSetCount > 0) {
-                lineDataSet0 = lineChart.data.getDataSetByIndex(0) as LineDataSet
-                lineDataSet0.entries = values
-                lineDataSet0.notifyDataSetChanged()
-                lineChart.data.notifyDataChanged()
-                lineChart.notifyDataSetChanged()
-            } else {
-                // create a dataset and give it a type
-                lineDataSet0 = LineDataSet(values, "DataSet 1")
-                lineDataSet0.setDrawIcons(false)
-
-                // draw dashed line
-                lineDataSet0.enableDashedLine(10f, 5f, 0f)
-
-                // black lines and points
-                lineDataSet0.color = Color.BLACK
-                lineDataSet0.setCircleColor(Color.BLACK)
-
-                // line thickness and point size
-                lineDataSet0.lineWidth = 1f
-                lineDataSet0.circleRadius = 3f
-
-                // draw points as solid circles
-                lineDataSet0.setDrawCircleHole(false)
-
-                // customize legend entry
-                lineDataSet0.formLineWidth = 1f
-                lineDataSet0.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-                lineDataSet0.formSize = 15f
-
-                // text size of values
-                lineDataSet0.valueTextSize = 9f
-
-                // draw selection line as dashed
-                lineDataSet0.enableDashedHighlightLine(10f, 5f, 0f)
-
-                // set the filled area
-                lineDataSet0.setDrawFilled(true)
-                lineDataSet0.fillFormatter = object : IFillFormatter {
-                    override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
-                        return lineChart.axisLeft.axisMinimum
-                    }
-                }
-
-                // set color of filled area
-                if (Utils.getSDKInt() >= 18) {
-                    // drawables only supported on api level 18 and above
-                    val drawable = ContextCompat.getDrawable(context, R.drawable.fade_blue)
-                    lineDataSet0.fillDrawable = drawable
-                } else {
-                    lineDataSet0.fillColor = Color.BLACK
-                }
-                val dataSets = ArrayList<ILineDataSet>()
-                dataSets.add(lineDataSet0) // add the data sets
-
-                // create a data object with the data sets
-                val data = LineData(dataSets)
-
-                // set data
-                lineChart.data = data
+            lineChart.data?.let {
+                if (it.dataSetCount > 0) {
+                    val lineDataSet0 = it.getDataSetByIndex(0) as LineDataSet
+                    lineDataSet0.entries = values
+                    lineDataSet0.notifyDataSetChanged()
+                    it.notifyDataChanged()
+                    lineChart.notifyDataSetChanged()
+                } else
+                    createDataset(values, lineChart, context)
+            } ?: run {
+                createDataset(values, lineChart, context)
             }
+        }
+
+        private fun createDataset(
+            values: ArrayList<Entry>,
+            lineChart: LineChart,
+            context: Context
+        ) {
+            // create a dataset and give it a type
+            val lineDataSet01 = LineDataSet(values, "DataSet 1")
+            lineDataSet01.setDrawIcons(false)
+
+            // draw dashed line
+            lineDataSet01.enableDashedLine(10f, 5f, 0f)
+
+            // black lines and points
+            lineDataSet01.color = Color.BLACK
+            lineDataSet01.setCircleColor(Color.BLACK)
+
+            // line thickness and point size
+            lineDataSet01.lineWidth = 1f
+            lineDataSet01.circleRadius = 3f
+
+            // draw points as solid circles
+            lineDataSet01.setDrawCircleHole(false)
+
+            // customize legend entry
+            lineDataSet01.formLineWidth = 1f
+            lineDataSet01.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+            lineDataSet01.formSize = 15f
+
+            // text size of values
+            lineDataSet01.valueTextSize = 9f
+
+            // draw selection line as dashed
+            lineDataSet01.enableDashedHighlightLine(10f, 5f, 0f)
+
+            // set the filled area
+            lineDataSet01.setDrawFilled(true)
+            lineDataSet01.fillFormatter = object : IFillFormatter {
+                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
+                    return lineChart.axisLeft.axisMinimum
+                }
+            }
+
+            // set color of filled area
+            if (Utils.getSDKInt() >= 18) {
+                // drawables only supported on api level 18 and above
+                val drawable = ContextCompat.getDrawable(context, R.drawable.fade_blue)
+                lineDataSet01.fillDrawable = drawable
+            } else {
+                lineDataSet01.fillColor = Color.BLACK
+            }
+            val dataSets = ArrayList<ILineDataSet>()
+            dataSets.add(lineDataSet01) // add the data sets
+
+            // create a data object with the data sets
+            val data = LineData(dataSets)
+
+            // set data
+            lineChart.data = data
         }
     }
 }
