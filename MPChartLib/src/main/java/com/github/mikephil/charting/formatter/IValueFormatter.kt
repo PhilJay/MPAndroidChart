@@ -1,19 +1,15 @@
-package com.github.mikephil.charting.formatter;
+package com.github.mikephil.charting.formatter
 
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.utils.ViewPortHandler
 
 /**
  * Interface that allows custom formatting of all values inside the chart before they are
  * being drawn to the screen. Simply create your own formatting class and let
  * it implement IValueFormatter. Then override the getFormattedValue(...) method
  * and return whatever you want.
- *
- * @author Philipp Jahoda
  */
-public interface IValueFormatter
-{
-
+interface IValueFormatter {
     /**
      * Called when a value (from labels inside the chart) is formatted
      * before being drawn. For performance reasons, avoid excessive calculations
@@ -25,5 +21,5 @@ public interface IValueFormatter
      * @param viewPortHandler provides information about the current chart state (scale, translation, ...)
      * @return the formatted label ready for being drawn
      */
-    String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler);
+    fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String?
 }
