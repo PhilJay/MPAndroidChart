@@ -194,8 +194,10 @@ class DataTools {
 
                 // set the filled area
                 lineDataSet0.setDrawFilled(true)
-                lineDataSet0.fillFormatter = IFillFormatter { _: ILineDataSet?, _: LineDataProvider? ->
-                    lineChart.axisLeft.axisMinimum
+                lineDataSet0.fillFormatter = object : IFillFormatter {
+                    override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
+                        return lineChart.axisLeft.axisMinimum
+                    }
                 }
 
                 // set color of filled area
