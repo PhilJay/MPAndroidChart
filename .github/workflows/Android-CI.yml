@@ -44,7 +44,7 @@ jobs:
           abi: x86_64
           cmdOptions: -noaudio -no-boot-anim -no-window
       - name: Archive Espresso results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: MPChart-Espresso-report
@@ -52,7 +52,7 @@ jobs:
           if-no-files-found: error
       - name: Archive screenshots
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: MPChart-Screenshots
           path: |
@@ -65,7 +65,7 @@ jobs:
           ./screenShotCompare.sh
       - name: Archive screenshots diffs
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: MPChart-Screenshots-diffs
           path: |
@@ -97,7 +97,7 @@ jobs:
       - name: Code checks
         run: ./gradlew check
       - name: Archive Lint report
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: Chart-Lint-report
