@@ -11,6 +11,12 @@ changelog:
     - title: Exciting New Features 🎉
       labels:
         - enhancement
+    - title: Dependencies
+      labels:
+        - dependencies
+    - title: Espresso test
+      labels:
+        - Espresso
     - title: Other Changes
       labels:
         - "*"
