@@ -9,14 +9,22 @@ import java.util.List;
 
 /**
  * Created by Philipp Jahoda on 11/07/15.
+ * Modified by Gurgen Khachatryan on 08/01/24.
  */
 public abstract class LineScatterCandleRadarDataSet<T extends Entry> extends BarLineScatterCandleBubbleDataSet<T> implements ILineScatterCandleRadarDataSet<T> {
 
     protected boolean mDrawVerticalHighlightIndicator = true;
     protected boolean mDrawHorizontalHighlightIndicator = true;
+    protected boolean mDrawHighlightCircleIndicator = true;
 
     /** the width of the highlight indicator lines */
     protected float mHighlightLineWidth = 0.5f;
+
+    /** the radius of the circle highlight indicator */
+    protected float mHighlightCircleRadius = 8f;
+
+    /** the width of the circle highlight indicator border */
+    protected float mHighlightCircleBorderWidth = 0f;
 
     /** the path effect for dashed highlight-lines */
     protected DashPathEffect mHighlightDashPathEffect = null;
@@ -25,6 +33,45 @@ public abstract class LineScatterCandleRadarDataSet<T extends Entry> extends Bar
     public LineScatterCandleRadarDataSet(List<T> yVals, String label) {
         super(yVals, label);
         mHighlightLineWidth = Utils.convertDpToPixel(0.5f);
+    }
+
+    /**
+     * Enables / disables the circle highlight-indicator. If disabled, the indicator is not drawn.
+     * @param enabled
+     */
+    public void setDrawHighlightCircleIndicator(boolean enabled) {
+        this.mDrawHighlightCircleIndicator = enabled;
+    }
+
+    /**
+     * Changes circle highlight-indicator radius.
+     * @param radius
+     */
+    public void setHighlightCircleRadius(float radius) {
+        this.mHighlightCircleRadius = radius;
+    }
+
+    /**
+     * Changes circle highlight-indicator border width.
+     * @param width
+     */
+    public void setHighlightCircleBorderWidth(float width) {
+        this.mHighlightCircleBorderWidth = width;
+    }
+
+    @Override
+    public boolean isCircleHighlightEnabled() {
+        return mDrawHighlightCircleIndicator;
+    }
+
+    @Override
+    public float getHighlightCircleRadius() {
+        return mHighlightCircleRadius;
+    }
+
+    @Override
+    public float getHighlightCircleBorderWidth() {
+        return mHighlightCircleBorderWidth;
     }
 
     /**

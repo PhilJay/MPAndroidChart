@@ -202,6 +202,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             set1 = new LineDataSet(values, "DataSet 1");
 
             set1.setDrawIcons(false);
+            set1.setHighLightCircleColor(Color.DKGRAY);
+            set1.setHighLightCircleBorderColor(Color.GRAY);
+            set1.setHighlightCircleBorderWidth(8f);
+            set1.setDrawHighlightCircleIndicator(true);
+            set1.setHighLightColor(Color.BLACK);
 
             // draw dashed line
             set1.enableDashedLine(10f, 5f, 0f);
