@@ -243,10 +243,12 @@ public abstract class AxisRenderer extends Renderer {
         }
 
         // set decimals
-        if (interval < 1) {
-            mAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
-        } else {
-            mAxis.mDecimals = 0;
+        if (!mAxis.mHasCustomDecimals) {
+            if (interval < 1) {
+                mAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
+            } else {
+                mAxis.mDecimals = 0;
+            }
         }
 
         if (mAxis.isCenterAxisLabelsEnabled()) {
