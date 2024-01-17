@@ -51,6 +51,11 @@ public abstract class AxisBase extends ComponentBase {
      * the number of decimal digits to use
      */
     public int mDecimals;
+    
+    /**
+     * if the user set a custom number of decimals
+     */
+    public boolean mHasCustomDecimals = false;
 
     /**
      * the number of label entries the axis should have, default 6
@@ -812,5 +817,14 @@ public abstract class AxisBase extends ComponentBase {
     public void setSpaceMax(float mSpaceMax)
     {
         this.mSpaceMax = mSpaceMax;
+    }
+    
+    /**
+     * Sets the number of decimals to use when formatting values on the axis
+     */
+    public void setDecimals(int mDecimals)
+    {
+        this.mDecimals = mDecimals;
+        this.mHasCustomDecimals = true;
     }
 }
