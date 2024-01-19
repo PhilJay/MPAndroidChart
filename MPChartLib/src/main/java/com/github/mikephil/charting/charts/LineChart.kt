@@ -7,7 +7,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
 import com.github.mikephil.charting.renderer.LineChartRenderer
 import java.util.Locale
 
-class LineChart : BarLineChartBase<LineData?>, LineDataProvider {
+open class LineChart : BarLineChartBase<LineData?>, LineDataProvider {
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
