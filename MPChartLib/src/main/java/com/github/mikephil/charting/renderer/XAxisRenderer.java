@@ -207,7 +207,7 @@ public class XAxisRenderer extends AxisRenderer {
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
-                    if (i == mXAxis.mEntryCount - 1 && mXAxis.mEntryCount > 1) {
+                    if (i / 2 == mXAxis.mEntryCount - 1 && mXAxis.mEntryCount > 1) {
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2

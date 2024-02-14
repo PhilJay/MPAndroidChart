@@ -17,6 +17,7 @@ import java.util.List;
  */
 public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T> {
 
+    // TODO: Move to using `Fill` class
     /**
      * the color that is used for filling the line surface
      */
@@ -101,8 +102,8 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      */
     public void setLineWidth(float width) {
 
-        if (width < 0.2f)
-            width = 0.2f;
+        if (width < 0.0f)
+            width = 0.0f;
         if (width > 10.0f)
             width = 10.0f;
         mLineWidth = Utils.convertDpToPixel(width);
@@ -121,5 +122,14 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
     @Override
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
+    }
+
+    protected void copy(LineRadarDataSet lineRadarDataSet) {
+        super.copy(lineRadarDataSet);
+        lineRadarDataSet.mDrawFilled = mDrawFilled;
+        lineRadarDataSet.mFillAlpha = mFillAlpha;
+        lineRadarDataSet.mFillColor = mFillColor;
+        lineRadarDataSet.mFillDrawable = mFillDrawable;
+        lineRadarDataSet.mLineWidth = mLineWidth;
     }
 }

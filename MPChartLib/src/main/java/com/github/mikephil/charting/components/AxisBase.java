@@ -113,6 +113,11 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mDrawLimitLineBehindData = false;
 
     /**
+     * flag indicating the grid lines layer depth
+     */
+    protected boolean mDrawGridLinesBehindData = true;
+
+    /**
      * Extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
      */
     protected float mSpaceMin = 0.f;
@@ -146,6 +151,39 @@ public abstract class AxisBase extends ComponentBase {
      * the total range of values this axis covers
      */
     public float mAxisRange = 0f;
+
+    private int mAxisMinLabels = 2;
+    private int mAxisMaxLabels = 25;
+
+    /**
+     * The minumum number of labels on the axis
+     */
+    public int getAxisMinLabels() {
+        return mAxisMinLabels;
+    }
+
+    /**
+     * The minumum number of labels on the axis
+     */
+    public void setAxisMinLabels(int labels) {
+        if (labels > 0)
+            mAxisMinLabels = labels;
+    }
+
+    /**
+     * The maximum number of labels on the axis
+     */
+    public int getAxisMaxLabels() {
+        return mAxisMaxLabels;
+    }
+
+    /**
+     * The maximum number of labels on the axis
+     */
+    public void setAxisMaxLabels(int labels) {
+        if (labels > 0)
+            mAxisMaxLabels = labels;
+    }
 
     /**
      * default constructor
@@ -306,14 +344,14 @@ public abstract class AxisBase extends ComponentBase {
      * Sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
      * that this number is not fixed.
      *
-     * @param count the number of y-axis labels that sould be displayed
+     * @param count the number of y-axis labels that should be displayed
      */
     public void setLabelCount(int count) {
 
-        if (count > 25)
-            count = 25;
-        if (count < 2)
-            count = 2;
+        if (count > getAxisMaxLabels())
+            count = getAxisMaxLabels();
+        if (count < getAxisMinLabels())
+            count = getAxisMinLabels();
 
         mLabelCount = count;
         mForceLabels = false;
@@ -324,7 +362,7 @@ public abstract class AxisBase extends ComponentBase {
      * that this number is not
      * fixed (if force == false) and can only be approximated.
      *
-     * @param count the number of y-axis labels that sould be displayed
+     * @param count the number of y-axis labels that should be displayed
      * @param force if enabled, the set label count will be forced, meaning that the exact
      *              specified count of labels will
      *              be drawn and evenly distributed alongside the axis - this might cause labels
@@ -442,6 +480,18 @@ public abstract class AxisBase extends ComponentBase {
 
     public boolean isDrawLimitLinesBehindDataEnabled() {
         return mDrawLimitLineBehindData;
+    }
+
+    /**
+     * If this is set to false, the grid lines are draw on top of the actual data,
+     * otherwise behind. Default: true
+     *
+     * @param enabled
+     */
+    public void setDrawGridLinesBehindData(boolean enabled) { mDrawGridLinesBehindData = enabled; }
+
+    public boolean isDrawGridLinesBehindDataEnabled() {
+        return mDrawGridLinesBehindData;
     }
 
     /**
