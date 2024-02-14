@@ -5,13 +5,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.io.Serializable;
+
 /**
  * Default formatter that calculates the position of the filled line.
  *
  * @author Philipp Jahoda
  */
-public class DefaultFillFormatter implements IFillFormatter
-{
+public class DefaultFillFormatter implements IFillFormatter, Serializable {
 
     @Override
     public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
