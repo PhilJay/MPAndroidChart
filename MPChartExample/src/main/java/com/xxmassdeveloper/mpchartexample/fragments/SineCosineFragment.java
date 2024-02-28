@@ -1,4 +1,7 @@
 package com.xxmassdeveloper.mpchartexample.fragments;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -52,6 +55,22 @@ public class SineCosineFragment extends SimpleFragment {
         XAxis xAxis = chart.getXAxis();
         xAxis.setEnabled(false);
 
+        chart.post(this::setupGradient);
+
         return v;
+    }
+
+    private void setupGradient() {
+
+        Paint paint = chart.getRenderer().getPaintRender();
+        int height = chart.getHeight();
+
+        LinearGradient linGrad = new LinearGradient(0, 0, 0, height,
+                getResources().getColor(android.R.color.holo_blue_dark),
+                getResources().getColor(android.R.color.holo_green_dark),
+                Shader.TileMode.REPEAT);
+        paint.setShader(linGrad);
+
+        chart.invalidate();
     }
 }
