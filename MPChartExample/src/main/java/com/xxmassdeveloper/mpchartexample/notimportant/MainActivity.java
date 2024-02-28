@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         ////
         objects.add(0, new ContentItem("Line Charts"));
 
+
         objects.add(1, new ContentItem("Basic", "Simple line chart."));
         objects.add(2, new ContentItem("Multiple", "Show multiple data sets."));
         objects.add(3, new ContentItem("Dual Axis", "Line chart with dual y-axes."));
