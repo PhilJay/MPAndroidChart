@@ -52,7 +52,7 @@ jobs:
           CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{steps.tagger.outputs.tag}}
           name: ${{steps.tagger.outputs.tag}}
