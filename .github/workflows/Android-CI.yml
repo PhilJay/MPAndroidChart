@@ -15,7 +15,7 @@ jobs:
         java_version: [ 17 ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.2
         with:
           fetch-depth: 0
           submodules: true
@@ -84,7 +84,7 @@ jobs:
         java_version: [ 17 ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.2
         with:
           fetch-depth: 0
       - name: Install JDK ${{ matrix.java_version }}
