@@ -26,7 +26,7 @@ jobs:
         with:
           distribution: "adopt"
           java-version: ${{ matrix.java_version }}
-      - uses: gradle/wrapper-validation-action@v2
+      - uses: gradle/wrapper-validation-action@v3
       - name: Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.4
       - name: Build project
