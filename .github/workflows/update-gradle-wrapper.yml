@@ -1,0 +1,21 @@
+name: Update Gradle Wrapper
+
+on:
+  schedule:
+    - cron: "15 6 * * WED"
+
+jobs:
+  update-gradle-wrapper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "adopt"
+          java-version: 17
+      - name: Update Gradle Wrapper
+        uses: gradle-update/update-gradle-wrapper-action@v1.0.20
+        with:
+          set-distribution-checksum: false

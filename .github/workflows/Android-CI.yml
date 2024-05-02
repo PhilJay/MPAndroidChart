@@ -9,7 +9,7 @@ on:
 jobs:
   buildTest:
     name: Build & Test JDK ${{ matrix.java_version }}
-    runs-on: macOS-latest
+    runs-on: macOS-13
     strategy:
       matrix:
         java_version: [ 17 ]
