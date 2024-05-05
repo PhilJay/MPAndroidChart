@@ -15,6 +15,7 @@ ext {
 }
 
 android {
+    namespace 'com.github.mikephil.charting'
     defaultConfig {
         minSdkVersion 19
         compileSdk 34
@@ -39,7 +40,6 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true // this prevents "not mocked" error
     }
-    namespace 'com.github.mikephil.charting'
 }
 
 dependencies {

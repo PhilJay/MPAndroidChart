@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.xxmassdeveloper.mpchartexample'
     defaultConfig {
         applicationId "com.xxmassdeveloper.mpchartexample"
         minSdkVersion 19
@@ -30,7 +31,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'com.xxmassdeveloper.mpchartexample'
 }
 
 dependencies {
