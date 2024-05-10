@@ -3,6 +3,7 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.util.Log;
 
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
@@ -519,6 +520,33 @@ public abstract class AxisBase extends ComponentBase {
 
             if (text != null && longest.length() < text.length())
                 longest = text;
+        }
+
+        return longest;
+    }
+
+    /**
+     * Returns the longest formatted label (in terms of px), this axis
+     * contains.
+     * If paint is null, then returns the longest formatted label (in terms of characters), this axis contains.
+     *
+     * @return
+     */
+    public String getLongestLabel(Paint p) {
+        if (p == null) {
+            return getLongestLabel();
+        }
+        String longest = "";
+        float max = 0f;
+
+        for (int i = 0; i < mEntries.length; i++) {
+            String text = getFormattedLabel(i);
+            if (text != null) {
+                float width = p.measureText(text);
+                if (max < width) {
+                    longest = text;
+                }
+            }
         }
 
         return longest;
