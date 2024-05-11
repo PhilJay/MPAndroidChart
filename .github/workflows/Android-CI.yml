@@ -29,7 +29,7 @@ jobs:
           java-version: ${{ matrix.java_version }}
       - uses: gradle/wrapper-validation-action@v3
       - name: Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.1.4
+        uses: hannesa2/action-android/install-sdk@0.1.16.7
       - name: Build project
         run: ./gradlew assembleDebug
       - name: Run tests
@@ -37,7 +37,7 @@ jobs:
       - name: Test jitpack publish command
         run: ./gradlew :MPChartLib:publishToMavenLocal
       - name: Run instrumentation tests
-        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.4
+        uses: hannesa2/action-android/emulator-run-cmd@0.1.16.7
         with:
           cmd: ./gradlew cAT --continue
           api: 28
@@ -95,7 +95,7 @@ jobs:
           distribution: "adopt"
           java-version: ${{ matrix.java_version }}
       - name: Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.1.4
+        uses: hannesa2/action-android/install-sdk@0.1.16.7
       - name: Code checks
         run: ./gradlew check
       - name: Archive Lint report

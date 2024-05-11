@@ -27,7 +27,7 @@ jobs:
           abbrev: false
           commit-ish: HEAD
       - name: Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.1.4
+        uses: hannesa2/action-android/install-sdk@0.1.16.7
       - name: Build project
         run: ./gradlew assembleRelease
         env:
