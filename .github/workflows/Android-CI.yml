@@ -11,8 +11,12 @@ jobs:
     name: Build & Test
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ macOS-13 ]
+        api: [ 28 ]
+        tag: [ default ]
+        abi: [ x86_64 ]
         java_version: [ 17 ]
     steps:
       - name: Checkout
@@ -40,9 +44,9 @@ jobs:
         uses: hannesa2/action-android/emulator-run-cmd@0.1.16.7
         with:
           cmd: ./gradlew cAT --continue
-          api: 28
-          tag: default
-          abi: x86_64
+          api: ${{ matrix.api }}
+          tag: ${{ matrix.tag }}
+          abi: ${{ matrix.abi }}
           cmdOptions: -noaudio -no-boot-anim -no-window -metrics-collection
       - name: Archive Espresso results
         uses: actions/upload-artifact@v4
