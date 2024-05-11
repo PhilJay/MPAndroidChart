@@ -276,7 +276,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             set1.formSize = 15f
             if (Utils.getSDKInt() >= 18) {
                 // fill drawable only supported on api level 18 and above
-                val drawable = ContextCompat.getDrawable(this, R.drawable.fade_red)
+                val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)
                 set1.fillDrawable = drawable
             } else {
                 set1.fillColor = Color.BLACK

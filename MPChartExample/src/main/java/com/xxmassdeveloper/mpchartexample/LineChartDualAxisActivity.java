@@ -125,7 +125,7 @@ public class LineChartDualAxisActivity extends DemoBase implements OnSeekBarChan
 
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setTypeface(tfLight);
-        rightAxis.setTextColor(Color.RED);
+        rightAxis.setTextColor(Color.MAGENTA);
         rightAxis.setAxisMaximum(900);
         rightAxis.setAxisMinimum(-200);
         rightAxis.setDrawGridLines(false);
@@ -190,12 +190,12 @@ public class LineChartDualAxisActivity extends DemoBase implements OnSeekBarChan
             // create a dataset and give it a type
             set2 = new LineDataSet(values2, "DataSet 2");
             set2.setAxisDependency(AxisDependency.RIGHT);
-            set2.setColor(Color.RED);
+            set2.setColor(Color.MAGENTA);
             set2.setCircleColor(Color.WHITE);
             set2.setLineWidth(2f);
             set2.setCircleRadius(3f);
             set2.setFillAlpha(65);
-            set2.setFillColor(Color.RED);
+            set2.setFillColor(Color.BLUE);
             set2.setDrawCircleHole(false);
             set2.setHighLightColor(Color.rgb(244, 117, 117));
             //set2.setFillFormatter(new MyFillFormatter(900f));

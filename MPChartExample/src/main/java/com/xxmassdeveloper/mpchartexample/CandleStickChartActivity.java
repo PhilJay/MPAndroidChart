@@ -130,7 +130,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 //        set1.setColor(Color.rgb(80, 80, 80));
         set1.setShadowColor(Color.DKGRAY);
         set1.setShadowWidth(0.7f);
-        set1.setDecreasingColor(Color.RED);
+        set1.setDecreasingColor(Color.BLUE);
         set1.setDecreasingPaintStyle(Paint.Style.FILL);
         set1.setIncreasingColor(Color.rgb(122, 242, 84));
         set1.setIncreasingPaintStyle(Paint.Style.STROKE);

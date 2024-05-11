@@ -128,7 +128,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
             chart.notifyDataSetChanged();
         } else {
             set = new BarDataSet(entries, "Sinus Function");
-            set.setColor(Color.rgb(240, 120, 124));
+            set.setColor(Color.BLUE);
         }
 
         BarData data = new BarData(set);
