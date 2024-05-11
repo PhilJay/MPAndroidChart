@@ -64,6 +64,8 @@ jobs:
             MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
             MPChartExample/build/outputs/androidTest-results/connected
       - name: Compare screenshots
+        env:
+          CLASSIC_TOKEN: ${{ secrets.CLASSIC_TOKEN }}
         run: |
           ls -ls MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
           cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator\(AVD\)\ -\ 9/* screenshotsToCompare
