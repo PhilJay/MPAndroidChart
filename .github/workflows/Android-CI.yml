@@ -8,7 +8,7 @@ on:
 
 jobs:
   buildTest:
-    name: Build & Test
+    name: Test
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
