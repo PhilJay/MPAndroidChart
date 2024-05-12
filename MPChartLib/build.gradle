@@ -37,6 +37,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        buildConfig = true
+    }
     testOptions {
         unitTests.returnDefaultValues = true // this prevents "not mocked" error
     }
