@@ -9,6 +9,9 @@ class LargeValueFormatterTest {
     fun test() {
         val formatter = LargeValueFormatter()
 
+        val resultDouble = formatter.getFormattedValue(5.0.toFloat(), null)
+        Assert.assertEquals("5", resultDouble)
+
         var result = formatter.getFormattedValue(5f, null)
         Assert.assertEquals("5", result)
 
