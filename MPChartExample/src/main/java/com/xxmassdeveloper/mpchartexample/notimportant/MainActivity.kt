@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         // initialize the utilities
         Utils.init(this)
         val adapter = MyAdapter(this, menuItems)
-        val lv = findViewById<ListView>(R.id.listView1)
+        val lv = findViewById<ListView>(R.id.listViewMain)
         lv.adapter = adapter
         lv.onItemClickListener = this
     }
