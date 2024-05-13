@@ -8,13 +8,16 @@ import kotlin.math.roundToInt
  */
 open class IndexAxisValueFormatter : IAxisValueFormatter {
 
+    var values: Array<String> = arrayOf()
+
     /**
      * Constructor that specifies axis labels.
      *
      * @param values The values string array
      */
     constructor(values: Array<String>?) {
-        if (values != null) this.values = values
+        if (values != null)
+            this.values = values
     }
 
     /**
@@ -23,13 +26,16 @@ open class IndexAxisValueFormatter : IAxisValueFormatter {
      * @param values The values string array
      */
     constructor(values: Collection<String>?) {
-        if (values != null) this.values = values.toTypedArray()
+        if (values != null)
+            this.values = values.toTypedArray()
     }
 
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
         val index = value.roundToInt()
-        return if (index < 0 || index >= values.size || index != value.toInt()) "" else values[index]
+        return if (index < 0 || index >= values.size || index != value.toInt())
+            ""
+        else
+            values[index]
     }
 
-    var values: Array<String> = arrayOf()
 }

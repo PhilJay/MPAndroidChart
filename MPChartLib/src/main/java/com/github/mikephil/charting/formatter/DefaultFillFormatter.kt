@@ -16,8 +16,13 @@ open class DefaultFillFormatter : IFillFormatter {
         fillMin = if (dataSet!!.yMax > 0 && dataSet.yMin < 0) {
             0f
         } else {
-            val max: Float = if (data.yMax > 0) 0f else chartMaxY
-            val min: Float = if (data.yMin < 0) 0f else chartMinY
+            val max: Float = if (data.yMax > 0) 0f
+            else
+                chartMaxY
+            val min: Float = if (data.yMin < 0)
+                0f
+            else
+                chartMinY
             if (dataSet.yMin >= 0)
                 min
             else

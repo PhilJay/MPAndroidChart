@@ -15,12 +15,12 @@ import java.text.DecimalFormat
  */
 open class LargeValueFormatter() : IValueFormatter, IAxisValueFormatter {
 
-    private var mSuffix = arrayOf(
+    private var suffix = arrayOf(
         "", "k", "m", "b", "t"
     )
-    private var mMaxLength = 5
-    private val mFormat: DecimalFormat = DecimalFormat("###E00")
-    private var mText = ""
+    private var maxLength = 5
+    private val decimalFormat: DecimalFormat = DecimalFormat("###E00")
+    private var text = ""
 
     /**
      * Creates a formatter that appends a specified text to the result string
@@ -28,17 +28,17 @@ open class LargeValueFormatter() : IValueFormatter, IAxisValueFormatter {
      * @param appendix a text that will be appended
      */
     constructor(appendix: String) : this() {
-        mText = appendix
+        text = appendix
     }
 
     // IValueFormatter
     override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
-        return makePretty(value.toDouble()) + mText
+        return makePretty(value.toDouble()) + text
     }
 
     // IAxisValueFormatter
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-        return makePretty(value.toDouble()) + mText
+        return makePretty(value.toDouble()) + text
     }
 
     /**
@@ -47,21 +47,21 @@ open class LargeValueFormatter() : IValueFormatter, IAxisValueFormatter {
      * @param appendix
      */
     fun setAppendix(appendix: String) {
-        mText = appendix
+        text = appendix
     }
 
     /**
      * Set custom suffix to be appended after the values.
      * Default suffix: ["", "k", "m", "b", "t"]
      *
-     * @param suffix new suffix
+     * @param suffixArray new suffix
      */
-    fun setSuffix(suffix: Array<String>) {
-        mSuffix = suffix
+    fun setSuffix(suffixArray: Array<String>) {
+        suffix = suffixArray
     }
 
-    fun setMaxLength(maxLength: Int) {
-        mMaxLength = maxLength
+    fun setMaxLength(max: Int) {
+        maxLength = max
     }
 
     /**
@@ -69,15 +69,15 @@ open class LargeValueFormatter() : IValueFormatter, IAxisValueFormatter {
      * (https://github.com/romangromov) for this piece of code.
      */
     private fun makePretty(number: Double): String {
-        var r = mFormat.format(number)
-        val numericValue1 = Character.getNumericValue(r[r.length - 1])
-        val numericValue2 = Character.getNumericValue(r[r.length - 2])
+        var decimalFormat = decimalFormat.format(number)
+        val numericValue1 = Character.getNumericValue(decimalFormat[decimalFormat.length - 1])
+        val numericValue2 = Character.getNumericValue(decimalFormat[decimalFormat.length - 2])
         val combined = Integer.valueOf(numericValue2.toString() + "" + numericValue1)
-        r = r.replace("E[0-9][0-9]".toRegex(), mSuffix[combined / 3])
-        while (r.length > mMaxLength || r.matches("[0-9]+\\.[a-z]".toRegex())) {
-            r = r.substring(0, r.length - 2) + r.substring(r.length - 1)
+        decimalFormat = decimalFormat.replace("E[0-9][0-9]".toRegex(), suffix[combined / 3])
+        while (decimalFormat.length > maxLength || decimalFormat.matches("[0-9]+\\.[a-z]".toRegex())) {
+            decimalFormat = decimalFormat.substring(0, decimalFormat.length - 2) + decimalFormat.substring(decimalFormat.length - 1)
         }
-        return r
+        return decimalFormat
     }
 
 }

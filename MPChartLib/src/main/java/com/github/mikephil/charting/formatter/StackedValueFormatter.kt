@@ -17,7 +17,7 @@ import java.text.DecimalFormat
  * @param decimals       the number of decimal digits to use
  */
 open class StackedValueFormatter(private val drawWholeStack: Boolean, private val appendix: String, decimals: Int) : IValueFormatter {
-    private val mFormat: DecimalFormat
+    private val decimalFormat: DecimalFormat
 
     init {
         val b = StringBuffer()
@@ -26,7 +26,7 @@ open class StackedValueFormatter(private val drawWholeStack: Boolean, private va
             b.append("0")
         }
 
-        this.mFormat = DecimalFormat("###,###,###,##0$b")
+        this.decimalFormat = DecimalFormat("###,###,###,##0$b")
     }
 
     override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
@@ -40,7 +40,7 @@ open class StackedValueFormatter(private val drawWholeStack: Boolean, private va
                 return if (vals[vals.size - 1] == value) {
                     // return the "sum" across all stack values
 
-                    mFormat.format(barEntry.y.toDouble()) + appendix
+                    decimalFormat.format(barEntry.y.toDouble()) + appendix
                 } else {
                     "" // return empty
                 }
@@ -48,6 +48,6 @@ open class StackedValueFormatter(private val drawWholeStack: Boolean, private va
         }
 
         // return the "proposed" value
-        return mFormat.format(value.toDouble()) + appendix
+        return decimalFormat.format(value.toDouble()) + appendix
     }
 }
