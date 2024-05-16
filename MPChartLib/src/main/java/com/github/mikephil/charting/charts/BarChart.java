@@ -283,6 +283,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     public String getAccessibilityDescription() {
 
         BarData barData = getBarData();
+        if (barData == null) {
+            return "";
+        }
 
         int entryCount = barData.getEntryCount();
 
