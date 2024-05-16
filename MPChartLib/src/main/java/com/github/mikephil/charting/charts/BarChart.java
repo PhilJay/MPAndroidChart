@@ -97,8 +97,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      *
      * @param x
      * @param y
-     * @return
-     */
+	 */
     @Override
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
@@ -120,13 +119,12 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * Returns the bounding box of the specified Entry in the specified DataSet. Returns null if the Entry could not be
      * found in the charts data.  Performance-intensive code should use void getBarBounds(BarEntry, RectF) instead.
      *
-     * @param e
-     * @return
-     */
-    public RectF getBarBounds(BarEntry e) {
+     * @param barEntry
+	 */
+    public RectF getBarBounds(BarEntry barEntry) {
 
         RectF bounds = new RectF();
-        getBarBounds(e, bounds);
+        getBarBounds(barEntry, bounds);
 
         return bounds;
     }
@@ -135,22 +133,19 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * The passed outputRect will be assigned the values of the bounding box of the specified Entry in the specified DataSet.
      * The rect will be assigned Float.MIN_VALUE in all locations if the Entry could not be found in the charts data.
      *
-     * @param e
-     * @return
-     */
-    public void getBarBounds(BarEntry e, RectF outputRect) {
+     * @param barEntry
+	 */
+    public void getBarBounds(BarEntry barEntry, RectF outputRect) {
 
-        RectF bounds = outputRect;
-
-        IBarDataSet set = mData.getDataSetForEntry(e);
+		IBarDataSet set = mData.getDataSetForEntry(barEntry);
 
         if (set == null) {
-            bounds.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
+            outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
             return;
         }
 
-        float y = e.getY();
-        float x = e.getX();
+        float y = barEntry.getY();
+        float x = barEntry.getX();
 
         float barWidth = mData.getBarWidth();
 
@@ -159,7 +154,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         float top = y >= 0 ? y : 0;
         float bottom = y <= 0 ? y : 0;
 
-        bounds.set(left, top, right, bottom);
+        outputRect.set(left, top, right, bottom);
 
         getTransformer(set.getAxisDependency()).rectValueToPixel(outputRect);
     }
@@ -167,8 +162,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * If set to true, all values are drawn above their bars, instead of below their top.
      *
-     * @param enabled
-     */
+	 */
     public void setDrawValueAboveBar(boolean enabled) {
         mDrawValueAboveBar = enabled;
     }
@@ -176,8 +170,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * returns true if drawing values above bars is enabled, false if not
      *
-     * @return
-     */
+	 */
     public boolean isDrawValueAboveBarEnabled() {
         return mDrawValueAboveBar;
     }
@@ -186,8 +179,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * If set to true, a grey area is drawn behind each bar that indicates the maximum value. Enabling his will reduce
      * performance by about 50%.
      *
-     * @param enabled
-     */
+	 */
     public void setDrawBarShadow(boolean enabled) {
         mDrawBarShadow = enabled;
     }
@@ -195,8 +187,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * returns true if drawing shadows (maxvalue) for each bar is enabled, false if not
      *
-     * @return
-     */
+	 */
     public boolean isDrawBarShadowEnabled() {
         return mDrawBarShadow;
     }
@@ -207,8 +198,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * was tapped.
      * Default: false
      *
-     * @param enabled
-     */
+	 */
     public void setHighlightFullBarEnabled(boolean enabled) {
         mHighlightFullBarEnabled = enabled;
     }
@@ -243,8 +233,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * fully displayed.
      * Default: false
      *
-     * @param enabled
-     */
+	 */
     public void setFitBars(boolean enabled) {
         mFitBars = enabled;
     }
@@ -303,11 +292,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
         // Format the values of min and max; to recite them back
 
-        String description = String.format(Locale.getDefault(), "The bar chart has %d %s. " +
+		return String.format(Locale.getDefault(), "The bar chart has %d %s. " +
                         "The minimum value is %s and maximum value is %s." +
                         "Data ranges from %s to %s.",
                 entryCount, entries, minVal, maxVal, minRange, maxRange);
-
-        return description;
     }
 }
