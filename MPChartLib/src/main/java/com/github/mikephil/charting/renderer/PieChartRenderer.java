@@ -77,11 +77,7 @@ public class PieChartRenderer extends DataRenderer {
      * Setter for the rounded corner slice paint object
      */
     public void setRoundedCornerRadius(float radius){
-        mRoundedCornerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRoundedCornerPaint.setStyle(Style.STROKE);
-        mRoundedCornerPaint.setAntiAlias(true);
         mRoundedCornerPaint.setStrokeWidth(radius);
-
     }
 
     /**
@@ -120,6 +116,10 @@ public class PieChartRenderer extends DataRenderer {
 
         mValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValueLinePaint.setStyle(Style.STROKE);
+
+        mRoundedCornerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRoundedCornerPaint.setStyle(Style.STROKE);
+        mRoundedCornerPaint.setAntiAlias(true);
     }
 
     public Paint getPaintHole() {
