@@ -51,3 +51,5 @@ target/
 
 /screenshotDiffs
 /artifacts
+
+.kotlin
