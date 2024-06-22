@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macOS-13 ]
+        os: [ ubuntu-latest ]
         api: [ 28 ]
         tag: [ default ]
         abi: [ x86_64 ]
@@ -29,7 +29,9 @@ jobs:
           fetch-depth: 0
           submodules: true
       - name: prepare
-        run: brew install exiftool imagemagick
+        run: |
+          sudo apt-get update && sudo apt-get install -y exiftool imagemagick xdg-utils libimage-exiftool-perl zsh jq xorg
+      #          brew install exiftool imagemagick
       - name: Install JDK ${{ matrix.java_version }}
         uses: actions/setup-java@v4
         with:

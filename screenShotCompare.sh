@@ -11,7 +11,23 @@ source scripts/lib.sh
 
 PR=$(echo "$GITHUB_REF_NAME" | sed "s/\// /" | awk '{print $1}')
 echo pr=$PR
-brew install jq
+
+OS="`uname`"
+case $OS in
+  'Linux')
+    ;;
+  'FreeBSD')
+    ;;
+  'WindowsNT')
+    ;;
+  'Darwin')
+    brew install jq
+    ;;
+  'SunOS')
+    ;;
+  'AIX') ;;
+  *) ;;
+esac
 
 echo "delete all old comments, starting with Screenshot differs:$emulatorApi"
 oldComments=$(curl_gh -X GET https://api.github.com/repos/"$GITHUB_REPOSITORY"/issues/"$PR"/comments | jq '.[] | (.id |tostring) + "|" + (.user.login | test("github-actions") | tostring) + "|" + (.body | test("Screenshot differs:'$emulatorApi'.*") | tostring)' | grep "true|true" | tr -d "\"" | cut -f1 -d"|")
