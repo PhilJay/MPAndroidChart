@@ -32,7 +32,8 @@ jobs:
         run: |
           egrep -c '(vmx|svm)' /proc/cpuinfo
           id
-          sudo usermod --append --groups kvm
+          sudo adduser $USER kvm
+          sudo chown -R $USER /dev/kvm
           id
       - name: prepare
         run: |
