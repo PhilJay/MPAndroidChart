@@ -17,6 +17,9 @@ changelog:
     - title: Espresso test
       labels:
         - Espresso
+    - title: Pipeline
+      labels:
+        - pipeline
     - title: Other Changes
       labels:
         - "*"
