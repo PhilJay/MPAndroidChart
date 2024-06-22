@@ -75,7 +75,7 @@ jobs:
           CLASSIC_TOKEN: ${{ secrets.CLASSIC_TOKEN }}
         run: |
           ls -ls MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
-          cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator\(AVD\)\ -\ 9/* screenshotsToCompare
+          cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554\ -\ 9/* screenshotsToCompare
           ./screenShotCompare.sh
       - name: Archive screenshots diffs
         if: ${{ always() }}
