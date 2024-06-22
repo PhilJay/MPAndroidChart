@@ -15,6 +15,7 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+/** @noinspection unused*/
 public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRenderer {
 
 	private final RectF mBarShadowRectBuffer = new RectF();
@@ -58,7 +59,7 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 			float barWidthHalf = barWidth / 2.0f;
 			float x;
 			int i = 0;
-			double count = Math.min(Math.ceil((int) (double) ((float) dataSet.getEntryCount() * phaseX)), dataSet.getEntryCount());
+			double count = Math.min((double) (int) (double) ((float) dataSet.getEntryCount() * phaseX), dataSet.getEntryCount());
 			while (i < count) {
 				BarEntry e = dataSet.getEntryForIndex(i);
 				x = e.getX();
