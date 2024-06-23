@@ -29,7 +29,7 @@ case $OS in
   *) ;;
 esac
 
-echo "delete all old comments, starting with Screenshot differs:$emulatorApi"
+echo "=> delete all old comments, starting with Screenshot differs:$emulatorApi"
 oldComments=$(curl_gh -X GET https://api.github.com/repos/"$GITHUB_REPOSITORY"/issues/"$PR"/comments | jq '.[] | (.id |tostring) + "|" + (.user.login | test("github-actions") | tostring) + "|" + (.body | test("Screenshot differs:'$emulatorApi'.*") | tostring)' | grep "true|true" | tr -d "\"" | cut -f1 -d"|")
 echo "comments=$comments"
 echo "$oldComments" | while read comment; do
@@ -38,11 +38,12 @@ echo "$oldComments" | while read comment; do
 done
 
 pushd $diffFiles
+pwd
 body=""
 COUNTER=0
 ls -la
 
-# ignore an error, when no files where found https://unix.stackexchange.com/a/723909/201876
+echo "=> ignore an error, when no files where found https://unix.stackexchange.com/a/723909/201876"
 setopt no_nomatch
 for f in *.png; do
   if [[ ${f} == "*.png" ]]
