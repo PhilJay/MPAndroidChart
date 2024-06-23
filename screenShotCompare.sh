@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 diffFiles=./screenshotDiffs
 mkdir $diffFiles
@@ -13,8 +13,8 @@ PR=$(echo "$GITHUB_REF_NAME" | sed "s/\// /" | awk '{print $1}')
 echo pr=$PR
 brew install jq
 
-# delete all old comments, starting with "Screenshot differs:"
-oldComments=$(curl_gh -X GET https://api.github.com/repos/"$GITHUB_REPOSITORY"/issues/"$PR"/comments | jq '.[] | (.id |tostring) + "|" + (.user.login | test("github-actions") | tostring) + "|" + (.body | test("Screenshot differs:.*") | tostring)' | grep "true|true" | tr -d "\"" | cut -f1 -d"|")
+echo "delete all old comments, starting with Screenshot differs:$emulatorApi"
+oldComments=$(curl_gh -X GET https://api.github.com/repos/"$GITHUB_REPOSITORY"/issues/"$PR"/comments | jq '.[] | (.id |tostring) + "|" + (.user.login | test("github-actions") | tostring) + "|" + (.body | test("Screenshot differs:'$emulatorApi'.*") | tostring)' | grep "true|true" | tr -d "\"" | cut -f1 -d"|")
 echo "comments=$comments"
 echo "$oldComments" | while read comment; do
   echo "delete comment=$comment"
@@ -45,7 +45,7 @@ for f in *.png; do
 done
 
 if [ ! "$body" == "" ]; then
-  curl_gh -X POST https://api.github.com/repos/"$GITHUB_REPOSITORY"/issues/$PR/comments -d "{ \"body\" : \"Screenshot differs: $COUNTER <br/><br/> $body \" }"
+  curl_gh -X POST https://api.github.com/repos/"$GITHUB_REPOSITORY"/issues/$PR/comments -d "{ \"body\" : \"Screenshot differs:$emulatorApi $COUNTER <br/><br/> $body \" }"
 fi
 
 popd 1>/dev/null
