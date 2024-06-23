@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macOS-13 ]
+        os: [ ubuntu-latest ]
         api: [ 28 ]
         tag: [ default ]
         abi: [ x86_64 ]
@@ -28,8 +28,17 @@ jobs:
         with:
           fetch-depth: 0
           submodules: true
+      - name: kvm support
+        run: |
+          egrep -c '(vmx|svm)' /proc/cpuinfo
+          id
+          sudo adduser $USER kvm
+          sudo chown -R $USER /dev/kvm
+          id
       - name: prepare
-        run: brew install exiftool imagemagick
+        run: |
+          sudo apt-get update && sudo apt-get install -y exiftool imagemagick xdg-utils libimage-exiftool-perl zsh jq xorg
+      #          brew install exiftool imagemagick
       - name: Install JDK ${{ matrix.java_version }}
         uses: actions/setup-java@v4
         with:
@@ -66,7 +75,9 @@ jobs:
           CLASSIC_TOKEN: ${{ secrets.CLASSIC_TOKEN }}
         run: |
           ls -ls MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
-          cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator\(AVD\)\ -\ 9/* screenshotsToCompare
+          cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554\ -\ 9/* screenshotsToCompare
+          export DISPLAY=:99
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           ./screenShotCompare.sh
       - name: Archive screenshots diffs
         if: ${{ always() }}
