@@ -31,6 +31,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    // https://stackoverflow.com/a/67635863/1079990
+    testOptions {
+        animationsDisabled = true
+    }
 }
 
 dependencies {
