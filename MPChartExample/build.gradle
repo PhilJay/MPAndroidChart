@@ -7,7 +7,7 @@ android {
     namespace 'com.xxmassdeveloper.mpchartexample'
     defaultConfig {
         applicationId "com.xxmassdeveloper.mpchartexample"
-        minSdkVersion 19
+        minSdkVersion 21
         compileSdk 34
         targetSdkVersion 34
         versionCode getGitCommitCount()
