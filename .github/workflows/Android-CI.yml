@@ -76,6 +76,8 @@ jobs:
         run: |
           ls -ls MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
           cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554\ -\ 9/* screenshotsToCompare
+          export DISPLAY=:99
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           ./screenShotCompare.sh
       - name: Archive screenshots diffs
         if: ${{ always() }}
