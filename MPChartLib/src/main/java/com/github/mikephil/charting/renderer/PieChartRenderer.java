@@ -46,6 +46,11 @@ public class PieChartRenderer extends DataRenderer {
     protected Paint mValueLinePaint;
 
     /**
+     * paint object used for drawing the rounded corner slice
+     */
+    protected Paint mRoundedCornerPaint;
+
+    /**
      * paint object for the text that can be displayed in the center of the
      * chart
      */
@@ -67,6 +72,20 @@ public class PieChartRenderer extends DataRenderer {
     protected WeakReference<Bitmap> mDrawBitmap;
 
     protected Canvas mBitmapCanvas;
+
+    /**
+     * Setter for the rounded corner slice paint object
+     */
+    public void setRoundedCornerRadius(float radius){
+        mRoundedCornerPaint.setStrokeWidth(radius);
+    }
+
+    /**
+     * Getter for the rounded corner slice paint object
+     */
+    public float getRoundedCornerRadius(){
+        return mRoundedCornerPaint.getStrokeWidth();
+    }
 
     public PieChartRenderer(PieChart chart, ChartAnimator animator,
                             ViewPortHandler viewPortHandler) {
@@ -97,6 +116,10 @@ public class PieChartRenderer extends DataRenderer {
 
         mValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValueLinePaint.setStyle(Style.STROKE);
+
+        mRoundedCornerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRoundedCornerPaint.setStyle(Style.STROKE);
+        mRoundedCornerPaint.setAntiAlias(true);
     }
 
     public Paint getPaintHole() {
@@ -245,6 +268,11 @@ public class PieChartRenderer extends DataRenderer {
 
         final float sliceSpace = visibleAngleCount <= 1 ? 0.f : getSliceSpace(dataSet);
 
+      if (getRoundedCornerRadius()>0) {
+            mRoundedCornerPaint.setStrokeCap(Paint.Cap.ROUND);
+            mRoundedCornerPaint.setStrokeJoin(Paint.Join.ROUND);
+        }
+
         for (int j = 0; j < entryCount; j++) {
 
             float sliceAngle = drawAngles[j];
@@ -267,6 +295,9 @@ public class PieChartRenderer extends DataRenderer {
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
             mRenderPaint.setColor(dataSet.getColor(j));
+
+            // Set current data set color to paint object
+            mRoundedCornerPaint.setColor(dataSet.getColor(j));
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :
@@ -397,6 +428,11 @@ public class PieChartRenderer extends DataRenderer {
             mPathBuffer.close();
 
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+
+            // Draw rounded corner path with paint object slice with the given radius
+            if (getRoundedCornerRadius()>0) {
+                mBitmapCanvas.drawPath(mPathBuffer, mRoundedCornerPaint);
+            }
 
             angle += sliceAngle * phaseX;
         }
