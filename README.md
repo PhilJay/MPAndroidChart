@@ -28,20 +28,6 @@ dependencies {
 }
 ```
 
-<br/>
-
-<h2 id="examples">Examples :eyes:</h2>
-
-Download the [MPAndroidChart Example App](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) or look at the [source code](https://github.com/AppDevNext/AndroidChart/tree/master/MPChartExample).
-
-[![ScreenShot](https://github.com/AppDevNext/AndroidChart/blob/master/design/video_thumbnail.png)](https://www.youtube.com/watch?v=ufaK_Hd6BpI)
-
-<br/>
-
-<h2 id="more-examples">More Examples</h2>
-
-<br/>
-
 **LineChart (with legend, simple design)**
 
 ![alt tag](https://raw.github.com/AppDevNext/AndroidChart/master/screenshotsReadme/simpledesign_linechart4.png)
