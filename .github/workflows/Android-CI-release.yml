@@ -33,15 +33,15 @@ jobs:
         env:
           VERSION: ${{ github.ref }}
 
-      - name: Publish to github package
-        run: |
-          signing/decrypt.sh
-          cat signing/gradle_secure.properties >> gradle.properties
-          ./gradlew publish
-        env:
-          CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
-          GITHUBACTOR: ${{ secrets.GITHUBACTOR }}
-          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+#      - name: Publish to github package
+#        run: |
+#          signing/decrypt.sh
+#          cat signing/gradle_secure.properties >> gradle.properties
+#          ./gradlew publish
+#        env:
+#          CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
+#          GITHUBACTOR: ${{ secrets.GITHUBACTOR }}
+#          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
 
       - name: Publish mavenCentral (stage)
         run: |
