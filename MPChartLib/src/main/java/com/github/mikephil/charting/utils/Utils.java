@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
@@ -15,7 +14,6 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.SizeF;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -353,11 +351,11 @@ public abstract class Utils {
      * @return
      */
     public static float roundToNextSignificant(double number) {
-        if (Double.isInfinite(number) || 
-            Double.isNaN(number) || 
+        if (Double.isInfinite(number) ||
+            Double.isNaN(number) ||
             number == 0.0)
             return 0;
-        
+
         final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
         final int pw = 1 - (int) d;
         final float magnitude = (float) Math.pow(10, pw);
@@ -375,10 +373,10 @@ public abstract class Utils {
     public static int getDecimals(float number) {
 
         float i = roundToNextSignificant(number);
-        
+
         if (Float.isInfinite(i))
             return 0;
-        
+
         return (int) Math.ceil(-Math.log10(i)) + 2;
     }
 
@@ -550,11 +548,21 @@ public abstract class Utils {
         canvas.restoreToCount(saveId);
     }
 
-    private static Rect mDrawTextRectBuffer = new Rect();
-    private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
+    private static final Rect mDrawTextRectBuffer = new Rect();
+    private static final Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
 
-
+    /**
+     * UH Notes: this method is not from the original lib authors. Hence it may not be well tested.
+     *
+     * @param c
+     * @param text
+     * @param x
+     * @param y
+     * @param paint
+     * @param anchor
+     * @param angleDegrees
+     */
     public static void drawXMultiLineText(Canvas c, String text, float x, float y,
                                       Paint paint,
                                       MPPointF anchor, float angleDegrees) {
@@ -578,7 +586,7 @@ public abstract class Utils {
 
         // To have a consistent point of reference, we always draw left-aligned
         Paint.Align originalTextAlign = paint.getTextAlign();
-        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextAlign(Paint.Align.CENTER); // notes : changed from the remote PR -- UH requirement --
 
         if (angleDegrees != 0.f) {
 
@@ -616,7 +624,7 @@ public abstract class Utils {
         } else {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
-                drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
+                drawOffsetX += mDrawTextRectBuffer.width() * (anchor.x * 0.5f); // notes : changed from the remote PR -- this works for center -- not sure why
                 drawOffsetY -= lineHeight * anchor.y;
 
             }
@@ -629,7 +637,7 @@ public abstract class Utils {
                 c.drawText(line, drawOffsetX, drawOffsetY, paint);
                 drawOffsetY += paint.descent() - paint.ascent();
             }
-            
+
         }
 
         paint.setTextAlign(originalTextAlign);
