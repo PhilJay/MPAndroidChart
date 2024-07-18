@@ -15,7 +15,9 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-/** @noinspection unused*/
+/**
+ * @noinspection unused
+ */
 public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRenderer {
 
 	private final RectF mBarShadowRectBuffer = new RectF();
@@ -70,12 +72,11 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 					i++;
 					continue;
 				}
-                if (!mViewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) {
-                    break;
-                }
+				if (!mViewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) {
+					break;
+				}
 				mBarShadowRectBuffer.left = mViewPortHandler.contentLeft();
 				mBarShadowRectBuffer.right = mViewPortHandler.contentRight();
-
 
 				if (roundedShadowRadius > 0) {
 					c.drawRoundRect(mBarRect, roundedShadowRadius, roundedShadowRadius, mShadowPaint);
@@ -96,75 +97,70 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 
 		// if multiple colors has been assigned to Bar Chart
 		if (dataSet.getColors().size() > 1) {
-
 			for (int j = 0; j < buffer.size(); j += 4) {
+				if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+					continue;
+				}
 
-                if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
-                    continue;
-                }
-
-                if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
-                    break;
-                }
+				if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+					break;
+				}
 
 				if (mChart.isDrawBarShadowEnabled()) {
-                    if (roundedShadowRadius > 0) {
-                        c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
-                                buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, mShadowPaint);
-                    } else {
-                        c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
-                                buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom(), mShadowPaint);
-                    }
+					if (roundedShadowRadius > 0) {
+						c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+								buffer.buffer[j + 2],
+								mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, mShadowPaint);
+					} else {
+						c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
+								buffer.buffer[j + 2],
+								mViewPortHandler.contentBottom(), mShadowPaint);
+					}
 				}
 
 				// Set the color for the currently drawn value. If the index
 				mRenderPaint.setColor(dataSet.getColor(j / 4));
 
-                if (roundedPositiveDataSetRadius > 0) {
-                    c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, mRenderPaint);
-                } else {
-                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mRenderPaint);
-                }
+				if (roundedPositiveDataSetRadius > 0) {
+					c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+							buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, mRenderPaint);
+				} else {
+					c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+							buffer.buffer[j + 3], mRenderPaint);
+				}
 			}
 		} else {
-
 			mRenderPaint.setColor(dataSet.getColor());
 
 			for (int j = 0; j < buffer.size(); j += 4) {
-
-                if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
-                    continue;
-                }
-
-                if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
-                    break;
-                }
-
-				if (mChart.isDrawBarShadowEnabled()) {
-                    if (roundedShadowRadius > 0) {
-                        c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
-                                buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, mShadowPaint);
-                    } else {
-                        c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                                buffer.buffer[j + 3], mRenderPaint);
-                    }
+				if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+					continue;
 				}
 
-                if (roundedPositiveDataSetRadius > 0) {
-                    c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, mRenderPaint);
-                } else {
-                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mRenderPaint);
-                }
+				if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+					break;
+				}
+
+				if (mChart.isDrawBarShadowEnabled()) {
+					if (roundedShadowRadius > 0) {
+						c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+								buffer.buffer[j + 2],
+								mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, mShadowPaint);
+					} else {
+						c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+								buffer.buffer[j + 3], mRenderPaint);
+					}
+				}
+
+				if (roundedPositiveDataSetRadius > 0) {
+					c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+							buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, mRenderPaint);
+				} else {
+					c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+							buffer.buffer[j + 3], mRenderPaint);
+				}
 			}
 		}
-
 
 		boolean isSingleColor = dataSet.getColors().size() == 1;
 		if (isSingleColor) {
@@ -173,15 +169,14 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 
 		int j = 0;
 		while (j < buffer.size()) {
-
 			if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
 				j += 4;
 				continue;
 			}
 
-            if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
-                break;
-            }
+			if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+				break;
+			}
 
 			if (!isSingleColor) {
 				mRenderPaint.setColor(dataSet.getColor(j / 4));
@@ -209,50 +204,50 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 		float right = rect.right;
 		float bottom = rect.bottom;
 		Path path = new Path();
-        if (rx < 0) {
-            rx = 0;
-        }
-        if (ry < 0) {
-            ry = 0;
-        }
+		if (rx < 0) {
+			rx = 0;
+		}
+		if (ry < 0) {
+			ry = 0;
+		}
 		float width = right - left;
 		float height = bottom - top;
-        if (rx > width / 2) {
-            rx = width / 2;
-        }
-        if (ry > height / 2) {
-            ry = height / 2;
-        }
+		if (rx > width / 2) {
+			rx = width / 2;
+		}
+		if (ry > height / 2) {
+			ry = height / 2;
+		}
 		float widthMinusCorners = (width - (2 * rx));
 		float heightMinusCorners = (height - (2 * ry));
 
 		path.moveTo(right, top + ry);
-        if (tr) {
-            path.rQuadTo(0, -ry, -rx, -ry);//top-right corner
-        } else {
-            path.rLineTo(0, -ry);
-            path.rLineTo(-rx, 0);
-        }
+		if (tr) {
+			path.rQuadTo(0, -ry, -rx, -ry);//top-right corner
+		} else {
+			path.rLineTo(0, -ry);
+			path.rLineTo(-rx, 0);
+		}
 		path.rLineTo(-widthMinusCorners, 0);
-        if (tl) {
-            path.rQuadTo(-rx, 0, -rx, ry); //top-left corner
-        } else {
-            path.rLineTo(-rx, 0);
-            path.rLineTo(0, ry);
-        }
+		if (tl) {
+			path.rQuadTo(-rx, 0, -rx, ry); //top-left corner
+		} else {
+			path.rLineTo(-rx, 0);
+			path.rLineTo(0, ry);
+		}
 		path.rLineTo(0, heightMinusCorners);
 
-        if (bl) {
-            path.rQuadTo(0, ry, rx, ry);//bottom-left corner
-        } else {
-            path.rLineTo(0, ry);
-            path.rLineTo(rx, 0);
-        }
+		if (bl) {
+			path.rQuadTo(0, ry, rx, ry);//bottom-left corner
+		} else {
+			path.rLineTo(0, ry);
+			path.rLineTo(rx, 0);
+		}
 
 		path.rLineTo(widthMinusCorners, 0);
-		if (br)
+		if (br) {
 			path.rQuadTo(rx, 0, rx, -ry); //bottom-right corner
-		else {
+		} else {
 			path.rLineTo(rx, 0);
 			path.rLineTo(0, -ry);
 		}
