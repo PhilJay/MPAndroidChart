@@ -767,6 +767,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         private Path mCirclePathBuffer = new Path();
 
         private Bitmap[] circleBitmaps;
+        private int[] circleColors;
 
         /**
          * Sets up the cache, returns true if a change of cache was required.
@@ -781,10 +782,19 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             if (circleBitmaps == null) {
                 circleBitmaps = new Bitmap[size];
+                circleColors = new int[size];
                 changeRequired = true;
             } else if (circleBitmaps.length != size) {
                 circleBitmaps = new Bitmap[size];
+                circleColors = new int[size];
                 changeRequired = true;
+            } else {
+                for (int i = 0; i < size; i++) {
+                    if (circleColors[i] != set.getCircleColor(i)) {
+                        changeRequired = true;
+                        break;
+                    }
+                }
             }
 
             return changeRequired;
@@ -811,6 +821,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 Canvas canvas = new Canvas(circleBitmap);
                 circleBitmaps[i] = circleBitmap;
                 mRenderPaint.setColor(set.getCircleColor(i));
+                circleColors[i] = set.getCircleColor(i);
 
                 if (drawTransparentCircleHole) {
                     // Begin path for circle with hole
@@ -858,6 +869,16 @@ public class LineChartRenderer extends LineRadarRenderer {
          */
         protected Bitmap getBitmap(int index) {
             return circleBitmaps[index % circleBitmaps.length];
+        }
+
+        /**
+         * Returns the cached Bitmap at the given index.
+         *
+         * @param index
+         * @return
+         */
+        protected int getCircleColor(int index) {
+            return circleColors[index % circleBitmaps.length];
         }
     }
 }
