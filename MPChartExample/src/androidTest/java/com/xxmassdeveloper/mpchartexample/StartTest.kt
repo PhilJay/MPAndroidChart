@@ -1,10 +1,12 @@
 package com.xxmassdeveloper.mpchartexample
 
+import android.graphics.Bitmap
 import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
+import androidx.test.espresso.action.ViewActions.captureToBitmap
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
@@ -12,7 +14,6 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.espresso.screenshot.captureToBitmap
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
@@ -53,8 +54,7 @@ class StartTest {
     @Test
     fun smokeTestStart() {
         onView(ViewMatchers.isRoot())
-            .captureToBitmap()
-            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
+            .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}") })
 
         var optionMenu = ""
         // iterate samples
@@ -69,8 +69,7 @@ class StartTest {
 
                     Intents.intended(hasComponent(it.name))
                     onView(ViewMatchers.isRoot())
-                        .captureToBitmap()
-                        .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-1SampleClick")
+                        .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-1SampleClick") })
 
                     optionMenu = ""
                     optionMenus.filter { plain -> Character.isDigit(plain.first()) }.forEach { filteredTitle ->
@@ -85,8 +84,7 @@ class StartTest {
                 } catch (e: Exception) {
                     Timber.e(optionMenu + e.message!!)
                     onView(ViewMatchers.isRoot())
-                        .captureToBitmap()
-                        .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-Error")
+                        .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-Error") })
                 }
             }
         }
@@ -96,8 +94,7 @@ class StartTest {
         onView(withText(menuTitle)).perform(click())
         Timber.d("screenshotOfOptionMenu ${menuTitle}-${simpleName}")
         onView(ViewMatchers.isRoot())
-            .captureToBitmap()
-            .writeToTestStorage("${simpleName}-2menu-click-$menuTitle")
+            .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${simpleName}-2menu-click-$menuTitle") })
     }
 
 }

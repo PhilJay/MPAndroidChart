@@ -1,14 +1,15 @@
 package com.xxmassdeveloper.mpchartexample
 
+import android.graphics.Bitmap
 import android.view.View
 import android.widget.SeekBar
 import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions.captureToBitmap
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.screenshot.captureToBitmap
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.Matcher
@@ -30,21 +31,18 @@ class PieTest {
     @Test
     fun piePolyline() {
         onView(ViewMatchers.isRoot())
-            .captureToBitmap()
-            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
+            .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}") })
 
         for (x in 10..50 step 10) {
             onView(withId(R.id.seekBarX)).perform(setProgress(x))
             onView(ViewMatchers.isRoot())
-                .captureToBitmap()
-                .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}1-${x}")
+                .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}1-${x}")})
         }
 
         for (x in 50..200 step 50) {
             onView(withId(R.id.seekBarY)).perform(setProgress(x))
             onView(ViewMatchers.isRoot())
-                .captureToBitmap()
-                .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}2-${x}")
+                .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}2-${x}") })
         }
     }
 

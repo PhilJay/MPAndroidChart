@@ -1,11 +1,12 @@
 package com.xxmassdeveloper.mpchartexample
 
+import android.graphics.Bitmap
 import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.captureToBitmap
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.screenshot.captureToBitmap
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.xxmassdeveloper.mpchartexample.fragments.ViewPagerSimpleChartDemo
@@ -27,15 +28,13 @@ class ViewPagerTest {
     fun smokeTestViewPager() {
         Thread.sleep(SHORT_DURATION_MS)
         onView(ViewMatchers.isRoot())
-            .captureToBitmap()
-            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
+            .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}") })
 
         repeat(4) {
             onView(withId(R.id.pager)).perform(swipeLeft())
             Thread.sleep(SHORT_DURATION_MS)
             onView(ViewMatchers.isRoot())
-                .captureToBitmap()
-                .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${it}")
+                .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${it}") })
         }
     }
 
