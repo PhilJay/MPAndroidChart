@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 
 abstract class BaseEntry {
 
-    private var _y: Float = 0f
+    protected var _y: Float = 0f
     open var y: Float
         get() = _y
         set(value) {
