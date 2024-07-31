@@ -12,25 +12,25 @@
     <string name="animateY">Animate Y</string>
     <string name="animateXY">Animate XY</string>
 
-    <string name="actionToggleValues">Toggle Values</string>
-    <string name="actionToggleYValues">Toggle Y-Values</string>
-    <string name="actionToggleXValues">Toggle X-Values</string>
+    <string name="actionToggleValues">1 Toggle Values</string>
+    <string name="actionToggleYValues">2 Toggle Y-Values</string>
+    <string name="actionToggleXValues">3 Toggle X-Values</string>
 
-    <string name="actionToggleIcons">Toggle Icons</string>
-    <string name="actionToggleHighlight">Toggle Highlight</string>
-    <string name="actionTogglePinch">Toggle PinchZoom</string>
-    <string name="actionToggleAutoScale">Toggle Auto Scale</string>
+    <string name="actionToggleIcons">4 Toggle Icons</string>
+    <string name="actionToggleHighlight">5 Toggle Highlight</string>
+    <string name="actionTogglePinch">6 Toggle PinchZoom</string>
+    <string name="actionToggleAutoScale">7 Toggle Auto Scale</string>
 
-    <string name="actionToggleLineValues">Toggle Line Values</string>
-    <string name="actionToggleBarValues">Toggle Bar Values</string>
-    <string name="actionToggleBarBorders">Toggle Bar Borders</string>
-    <string name="actionToggleFilled">Toggle Filled</string>
-    <string name="actionToggleCircles">Toggle Circles</string>
-    <string name="actionToggleCandleShadow">Toggle Shadow Color</string>
+    <string name="actionToggleLineValues">8 Toggle Line Values</string>
+    <string name="actionToggleBarValues">9 Toggle Bar Values</string>
+    <string name="actionToggleBarBorders">10 Toggle Bar Borders</string>
+    <string name="actionToggleFilled">11 Toggle Filled</string>
+    <string name="actionToggleCircles">12 Toggle Circles</string>
+    <string name="actionToggleCandleShadow">13 Toggle Shadow Color</string>
 
-    <string name="actionToggleCubic">Toggle Cubic</string>
-    <string name="actionToggleStepped">Toggle Stepped</string>
-    <string name="actionToggleHorizontalCubic">Toggle Horizontal Cubic</string>
+    <string name="actionToggleCubic">14 Toggle Cubic</string>
+    <string name="actionToggleStepped">15 Toggle Stepped</string>
+    <string name="actionToggleHorizontalCubic">16 Toggle Horizontal Cubic</string>
 
     <string name="actionAddEntry">Add Entry</string>
     <string name="actionFeedMultiple">Add Multiple</string>
@@ -39,17 +39,18 @@
     <string name="actionRemoveDataSet">Remove Data Set</string>
     <string name="actionClearChart">Clear chart</string>
 
-    <string name="actionTogglePercent">Toggle Percent</string>
-    <string name="actionToggleMinAngles">Toggle Minimum Angles</string>
-    <string name="actionToggleHole">Toggle Hole</string>
-    <string name="actionToggleCurvedSlices">Toggle Curved Slices</string>
+    <string name="actionTogglePercent">17 Toggle Percent</string>
+    <string name="actionToggleMinAngles">18 Toggle Minimum Angles</string>
+    <string name="actionToggleHole">19 Toggle Hole</string>
+    <string name="actionToggleCurvedSlices">20 Toggle Curved Slices</string>
     <string name="actionDrawCenterText">Draw Center Text</string>
-    <string name="actionToggleHighlightCircle">Toggle Highlight Circle</string>
-    <string name="actionToggleRotation">Toggle Rotation</string>
-    <string name="actionToggleSpin">Spin Animation</string>
+    <string name="actionToggleHighlightCircle">21 Toggle Highlight Circle</string>
+    <string name="actionToggleRotation">22 Toggle Rotation</string>
+    <string name="actionToggleSpin">23 Spin Animation</string>
 
     <string name="dash">-</string>
     <string name="scrollViewStart">START OF SCROLLVIEW</string>
     <string name="scrollViewEnd">END OF SCROLLVIEW</string>
+    <string name="rotate_x_axis_labels">24 rotate X Axis labels</string>
 
 </resources>
