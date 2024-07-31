@@ -94,12 +94,14 @@ class LineChartActivity1 : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         limitLine1.labelPosition = LimitLabelPosition.RIGHT_TOP
         limitLine1.textSize = 10f
         limitLine1.typeface = tfRegular
+        limitLine1.lineColor = Color.GREEN
         val limitLine2 = LimitLine(-30f, "Lower Limit")
         limitLine2.lineWidth = 4f
         limitLine2.enableDashedLine(10f, 10f, 0f)
         limitLine2.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
         limitLine2.textSize = 10f
         limitLine2.typeface = tfRegular
+        limitLine2.lineColor = Color.GREEN
 
         // draw limit lines behind data instead of on top
         binding.chart1.axisLeft.setDrawLimitLinesBehindData(true)
