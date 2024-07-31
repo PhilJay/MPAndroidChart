@@ -6,6 +6,8 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
 
+import androidx.annotation.Nullable;
+
 /**
  * Interface that provides everything there is to know about the dimensions,
  * bounds, and range of the chart.
@@ -53,6 +55,7 @@ public interface ChartInterface {
 
     IValueFormatter getDefaultValueFormatter();
 
+    @Nullable
     ChartData getData();
 
     int getMaxVisibleCount();
