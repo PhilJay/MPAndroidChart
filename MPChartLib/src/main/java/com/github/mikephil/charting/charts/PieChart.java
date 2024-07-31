@@ -809,12 +809,13 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         PieData pieData = getData();
 
-        int entryCount = pieData.getEntryCount();
+		int entryCount = 0;
+		if (pieData != null)
+			entryCount = pieData.getEntryCount();
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(String.format(Locale.getDefault(), "The pie chart has %d entries.",
-                entryCount));
+        builder.append(String.format(Locale.getDefault(), "The pie chart has %d entries.", entryCount));
 
         for (int i = 0; i < entryCount; i++) {
             PieEntry entry = pieData.getDataSet().getEntryForIndex(i);
