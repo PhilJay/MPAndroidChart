@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 diffFiles=./screenshotDiffs
 mkdir $diffFiles
@@ -30,7 +30,8 @@ case $OS in
 esac
 
 echo "=> delete all old comments, starting with Screenshot differs:$emulatorApi"
-oldComments=$(curl_gh -X GET https://api.github.com/repos/"$GITHUB_REPOSITORY"/issues/"$PR"/comments | jq '.[] | (.id |tostring) + "|" + (.user.login | test("github-actions") | tostring) + "|" + (.body | test("Screenshot differs:'$emulatorApi'.*") | tostring)' | grep "true|true" | tr -d "\"" | cut -f1 -d"|")
+
+oldComments=$(curl_gh -X GET https://api.github.com/repos/"$GITHUB_REPOSITORY"/issues/"$PR"/comments | jq '.[] | (.id |tostring) + "|" + (.body | test("Screenshot differs:'$emulatorApi'.*") | tostring)' | grep "|true" | tr -d "\"" | cut -f1 -d"|")
 echo "comments=$comments"
 echo "$oldComments" | while read comment; do
   echo "delete comment=$comment"
@@ -52,7 +53,7 @@ for f in *.png; do
   else
     (( COUNTER++ ))
 
-    newName="$1-${f}"
+    newName="${f}"
     mv "${f}" "$newName"
     echo "==> Uploaded screenshot $newName"
     curl -i -F "file=@$newName" https://www.mxtracks.info/github
