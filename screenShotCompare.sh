@@ -52,7 +52,7 @@ for f in *.png; do
   else
     (( COUNTER++ ))
 
-    newName="$1-${f}"
+    newName="${f}"
     mv "${f}" "$newName"
     echo "==> Uploaded screenshot $newName"
     curl -i -F "file=@$newName" https://www.mxtracks.info/github
