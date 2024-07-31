@@ -47,7 +47,7 @@
     </item>
     <item
         android:id="@+id/actionRotateXAxisLabelsBy45Deg"
-        android:title="rotate X Axis labels">
+        android:title="@string/rotate_x_axis_labels">
 
     </item>
 
