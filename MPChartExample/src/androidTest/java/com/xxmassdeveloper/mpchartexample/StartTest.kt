@@ -61,6 +61,8 @@ class StartTest {
                     .atPosition(index).perform(click())
 
                 Intents.intended(hasComponent(it.name))
+                takeScreenshot()
+                    .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-click")
 
                 openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
                 Thread.sleep(100)
