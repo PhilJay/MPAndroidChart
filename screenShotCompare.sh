@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 diffFiles=./screenshotDiffs
 mkdir $diffFiles
