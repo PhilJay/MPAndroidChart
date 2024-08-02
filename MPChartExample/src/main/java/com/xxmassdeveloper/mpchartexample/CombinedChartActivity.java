@@ -87,7 +87,7 @@ public class CombinedChartActivity extends DemoBase {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return months[(int) value % months.length];
+                return DemoBase.Companion.getMonths().get((int) value % DemoBase.Companion.getMonths().size());
             }
         });
 
