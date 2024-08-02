@@ -164,7 +164,7 @@ class LineChartActivity1 : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.let {
+                binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.setDrawFilled(!set.isDrawFilledEnabled)
                     binding.chart1.invalidate()
