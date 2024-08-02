@@ -11,12 +11,9 @@ import androidx.core.app.ActivityCompat
 import com.github.mikephil.charting.charts.Chart
 import com.google.android.material.snackbar.Snackbar
 import com.xxmassdeveloper.mpchartexample.R
+import java.text.DateFormatSymbols
 
 abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
-    @JvmField
-    protected val months: Array<String> = arrayOf(
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
-    )
 
     @JvmField
     protected val parties: Array<String> = arrayOf(
@@ -85,5 +82,7 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
 
     companion object {
         private const val PERMISSION_STORAGE = 0
+        //  Jan, Feb,... Dec
+        val months = DateFormatSymbols().months.toList().map { it.take(3) }
     }
 }
