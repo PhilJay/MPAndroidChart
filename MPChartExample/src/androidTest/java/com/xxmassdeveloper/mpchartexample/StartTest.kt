@@ -5,6 +5,7 @@ import androidx.test.core.app.takeScreenshot
 import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers
@@ -47,7 +48,7 @@ class StartTest {
 
     @Test
     fun smokeTestStart() {
-        Espresso.onView(ViewMatchers.isRoot())
+        onView(ViewMatchers.isRoot())
             .captureToBitmap()
             .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
 
