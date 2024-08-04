@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -31,9 +33,20 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        optionMenus.clear()
 
         tfRegular = Typeface.createFromAsset(assets, "OpenSans-Regular.ttf")
         tfLight = Typeface.createFromAsset(assets, "OpenSans-Light.ttf")
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.let {
+            for (i in 0 until menu.size()) {
+                val menuItem: MenuItem = menu.getItem(i)
+                optionMenus.add(menuItem.title.toString())
+            }
+        }
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onBackPressed() {
@@ -84,5 +97,6 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
         private const val PERMISSION_STORAGE = 0
         //  Jan, Feb,... Dec
         val months = DateFormatSymbols().months.toList().map { it.take(3) }
+        val optionMenus: MutableList<String> = mutableListOf()
     }
 }
