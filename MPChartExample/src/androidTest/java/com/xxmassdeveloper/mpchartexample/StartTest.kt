@@ -1,6 +1,5 @@
 package com.xxmassdeveloper.mpchartexample
 
-import androidx.test.core.app.takeScreenshot
 import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
@@ -16,7 +15,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.espresso.screenshot.captureToBitmap
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase.Companion.optionMenus
 import com.xxmassdeveloper.mpchartexample.notimportant.MainActivity
@@ -70,7 +68,8 @@ class StartTest {
                         .atPosition(index).perform(click())
 
                     Intents.intended(hasComponent(it.name))
-                    takeScreenshot()
+                    onView(ViewMatchers.isRoot())
+                        .captureToBitmap()
                         .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-1SampleClick")
 
                     optionMenu = ""
@@ -85,7 +84,8 @@ class StartTest {
                     Espresso.pressBack()
                 } catch (e: Exception) {
                     Timber.e(optionMenu + e.message!!)
-                    takeScreenshot()
+                    onView(ViewMatchers.isRoot())
+                        .captureToBitmap()
                         .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-Error")
                 }
             }
@@ -95,7 +95,8 @@ class StartTest {
     private fun screenshotOfOptionMenu(simpleName: String, menuTitle: String) {
         onView(withText(menuTitle)).perform(click())
         Timber.d("screenshotOfOptionMenu ${menuTitle}-${simpleName}")
-        takeScreenshot()
+        onView(ViewMatchers.isRoot())
+            .captureToBitmap()
             .writeToTestStorage("${simpleName}-2menu-click-$menuTitle")
     }
 
