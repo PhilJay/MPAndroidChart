@@ -45,7 +45,7 @@ jobs:
         with:
           distribution: "adopt"
           java-version: ${{ matrix.java_version }}
-      - uses: gradle/actions/wrapper-validation@v3
+      - uses: gradle/actions/wrapper-validation@v4
       - name: Install Android SDK
         uses: hannesa2/action-android/install-sdk@0.1.16.7
       - name: Run instrumentation tests
