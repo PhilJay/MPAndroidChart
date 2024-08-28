@@ -41,6 +41,9 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.IHighlighter;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.jobs.AnimatedMoveViewJob;
+import com.github.mikephil.charting.jobs.MoveViewJob;
+import com.github.mikephil.charting.jobs.ZoomJob;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -1701,6 +1704,16 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             post(job);
         } else {
             mJobs.add(job);
+        }
+    }
+
+    public void recycleViewPortJobs() {
+        for (Runnable job: mJobs) {
+            if (job instanceof MoveViewJob) {
+                MoveViewJob.recycleInstance((MoveViewJob) job);
+            } else if (job instanceof ZoomJob) {
+                ZoomJob.recycleInstance((ZoomJob) job);
+            }
         }
     }
 
