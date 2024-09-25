@@ -14,10 +14,8 @@ import android.graphics.Paint.Align;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
-import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,8 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.RequiresApi;
+
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.IMarker;
@@ -41,9 +40,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.IHighlighter;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.jobs.AnimatedMoveViewJob;
-import com.github.mikephil.charting.jobs.MoveViewJob;
-import com.github.mikephil.charting.jobs.ZoomJob;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -57,7 +53,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Baseclass of all Chart-Views.
@@ -1682,7 +1678,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * tasks to be done after the view is setup
      */
-    protected ArrayList<Runnable> mJobs = new ArrayList<Runnable>();
+    protected ArrayBlockingQueue<Runnable> mJobs = new ArrayBlockingQueue<>(2, true);
 
     public void removeViewportJob(Runnable job) {
         mJobs.remove(job);
@@ -1703,18 +1699,16 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         if (mViewPortHandler.hasChartDimens()) {
             post(job);
         } else {
-            mJobs.add(job);
+            boolean inserted = mJobs.offer(job);
+            if (!inserted) {
+                mJobs.poll();
+                mJobs.offer(job);
+            }
         }
     }
 
     public void recycleViewPortJobs() {
-        for (Runnable job: mJobs) {
-            if (job instanceof MoveViewJob) {
-                MoveViewJob.recycleInstance((MoveViewJob) job);
-            } else if (job instanceof ZoomJob) {
-                ZoomJob.recycleInstance((ZoomJob) job);
-            }
-        }
+        mJobs.clear();
     }
 
     /**
@@ -1723,7 +1717,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @return
      */
-    public ArrayList<Runnable> getJobs() {
+    public ArrayBlockingQueue<Runnable> getJobs() {
         return mJobs;
     }
 
@@ -1766,11 +1760,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         //   lets do this before we try to run any pending jobs on the view port itself
         notifyDataSetChanged();
 
-        for (Runnable r : mJobs) {
+        Runnable r = mJobs.poll();
+        while (r != null) {
             post(r);
+            r = mJobs.poll();
         }
-
-        mJobs.clear();
 
         super.onSizeChanged(w, h, oldw, oldh);
     }
