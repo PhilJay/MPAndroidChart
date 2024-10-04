@@ -117,6 +117,7 @@ public class ObjectPool<T extends ObjectPool.Poolable> {
         }
 
         T result = (T)objects[this.objectsPointer];
+        objects[this.objectsPointer] = null;
         result.currentOwnerId = Poolable.NO_OWNER;
         this.objectsPointer--;
 
