@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'maven-publish'
     id 'kotlin-android'
-    id "com.vanniktech.maven.publish" version "0.29.0"
+    id "com.vanniktech.maven.publish" version "0.30.0"
 }
 
 ext {
