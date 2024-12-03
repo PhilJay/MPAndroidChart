@@ -18,8 +18,8 @@ android {
     namespace 'com.github.mikephil.charting'
     defaultConfig {
         minSdkVersion 21
-        compileSdk 34
-        targetSdkVersion 34
+        compileSdk 35
+        targetSdkVersion 35
 
         // VERSION_NAME no longer available as of 4.1
         // https://issuetracker.google.com/issues/158695880
