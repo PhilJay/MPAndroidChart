@@ -3,6 +3,9 @@
 
 :zap: A powerful & easy to use chart library for Android :zap:
 
+### Project status: maintenance mode
+Issues are ignored, but pull requests are not. If you need to get something done, submit a PR!
+
 ### Gradle Setup with jitpack.io
 
 ```gradle
