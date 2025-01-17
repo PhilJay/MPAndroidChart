@@ -1,5 +1,6 @@
 [![](https://jitpack.io/v/AppDevNext/MPAndroidChart.svg)](https://jitpack.io/#AppDevNext/MPAndroidChart)
 [![PullRequest](https://github.com/AppDevNext/AndroidChart/actions/workflows/Android-CI.yml/badge.svg)](https://github.com/AppDevNext/AndroidChart/actions/workflows/Android-CI.yml)
+[<img src="https://api.gitsponsors.com/api/badge/img?id=130959090" height="20">](https://api.gitsponsors.com/api/badge/link?p=4Vm4YKtMQUoMeJT2Mp3Jzzhw6RdW38zV8c55arvCZ2wSsMFbNKzJSEKJN+zJG7IaS8d0UokoSN/m16o9KTekKamqZZJMCnUO/haFr1AyJwCuoSNeORzeZFuONlt+DXdMbsFu7tgoBwEnnUsMX8cHUQ==)
 
 :zap: A powerful & easy to use chart library for Android :zap:
 
