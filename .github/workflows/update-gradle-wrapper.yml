@@ -16,6 +16,6 @@ jobs:
           distribution: "adopt"
           java-version: 17
       - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v2.0.0
+        uses: gradle-update/update-gradle-wrapper-action@v2.0.1
         with:
           set-distribution-checksum: false
