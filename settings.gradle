@@ -1,2 +1,2 @@
-include 'MPChartLib'
-include 'MPChartExample'
+include "MPChartLib"
+include "app"
