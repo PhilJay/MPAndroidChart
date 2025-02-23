@@ -62,7 +62,7 @@ jobs:
         if: ${{ always() }}
         with:
           name: MPChart-Espresso-report-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
-          path: MPChartExample/build/reports/androidTests/connected
+          path: app/build/reports/androidTests/connected
           if-no-files-found: error
       - name: Archive screenshots
         if: ${{ always() }}
@@ -70,15 +70,15 @@ jobs:
         with:
           name: MPChart-Screenshots-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
           path: |
-            MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
-            MPChartExample/build/outputs/androidTest-results/connected
+            app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
+            app/build/outputs/androidTest-results/connected
       - name: Compare screenshots
         env:
           CLASSIC_TOKEN: ${{ secrets.CLASSIC_TOKEN }}
           emulatorApi: ${{ matrix.emulatorApi }}
         run: |
-          ls -ls MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
-          cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554\ -\ ${{ matrix.emulatorApi }}/* screenshotsToCompare${{ matrix.emulatorApi }}
+          ls -ls app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
+          cp app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554\ -\ ${{ matrix.emulatorApi }}/* screenshotsToCompare${{ matrix.emulatorApi }}
           export DISPLAY=:99
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           ./screenShotScript/screenShotCompare.sh
