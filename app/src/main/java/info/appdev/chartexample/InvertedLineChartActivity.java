@@ -123,8 +123,8 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         Double[] sampleValues = DataTools.Companion.getValues(count + 2);
 
         for (int i = 0; i < count; i++) {
-            float xVal = (float) (sampleValues[i].floatValue() * range);
-            float yVal = (float) (sampleValues[i + 1].floatValue() * range);
+            float xVal = sampleValues[i].floatValue() * range;
+            float yVal = sampleValues[i + 1].floatValue() * range;
             entries.add(new Entry(xVal, yVal));
         }
 
@@ -188,10 +188,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawFilledEnabled())
-                        set.setDrawFilled(false);
-                    else
-                        set.setDrawFilled(true);
+					set.setDrawFilled(!set.isDrawFilledEnabled());
                 }
                 chart.invalidate();
                 break;
@@ -203,10 +200,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawCirclesEnabled())
-                        set.setDrawCircles(false);
-                    else
-                        set.setDrawCircles(true);
+					set.setDrawCircles(!set.isDrawCirclesEnabled());
                 }
                 chart.invalidate();
                 break;
@@ -225,10 +219,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 break;
             }
             case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
+				chart.setPinchZoom(!chart.isPinchZoomEnabled());
 
                 chart.invalidate();
                 break;

@@ -77,7 +77,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
         int cycleValue = (int) (lastSet.getEntryCount() % 100.0);
 
-        float value = (float) (sampleValues[cycleValue].floatValue() * 50) + 50f * (lastDataSetIndex + 1);
+        float value = (sampleValues[cycleValue].floatValue() * 50) + 50f * (lastDataSetIndex + 1);
 
         data.addEntry(new Entry(lastSet.getEntryCount(), value), lastDataSetIndex);
         data.notifyDataChanged();
@@ -130,7 +130,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             for (int i = 0; i < amount; i++) {
                 int cycleValue = (int) (i % 100.0);
 
-                values.add(new Entry(i, (float) (sampleValues[cycleValue].floatValue() * 50f) + 50f * count));
+                values.add(new Entry(i, (sampleValues[cycleValue].floatValue() * 50f) + 50f * count));
             }
 
             LineDataSet set = new LineDataSet(values, "DataSet " + count);

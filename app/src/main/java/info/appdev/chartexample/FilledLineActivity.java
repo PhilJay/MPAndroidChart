@@ -86,14 +86,14 @@ public class FilledLineActivity extends DemoBase {
         Double[] sampleValues = DataTools.Companion.getValues(count + 2);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * range) + 50;
+            float val = (sampleValues[i].floatValue() * range) + 50;
             values1.add(new Entry(i, val));
         }
 
         ArrayList<Entry> values2 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i+1].floatValue() * range) + 450;
+            float val = (sampleValues[i+1].floatValue() * range) + 450;
             values2.add(new Entry(i, val));
         }
 

@@ -75,7 +75,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
         Double[] sampleValues = DataTools.Companion.getMuchValues(count);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * (range + 1)) + 3;
+            float val = (sampleValues[i].floatValue() * (range + 1)) + 3;
             values.add(new Entry(i * 0.001f, val));
         }
 

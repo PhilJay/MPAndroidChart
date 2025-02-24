@@ -126,7 +126,7 @@ public class HorizontalBarNegativeChartActivity extends DemoBase implements OnSe
         Double[] sampleValues = DataTools.Companion.getValues(count + 2);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * range - range / 2);
+            float val = sampleValues[i].floatValue() * range - range / 2;
             values.add(new BarEntry(i * spaceForBar, val,
                     getResources().getDrawable(R.drawable.star)));
         }
@@ -201,10 +201,7 @@ public class HorizontalBarNegativeChartActivity extends DemoBase implements OnSe
                 break;
             }
             case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
+				chart.setPinchZoom(!chart.isPinchZoomEnabled());
 
                 chart.invalidate();
                 break;

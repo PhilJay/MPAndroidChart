@@ -124,7 +124,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count ; i++) {
-            entries.add(new PieEntry((float) ((sampleValues[i].floatValue() * range) + range / 5),
+            entries.add(new PieEntry((sampleValues[i].floatValue() * range) + range / 5,
                     parties[i % parties.length],
                     getResources().getDrawable(R.drawable.star)));
         }
@@ -205,10 +205,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleHole: {
-                if (chart.isDrawHoleEnabled())
-                    chart.setDrawHoleEnabled(false);
-                else
-                    chart.setDrawHoleEnabled(true);
+				chart.setDrawHoleEnabled(!chart.isDrawHoleEnabled());
                 chart.invalidate();
                 break;
             }
@@ -234,10 +231,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionDrawCenter: {
-                if (chart.isDrawCenterTextEnabled())
-                    chart.setDrawCenterText(false);
-                else
-                    chart.setDrawCenterText(true);
+				chart.setDrawCenterText(!chart.isDrawCenterTextEnabled());
                 chart.invalidate();
                 break;
             }

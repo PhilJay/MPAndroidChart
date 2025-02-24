@@ -126,7 +126,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         Double[] sampleValues = DataTools.Companion.getValues(100);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * range);
+            float val = sampleValues[i].floatValue() * range;
             values.add(new BarEntry(i * spaceForBar, val,
                     getResources().getDrawable(R.drawable.star)));
         }
@@ -201,10 +201,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
                 break;
             }
             case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
+				chart.setPinchZoom(!chart.isPinchZoomEnabled());
 
                 chart.invalidate();
                 break;

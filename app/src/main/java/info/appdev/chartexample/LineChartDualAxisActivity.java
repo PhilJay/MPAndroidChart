@@ -140,21 +140,21 @@ public class LineChartDualAxisActivity extends DemoBase implements OnSeekBarChan
         Double[] sampleValues = DataTools.Companion.getValues(count);
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * (range / 2f)) + 50;
+            float val = (sampleValues[i].floatValue() * (range / 2f)) + 50;
             values1.add(new Entry(i, val));
         }
 
         ArrayList<Entry> values2 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * range) + 450;
+            float val = (sampleValues[i].floatValue() * range) + 450;
             values2.add(new Entry(i, val));
         }
 
         ArrayList<Entry> values3 = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * range) + 500;
+            float val = (sampleValues[i].floatValue() * range) + 500;
             values3.add(new Entry(i, val));
         }
 
@@ -266,10 +266,7 @@ public class LineChartDualAxisActivity extends DemoBase implements OnSeekBarChan
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawFilledEnabled())
-                        set.setDrawFilled(false);
-                    else
-                        set.setDrawFilled(true);
+					set.setDrawFilled(!set.isDrawFilledEnabled());
                 }
                 chart.invalidate();
                 break;
@@ -281,10 +278,7 @@ public class LineChartDualAxisActivity extends DemoBase implements OnSeekBarChan
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawCirclesEnabled())
-                        set.setDrawCircles(false);
-                    else
-                        set.setDrawCircles(true);
+					set.setDrawCircles(!set.isDrawCirclesEnabled());
                 }
                 chart.invalidate();
                 break;
@@ -332,10 +326,7 @@ public class LineChartDualAxisActivity extends DemoBase implements OnSeekBarChan
                 break;
             }
             case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
+				chart.setPinchZoom(!chart.isPinchZoomEnabled());
 
                 chart.invalidate();
                 break;

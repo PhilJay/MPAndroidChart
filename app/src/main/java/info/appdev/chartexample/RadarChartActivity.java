@@ -114,10 +114,10 @@ public class RadarChartActivity extends DemoBase {
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < cnt; i++) {
-            float val1 = (float) (sampleValues[i].floatValue() * mul) + min;
+            float val1 = (sampleValues[i].floatValue() * mul) + min;
             entries1.add(new RadarEntry(val1));
 
-            float val2 = (float) (sampleValues[i + 1].floatValue() * mul) + min;
+            float val2 = (sampleValues[i + 1].floatValue() * mul) + min;
             entries2.add(new RadarEntry(val2));
         }
 
@@ -191,10 +191,7 @@ public class RadarChartActivity extends DemoBase {
                 break;
             }
             case R.id.actionToggleRotate: {
-                if (chart.isRotationEnabled())
-                    chart.setRotationEnabled(false);
-                else
-                    chart.setRotationEnabled(true);
+				chart.setRotationEnabled(!chart.isRotationEnabled());
                 chart.invalidate();
                 break;
             }
@@ -204,10 +201,7 @@ public class RadarChartActivity extends DemoBase {
                         .getDataSets();
 
                 for (IRadarDataSet set : sets) {
-                    if (set.isDrawFilledEnabled())
-                        set.setDrawFilled(false);
-                    else
-                        set.setDrawFilled(true);
+					set.setDrawFilled(!set.isDrawFilledEnabled());
                 }
                 chart.invalidate();
                 break;

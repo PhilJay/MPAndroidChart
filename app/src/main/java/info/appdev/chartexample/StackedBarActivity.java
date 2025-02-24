@@ -38,8 +38,7 @@ import java.util.List;
 
 public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
-    private static final int DEFAULT_VALUE = 12;
-    private BarChart chart;
+	private BarChart chart;
     private SeekBar seekBarX, seekBarY;
     private TextView tvX, tvY;
 
@@ -117,9 +116,9 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         for (int i = 0; i < seekBarX.getProgress(); i++) {
             float mul = (seekBarY.getProgress() + 1);
-            float val1 = (float) (sampleValues[i].floatValue() * mul) + mul / 3;
-            float val2 = (float) (sampleValues[i + 1].floatValue() * mul) + mul / 3;
-            float val3 = (float) (sampleValues[i + 2].floatValue() * mul) + mul / 3;
+            float val1 = (sampleValues[i].floatValue() * mul) + mul / 3;
+            float val2 = (sampleValues[i + 1].floatValue() * mul) + mul / 3;
+            float val3 = (sampleValues[i + 2].floatValue() * mul) + mul / 3;
             values.add(new BarEntry(
                     i,
                     new float[]{val1, val2, val3},
@@ -204,10 +203,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
+				chart.setPinchZoom(!chart.isPinchZoomEnabled());
 
                 chart.invalidate();
                 break;

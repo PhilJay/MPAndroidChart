@@ -176,7 +176,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         Double[] sampleValues = DataTools.Companion.getValues(cnt);
 
         for (int i = 0; i < cnt; i++) {
-            entries.add(new PieEntry((float) ((sampleValues[i].floatValue() * 70) + 30), "Quarter " + (i+1)));
+            entries.add(new PieEntry((sampleValues[i].floatValue() * 70) + 30, "Quarter " + (i+1)));
         }
 
         PieDataSet d = new PieDataSet(entries, "");

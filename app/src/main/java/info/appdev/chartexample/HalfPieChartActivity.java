@@ -97,7 +97,7 @@ public class HalfPieChartActivity extends DemoBase {
         Double[] sampleValues = DataTools.Companion.getValues(count);
 
         for (int i = 0; i < count; i++) {
-            values.add(new PieEntry((float) ((sampleValues[i].floatValue() * range) + range / 5), parties[i % parties.length]));
+            values.add(new PieEntry((sampleValues[i].floatValue() * range) + range / 5, parties[i % parties.length]));
         }
 
         PieDataSet dataSet = new PieDataSet(values, "Election Results");

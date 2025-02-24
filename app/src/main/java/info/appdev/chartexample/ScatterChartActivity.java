@@ -107,17 +107,17 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         Double[] sampleValues = DataTools.Companion.getValues(100+2);
 
         for (int i = 0; i < seekBarX.getProgress(); i++) {
-            float val = (float) (sampleValues[i].floatValue() * seekBarY.getProgress()) + 3;
+            float val = (sampleValues[i].floatValue() * seekBarY.getProgress()) + 3;
             values1.add(new Entry(i, val));
         }
 
         for (int i = 0; i < seekBarX.getProgress(); i++) {
-            float val = (float) (sampleValues[i + 1].floatValue() * seekBarY.getProgress()) + 3;
+            float val = (sampleValues[i + 1].floatValue() * seekBarY.getProgress()) + 3;
             values2.add(new Entry(i+0.33f, val));
         }
 
         for (int i = 0; i < seekBarX.getProgress(); i++) {
-            float val = (float) (sampleValues[i + 2].floatValue() * seekBarY.getProgress()) + 3;
+            float val = (sampleValues[i + 2].floatValue() * seekBarY.getProgress()) + 3;
             values3.add(new Entry(i+0.66f, val));
         }
 
@@ -188,10 +188,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
                 break;
             }
             case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
+				chart.setPinchZoom(!chart.isPinchZoomEnabled());
 
                 chart.invalidate();
                 break;

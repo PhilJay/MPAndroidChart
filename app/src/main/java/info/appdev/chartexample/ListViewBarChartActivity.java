@@ -142,7 +142,7 @@ public class ListViewBarChartActivity extends DemoBase {
         Double[] sampleValues = DataTools.Companion.getValues(count);
 
         for (int i = 0; i < count; i++) {
-            entries.add(new BarEntry(i, (float) (sampleValues[i].floatValue() * 70) + 30));
+            entries.add(new BarEntry(i, (sampleValues[i].floatValue() * 70) + 30));
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);

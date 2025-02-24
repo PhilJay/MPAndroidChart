@@ -61,7 +61,7 @@ public class ScrollViewActivity extends DemoBase {
         ArrayList<BarEntry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * count) + 15;
+            float val = (sampleValues[i].floatValue() * count) + 15;
             values.add(new BarEntry(i, (int) val));
         }
 
