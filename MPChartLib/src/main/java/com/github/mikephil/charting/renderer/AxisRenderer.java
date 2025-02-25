@@ -188,12 +188,15 @@ public abstract class AxisRenderer extends Renderer {
         if (mAxis.isForceLabelsEnabled()) {
 
             interval = (float) range / (float) (labelCount - 1);
+            // When force label is enabled
+            // If granularity is enabled, then do not allow the interval to go below specified granularity.
+            if (mAxis.isGranularityEnabled())
+                interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+
             mAxis.mEntryCount = labelCount;
 
-            if (mAxis.mEntries.length < labelCount) {
-                // Ensure stops contains at least numStops elements.
-                mAxis.mEntries = new float[labelCount];
-            }
+            // Ensure stops contains at least numStops elements.
+            mAxis.mEntries = new float[labelCount];
 
             float v = min;
 
@@ -228,10 +231,7 @@ public abstract class AxisRenderer extends Renderer {
 
             mAxis.mEntryCount = n;
 
-            if (mAxis.mEntries.length < n) {
-                // Ensure stops contains at least numStops elements.
-                mAxis.mEntries = new float[n];
-            }
+            mAxis.mEntries = new float[n];
 
             for (f = first, i = 0; i < n; f += interval, ++i) {
 
@@ -290,4 +290,14 @@ public abstract class AxisRenderer extends Renderer {
      * @param c
      */
     public abstract void renderLimitLines(Canvas c);
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mAxis.setTextColor(color);
+    }
 }

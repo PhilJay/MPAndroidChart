@@ -72,14 +72,12 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         final float labelHeight = labelSize.height;
 
         final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
-                labelSize.width,
+                labelWidth,
                 labelHeight,
                 mXAxis.getLabelRotationAngle());
 
-        mXAxis.mLabelWidth = Math.round(labelWidth);
-        mXAxis.mLabelHeight = Math.round(labelHeight);
-        mXAxis.mLabelRotatedWidth = (int)(labelRotatedSize.width + mXAxis.getXOffset() * 3.5f);
-        mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
+        mXAxis.mLabelWidth = Math.round(labelRotatedSize.width);
+        mXAxis.mLabelHeight = Math.round(labelRotatedSize.height);
 
         FSize.recycleInstance(labelRotatedSize);
     }

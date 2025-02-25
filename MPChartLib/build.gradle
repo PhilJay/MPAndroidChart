@@ -1,22 +1,43 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+    id 'kotlin-android'
+    id "com.vanniktech.maven.publish" version "0.30.0"
+}
 
-group='com.github.philjay'
+ext {
+    mGroupId = "info.appdevnext"
+    mArtifactId = "chart"
+    mVersionName = getTag()
+
+    mLibraryName = "Android Chart"
+    mLibraryDescription = "A powerful Android chart view / graph view library, supporting line- bar- pie- radar- bubble- and candlestick charts as well as scaling, dragging and animations"
+}
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    namespace 'com.github.mikephil.charting'
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 28
-        versionCode 3
-        versionName '3.1.0'
+        minSdkVersion 21
+        compileSdk 35
+        targetSdkVersion 35
+
+        // VERSION_NAME no longer available as of 4.1
+        // https://issuetracker.google.com/issues/158695880
+        buildConfigField 'String', 'VERSION_NAME', "\"${getTag()}\""
+
+        consumerProguardFiles 'proguard-lib.pro'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     testOptions {
         unitTests.returnDefaultValues = true // this prevents "not mocked" error
@@ -24,28 +45,56 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.0.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.annotation:annotation:1.9.1'
+    testImplementation 'junit:junit:4.13.2'
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('androidSourcesJar', Jar) {
+    archiveClassifier.set('sources')
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
 }
 
-task javadoc(type: Javadoc) {
-    options.charSet = 'UTF-8'
-    failOnError  false
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
+group = "info.mxtracks"
+version = "${getTag()}"
+println "Build version $version"
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
+mavenPublishing {
+    pom {
+        name = "Android Chart"
+        description = "A powerful Android chart view / graph view library, supporting line- bar- pie- radar- bubble- and candlestick charts as well as scaling, dragging and animations"
+        inceptionYear = "2022"
+        url = "https://github.com/AppDevNext/AndroidChart/"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "AppDevNext"
+                name = "AppDevNext"
+                url = "https://github.com/AppDevNext/"
+            }
+        }
+        scm {
+            url = "https://github.com/AppDevNext/AndroidChart/"
+            connection = "scm:git:git://github.com/AppDevNext/AndroidChart.git"
+            developerConnection = "scm:git:ssh://git@github.com/AppDevNext/AndroidChart.git"
+        }
+    }
 
-artifacts {
-    archives sourcesJar
-    archives javadocJar
+    // Github packages
+    repositories {
+        maven {
+            version = version+"-SNAPSHOT"
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/AppDevNext/AndroidChart"
+            credentials {
+                username = System.getenv("GITHUBACTOR")
+                password = System.getenv("GITHUBTOKEN")
+            }
+        }
+    }
 }

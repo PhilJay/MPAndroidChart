@@ -85,6 +85,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     private boolean mScaleYEnabled = true;
 
     /**
+     * if true, fling gesture is enabled for the chart
+     */
+    private boolean mFlingEnabled = false;
+
+    /**
      * paint object for the (by default) lightgrey background of the grid
      */
     protected Paint mGridBackgroundPaint;
@@ -209,6 +214,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (mXAxis.isEnabled())
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+
+        // Y-axis labels could have changed in size affecting the offsets
+        if (mAutoScaleMinMaxEnabled) {
+            calculateOffsets();
+            mViewPortHandler.refresh(mViewPortHandler.getMatrixTouch(), this, false);
+        }
 
         mXAxisRenderer.renderAxisLine(canvas);
         mAxisRendererLeft.renderAxisLine(canvas);
@@ -366,19 +377,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mData.calcMinMaxY(fromX, toX);
 
-        mXAxis.calculate(mData.getXMin(), mData.getXMax());
-
-        // calculate axis range (min / max) according to provided data
-
-        if (mAxisLeft.isEnabled())
-            mAxisLeft.calculate(mData.getYMin(AxisDependency.LEFT),
-                    mData.getYMax(AxisDependency.LEFT));
-
-        if (mAxisRight.isEnabled())
-            mAxisRight.calculate(mData.getYMin(AxisDependency.RIGHT),
-                    mData.getYMax(AxisDependency.RIGHT));
-
-        calculateOffsets();
+        calcMinMax();
     }
 
     @Override
@@ -495,7 +494,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             if (mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()) {
 
-                float xLabelHeight = mXAxis.mLabelRotatedHeight + mXAxis.getYOffset();
+                float xLabelHeight = mXAxis.mLabelHeight + mXAxis.getYOffset();
 
                 // offsets for x-labels
                 if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
@@ -1176,6 +1175,22 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
+     * Set this to true to enable fling gesture for the chart
+     *
+     * @param enabled
+     */
+    public void setFlingEnabled(boolean enabled) { this.mFlingEnabled = enabled; }
+
+    /**
+     * Returns true if fling gesture is enabled for the chart, false if not.
+     *
+     * @return
+     */
+    public boolean isFlingEnabled() {
+        return mFlingEnabled;
+    }
+
+    /**
      * Set this to true to enable zooming in by double-tap on the chart.
      * Default: enabled
      *
@@ -1670,5 +1685,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         } else {
             mViewPortHandler.refresh(mViewPortHandler.getMatrixTouch(), this, true);
         }
+    }
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mAxisRendererLeft.setTextColor(color);
+        mAxisRendererRight.setTextColor(color);
+        mXAxisRenderer.setTextColor(color);
     }
 }

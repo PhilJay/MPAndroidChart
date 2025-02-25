@@ -74,6 +74,10 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      */
     private float mMinScalePointerDistance;
 
+
+    private final float[] matrixBuffer = new float[9];
+    private final Matrix tempMatrix = new Matrix();
+
     /**
      * Constructor with initialization parameters.
      *
@@ -108,7 +112,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             }
         }
 
-        if (mTouchMode == NONE) {
+        if (mTouchMode == NONE || mChart.isFlingEnabled()) {
             mGestureDetector.onTouchEvent(event);
         }
 
@@ -378,9 +382,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     float scaleY = (mChart.isScaleYEnabled()) ? scale : 1f;
 
                     if (canZoomMoreY || canZoomMoreX) {
-
                         mMatrix.set(mSavedMatrix);
-                        mMatrix.postScale(scaleX, scaleY, t.x, t.y);
+                        mMatrix.postScale(getLimitedScaleX(scaleX, t), getLimitedScaleY(scaleY, t), t.x, t.y);
 
                         if (l != null)
                             l.onChartScale(event, scaleX, scaleY);
@@ -399,9 +402,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                             h.canZoomInMoreX();
 
                     if (canZoomMoreX) {
-
                         mMatrix.set(mSavedMatrix);
-                        mMatrix.postScale(scaleX, 1f, t.x, t.y);
+                        mMatrix.postScale(getLimitedScaleX(scaleX, t), 1f, t.x, t.y);
 
                         if (l != null)
                             l.onChartScale(event, scaleX, 1f);
@@ -420,9 +422,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                             h.canZoomInMoreY();
 
                     if (canZoomMoreY) {
-
                         mMatrix.set(mSavedMatrix);
-                        mMatrix.postScale(1f, scaleY, t.x, t.y);
+                        mMatrix.postScale(1f, getLimitedScaleY(scaleY, t), t.x, t.y);
 
                         if (l != null)
                             l.onChartScale(event, 1f, scaleY);
@@ -432,6 +433,60 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 MPPointF.recycleInstance(t);
             }
         }
+    }
+
+    /**
+     * limit scaleX range
+     * @param scaleX
+     * @param t
+     * @return
+     */
+    private float getLimitedScaleX(float scaleX, MPPointF t) {
+        ViewPortHandler h = mChart.getViewPortHandler();
+		tempMatrix.set(mSavedMatrix);
+        tempMatrix.postScale(scaleX, 1f, t.x, t.y);
+
+        mSavedMatrix.getValues(matrixBuffer);
+        float lastScaleX = matrixBuffer[Matrix.MSCALE_X];
+
+        tempMatrix.getValues(matrixBuffer);
+        float calScaleX = matrixBuffer[Matrix.MSCALE_X];
+
+        float resultScaleX = scaleX;
+
+        if (calScaleX < h.getMinScaleX()) {
+            resultScaleX = h.getMinScaleX() / lastScaleX;
+        } else if (calScaleX > h.getMaxScaleX()) {
+            resultScaleX = h.getMaxScaleX() / lastScaleX;
+        }
+        return resultScaleX;
+    }
+
+    /**
+     * limit scaleY range
+     * @param scaleY
+     * @param t
+     * @return
+     */
+    private float getLimitedScaleY(float scaleY, MPPointF t) {
+        ViewPortHandler h = mChart.getViewPortHandler();
+        tempMatrix.set(mSavedMatrix);
+        tempMatrix.postScale(1f, scaleY, t.x, t.y);
+
+        mSavedMatrix.getValues(matrixBuffer);
+        float lastScaleY = matrixBuffer[Matrix.MSCALE_Y];
+
+        tempMatrix.getValues(matrixBuffer);
+        float calScaleY = matrixBuffer[Matrix.MSCALE_Y];
+
+        float resultScaleY = scaleY;
+
+        if (calScaleY < h.getMinScaleY()) {
+            resultScaleY = h.getMinScaleY() / lastScaleY;
+        } else if (calScaleY > h.getMaxScaleY()) {
+            resultScaleY = h.getMaxScaleY() / lastScaleY;
+        }
+        return resultScaleY;
     }
 
     /**

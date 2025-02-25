@@ -462,14 +462,25 @@ public class LineChartRenderer extends LineRadarRenderer {
         do {
             currentStartIndex = startingIndex + (iterations * indexInterval);
             currentEndIndex = currentStartIndex + indexInterval;
-            currentEndIndex = currentEndIndex > endingIndex ? endingIndex : currentEndIndex;
+            currentEndIndex = Math.min(currentEndIndex, endingIndex);
 
             if (currentStartIndex <= currentEndIndex) {
-                generateFilledPath(dataSet, currentStartIndex, currentEndIndex, filled);
+                final Drawable drawable = dataSet.getFillDrawable();
+
+                int startIndex = currentStartIndex;
+                int endIndex = currentEndIndex;
+
+                // Add a little extra to the path for drawables, larger data sets were showing space between adjacent drawables
+                if (drawable != null) {
+
+                    startIndex = Math.max(0, currentStartIndex - 1);
+                    endIndex = Math.min(endingIndex, currentEndIndex + 1);
+                }
+
+                generateFilledPath(dataSet, startIndex, endIndex, filled);
 
                 trans.pathValueToPixel(filled);
 
-                final Drawable drawable = dataSet.getFillDrawable();
                 if (drawable != null) {
 
                     drawFilledPath(c, filled, drawable);
@@ -515,13 +526,15 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             currentEntry = dataSet.getEntryForIndex(x);
 
-            if (isDrawSteppedEnabled) {
-                filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
+            if (currentEntry != null) {
+                if (isDrawSteppedEnabled) {
+                    filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
+                }
+
+                filled.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
+
+                previousEntry = currentEntry;
             }
-
-            filled.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
-
-            previousEntry = currentEntry;
         }
 
         // close up
@@ -542,9 +555,12 @@ public class LineChartRenderer extends LineRadarRenderer {
             for (int i = 0; i < dataSets.size(); i++) {
 
                 ILineDataSet dataSet = dataSets.get(i);
-
-                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1)
+                if (dataSet.getEntryCount() == 0) {
                     continue;
+                }
+                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1) {
+                    continue;
+                }
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
@@ -579,22 +595,24 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
-                    if (dataSet.isDrawValuesEnabled()) {
-                        drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, x,
-                                y - valOffset, dataSet.getValueTextColor(j / 2));
-                    }
+                    if (entry != null) {
+                        if (dataSet.isDrawValuesEnabled()) {
+                            drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, x,
+                                    y - valOffset, dataSet.getValueTextColor(j / 2));
+                        }
 
-                    if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+                        if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
 
-                        Drawable icon = entry.getIcon();
+                            Drawable icon = entry.getIcon();
 
-                        Utils.drawImage(
-                                c,
-                                icon,
-                                (int)(x + iconsOffset.x),
-                                (int)(y + iconsOffset.y),
-                                icon.getIntrinsicWidth(),
-                                icon.getIntrinsicHeight());
+                            Utils.drawImage(
+                                    c,
+                                    icon,
+                                    (int)(x + iconsOffset.x),
+                                    (int)(y + iconsOffset.y),
+                                    icon.getIntrinsicWidth(),
+                                    icon.getIntrinsicHeight());
+                        }
                     }
                 }
 
@@ -611,12 +629,12 @@ public class LineChartRenderer extends LineRadarRenderer {
     /**
      * cache for the circle bitmaps of all datasets
      */
-    private HashMap<IDataSet, DataSetImageCache> mImageCaches = new HashMap<>();
+    private final HashMap<IDataSet, DataSetImageCache> mImageCaches = new HashMap<>();
 
     /**
      * buffer for drawing the circles
      */
-    private float[] mCirclesBuffer = new float[2];
+    private final float[] mCirclesBuffer = new float[2];
 
     protected void drawCircles(Canvas c) {
 
@@ -764,7 +782,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
     private class DataSetImageCache {
 
-        private Path mCirclePathBuffer = new Path();
+        private final Path mCirclePathBuffer = new Path();
 
         private Bitmap[] circleBitmaps;
 

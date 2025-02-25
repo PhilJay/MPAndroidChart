@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
+public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements Serializable {
 
     /**
      * the entries that this DataSet represents / holds together
@@ -78,7 +79,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     public void calcMinMaxY(float fromX, float toX) {
         mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;
-        
+
         if (mEntries == null || mEntries.isEmpty())
             return;
 
@@ -181,7 +182,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     public abstract DataSet<T> copy();
 
     /**
-     *
      * @param dataSet
      */
     protected void copy(DataSet dataSet) {
@@ -314,6 +314,10 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     @Override
     public T getEntryForIndex(int index) {
+        if (index < 0)
+            return null;
+        if (index >= mEntries.size())
+            return null;
         return mEntries.get(index);
     }
 
@@ -328,77 +332,92 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         int closest = high;
 
         while (low < high) {
-            int m = (low + high) / 2;
+            int m = low + (high - low) / 2;
 
-            final float d1 = mEntries.get(m).getX() - xValue,
-                    d2 = mEntries.get(m + 1).getX() - xValue,
-                    ad1 = Math.abs(d1), ad2 = Math.abs(d2);
+            Entry currentEntry = mEntries.get(m);
 
-            if (ad2 < ad1) {
-                // [m + 1] is closer to xValue
-                // Search in an higher place
-                low = m + 1;
-            } else if (ad1 < ad2) {
-                // [m] is closer to xValue
-                // Search in a lower place
-                high = m;
-            } else {
-                // We have multiple sequential x-value with same distance
+            if (currentEntry != null) {
+                Entry nextEntry = mEntries.get(m + 1);
 
-                if (d1 >= 0.0) {
-                    // Search in a lower place
-                    high = m;
-                } else if (d1 < 0.0) {
-                    // Search in an higher place
-                    low = m + 1;
+                if (nextEntry != null) {
+                    final float d1 = currentEntry.getX() - xValue,
+                                d2 = nextEntry.getX() - xValue,
+                                ad1 = Math.abs(d1),
+                                ad2 = Math.abs(d2);
+
+                    if (ad2 < ad1) {
+                        // [m + 1] is closer to xValue
+                        // Search in an higher place
+                        low = m + 1;
+                    } else if (ad1 < ad2) {
+                        // [m] is closer to xValue
+                        // Search in a lower place
+                        high = m;
+                    } else {
+                        // We have multiple sequential x-value with same distance
+
+                        if (d1 >= 0.0) {
+                            // Search in a lower place
+                            high = m;
+                        } else if (d1 < 0.0) {
+                            // Search in an higher place
+                            low = m + 1;
+                        }
+                    }
+
+                    closest = high;
                 }
             }
-
-            closest = high;
         }
 
         if (closest != -1) {
-            float closestXValue = mEntries.get(closest).getX();
-            if (rounding == Rounding.UP) {
-                // If rounding up, and found x-value is lower than specified x, and we can go upper...
-                if (closestXValue < xValue && closest < mEntries.size() - 1) {
-                    ++closest;
-                }
-            } else if (rounding == Rounding.DOWN) {
-                // If rounding down, and found x-value is upper than specified x, and we can go lower...
-                if (closestXValue > xValue && closest > 0) {
-                    --closest;
-                }
-            }
-
-            // Search by closest to y-value
-            if (!Float.isNaN(closestToY)) {
-                while (closest > 0 && mEntries.get(closest - 1).getX() == closestXValue)
-                    closest -= 1;
-
-                float closestYValue = mEntries.get(closest).getY();
-                int closestYIndex = closest;
-
-                while (true) {
-                    closest += 1;
-                    if (closest >= mEntries.size())
-                        break;
-
-                    final Entry value = mEntries.get(closest);
-
-                    if (value.getX() != closestXValue)
-                        break;
-
-                    if (Math.abs(value.getY() - closestToY) <= Math.abs(closestYValue - closestToY)) {
-                        closestYValue = closestToY;
-                        closestYIndex = closest;
+            Entry closestEntry = mEntries.get(closest);
+            if (closestEntry != null) {
+                float closestXValue = closestEntry.getX();
+                if (rounding == Rounding.UP) {
+                    // If rounding up, and found x-value is lower than specified x, and we can go upper...
+                    if (closestXValue < xValue && closest < mEntries.size() - 1) {
+                        ++closest;
+                    }
+                } else if (rounding == Rounding.DOWN) {
+                    // If rounding down, and found x-value is upper than specified x, and we can go lower...
+                    if (closestXValue > xValue && closest > 0) {
+                        --closest;
                     }
                 }
 
-                closest = closestYIndex;
+                // Search by closest to y-value
+                if (!Float.isNaN(closestToY)) {
+                    while (closest > 0 && mEntries.get(closest - 1).getX() == closestXValue)
+                        closest -= 1;
+
+                    float closestYValue = closestEntry.getY();
+                    int closestYIndex = closest;
+
+                    while (true) {
+                        closest += 1;
+                        if (closest >= mEntries.size())
+                            break;
+
+                        final Entry value = mEntries.get(closest);
+
+                        if (value == null) {
+                            continue;
+                        }
+
+                        if (value.getX() != closestXValue)
+                            break;
+
+                        if (Math.abs(value.getY() - closestToY) <= Math.abs(closestYValue - closestToY)) {
+                            closestYValue = closestToY;
+                            closestYIndex = closest;
+                        }
+                    }
+
+                    closest = closestYIndex;
+                }
             }
         }
-
         return closest;
     }
 

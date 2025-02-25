@@ -1,17 +1,33 @@
 buildscript {
+    ext.kotlin_version = '2.1.10'
+
     repositories {
-        jcenter()
         google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.0'
+        classpath 'com.android.tools.build:gradle:8.8.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
+}
+
+@SuppressWarnings('unused')
+static def getTag() {
+    def process = "git describe --tags --abbrev=0".execute()
+    return process.text.toString().trim()
+}
+
+@SuppressWarnings('unused')
+static def getGitCommitCount() {
+    def process = "git rev-list HEAD --count".execute()
+    return process.text.toInteger()
 }

@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    name: Publish release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.4
+        with:
+          fetch-depth: 0
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "adopt"
+          java-version: 17
+      - name: Get the version
+        id: tagger
+        uses: jimschubert/query-tag-action@v2
+        with:
+          skip-unshallow: 'true'
+          abbrev: false
+          commit-ish: HEAD
+      - name: Install Android SDK
+        uses: hannesa2/action-android/install-sdk@0.1.16.7
+      - name: Build project
+        run: ./gradlew assembleRelease
+        env:
+          VERSION: ${{ github.ref }}
+
+#      - name: Publish to github package
+#        run: |
+#          signing/decrypt.sh
+#          cat signing/gradle_secure.properties >> gradle.properties
+#          ./gradlew publish
+#        env:
+#          CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
+#          GITHUBACTOR: ${{ secrets.GITHUBACTOR }}
+#          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+
+      - name: Publish mavenCentral (stage)
+        run: |
+          signing/decrypt.sh
+          cat signing/gradle_secure.properties >> gradle.properties
+          ./gradlew MPChartLib:publishMavenPublicationToMavenCentralRepository
+        env:
+          CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{steps.tagger.outputs.tag}}
+          name: ${{steps.tagger.outputs.tag}}
+          generate_release_notes: true
+          body: ${{steps.github_release.outputs.changelog}}
+          files: MPChartLib/build/outputs/aar/MPChartLib-release.aar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

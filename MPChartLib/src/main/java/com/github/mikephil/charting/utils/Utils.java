@@ -7,15 +7,12 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.SizeF;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -34,6 +31,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
+@SuppressWarnings("JavaDoc")
 public abstract class Utils {
 
     private static DisplayMetrics mMetrics;
@@ -50,8 +48,6 @@ public abstract class Utils {
 
     /**
      * initialize method, called inside the Chart.init() method.
-     *
-     * @param context
      */
     @SuppressWarnings("deprecation")
     public static void init(Context context) {
@@ -148,7 +144,7 @@ public abstract class Utils {
         return (int) paint.measureText(demoText);
     }
 
-    private static Rect mCalcTextHeightRect = new Rect();
+    private static final Rect mCalcTextHeightRect = new Rect();
     /**
      * calculates the approximate height of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -165,7 +161,7 @@ public abstract class Utils {
         return r.height();
     }
 
-    private static Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();
+    private static final Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();
 
     public static float getLineHeight(Paint paint) {
         return getLineHeight(paint, mFontMetrics);
@@ -201,7 +197,7 @@ public abstract class Utils {
         return result;
     }
 
-    private static Rect mCalcTextSizeRect = new Rect();
+    private static final Rect mCalcTextSizeRect = new Rect();
     /**
      * calculates the approximate size of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -225,15 +221,14 @@ public abstract class Utils {
      * Math.pow(...) is very expensive, so avoid calling it and create it
      * yourself.
      */
-    private static final int POW_10[] = {
+    private static final int[] POW_10 = {
             1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
     };
 
-    private static IValueFormatter mDefaultValueFormatter = generateDefaultValueFormatter();
+    private static final IValueFormatter mDefaultValueFormatter = generateDefaultValueFormatter();
 
     private static IValueFormatter generateDefaultValueFormatter() {
-        final DefaultValueFormatter formatter = new DefaultValueFormatter(1);
-        return formatter;
+        return new DefaultValueFormatter(1);
     }
 
     /// - returns: The default value formatter used for all chart components that needs a default
@@ -276,10 +271,7 @@ public abstract class Utils {
             return "0";
         }
 
-        boolean zero = false;
-        if (number < 1 && number > -1) {
-            zero = true;
-        }
+        boolean zero = number < 1 && number > -1;
 
         if (number < 0) {
             neg = true;
@@ -353,11 +345,11 @@ public abstract class Utils {
      * @return
      */
     public static float roundToNextSignificant(double number) {
-        if (Double.isInfinite(number) || 
-            Double.isNaN(number) || 
+        if (Double.isInfinite(number) ||
+            Double.isNaN(number) ||
             number == 0.0)
             return 0;
-        
+
         final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
         final int pw = 1 - (int) d;
         final float magnitude = (float) Math.pow(10, pw);
@@ -375,10 +367,10 @@ public abstract class Utils {
     public static int getDecimals(float number) {
 
         float i = roundToNextSignificant(number);
-        
+
         if (Float.isInfinite(i))
             return 0;
-        
+
         return (int) Math.ceil(-Math.log10(i)) + 2;
     }
 
@@ -398,7 +390,7 @@ public abstract class Utils {
     }
 
     public static void copyIntegers(List<Integer> from, int[] to){
-        int count = to.length < from.size() ? to.length : from.size();
+        int count = Math.min(to.length, from.size());
         for(int i = 0 ; i < count ; i++){
             to[i] = from.get(i);
         }
@@ -419,13 +411,6 @@ public abstract class Utils {
         }
 
         return ret;
-    }
-
-    public static void copyStrings(List<String> from, String[] to){
-        int count = to.length < from.size() ? to.length : from.size();
-        for(int i = 0 ; i < count ; i++){
-            to[i] = from.get(i);
-        }
     }
 
     /**
@@ -501,10 +486,7 @@ public abstract class Utils {
      */
     @SuppressLint("NewApi")
     public static void postInvalidateOnAnimation(View view) {
-        if (Build.VERSION.SDK_INT >= 16)
-            view.postInvalidateOnAnimation();
-        else
-            view.postInvalidateDelayed(10);
+        view.postInvalidateOnAnimation();
     }
 
     public static int getMinimumFlingVelocity() {
@@ -525,7 +507,7 @@ public abstract class Utils {
         return angle % 360.f;
     }
 
-    private static Rect mDrawableBoundsCache = new Rect();
+    private static final Rect mDrawableBoundsCache = new Rect();
 
     public static void drawImage(Canvas canvas,
                                  Drawable drawable,
@@ -550,8 +532,8 @@ public abstract class Utils {
         canvas.restoreToCount(saveId);
     }
 
-    private static Rect mDrawTextRectBuffer = new Rect();
-    private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
+    private static final Rect mDrawTextRectBuffer = new Rect();
+    private static final Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
     public static void drawXAxisValue(Canvas c, String text, float x, float y,
                                       Paint paint,
@@ -569,7 +551,7 @@ public abstract class Utils {
         // Android does not snap the bounds to line boundaries,
         //  and draws from bottom to top.
         // And we want to normalize it.
-        drawOffsetY += -mFontMetricsBuffer.ascent;
+        drawOffsetY -= mFontMetricsBuffer.ascent;
 
         // To have a consistent point of reference, we always draw left-aligned
         Paint.Align originalTextAlign = paint.getTextAlign();

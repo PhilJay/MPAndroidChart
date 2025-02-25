@@ -1,0 +1,28 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+    authors:
+      - someuser
+  categories:
+    - title: Breaking Changes 🛠
+      labels:
+        - breaking-change
+    - title: Exciting New Features 🎉
+      labels:
+        - enhancement
+    - title: Dependencies
+      labels:
+        - dependencies
+    - title: Espresso test
+      labels:
+        - Espresso
+    - title: Bug fix
+      labels:
+        - bugfix
+    - title: Pipeline
+      labels:
+        - pipeline
+    - title: Other Changes
+      labels:
+        - "*"

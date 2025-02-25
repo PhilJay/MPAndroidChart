@@ -32,7 +32,10 @@ proguard/
 *.iml
 *.ipr
 *.iws
-.idea/
+
+# ecerything except code format settings
+.idea/*
+!.idea/codeStyles/
 
 .directory
 
@@ -45,3 +48,8 @@ build/
 target/
 
 .DS_Store
+
+/screenshotDiffs
+/artifacts
+
+.kotlin

@@ -46,6 +46,11 @@ public class PieChartRenderer extends DataRenderer {
     protected Paint mValueLinePaint;
 
     /**
+     * paint object used for drawing the rounded corner slice
+     */
+    protected Paint mRoundedCornerPaint;
+
+    /**
      * paint object for the text that can be displayed in the center of the
      * chart
      */
@@ -67,6 +72,20 @@ public class PieChartRenderer extends DataRenderer {
     protected WeakReference<Bitmap> mDrawBitmap;
 
     protected Canvas mBitmapCanvas;
+
+    /**
+     * Setter for the rounded corner slice paint object
+     */
+    public void setRoundedCornerRadius(float radius){
+        mRoundedCornerPaint.setStrokeWidth(radius);
+    }
+
+    /**
+     * Getter for the rounded corner slice paint object
+     */
+    public float getRoundedCornerRadius(){
+        return mRoundedCornerPaint.getStrokeWidth();
+    }
 
     public PieChartRenderer(PieChart chart, ChartAnimator animator,
                             ViewPortHandler viewPortHandler) {
@@ -97,6 +116,10 @@ public class PieChartRenderer extends DataRenderer {
 
         mValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValueLinePaint.setStyle(Style.STROKE);
+
+        mRoundedCornerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRoundedCornerPaint.setStyle(Style.STROKE);
+        mRoundedCornerPaint.setAntiAlias(true);
     }
 
     public Paint getPaintHole() {
@@ -245,6 +268,11 @@ public class PieChartRenderer extends DataRenderer {
 
         final float sliceSpace = visibleAngleCount <= 1 ? 0.f : getSliceSpace(dataSet);
 
+      if (getRoundedCornerRadius()>0) {
+            mRoundedCornerPaint.setStrokeCap(Paint.Cap.ROUND);
+            mRoundedCornerPaint.setStrokeJoin(Paint.Join.ROUND);
+        }
+
         for (int j = 0; j < entryCount; j++) {
 
             float sliceAngle = drawAngles[j];
@@ -267,6 +295,9 @@ public class PieChartRenderer extends DataRenderer {
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
             mRenderPaint.setColor(dataSet.getColor(j));
+
+            // Set current data set color to paint object
+            mRoundedCornerPaint.setColor(dataSet.getColor(j));
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :
@@ -398,6 +429,11 @@ public class PieChartRenderer extends DataRenderer {
 
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
 
+            // Draw rounded corner path with paint object slice with the given radius
+            if (getRoundedCornerRadius()>0) {
+                mBitmapCanvas.drawPath(mPathBuffer, mRoundedCornerPaint);
+            }
+
             angle += sliceAngle * phaseX;
         }
 
@@ -450,11 +486,13 @@ public class PieChartRenderer extends DataRenderer {
         for (int i = 0; i < dataSets.size(); i++) {
 
             IPieDataSet dataSet = dataSets.get(i);
-
-            final boolean drawValues = dataSet.isDrawValuesEnabled();
-
-            if (!drawValues && !drawEntryLabels)
+            if (dataSet.getEntryCount() == 0) {
                 continue;
+            }
+            final boolean drawValues = dataSet.isDrawValuesEnabled();
+            if (!drawValues && !drawEntryLabels) {
+                continue;
+            }
 
             final PieDataSet.ValuePosition xValuePosition = dataSet.getXValuePosition();
             final PieDataSet.ValuePosition yValuePosition = dataSet.getYValuePosition();
@@ -550,7 +588,7 @@ public class PieChartRenderer extends DataRenderer {
 
                         mValuePaint.setTextAlign(Align.RIGHT);
 
-                        if(drawXOutside)
+                        if (drawXOutside)
                             mEntryLabelsPaint.setTextAlign(Align.RIGHT);
 
                         labelPtx = pt2x - offset;
@@ -560,7 +598,7 @@ public class PieChartRenderer extends DataRenderer {
                         pt2y = pt1y;
                         mValuePaint.setTextAlign(Align.LEFT);
 
-                        if(drawXOutside)
+                        if (drawXOutside)
                             mEntryLabelsPaint.setTextAlign(Align.LEFT);
 
                         labelPtx = pt2x + offset;
@@ -644,8 +682,8 @@ public class PieChartRenderer extends DataRenderer {
                     Utils.drawImage(
                             c,
                             icon,
-                            (int)x,
-                            (int)y,
+                            (int) x,
+                            (int) y,
                             icon.getIntrinsicWidth(),
                             icon.getIntrinsicHeight());
                 }
@@ -722,6 +760,7 @@ public class PieChartRenderer extends DataRenderer {
     }
 
     protected Path mDrawCenterTextPathBuffer = new Path();
+
     /**
      * draws the description text in the center of the pie chart makes most
      * sense when center-hole is enabled
@@ -795,6 +834,7 @@ public class PieChartRenderer extends DataRenderer {
     }
 
     protected RectF mDrawHighlightedRectF = new RectF();
+
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
@@ -822,7 +862,7 @@ public class PieChartRenderer extends DataRenderer {
                 : 0.f;
 
         final RectF highlightedCircleBox = mDrawHighlightedRectF;
-        highlightedCircleBox.set(0,0,0,0);
+        highlightedCircleBox.set(0, 0, 0, 0);
 
         for (int i = 0; i < indices.length; i++) {
 
@@ -1034,12 +1074,12 @@ public class PieChartRenderer extends DataRenderer {
             // draw only if the value is greater than zero
             if ((Math.abs(e.getY()) > Utils.FLOAT_EPSILON)) {
 
+                double v = Math.toRadians((angle + sliceAngle)
+                        * phaseY);
                 float x = (float) ((r - circleRadius)
-                        * Math.cos(Math.toRadians((angle + sliceAngle)
-                        * phaseY)) + center.x);
+                        * Math.cos(v) + center.x);
                 float y = (float) ((r - circleRadius)
-                        * Math.sin(Math.toRadians((angle + sliceAngle)
-                        * phaseY)) + center.y);
+                        * Math.sin(v) + center.y);
 
                 mRenderPaint.setColor(dataSet.getColor(j));
                 mBitmapCanvas.drawCircle(x, y, circleRadius, mRenderPaint);
@@ -1051,7 +1091,7 @@ public class PieChartRenderer extends DataRenderer {
     }
 
     /**
-     * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
+     * Releases the drawing bitmap. This should be called when .
      */
     public void releaseBitmap() {
         if (mBitmapCanvas != null) {

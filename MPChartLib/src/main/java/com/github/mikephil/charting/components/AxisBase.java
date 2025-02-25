@@ -3,6 +3,7 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.util.Log;
 
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
@@ -184,6 +185,16 @@ public abstract class AxisBase extends ComponentBase {
         if (labels > 0)
             mAxisMaxLabels = labels;
     }
+
+    /**
+     * if true, then labels and lines are displayed using specificPositions instead of computed ones
+     */
+    private boolean showSpecificPositions = false;
+
+    /**
+     * specify to which values labels and lines must be displayed. has no effect if not used showSpecificPositions set to true
+     */
+    private float[] specificPositions = new float[]{};
 
     /**
      * default constructor
@@ -514,6 +525,33 @@ public abstract class AxisBase extends ComponentBase {
         return longest;
     }
 
+    /**
+     * Returns the longest formatted label (in terms of px), this axis
+     * contains.
+     * If paint is null, then returns the longest formatted label (in terms of characters), this axis contains.
+     *
+     * @return
+     */
+    public String getLongestLabel(Paint p) {
+        if (p == null) {
+            return getLongestLabel();
+        }
+        String longest = "";
+        float max = 0f;
+
+        for (int i = 0; i < mEntries.length; i++) {
+            String text = getFormattedLabel(i);
+            if (text != null) {
+                float width = p.measureText(text);
+                if (max < width) {
+                    longest = text;
+                }
+            }
+        }
+
+        return longest;
+    }
+
     public String getFormattedLabel(int index) {
 
         if (index < 0 || index >= mEntries.length)
@@ -593,7 +631,7 @@ public abstract class AxisBase extends ComponentBase {
      * @return
      */
     public boolean isGridDashedLineEnabled() {
-        return mGridDashPathEffect == null ? false : true;
+        return mGridDashPathEffect != null;
     }
 
     /**
@@ -645,7 +683,7 @@ public abstract class AxisBase extends ComponentBase {
      * @return
      */
     public boolean isAxisLineDashedLineEnabled() {
-        return mAxisLineDashPathEffect == null ? false : true;
+        return mAxisLineDashPathEffect != null;
     }
 
     /**
@@ -812,5 +850,38 @@ public abstract class AxisBase extends ComponentBase {
     public void setSpaceMax(float mSpaceMax)
     {
         this.mSpaceMax = mSpaceMax;
+    }
+
+    /**
+     * if set to true, labels and lines will be displayed at the specific positions passed in via setSpecificPositions
+     */
+    public void setShowSpecificPositions(boolean showSpecificPositions)
+    {
+        this.showSpecificPositions = showSpecificPositions;
+    }
+
+    public boolean isShowSpecificPositions()
+    {
+        return showSpecificPositions;
+    }
+
+    public void setSpecificPositions(float[] specificPositions)
+    {
+        this.specificPositions = specificPositions;
+    }
+
+    public float[] getSpecificPositions()
+    {
+        return specificPositions;
+    }
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mTextColor = color;
     }
 }

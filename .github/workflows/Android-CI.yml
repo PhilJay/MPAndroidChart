@@ -1,0 +1,128 @@
+name: PullRequest
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  buildTest:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-22.04 ]
+        api: [ 28 ]
+        tag: [ default ]
+        abi: [ x86_64 ]
+        emulatorApi: [ 9 ]
+        java_version: [ 17 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.4
+        with:
+          fetch-depth: 0
+          submodules: true
+      - name: kvm support
+        run: |
+          egrep -c '(vmx|svm)' /proc/cpuinfo
+          id
+          sudo adduser $USER kvm
+          sudo chown -R $USER /dev/kvm
+          id
+      - name: prepare
+        run: |
+          sudo apt-get update && sudo apt-get install -y exiftool imagemagick xdg-utils libimage-exiftool-perl zsh jq xorg
+      #          brew install exiftool imagemagick
+      - name: Install JDK ${{ matrix.java_version }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: "adopt"
+          java-version: ${{ matrix.java_version }}
+      - uses: gradle/actions/wrapper-validation@v4
+      - name: Install Android SDK
+        uses: hannesa2/action-android/install-sdk@0.1.16.7
+      - name: Run instrumentation tests
+        uses: hannesa2/action-android/emulator-run-cmd@0.1.16.7
+        with:
+          cmd: ./gradlew cAT --continue
+          api: ${{ matrix.api }}
+          tag: ${{ matrix.tag }}
+          abi: ${{ matrix.abi }}
+          cmdOptions: -noaudio -no-boot-anim -no-window -metrics-collection
+          disableAnimations: true
+      - name: Archive Espresso results
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: MPChart-Espresso-report-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
+          path: app/build/reports/androidTests/connected
+          if-no-files-found: error
+      - name: Archive screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: MPChart-Screenshots-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
+          path: |
+            app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
+            app/build/outputs/androidTest-results/connected
+      - name: Compare screenshots
+        env:
+          CLASSIC_TOKEN: ${{ secrets.CLASSIC_TOKEN }}
+          emulatorApi: ${{ matrix.emulatorApi }}
+        run: |
+          ls -ls app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
+          cp app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554\ -\ ${{ matrix.emulatorApi }}/* screenshotsToCompare${{ matrix.emulatorApi }}
+          export DISPLAY=:99
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          ./screenShotScript/screenShotCompare.sh
+      - name: Archive screenshots diffs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: MPChart-Screenshots-diffs-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
+          path: |
+            screenshotDiffs
+      - name: Show git status
+        if: ${{ always() }}
+        run: |
+          git add screenshotsToCompare${{ matrix.emulatorApi }}
+          git status
+          [ "$(git status -s -uno)" ] && exit 1 || exit 0
+  Check:
+    name: Check
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        java_version: [ 17 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.4
+        with:
+          fetch-depth: 0
+      - name: Install JDK ${{ matrix.java_version }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: "adopt"
+          java-version: ${{ matrix.java_version }}
+      - name: Install Android SDK
+        uses: hannesa2/action-android/install-sdk@0.1.16.7
+      - name: Run tests
+        run: ./gradlew test
+      - name: Test jitpack publish command
+        run: ./gradlew :MPChartLib:publishToMavenLocal
+      - name: Code checks
+        run: ./gradlew check
+      - name: Archive Lint report
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: Chart-Lint-report
+          path: ./**/build/reports/lint-results*.html

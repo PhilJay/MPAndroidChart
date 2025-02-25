@@ -160,7 +160,7 @@ public class Fill
 
     public void fillRect(Canvas c, Paint paint,
                          float left, float top, float right, float bottom,
-                         Direction gradientDirection)
+                         Direction gradientDirection, float mRoundedBarRadius)
     {
         switch (mType)
         {
@@ -190,7 +190,7 @@ public class Fill
                     paint.setStyle(Paint.Style.FILL);
                     paint.setColor(mFinalColor);
 
-                    c.drawRect(left, top, right, bottom, paint);
+                    c.drawRoundRect(new RectF(left, top, right, bottom), mRoundedBarRadius, mRoundedBarRadius, paint);
 
                     // restore
                     paint.setColor(previousColor);
@@ -230,7 +230,7 @@ public class Fill
 
                 paint.setShader(gradient);
 
-                c.drawRect(left, top, right, bottom, paint);
+                c.drawRoundRect(new RectF(left, top, right, bottom), mRoundedBarRadius, mRoundedBarRadius, paint);
             }
             break;
 

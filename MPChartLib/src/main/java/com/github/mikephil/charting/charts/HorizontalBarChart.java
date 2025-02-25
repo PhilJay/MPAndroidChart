@@ -159,23 +159,23 @@ public class HorizontalBarChart extends BarChart {
             offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getPaintAxisLabels());
         }
 
-        float xlabelwidth = mXAxis.mLabelRotatedWidth;
+        float xLabelWidth = mXAxis.mLabelWidth;
 
         if (mXAxis.isEnabled()) {
 
             // offsets for x-labels
             if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
-                offsetLeft += xlabelwidth;
+                offsetLeft += xLabelWidth;
 
             } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
-                offsetRight += xlabelwidth;
+                offsetRight += xLabelWidth;
 
             } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
 
-                offsetLeft += xlabelwidth;
-                offsetRight += xlabelwidth;
+                offsetLeft += xLabelWidth;
+                offsetRight += xLabelWidth;
             }
         }
 
@@ -217,18 +217,18 @@ public class HorizontalBarChart extends BarChart {
     }
 
     @Override
-    public void getBarBounds(BarEntry e, RectF outputRect) {
+    public void getBarBounds(BarEntry barEntry, RectF outputRect) {
 
         RectF bounds = outputRect;
-        IBarDataSet set = mData.getDataSetForEntry(e);
+        IBarDataSet set = mData.getDataSetForEntry(barEntry);
 
         if (set == null) {
             outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
             return;
         }
 
-        float y = e.getY();
-        float x = e.getX();
+        float y = barEntry.getY();
+        float x = barEntry.getX();
 
         float barWidth = mData.getBarWidth();
 

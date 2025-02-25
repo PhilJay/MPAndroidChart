@@ -42,6 +42,33 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     /**
+     * Return the axis label x position based on axis dependency and label position
+     * @param dependency
+     * @param labelPosition
+     * @return
+     */
+    private float calculateAxisLabelsXPosition(AxisDependency dependency, YAxisLabelPosition labelPosition) {
+        float viewPortBase = dependency == AxisDependency.LEFT ? mViewPortHandler.offsetLeft() : mViewPortHandler.contentRight();
+        float xOffset = mYAxis.getXOffset() * (labelPosition == YAxisLabelPosition.OUTSIDE_CHART ? -1 : 1);
+
+        return viewPortBase + xOffset;
+    }
+
+    /**
+     * Return the text align based on axis dependency and label position
+     * @param dependency
+     * @param labelPosition
+     * @return
+     */
+    private Align getAxisLabelTextAlign(AxisDependency dependency, YAxisLabelPosition labelPosition) {
+        if (dependency == AxisDependency.LEFT ^ labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
+            return Align.LEFT;
+        }
+
+        return Align.RIGHT;
+    }
+
+    /**
      * draws the y-axis labels to the screen
      */
     @Override
@@ -56,36 +83,15 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
-        float xoffset = mYAxis.getXOffset();
-        float yoffset = Utils.calcTextHeight(mAxisLabelPaint, "A") / 2.5f + mYAxis.getYOffset();
+        float yOffset = Utils.calcTextHeight(mAxisLabelPaint, "A") / 2.5f + mYAxis.getYOffset();
 
         AxisDependency dependency = mYAxis.getAxisDependency();
         YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
 
-        float xPos = 0f;
+        float xPos = calculateAxisLabelsXPosition(dependency, labelPosition);
+        mAxisLabelPaint.setTextAlign(getAxisLabelTextAlign(dependency, labelPosition));
 
-        if (dependency == AxisDependency.LEFT) {
-
-            if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-                mAxisLabelPaint.setTextAlign(Align.RIGHT);
-                xPos = mViewPortHandler.offsetLeft() - xoffset;
-            } else {
-                mAxisLabelPaint.setTextAlign(Align.LEFT);
-                xPos = mViewPortHandler.offsetLeft() + xoffset;
-            }
-
-        } else {
-
-            if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-                mAxisLabelPaint.setTextAlign(Align.LEFT);
-                xPos = mViewPortHandler.contentRight() + xoffset;
-            } else {
-                mAxisLabelPaint.setTextAlign(Align.RIGHT);
-                xPos = mViewPortHandler.contentRight() - xoffset;
-            }
-        }
-
-        drawYLabels(c, xPos, positions, yoffset);
+        drawYLabels(c, xPos, positions, yOffset);
     }
 
     @Override
@@ -114,17 +120,31 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
 
-        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
-        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
-                ? mYAxis.mEntryCount
-                : (mYAxis.mEntryCount - 1);
+        final int from;
+        final int to;
+
+        if (mYAxis.isShowSpecificPositions()) {
+            from = 0;
+            to = mYAxis.isDrawTopYLabelEntryEnabled()
+                    ? mYAxis.getSpecificPositions().length
+                    : (mYAxis.getSpecificPositions().length - 1);
+        } else {
+            from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+            to = mYAxis.isDrawTopYLabelEntryEnabled()
+                    ? mYAxis.mEntryCount
+                    : (mYAxis.mEntryCount - 1);
+        }
 
         float xOffset = mYAxis.getLabelXOffset();
 
         // draw
         for (int i = from; i < to; i++) {
-
-            String text = mYAxis.getFormattedLabel(i);
+            String text;
+            if (mYAxis.isShowSpecificPositions()) {
+                text = mYAxis.getValueFormatter().getFormattedValue(mYAxis.getSpecificPositions()[i], mYAxis);
+            } else {
+                text = mYAxis.getFormattedLabel(i);
+            }
 
             c.drawText(text,
                     fixedPosition + xOffset,
@@ -203,14 +223,24 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected float[] getTransformedPositions() {
 
-        if(mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2){
-            mGetTransformedPositionsBuffer = new float[mYAxis.mEntryCount * 2];
+        if (mYAxis.isShowSpecificPositions()) {
+            if (mGetTransformedPositionsBuffer.length != mYAxis.getSpecificPositions().length * 2) {
+                mGetTransformedPositionsBuffer = new float[mYAxis.getSpecificPositions().length * 2];
+            }
+        } else {
+            if (mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2) {
+                mGetTransformedPositionsBuffer = new float[mYAxis.mEntryCount * 2];
+            }
         }
         float[] positions = mGetTransformedPositionsBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill y values, x values are not needed for y-labels
-            positions[i + 1] = mYAxis.mEntries[i / 2];
+            if (mYAxis.isShowSpecificPositions()) {
+                positions[i + 1] = mYAxis.getSpecificPositions()[i / 2];
+            } else {
+                positions[i + 1] = mYAxis.mEntries[i / 2];
+            }
         }
 
         mTrans.pointValuesToPixel(positions);

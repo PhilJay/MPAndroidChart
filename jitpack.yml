@@ -1,0 +1,5 @@
+jdk:
+ - openjdk17
+install:
+ - ./gradlew :MPChartLib:build :MPChartLib:publishToMavenLocal -x :MPChartLib:test
+ - find . -name "*.aar"
