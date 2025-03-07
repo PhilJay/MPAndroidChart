@@ -762,6 +762,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 		for (Highlight highlight : mIndicesToHighlight) {
 
 			IDataSet set = mData.getDataSetByIndex(highlight.getDataSetIndex());
+			if (!set.isVisible()) {
+				continue;
+			}
 
 			Entry e = mData.getEntryForHighlight(highlight);
 
