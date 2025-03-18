@@ -761,8 +761,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
 		for (Highlight highlight : mIndicesToHighlight) {
 
+			// When changing data sets and calling animation functions, sometimes an erroneous highlight is generated
+			// on the dataset that is removed. Null check to prevent crash
 			IDataSet set = mData.getDataSetByIndex(highlight.getDataSetIndex());
-			if (!set.isVisible()) {
+			if (set == null || !set.isVisible()) {
 				continue;
 			}
 
