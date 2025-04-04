@@ -101,7 +101,7 @@ open class Entry : BaseEntry, Parcelable, Serializable {
      * returns a string representation of the entry containing x-index and value
      */
     override fun toString(): String {
-        return "Entry, x: $x y: $y"
+        return "Entry x=$x y=$y"
     }
 
     override fun describeContents(): Int {
