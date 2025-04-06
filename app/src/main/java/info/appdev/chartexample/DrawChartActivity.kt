@@ -23,8 +23,6 @@ import info.appdev.chartexample.notimportant.DemoBase
 /**
  * This Activity demonstrates drawing into the Chart with the finger. Both line,
  * bar and scatter charts can be used for drawing.
- *
- * @author Philipp Jahoda
  */
 class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListener {
     private lateinit var binding: ActivityDrawChartBinding
@@ -53,14 +51,14 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         // add dummy-data to the chart
         initWithDummyData()
 
-        val xl = binding.chart1.getXAxis()
+        val xl = binding.chart1.xAxis
         xl.typeface = tfRegular
         xl.setAvoidFirstLastClipping(true)
 
-        val yl = binding.chart1.getAxisLeft()
+        val yl = binding.chart1.axisLeft
         yl.typeface = tfRegular
 
-        binding.chart1.getLegend().isEnabled = false
+        binding.chart1.legend.isEnabled = false
 
         // chart.setYRange(-40f, 40f, true);
         // call this to reset the changed y-range
@@ -89,7 +87,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet

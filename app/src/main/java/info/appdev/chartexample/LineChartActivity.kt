@@ -29,7 +29,7 @@ import info.appdev.chartexample.notimportant.DemoBase
 /**
  * Example of a heavily customized [LineChart] with limit lines, custom line shapes, etc.
  */
-class LineChartActivity1 : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
+class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 
     private lateinit var binding: ActivityLinechartBinding
 
@@ -82,40 +82,45 @@ class LineChartActivity1 : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         // axis range
         binding.chart1.axisLeft.axisMaximum = 200f
         binding.chart1.axisLeft.axisMinimum = -50f
-        val llXAxis = LimitLine(9f, "Index 10")
-        llXAxis.lineWidth = 4f
-        llXAxis.enableDashedLine(10f, 10f, 0f)
-        llXAxis.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
-        llXAxis.textSize = 10f
-        llXAxis.typeface = tfRegular
-        val limitLine1 = LimitLine(150f, "Upper Limit")
-        limitLine1.lineWidth = 4f
-        limitLine1.enableDashedLine(10f, 10f, 0f)
-        limitLine1.labelPosition = LimitLabelPosition.RIGHT_TOP
-        limitLine1.textSize = 10f
-        limitLine1.typeface = tfRegular
-        limitLine1.lineColor = Color.GREEN
-        val limitLine2 = LimitLine(-30f, "Lower Limit")
-        limitLine2.lineWidth = 4f
-        limitLine2.enableDashedLine(10f, 10f, 0f)
-        limitLine2.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
-        limitLine2.textSize = 10f
-        limitLine2.typeface = tfRegular
-        limitLine2.lineColor = Color.GREEN
+        val llXAxis10 = LimitLine(9f, "Index 10").apply {
+            lineWidth = 4f
+            enableDashedLine(10f, 10f, 0f)
+            labelPosition = LimitLabelPosition.RIGHT_BOTTOM
+            textSize = 10f
+            typeface = tfRegular
+        }
+
+        val limitLineUpper = LimitLine(150f, "Upper Limit").apply {
+            lineWidth = 4f
+            enableDashedLine(10f, 10f, 0f)
+            labelPosition = LimitLabelPosition.RIGHT_TOP
+            textSize = 10f
+            typeface = tfRegular
+            lineColor = Color.GREEN
+        }
+
+        val limitLineLower = LimitLine(-30f, "Lower Limit").apply {
+            lineWidth = 4f
+            enableDashedLine(10f, 10f, 0f)
+            labelPosition = LimitLabelPosition.RIGHT_BOTTOM
+            textSize = 10f
+            typeface = tfRegular
+            lineColor = Color.GREEN
+        }
 
         // draw limit lines behind data instead of on top
         binding.chart1.axisLeft.setDrawLimitLinesBehindData(true)
         binding.chart1.xAxis.setDrawLimitLinesBehindData(true)
 
         // add limit lines
-        binding.chart1.axisLeft.addLimitLine(limitLine1)
-        binding.chart1.axisLeft.addLimitLine(limitLine2)
-        //xAxis.addLimitLine(llXAxis);
+        binding.chart1.axisLeft.addLimitLine(limitLineUpper)
+        binding.chart1.axisLeft.addLimitLine(limitLineLower)
+        // binding.chart1.axisLeft.addLimitLine(llXAxis10)
 
         // add data
         binding.seekBarX.progress = 45
         binding.seekBarY.progress = 180
-        Log.d("setDataCreate", "\$count=45 range=180f")
+        Log.d("setDataCreate", "count=45 range=180f")
         setData(this, binding.chart1, 45, 180f)
 
         // draw points over time
