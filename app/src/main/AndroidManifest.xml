@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="info.appdev.chartexample.LineChartActivity1" />
+        <activity android:name="info.appdev.chartexample.LineChartActivity" />
         <activity android:name="info.appdev.chartexample.LineChartDualAxisActivity" />
         <activity android:name="info.appdev.chartexample.LineChartTime" />
         <activity android:name="info.appdev.chartexample.BarChartActivity" />

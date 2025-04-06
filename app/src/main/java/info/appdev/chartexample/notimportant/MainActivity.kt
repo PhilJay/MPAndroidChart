@@ -27,7 +27,7 @@ import info.appdev.chartexample.FilledLineActivity
 import info.appdev.chartexample.HalfPieChartActivity
 import info.appdev.chartexample.HorizontalBarChartActivity
 import info.appdev.chartexample.InvertedLineChartActivity
-import info.appdev.chartexample.LineChartActivity1
+import info.appdev.chartexample.LineChartActivity
 import info.appdev.chartexample.LineChartActivityColored
 import info.appdev.chartexample.LineChartDualAxisActivity
 import info.appdev.chartexample.LineChartTime
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         val menuItems = ArrayList<ContentItem<out DemoBase>>().apply {
             add(0, ContentItem("Line Charts"))
             add(0, ContentItem("Line Charts"))
-            add(1, ContentItem("Basic", "Simple line chart.", LineChartActivity1::class.java))
+            add(1, ContentItem("Basic", "Simple line chart.", LineChartActivity::class.java))
             add(2, ContentItem("Multiple", "Show multiple data sets.", MultiLineChartActivity::class.java))
             add(3, ContentItem("Dual Axis", "Line chart with dual y-axes.", LineChartDualAxisActivity::class.java))
             add(4, ContentItem("Inverted Axis", "Inverted y-axis.", InvertedLineChartActivity::class.java))
