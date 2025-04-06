@@ -46,17 +46,17 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 	@Override
 	protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
 		initBuffers();
-		Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-		mBarBorderPaint.setColor(dataSet.getBarBorderColor());
-		mBarBorderPaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getBarBorderWidth()));
-		mShadowPaint.setColor(dataSet.getBarShadowColor());
+		Transformer trans = chart.getTransformer(dataSet.getAxisDependency());
+		barBorderPaint.setColor(dataSet.getBarBorderColor());
+		barBorderPaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getBarBorderWidth()));
+		shadowPaint.setColor(dataSet.getBarShadowColor());
 		boolean drawBorder = dataSet.getBarBorderWidth() > 0f;
 		float phaseX = mAnimator.getPhaseX();
 		float phaseY = mAnimator.getPhaseY();
 
-		if (mChart.isDrawBarShadowEnabled()) {
-			mShadowPaint.setColor(dataSet.getBarShadowColor());
-			BarData barData = mChart.getBarData();
+		if (chart.isDrawBarShadowEnabled()) {
+			shadowPaint.setColor(dataSet.getBarShadowColor());
+			BarData barData = chart.getBarData();
 			float barWidth = barData.getBarWidth();
 			float barWidthHalf = barWidth / 2.0f;
 			float x;
@@ -80,19 +80,19 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 
 
 				if (roundedShadowRadius > 0) {
-					c.drawRoundRect(mBarRect, roundedShadowRadius, roundedShadowRadius, mShadowPaint);
+					c.drawRoundRect(barRect, roundedShadowRadius, roundedShadowRadius, shadowPaint);
 				} else {
-					c.drawRect(mBarShadowRectBuffer, mShadowPaint);
+					c.drawRect(mBarShadowRectBuffer, shadowPaint);
 				}
 				i++;
 			}
 		}
 
-		BarBuffer buffer = mBarBuffers[index];
+		BarBuffer buffer = barBuffers[index];
 		buffer.setPhases(phaseX, phaseY);
 		buffer.setDataSet(index);
-		buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
-		buffer.setBarWidth(mChart.getBarData().getBarWidth());
+		buffer.setInverted(chart.isInverted(dataSet.getAxisDependency()));
+		buffer.setBarWidth(chart.getBarData().getBarWidth());
 		buffer.feed(dataSet);
 		trans.pointValuesToPixel(buffer.buffer);
 
@@ -109,15 +109,15 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
                     break;
                 }
 
-				if (mChart.isDrawBarShadowEnabled()) {
+				if (chart.isDrawBarShadowEnabled()) {
                     if (roundedShadowRadius > 0) {
                         c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
                                 buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, mShadowPaint);
+                                mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
                     } else {
                         c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
                                 buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom(), mShadowPaint);
+                                mViewPortHandler.contentBottom(), shadowPaint);
                     }
 				}
 
@@ -146,11 +146,11 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
                     break;
                 }
 
-				if (mChart.isDrawBarShadowEnabled()) {
+				if (chart.isDrawBarShadowEnabled()) {
                     if (roundedShadowRadius > 0) {
                         c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
                                 buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, mShadowPaint);
+                                mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
                     } else {
                         c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                                 buffer.buffer[j + 3], mRenderPaint);
@@ -228,7 +228,7 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 
 	@Override
 	public void drawHighlighted(Canvas c, Highlight[] indices) {
-		BarData barData = mChart.getBarData();
+		BarData barData = chart.getBarData();
 
 		for (Highlight high : indices) {
 
@@ -244,7 +244,7 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 				continue;
 			}
 
-			Transformer trans = mChart.getTransformer(set.getAxisDependency());
+			Transformer trans = chart.getTransformer(set.getAxisDependency());
 
 			mHighlightPaint.setColor(set.getHighLightColor());
 			mHighlightPaint.setAlpha(set.getHighLightAlpha());
@@ -256,7 +256,7 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 
 			if (isStack) {
 
-				if (mChart.isHighlightFullBarEnabled()) {
+				if (chart.isHighlightFullBarEnabled()) {
 
 					y1 = e.getPositiveSum();
 					y2 = -e.getNegativeSum();
@@ -276,10 +276,10 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 
 			prepareBarHighlight(e.getX(), y1, y2, barData.getBarWidth() / 2f, trans);
 
-			setHighlightDrawPos(high, mBarRect);
+			setHighlightDrawPos(high, barRect);
 
-			Path path2 = roundRect(new RectF(mBarRect.left, mBarRect.top, mBarRect.right,
-					mBarRect.bottom), mRadius, mRadius, true, true, true, true);
+			Path path2 = roundRect(new RectF(barRect.left, barRect.top, barRect.right,
+					barRect.bottom), mRadius, mRadius, true, true, true, true);
 
 			c.drawPath(path2, mHighlightPaint);
 		}
