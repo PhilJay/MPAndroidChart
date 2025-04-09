@@ -29,7 +29,7 @@ open class BarChartRenderer(
     protected var barRect: RectF = RectF()
 
     @JvmField
-    protected var barBuffers: Array<BarBuffer?>? = null
+    protected var barBuffers: MutableList<BarBuffer?> = mutableListOf()
 
     @JvmField
     protected var shadowPaint: Paint
@@ -57,19 +57,20 @@ open class BarChartRenderer(
 
     override fun initBuffers() {
         val barData = chart.barData
-        barBuffers = arrayOfNulls(barData.dataSetCount)
+        barBuffers = mutableListOf()
 
-        for (i in barBuffers!!.indices) {
-            val set = barData.getDataSetByIndex(i)
-            barBuffers!![i] = BarBuffer(
-                set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
-                barData.dataSetCount, set.isStacked
+        barData.dataSets.forEach {
+            barBuffers.add(
+                BarBuffer(
+                    it.entryCount * 4 * (if (it.isStacked) it.stackSize else 1),
+                    barData.dataSetCount, it.isStacked
+                )
             )
         }
     }
 
     override fun drawData(c: Canvas) {
-        if (barBuffers == null) {
+        if (barBuffers.size == 0) {
             initBuffers()
         }
 
@@ -155,7 +156,7 @@ open class BarChartRenderer(
         }
 
         // initialize the buffer
-        val buffer = barBuffers!![index]!!.apply {
+        val buffer = barBuffers[index]!!.apply {
             setPhases(phaseX, phaseY)
             setDataSet(index)
             setInverted(chart.isInverted(dataSet.axisDependency))
@@ -286,7 +287,7 @@ open class BarChartRenderer(
                 }
 
                 // get the buffer
-                val buffer = barBuffers!![i]
+                val buffer = barBuffers[i]
 
                 val phaseY = animator.phaseY
 
