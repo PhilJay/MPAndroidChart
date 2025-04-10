@@ -67,6 +67,22 @@ abstract class AxisRenderer(
     }
 
     /**
+     * paint used for the limit ranges
+     */
+    @JvmField
+    protected var limitRangePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+    }
+
+    /**
+     * paint used for the limit range fill
+     */
+    @JvmField
+    protected var limitRangePaintFill = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+    }
+
+    /**
      * Computes the axis values.
      *
      * @param min - the minimum value in the data object for this axis
