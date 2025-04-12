@@ -13,9 +13,9 @@ public abstract class Renderer {
     /**
      * the component that handles the drawing area of the chart and it's offsets
      */
-    protected ViewPortHandler mViewPortHandler;
+    protected ViewPortHandler viewPortHandler;
 
     public Renderer(ViewPortHandler viewPortHandler) {
-        this.mViewPortHandler = viewPortHandler;
+        this.viewPortHandler = viewPortHandler;
     }
 }

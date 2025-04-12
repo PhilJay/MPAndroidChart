@@ -51,7 +51,7 @@ public abstract class AxisRenderer extends Renderer {
         this.mTrans = trans;
         this.mAxis = axis;
 
-        if(mViewPortHandler != null) {
+        if(this.viewPortHandler != null) {
 
             mAxisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -119,10 +119,10 @@ public abstract class AxisRenderer extends Renderer {
 
         // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
-        if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
+        if (viewPortHandler != null && viewPortHandler.contentWidth() > 10 && !viewPortHandler.isFullyZoomedOutY()) {
 
-            MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
-            MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
+            MPPointD p1 = mTrans.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop());
+            MPPointD p2 = mTrans.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentBottom());
 
             if (!inverted) {
 

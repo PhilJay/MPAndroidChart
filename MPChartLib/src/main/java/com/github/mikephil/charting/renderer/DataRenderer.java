@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
-import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.Entry;
@@ -14,7 +13,6 @@ import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -28,19 +26,19 @@ public abstract class DataRenderer extends Renderer {
     /**
      * the animator object used to perform animations on the chart data
      */
-    protected ChartAnimator mAnimator;
+    protected ChartAnimator animator;
 
     /**
      * main paint object used for rendering
      */
-    protected Paint mRenderPaint;
+    protected Paint renderPaint;
 
     /**
      * paint used for highlighting values
      */
-    protected Paint mHighlightPaint;
+    protected Paint highlightPaint;
 
-    protected Paint mDrawPaint;
+    protected Paint drawPaint;
 
     /**
      * paint object for drawing values (text representing values of chart
@@ -50,27 +48,27 @@ public abstract class DataRenderer extends Renderer {
 
     public DataRenderer(ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(viewPortHandler);
-        this.mAnimator = animator;
+        this.animator = animator;
 
-        mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRenderPaint.setStyle(Style.FILL);
+        renderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        renderPaint.setStyle(Style.FILL);
 
-        mDrawPaint = new Paint(Paint.DITHER_FLAG);
+        drawPaint = new Paint(Paint.DITHER_FLAG);
 
         mValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValuePaint.setColor(Color.rgb(63, 63, 63));
         mValuePaint.setTextAlign(Align.CENTER);
         mValuePaint.setTextSize(Utils.convertDpToPixel(9f));
 
-        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.STROKE);
-        mHighlightPaint.setStrokeWidth(2f);
-        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+        highlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        highlightPaint.setStyle(Paint.Style.STROKE);
+        highlightPaint.setStrokeWidth(2f);
+        highlightPaint.setColor(Color.rgb(255, 187, 115));
     }
 
     protected boolean isDrawingValuesAllowed(ChartInterface chart) {
         return chart.getData().getEntryCount() < chart.getMaxVisibleCount()
-                * mViewPortHandler.getScaleX();
+                * viewPortHandler.getScaleX();
     }
 
     /**
@@ -90,7 +88,7 @@ public abstract class DataRenderer extends Renderer {
      * @return
      */
     public Paint getPaintHighlight() {
-        return mHighlightPaint;
+        return highlightPaint;
     }
 
     /**
@@ -99,7 +97,7 @@ public abstract class DataRenderer extends Renderer {
      * @return
      */
     public Paint getPaintRender() {
-        return mRenderPaint;
+        return renderPaint;
     }
 
     /**
@@ -149,7 +147,7 @@ public abstract class DataRenderer extends Renderer {
      */
     public void drawValue(Canvas c, IValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
         mValuePaint.setColor(color);
-        c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler), x, y, mValuePaint);
+        c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, viewPortHandler), x, y, mValuePaint);
     }
 
     /**

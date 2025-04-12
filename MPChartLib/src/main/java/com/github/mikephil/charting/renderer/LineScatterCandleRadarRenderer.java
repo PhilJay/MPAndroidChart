@@ -32,21 +32,21 @@ public abstract class LineScatterCandleRadarRenderer extends BarLineScatterCandl
     protected void drawHighlightLines(Canvas c, float x, float y, ILineScatterCandleRadarDataSet set) {
 
         // set color and stroke-width
-        mHighlightPaint.setColor(set.getHighLightColor());
-        mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
+        highlightPaint.setColor(set.getHighLightColor());
+        highlightPaint.setStrokeWidth(set.getHighlightLineWidth());
 
         // draw highlighted lines (if enabled)
-        mHighlightPaint.setPathEffect(set.getDashPathEffectHighlight());
+        highlightPaint.setPathEffect(set.getDashPathEffectHighlight());
 
         // draw vertical highlight lines
         if (set.isVerticalHighlightIndicatorEnabled()) {
 
             // create vertical path
             mHighlightLinePath.reset();
-            mHighlightLinePath.moveTo(x, mViewPortHandler.contentTop());
-            mHighlightLinePath.lineTo(x, mViewPortHandler.contentBottom());
+            mHighlightLinePath.moveTo(x, viewPortHandler.contentTop());
+            mHighlightLinePath.lineTo(x, viewPortHandler.contentBottom());
 
-            c.drawPath(mHighlightLinePath, mHighlightPaint);
+            c.drawPath(mHighlightLinePath, highlightPaint);
         }
 
         // draw horizontal highlight lines
@@ -54,10 +54,10 @@ public abstract class LineScatterCandleRadarRenderer extends BarLineScatterCandl
 
             // create horizontal path
             mHighlightLinePath.reset();
-            mHighlightLinePath.moveTo(mViewPortHandler.contentLeft(), y);
-            mHighlightLinePath.lineTo(mViewPortHandler.contentRight(), y);
+            mHighlightLinePath.moveTo(viewPortHandler.contentLeft(), y);
+            mHighlightLinePath.lineTo(viewPortHandler.contentRight(), y);
 
-            c.drawPath(mHighlightLinePath, mHighlightPaint);
+            c.drawPath(mHighlightLinePath, highlightPaint);
         }
     }
 }
