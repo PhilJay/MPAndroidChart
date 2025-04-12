@@ -16,7 +16,6 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -146,8 +145,8 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        int width = (int) mViewPortHandler.getChartWidth();
-        int height = (int) mViewPortHandler.getChartHeight();
+        int width = (int) viewPortHandler.getChartWidth();
+        int height = (int) viewPortHandler.getChartHeight();
 
         Bitmap drawBitmap = mDrawBitmap == null ? null : mDrawBitmap.get();
 
@@ -228,7 +227,7 @@ public class PieChartRenderer extends DataRenderer {
         if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled())
             return dataSet.getSliceSpace();
 
-        float spaceSizeRatio = dataSet.getSliceSpace() / mViewPortHandler.getSmallestContentExtension();
+        float spaceSizeRatio = dataSet.getSliceSpace() / viewPortHandler.getSmallestContentExtension();
         float minValueRatio = dataSet.getYMin() / mChart.getData().getYValueSum() * 2;
 
         float sliceSpace = spaceSizeRatio > minValueRatio ? 0f : dataSet.getSliceSpace();
@@ -241,8 +240,8 @@ public class PieChartRenderer extends DataRenderer {
         float angle = 0;
         float rotationAngle = mChart.getRotationAngle();
 
-        float phaseX = mAnimator.getPhaseX();
-        float phaseY = mAnimator.getPhaseY();
+        float phaseX = animator.getPhaseX();
+        float phaseY = animator.getPhaseY();
 
         final RectF circleBox = mChart.getCircleBox();
 
@@ -294,7 +293,7 @@ public class PieChartRenderer extends DataRenderer {
 
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
-            mRenderPaint.setColor(dataSet.getColor(j));
+            renderPaint.setColor(dataSet.getColor(j));
 
             // Set current data set color to paint object
             mRoundedCornerPaint.setColor(dataSet.getColor(j));
@@ -427,7 +426,7 @@ public class PieChartRenderer extends DataRenderer {
 
             mPathBuffer.close();
 
-            mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+            mBitmapCanvas.drawPath(mPathBuffer, renderPaint);
 
             // Draw rounded corner path with paint object slice with the given radius
             if (getRoundedCornerRadius()>0) {
@@ -451,8 +450,8 @@ public class PieChartRenderer extends DataRenderer {
         float[] drawAngles = mChart.getDrawAngles();
         float[] absoluteAngles = mChart.getAbsoluteAngles();
 
-        float phaseX = mAnimator.getPhaseX();
-        float phaseY = mAnimator.getPhaseY();
+        float phaseX = animator.getPhaseX();
+        float phaseY = animator.getPhaseY();
 
         final float roundedRadius = (radius - (radius * mChart.getHoleRadius() / 100f)) / 2f;
         final float holeRadiusPercent = mChart.getHoleRadius() / 100.f;
@@ -744,7 +743,7 @@ public class PieChartRenderer extends DataRenderer {
                 int alpha = mTransparentCirclePaint.getAlpha();
                 float secondHoleRadius = radius * (mChart.getTransparentCircleRadius() / 100);
 
-                mTransparentCirclePaint.setAlpha((int) ((float) alpha * mAnimator.getPhaseX() * mAnimator.getPhaseY()));
+                mTransparentCirclePaint.setAlpha((int) ((float) alpha * animator.getPhaseX() * animator.getPhaseY()));
 
                 // draw the transparent-circle
                 mHoleCirclePath.reset();
@@ -847,8 +846,8 @@ public class PieChartRenderer extends DataRenderer {
         if (drawInnerArc && mChart.isDrawRoundedSlicesEnabled())
             return;
 
-        float phaseX = mAnimator.getPhaseX();
-        float phaseY = mAnimator.getPhaseY();
+        float phaseX = animator.getPhaseX();
+        float phaseY = animator.getPhaseY();
 
         float angle;
         float rotationAngle = mChart.getRotationAngle();
@@ -907,7 +906,7 @@ public class PieChartRenderer extends DataRenderer {
             Integer highlightColor = set.getHighlightColor();
             if (highlightColor == null)
                 highlightColor = set.getColor(index);
-            mRenderPaint.setColor(highlightColor);
+            renderPaint.setColor(highlightColor);
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :
@@ -1032,7 +1031,7 @@ public class PieChartRenderer extends DataRenderer {
 
             mPathBuffer.close();
 
-            mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+            mBitmapCanvas.drawPath(mPathBuffer, renderPaint);
         }
 
         MPPointF.recycleInstance(center);
@@ -1053,8 +1052,8 @@ public class PieChartRenderer extends DataRenderer {
         if (!dataSet.isVisible())
             return;
 
-        float phaseX = mAnimator.getPhaseX();
-        float phaseY = mAnimator.getPhaseY();
+        float phaseX = animator.getPhaseX();
+        float phaseY = animator.getPhaseY();
 
         MPPointF center = mChart.getCenterCircleBox();
         float r = mChart.getRadius();
@@ -1081,8 +1080,8 @@ public class PieChartRenderer extends DataRenderer {
                 float y = (float) ((r - circleRadius)
                         * Math.sin(v) + center.y);
 
-                mRenderPaint.setColor(dataSet.getColor(j));
-                mBitmapCanvas.drawCircle(x, y, circleRadius, mRenderPaint);
+                renderPaint.setColor(dataSet.getColor(j));
+                mBitmapCanvas.drawCircle(x, y, circleRadius, renderPaint);
             }
 
             angle += sliceAngle * phaseX;

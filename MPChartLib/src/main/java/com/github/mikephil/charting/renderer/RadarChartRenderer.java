@@ -39,10 +39,10 @@ public class RadarChartRenderer extends LineRadarRenderer {
         super(animator, viewPortHandler);
         mChart = chart;
 
-        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.STROKE);
-        mHighlightPaint.setStrokeWidth(2f);
-        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+        highlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        highlightPaint.setStyle(Paint.Style.STROKE);
+        highlightPaint.setStrokeWidth(2f);
+        highlightPaint.setColor(Color.rgb(255, 187, 115));
 
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(2f);
@@ -90,8 +90,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
      */
     protected void drawDataSet(Canvas c, IRadarDataSet dataSet, int mostEntries) {
 
-        float phaseX = mAnimator.getPhaseX();
-        float phaseY = mAnimator.getPhaseY();
+        float phaseX = animator.getPhaseX();
+        float phaseY = animator.getPhaseY();
 
         float sliceangle = mChart.getSliceAngle();
 
@@ -108,7 +108,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
-            mRenderPaint.setColor(dataSet.getColor(j));
+            renderPaint.setColor(dataSet.getColor(j));
 
             RadarEntry e = dataSet.getEntryForIndex(j);
 
@@ -146,12 +146,12 @@ public class RadarChartRenderer extends LineRadarRenderer {
             }
         }
 
-        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
-        mRenderPaint.setStyle(Paint.Style.STROKE);
+        renderPaint.setStrokeWidth(dataSet.getLineWidth());
+        renderPaint.setStyle(Paint.Style.STROKE);
 
         // draw the line (only if filled is disabled or alpha is below 255)
         if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
-            c.drawPath(surface, mRenderPaint);
+            c.drawPath(surface, renderPaint);
 
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
@@ -160,8 +160,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
     @Override
     public void drawValues(Canvas c) {
 
-        float phaseX = mAnimator.getPhaseX();
-        float phaseY = mAnimator.getPhaseY();
+        float phaseX = animator.getPhaseX();
+        float phaseY = animator.getPhaseY();
 
         float sliceangle = mChart.getSliceAngle();
 
@@ -360,8 +360,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
             float y = (e.getY() - mChart.getYChartMin());
 
             Utils.getPosition(center,
-                    y * factor * mAnimator.getPhaseY(),
-                    sliceangle * high.getX() * mAnimator.getPhaseX() + mChart.getRotationAngle(),
+                    y * factor * animator.getPhaseY(),
+                    sliceangle * high.getX() * animator.getPhaseX() + mChart.getRotationAngle(),
                     pOut);
 
             high.setDraw(pOut.x, pOut.y);

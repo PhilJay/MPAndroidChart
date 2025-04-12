@@ -51,8 +51,8 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 		barBorderPaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getBarBorderWidth()));
 		shadowPaint.setColor(dataSet.getBarShadowColor());
 		boolean drawBorder = dataSet.getBarBorderWidth() > 0f;
-		float phaseX = mAnimator.getPhaseX();
-		float phaseY = mAnimator.getPhaseY();
+		float phaseX = animator.getPhaseX();
+		float phaseY = animator.getPhaseY();
 
 		if (chart.isDrawBarShadowEnabled()) {
 			shadowPaint.setColor(dataSet.getBarShadowColor());
@@ -68,15 +68,15 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 				mBarShadowRectBuffer.top = x - barWidthHalf;
 				mBarShadowRectBuffer.bottom = x + barWidthHalf;
 				trans.rectValueToPixel(mBarShadowRectBuffer);
-				if (!mViewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
+				if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
 					i++;
 					continue;
 				}
-				if (!mViewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) {
+				if (!viewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) {
 					break;
 				}
-				mBarShadowRectBuffer.left = mViewPortHandler.contentLeft();
-				mBarShadowRectBuffer.right = mViewPortHandler.contentRight();
+				mBarShadowRectBuffer.left = viewPortHandler.contentLeft();
+				mBarShadowRectBuffer.right = viewPortHandler.contentRight();
 
 				if (roundedShadowRadius > 0) {
 					c.drawRoundRect(barRect, roundedShadowRadius, roundedShadowRadius, shadowPaint);
@@ -98,101 +98,101 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 		// if multiple colors has been assigned to Bar Chart
 		if (dataSet.getColors().size() > 1) {
 			for (int j = 0; j < buffer.size(); j += 4) {
-				if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+				if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
 					continue;
 				}
 
-				if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+				if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
 					break;
 				}
 
 				if (chart.isDrawBarShadowEnabled()) {
 					if (roundedShadowRadius > 0) {
-						c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+						c.drawRoundRect(new RectF(buffer.buffer[j], viewPortHandler.contentTop(),
 								buffer.buffer[j + 2],
-								mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
+								viewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
 					} else {
-						c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
+						c.drawRect(buffer.buffer[j], viewPortHandler.contentTop(),
 								buffer.buffer[j + 2],
-								mViewPortHandler.contentBottom(), shadowPaint);
+								viewPortHandler.contentBottom(), shadowPaint);
 					}
 				}
 
 				// Set the color for the currently drawn value. If the index
-				mRenderPaint.setColor(dataSet.getColor(j / 4));
+				renderPaint.setColor(dataSet.getColor(j / 4));
 
 				if (roundedPositiveDataSetRadius > 0) {
 					c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-							buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, mRenderPaint);
+							buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, renderPaint);
 				} else {
 					c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-							buffer.buffer[j + 3], mRenderPaint);
+							buffer.buffer[j + 3], renderPaint);
 				}
 			}
 		} else {
-			mRenderPaint.setColor(dataSet.getColor());
+			renderPaint.setColor(dataSet.getColor());
 
 			for (int j = 0; j < buffer.size(); j += 4) {
-				if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+				if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
 					continue;
 				}
 
-				if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+				if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
 					break;
 				}
 
 				if (chart.isDrawBarShadowEnabled()) {
 					if (roundedShadowRadius > 0) {
-						c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+						c.drawRoundRect(new RectF(buffer.buffer[j], viewPortHandler.contentTop(),
 								buffer.buffer[j + 2],
-								mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
+								viewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
 					} else {
 						c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-								buffer.buffer[j + 3], mRenderPaint);
+								buffer.buffer[j + 3], renderPaint);
 					}
 				}
 
 				if (roundedPositiveDataSetRadius > 0) {
 					c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-							buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, mRenderPaint);
+							buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, renderPaint);
 				} else {
 					c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-							buffer.buffer[j + 3], mRenderPaint);
+							buffer.buffer[j + 3], renderPaint);
 				}
 			}
 		}
 
 		boolean isSingleColor = dataSet.getColors().size() == 1;
 		if (isSingleColor) {
-			mRenderPaint.setColor(dataSet.getColor(index));
+			renderPaint.setColor(dataSet.getColor(index));
 		}
 
 		int j = 0;
 		while (j < buffer.size()) {
-			if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+			if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
 				j += 4;
 				continue;
 			}
 
-			if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+			if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
 				break;
 			}
 
 			if (!isSingleColor) {
-				mRenderPaint.setColor(dataSet.getColor(j / 4));
+				renderPaint.setColor(dataSet.getColor(j / 4));
 			}
 
 			if ((dataSet.getEntryForIndex(j / 4).getY() < 0 && roundedNegativeDataSetRadius > 0)) {
 				Path path2 = roundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
 						buffer.buffer[j + 3]), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, true, true, true, true);
-				c.drawPath(path2, mRenderPaint);
+				c.drawPath(path2, renderPaint);
 			} else if ((dataSet.getEntryForIndex(j / 4).getY() > 0 && roundedPositiveDataSetRadius > 0)) {
 				Path path2 = roundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
 						buffer.buffer[j + 3]), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, true, true, true, true);
-				c.drawPath(path2, mRenderPaint);
+				c.drawPath(path2, renderPaint);
 			} else {
 				c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-						buffer.buffer[j + 3], mRenderPaint);
+						buffer.buffer[j + 3], renderPaint);
 			}
 			j += 4;
 		}

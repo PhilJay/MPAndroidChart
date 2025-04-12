@@ -29,7 +29,7 @@ public class YAxisRenderer extends AxisRenderer {
 
         this.mYAxis = yAxis;
 
-        if(mViewPortHandler != null) {
+        if(this.viewPortHandler != null) {
 
             mAxisLabelPaint.setColor(Color.BLACK);
             mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
@@ -48,7 +48,7 @@ public class YAxisRenderer extends AxisRenderer {
      * @return
      */
     private float calculateAxisLabelsXPosition(AxisDependency dependency, YAxisLabelPosition labelPosition) {
-        float viewPortBase = dependency == AxisDependency.LEFT ? mViewPortHandler.offsetLeft() : mViewPortHandler.contentRight();
+        float viewPortBase = dependency == AxisDependency.LEFT ? viewPortHandler.offsetLeft() : viewPortHandler.contentRight();
         float xOffset = mYAxis.getXOffset() * (labelPosition == YAxisLabelPosition.OUTSIDE_CHART ? -1 : 1);
 
         return viewPortBase + xOffset;
@@ -104,11 +104,11 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisLinePaint.setStrokeWidth(mYAxis.getAxisLineWidth());
 
         if (mYAxis.getAxisDependency() == AxisDependency.LEFT) {
-            c.drawLine(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), mViewPortHandler.contentLeft(),
-                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+            c.drawLine(viewPortHandler.contentLeft(), viewPortHandler.contentTop(), viewPortHandler.contentLeft(),
+                    viewPortHandler.contentBottom(), mAxisLinePaint);
         } else {
-            c.drawLine(mViewPortHandler.contentRight(), mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
-                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+            c.drawLine(viewPortHandler.contentRight(), viewPortHandler.contentTop(), viewPortHandler.contentRight(),
+                    viewPortHandler.contentBottom(), mAxisLinePaint);
         }
     }
 
@@ -193,7 +193,7 @@ public class YAxisRenderer extends AxisRenderer {
     protected RectF mGridClippingRect = new RectF();
 
     public RectF getGridClippingRect() {
-        mGridClippingRect.set(mViewPortHandler.getContentRect());
+        mGridClippingRect.set(viewPortHandler.getContentRect());
         mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth());
         return mGridClippingRect;
     }
@@ -208,8 +208,8 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected Path linePath(Path p, int i, float[] positions) {
 
-        p.moveTo(mViewPortHandler.offsetLeft(), positions[i + 1]);
-        p.lineTo(mViewPortHandler.contentRight(), positions[i + 1]);
+        p.moveTo(viewPortHandler.offsetLeft(), positions[i + 1]);
+        p.lineTo(viewPortHandler.contentRight(), positions[i + 1]);
 
         return p;
     }
@@ -256,7 +256,7 @@ public class YAxisRenderer extends AxisRenderer {
     protected void drawZeroLine(Canvas c) {
 
         int clipRestoreCount = c.save();
-        mZeroLineClippingRect.set(mViewPortHandler.getContentRect());
+        mZeroLineClippingRect.set(viewPortHandler.getContentRect());
         mZeroLineClippingRect.inset(0.f, -mYAxis.getZeroLineWidth());
         c.clipRect(mZeroLineClippingRect);
 
@@ -269,8 +269,8 @@ public class YAxisRenderer extends AxisRenderer {
         Path zeroLinePath = mDrawZeroLinePath;
         zeroLinePath.reset();
 
-        zeroLinePath.moveTo(mViewPortHandler.contentLeft(), (float) pos.y);
-        zeroLinePath.lineTo(mViewPortHandler.contentRight(), (float) pos.y);
+        zeroLinePath.moveTo(viewPortHandler.contentLeft(), (float) pos.y);
+        zeroLinePath.lineTo(viewPortHandler.contentRight(), (float) pos.y);
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(zeroLinePath, mZeroLinePaint);
@@ -308,7 +308,7 @@ public class YAxisRenderer extends AxisRenderer {
                 continue;
 
             int clipRestoreCount = c.save();
-            mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
+            mLimitLineClippingRect.set(viewPortHandler.getContentRect());
             mLimitLineClippingRect.inset(0.f, -l.getLineWidth());
             c.clipRect(mLimitLineClippingRect);
 
@@ -321,8 +321,8 @@ public class YAxisRenderer extends AxisRenderer {
 
             mTrans.pointValuesToPixel(pts);
 
-            limitLinePath.moveTo(mViewPortHandler.contentLeft(), pts[1]);
-            limitLinePath.lineTo(mViewPortHandler.contentRight(), pts[1]);
+            limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1]);
+            limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1]);
 
             c.drawPath(limitLinePath, mLimitLinePaint);
             limitLinePath.reset();
@@ -350,28 +350,28 @@ public class YAxisRenderer extends AxisRenderer {
 
                     mLimitLinePaint.setTextAlign(Align.RIGHT);
                     c.drawText(label,
-                            mViewPortHandler.contentRight() - xOffset,
+                            viewPortHandler.contentRight() - xOffset,
                             pts[1] - yOffset + labelLineHeight, mLimitLinePaint);
 
                 } else if (position == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
 
                     mLimitLinePaint.setTextAlign(Align.RIGHT);
                     c.drawText(label,
-                            mViewPortHandler.contentRight() - xOffset,
+                            viewPortHandler.contentRight() - xOffset,
                             pts[1] + yOffset, mLimitLinePaint);
 
                 } else if (position == LimitLine.LimitLabelPosition.LEFT_TOP) {
 
                     mLimitLinePaint.setTextAlign(Align.LEFT);
                     c.drawText(label,
-                            mViewPortHandler.contentLeft() + xOffset,
+                            viewPortHandler.contentLeft() + xOffset,
                             pts[1] - yOffset + labelLineHeight, mLimitLinePaint);
 
                 } else {
 
                     mLimitLinePaint.setTextAlign(Align.LEFT);
                     c.drawText(label,
-                            mViewPortHandler.offsetLeft() + xOffset,
+                            viewPortHandler.offsetLeft() + xOffset,
                             pts[1] + yOffset, mLimitLinePaint);
                 }
             }

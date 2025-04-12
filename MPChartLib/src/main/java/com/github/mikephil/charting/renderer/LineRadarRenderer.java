@@ -32,10 +32,10 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
             int save = c.save();
             c.clipPath(filledPath);
 
-            drawable.setBounds((int) mViewPortHandler.contentLeft(),
-                    (int) mViewPortHandler.contentTop(),
-                    (int) mViewPortHandler.contentRight(),
-                    (int) mViewPortHandler.contentBottom());
+            drawable.setBounds((int) viewPortHandler.contentLeft(),
+                    (int) viewPortHandler.contentTop(),
+                    (int) viewPortHandler.contentRight(),
+                    (int) viewPortHandler.contentBottom());
             drawable.draw(c);
 
             c.restoreToCount(save);
@@ -69,18 +69,18 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
         } else {
 
             // save
-            Paint.Style previous = mRenderPaint.getStyle();
-            int previousColor = mRenderPaint.getColor();
+            Paint.Style previous = renderPaint.getStyle();
+            int previousColor = renderPaint.getColor();
 
             // set
-            mRenderPaint.setStyle(Paint.Style.FILL);
-            mRenderPaint.setColor(color);
+            renderPaint.setStyle(Paint.Style.FILL);
+            renderPaint.setColor(color);
 
-            c.drawPath(filledPath, mRenderPaint);
+            c.drawPath(filledPath, renderPaint);
 
             // restore
-            mRenderPaint.setColor(previousColor);
-            mRenderPaint.setStyle(previous);
+            renderPaint.setColor(previousColor);
+            renderPaint.setStyle(previous);
         }
     }
 

@@ -46,7 +46,7 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
 
         float entryIndex = set.getEntryIndex(e);
 
-        if (e == null || entryIndex >= set.getEntryCount() * mAnimator.getPhaseX()) {
+        if (e == null || entryIndex >= set.getEntryCount() * animator.getPhaseX()) {
             return false;
         } else {
             return true;
@@ -80,7 +80,7 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
          * @param dataSet
          */
         public void set(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet) {
-            float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
+            float phaseX = Math.max(0.f, Math.min(1.f, animator.getPhaseX()));
 
             float low = chart.getLowestVisibleX();
             float high = chart.getHighestVisibleX();

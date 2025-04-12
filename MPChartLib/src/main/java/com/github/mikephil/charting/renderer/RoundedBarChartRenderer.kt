@@ -42,8 +42,8 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
         barBorderPaint.strokeWidth = Utils.convertDpToPixel(dataSet.barBorderWidth)
         shadowPaint.color = dataSet.barShadowColor
         val drawBorder = dataSet.barBorderWidth > 0f
-        val phaseX = mAnimator.phaseX
-        val phaseY = mAnimator.phaseY
+        val phaseX = animator.phaseX
+        val phaseY = animator.phaseY
 
         if (chart.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
@@ -59,15 +59,15 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                 mBarShadowRectBuffer.left = x - barWidthHalf
                 mBarShadowRectBuffer.right = x + barWidthHalf
                 trans!!.rectValueToPixel(mBarShadowRectBuffer)
-                if (!mViewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
+                if (!viewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
                     i++
                     continue
                 }
-                if (!mViewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
+                if (!viewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
                     break
                 }
-                mBarShadowRectBuffer.top = mViewPortHandler.contentTop()
-                mBarShadowRectBuffer.bottom = mViewPortHandler.contentBottom()
+                mBarShadowRectBuffer.top = viewPortHandler.contentTop()
+                mBarShadowRectBuffer.bottom = viewPortHandler.contentBottom()
 
 
                 if (roundedShadowRadius > 0) {
@@ -91,12 +91,12 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
         if (dataSet.colors.size > 1) {
             var j = 0
             while (j < buffer.size()) {
-                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
+                if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                     j += 4
                     continue
                 }
 
-                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+                if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
                     break
                 }
 
@@ -104,49 +104,49 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                     if (roundedShadowRadius > 0) {
                         c.drawRoundRect(
                             RectF(
-                                buffer.buffer[j], mViewPortHandler.contentTop(),
+                                buffer.buffer[j], viewPortHandler.contentTop(),
                                 buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom()
+                                viewPortHandler.contentBottom()
                             ), roundedShadowRadius, roundedShadowRadius, shadowPaint
                         )
                     } else {
                         c.drawRect(
-                            buffer.buffer[j], mViewPortHandler.contentTop(),
+                            buffer.buffer[j], viewPortHandler.contentTop(),
                             buffer.buffer[j + 2],
-                            mViewPortHandler.contentBottom(), shadowPaint
+                            viewPortHandler.contentBottom(), shadowPaint
                         )
                     }
                 }
 
                 // Set the color for the currently drawn value. If the index
-                mRenderPaint.color = dataSet.getColor(j / 4)
+                renderPaint.color = dataSet.getColor(j / 4)
 
                 if (roundedPositiveDataSetRadius > 0) {
                     c.drawRoundRect(
                         RectF(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                             buffer.buffer[j + 3]
-                        ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, mRenderPaint
+                        ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, renderPaint
                     )
                 } else {
                     c.drawRect(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint
+                        buffer.buffer[j + 3], renderPaint
                     )
                 }
                 j += 4
             }
         } else {
-            mRenderPaint.color = dataSet.color
+            renderPaint.color = dataSet.color
 
             var j = 0
             while (j < buffer.size()) {
-                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
+                if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                     j += 4
                     continue
                 }
 
-                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+                if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
                     break
                 }
 
@@ -154,15 +154,15 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                     if (roundedShadowRadius > 0) {
                         c.drawRoundRect(
                             RectF(
-                                buffer.buffer[j], mViewPortHandler.contentTop(),
+                                buffer.buffer[j], viewPortHandler.contentTop(),
                                 buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom()
+                                viewPortHandler.contentBottom()
                             ), roundedShadowRadius, roundedShadowRadius, shadowPaint
                         )
                     } else {
                         c.drawRect(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mRenderPaint
+                            buffer.buffer[j + 3], renderPaint
                         )
                     }
                 }
@@ -172,12 +172,12 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                         RectF(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                             buffer.buffer[j + 3]
-                        ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, mRenderPaint
+                        ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, renderPaint
                     )
                 } else {
                     c.drawRect(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint
+                        buffer.buffer[j + 3], renderPaint
                     )
                 }
                 j += 4
@@ -187,25 +187,25 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
 
         val isSingleColor = dataSet.colors.size == 1
         if (isSingleColor) {
-            mRenderPaint.color = dataSet.getColor(index)
+            renderPaint.color = dataSet.getColor(index)
         }
 
         var j = 0
         while (j < buffer.size()) {
-            if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
+            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                 j += 4
                 continue
             }
 
-            if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+            if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
                 break
             }
 
             if (!isSingleColor) {
-                mRenderPaint.color = dataSet.getColor(j / 4)
+                renderPaint.color = dataSet.getColor(j / 4)
             }
 
-            mRenderPaint.setShader(
+            renderPaint.setShader(
                 LinearGradient(
                     buffer.buffer[j],
                     buffer.buffer[j + 3],
@@ -217,7 +217,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                 )
             )
 
-            mRenderPaint.setShader(
+            renderPaint.setShader(
                 LinearGradient(
                     buffer.buffer[j],
                     buffer.buffer[j + 3],
@@ -237,7 +237,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                         buffer.buffer[j + 3]
                     ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, true, true, true, true
                 )
-                c.drawPath(path2, mRenderPaint)
+                c.drawPath(path2, renderPaint)
             } else if ((dataSet.getEntryForIndex(j / 4).y > 0 && roundedPositiveDataSetRadius > 0)) {
                 val path2 = roundRect(
                     RectF(
@@ -245,11 +245,11 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                         buffer.buffer[j + 3]
                     ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, true, true, true, true
                 )
-                c.drawPath(path2, mRenderPaint)
+                c.drawPath(path2, renderPaint)
             } else {
                 c.drawRect(
                     buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3], mRenderPaint
+                    buffer.buffer[j + 3], renderPaint
                 )
             }
 
@@ -275,8 +275,8 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
 
             val trans = chart.getTransformer(set.axisDependency)
 
-            mHighlightPaint.color = set.highLightColor
-            mHighlightPaint.alpha = set.highLightAlpha
+            highlightPaint.color = set.highLightColor
+            highlightPaint.alpha = set.highLightAlpha
 
             val isStack = high.stackIndex >= 0 && e.isStacked
 
@@ -309,7 +309,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                 ), mRadius, mRadius, true, true, true, true
             )
 
-            c.drawPath(path2, mHighlightPaint)
+            c.drawPath(path2, highlightPaint)
         }
     }
 

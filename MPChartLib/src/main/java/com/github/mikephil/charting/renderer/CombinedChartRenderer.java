@@ -52,23 +52,23 @@ public class CombinedChartRenderer extends DataRenderer {
             switch (order) {
                 case BAR:
                     if (chart.getBarData() != null)
-                        mRenderers.add(new BarChartRenderer(chart, mAnimator, mViewPortHandler));
+                        mRenderers.add(new BarChartRenderer(chart, animator, viewPortHandler));
                     break;
                 case BUBBLE:
                     if (chart.getBubbleData() != null)
-                        mRenderers.add(new BubbleChartRenderer(chart, mAnimator, mViewPortHandler));
+                        mRenderers.add(new BubbleChartRenderer(chart, animator, viewPortHandler));
                     break;
                 case LINE:
                     if (chart.getLineData() != null)
-                        mRenderers.add(new LineChartRenderer(chart, mAnimator, mViewPortHandler));
+                        mRenderers.add(new LineChartRenderer(chart, animator, viewPortHandler));
                     break;
                 case CANDLE:
                     if (chart.getCandleData() != null)
-                        mRenderers.add(new CandleStickChartRenderer(chart, mAnimator, mViewPortHandler));
+                        mRenderers.add(new CandleStickChartRenderer(chart, animator, viewPortHandler));
                     break;
                 case SCATTER:
                     if (chart.getScatterData() != null)
-                        mRenderers.add(new ScatterChartRenderer(chart, mAnimator, mViewPortHandler));
+                        mRenderers.add(new ScatterChartRenderer(chart, animator, viewPortHandler));
                     break;
             }
         }

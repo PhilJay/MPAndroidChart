@@ -227,7 +227,7 @@ public class LegendRenderer extends Renderer {
         mLegendLabelPaint.setColor(mLegend.getTextColor());
 
         // calculate all dimensions of the mLegend
-        mLegend.calculateDimensions(mLegendLabelPaint, mViewPortHandler);
+        mLegend.calculateDimensions(mLegendLabelPaint, viewPortHandler);
     }
 
     protected Paint.FontMetrics legendFontMetrics = new Paint.FontMetrics();
@@ -273,7 +273,7 @@ public class LegendRenderer extends Renderer {
                 if (orientation == Legend.LegendOrientation.VERTICAL)
                     originPosX = xoffset;
                 else
-                    originPosX = mViewPortHandler.contentLeft() + xoffset;
+                    originPosX = viewPortHandler.contentLeft() + xoffset;
 
                 if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
                     originPosX += mLegend.mNeededWidth;
@@ -283,9 +283,9 @@ public class LegendRenderer extends Renderer {
             case RIGHT:
 
                 if (orientation == Legend.LegendOrientation.VERTICAL)
-                    originPosX = mViewPortHandler.getChartWidth() - xoffset;
+                    originPosX = viewPortHandler.getChartWidth() - xoffset;
                 else
-                    originPosX = mViewPortHandler.contentRight() - xoffset;
+                    originPosX = viewPortHandler.contentRight() - xoffset;
 
                 if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
                     originPosX -= mLegend.mNeededWidth;
@@ -295,10 +295,10 @@ public class LegendRenderer extends Renderer {
             case CENTER:
 
                 if (orientation == Legend.LegendOrientation.VERTICAL)
-                    originPosX = mViewPortHandler.getChartWidth() / 2.f;
+                    originPosX = viewPortHandler.getChartWidth() / 2.f;
                 else
-                    originPosX = mViewPortHandler.contentLeft()
-                            + mViewPortHandler.contentWidth() / 2.f;
+                    originPosX = viewPortHandler.contentLeft()
+                            + viewPortHandler.contentWidth() / 2.f;
 
                 originPosX += (direction == Legend.LegendDirection.LEFT_TO_RIGHT
                         ? +xoffset
@@ -331,11 +331,11 @@ public class LegendRenderer extends Renderer {
                         break;
 
                     case BOTTOM:
-                        posY = mViewPortHandler.getChartHeight() - yoffset - mLegend.mNeededHeight;
+                        posY = viewPortHandler.getChartHeight() - yoffset - mLegend.mNeededHeight;
                         break;
 
                     case CENTER:
-                        posY = (mViewPortHandler.getChartHeight() - mLegend.mNeededHeight) / 2.f + yoffset;
+                        posY = (viewPortHandler.getChartHeight() - mLegend.mNeededHeight) / 2.f + yoffset;
                         break;
                 }
 
@@ -404,19 +404,19 @@ public class LegendRenderer extends Renderer {
                     case TOP:
                         posY = (horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER
                                 ? 0.f
-                                : mViewPortHandler.contentTop());
+                                : viewPortHandler.contentTop());
                         posY += yoffset;
                         break;
 
                     case BOTTOM:
                         posY = (horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER
-                                ? mViewPortHandler.getChartHeight()
-                                : mViewPortHandler.contentBottom());
+                                ? viewPortHandler.getChartHeight()
+                                : viewPortHandler.contentBottom());
                         posY -= mLegend.mNeededHeight + yoffset;
                         break;
 
                     case CENTER:
-                        posY = mViewPortHandler.getChartHeight() / 2.f
+                        posY = viewPortHandler.getChartHeight() / 2.f
                                 - mLegend.mNeededHeight / 2.f
                                 + mLegend.getYOffset();
                         break;

@@ -52,11 +52,11 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         if (dataSet.getEntryCount() < 1)
             return;
 
-        ViewPortHandler viewPortHandler = mViewPortHandler;
+        ViewPortHandler viewPortHandler = this.viewPortHandler;
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        float phaseY = mAnimator.getPhaseY();
+        float phaseY = animator.getPhaseY();
 
         IShapeRenderer renderer = dataSet.getShapeRenderer();
         if (renderer == null) {
@@ -65,7 +65,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         }
 
         int max = (int)(Math.min(
-                Math.ceil((float)dataSet.getEntryCount() * mAnimator.getPhaseX()),
+                Math.ceil((float)dataSet.getEntryCount() * animator.getPhaseX()),
                 (float)dataSet.getEntryCount()));
 
         for (int i = 0; i < max; i++) {
@@ -84,11 +84,11 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                     || !viewPortHandler.isInBoundsY(mPixelBuffer[1]))
                 continue;
 
-            mRenderPaint.setColor(dataSet.getColor(i / 2));
+            renderPaint.setColor(dataSet.getColor(i / 2));
             renderer.renderShape(
-                    c, dataSet, mViewPortHandler,
+                    c, dataSet, this.viewPortHandler,
                     mPixelBuffer[0], mPixelBuffer[1],
-                    mRenderPaint);
+                    renderPaint);
         }
     }
 
@@ -118,7 +118,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesScatter(dataSet,
-                                mAnimator.getPhaseX(), mAnimator.getPhaseY(), mXBounds.min, mXBounds.max);
+                                animator.getPhaseX(), animator.getPhaseY(), mXBounds.min, mXBounds.max);
 
                 float shapeSize = Utils.convertDpToPixel(dataSet.getScatterShapeSize());
 
@@ -128,12 +128,12 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                 for (int j = 0; j < positions.length; j += 2) {
 
-                    if (!mViewPortHandler.isInBoundsRight(positions[j]))
+                    if (!viewPortHandler.isInBoundsRight(positions[j]))
                         break;
 
                     // make sure the lines don't do shitty things outside bounds
-                    if ((!mViewPortHandler.isInBoundsLeft(positions[j])
-                            || !mViewPortHandler.isInBoundsY(positions[j + 1])))
+                    if ((!viewPortHandler.isInBoundsLeft(positions[j])
+                            || !viewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
 
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
@@ -189,7 +189,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             if (!isInBoundsX(e, set))
                 continue;
 
-            MPPointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(e.getX(), e.getY() * mAnimator
+            MPPointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(e.getX(), e.getY() * animator
                     .getPhaseY());
 
             high.setDraw((float) pix.x, (float) pix.y);
