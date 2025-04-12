@@ -89,13 +89,13 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
 				trans.rectValueToPixel(mBarShadowRectBuffer);
 
-                if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
-                    continue;
-                }
+				if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
+					continue;
+				}
 
-                if (!viewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) {
-                    break;
-                }
+				if (!viewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) {
+					break;
+				}
 
 				mBarShadowRectBuffer.left = viewPortHandler.contentLeft();
 				mBarShadowRectBuffer.right = viewPortHandler.contentRight();
@@ -125,13 +125,13 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
 		for (int j = 0, pos = 0; j < buffer.size(); j += 4, pos++) {
 
-            if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
-                break;
-            }
+			if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+				break;
+			}
 
-            if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
-                continue;
-            }
+			if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+				continue;
+			}
 
 			if (!isSingleColor) {
 				// Set the color for the currently drawn value. If the index
@@ -207,17 +207,17 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
 						float y = (buffer.buffer[j + 1] + buffer.buffer[j + 3]) / 2f;
 
-                        if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 1])) {
-                            break;
-                        }
+						if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 1])) {
+							break;
+						}
 
-                        if (!viewPortHandler.isInBoundsX(buffer.buffer[j])) {
-                            continue;
-                        }
+						if (!viewPortHandler.isInBoundsX(buffer.buffer[j])) {
+							continue;
+						}
 
-                        if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
-                            continue;
-                        }
+						if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+							continue;
+						}
 
 						BarEntry entry = dataSet.getEntryForIndex(j / 4);
 						float val = entry.getY();
@@ -282,17 +282,17 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 						// in between
 						if (vals == null) {
 
-                            if (!viewPortHandler.isInBoundsTop(buffer.buffer[bufferIndex + 1])) {
-                                break;
-                            }
+							if (!viewPortHandler.isInBoundsTop(buffer.buffer[bufferIndex + 1])) {
+								break;
+							}
 
-                            if (!viewPortHandler.isInBoundsX(buffer.buffer[bufferIndex])) {
-                                continue;
-                            }
+							if (!viewPortHandler.isInBoundsX(buffer.buffer[bufferIndex])) {
+								continue;
+							}
 
-                            if (!viewPortHandler.isInBoundsBottom(buffer.buffer[bufferIndex + 1])) {
-                                continue;
-                            }
+							if (!viewPortHandler.isInBoundsBottom(buffer.buffer[bufferIndex + 1])) {
+								continue;
+							}
 
 							float val = entry.getY();
 							String formattedValue = formatter.getFormattedValue(val,
@@ -387,17 +387,17 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 										+ (drawBelow ? negOffset : posOffset);
 								float y = (buffer.buffer[bufferIndex + 1] + buffer.buffer[bufferIndex + 3]) / 2f;
 
-                                if (!viewPortHandler.isInBoundsTop(y)) {
-                                    break;
-                                }
+								if (!viewPortHandler.isInBoundsTop(y)) {
+									break;
+								}
 
-                                if (!viewPortHandler.isInBoundsX(x)) {
-                                    continue;
-                                }
+								if (!viewPortHandler.isInBoundsX(x)) {
+									continue;
+								}
 
-                                if (!viewPortHandler.isInBoundsBottom(y)) {
-                                    continue;
-                                }
+								if (!viewPortHandler.isInBoundsBottom(y)) {
+									continue;
+								}
 
 								if (dataSet.isDrawValuesEnabled()) {
 									drawValue(c, formattedValue, x, y + halfTextHeight, color);
