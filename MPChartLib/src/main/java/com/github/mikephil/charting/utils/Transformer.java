@@ -49,8 +49,8 @@ public class Transformer {
      */
     public void prepareMatrixValuePx(float xChartMin, float deltaX, float deltaY, float yChartMin) {
 
-        float scaleX = (float) ((mViewPortHandler.contentWidth()) / deltaX);
-        float scaleY = (float) ((mViewPortHandler.contentHeight()) / deltaY);
+        float scaleX = mViewPortHandler.contentWidth() / deltaX;
+        float scaleY = mViewPortHandler.contentHeight() / deltaY;
 
         if (Float.isInfinite(scaleX)) {
             scaleX = 0;
@@ -443,16 +443,16 @@ public class Transformer {
         return mMatrixOffset;
     }
 
-    private Matrix mMBuffer1 = new Matrix();
+    private final Matrix mMBuffer1 = new Matrix();
 
     public Matrix getValueToPixelMatrix() {
         mMBuffer1.set(mMatrixValueToPx);
-        mMBuffer1.postConcat(mViewPortHandler.mMatrixTouch);
+        mMBuffer1.postConcat(mViewPortHandler.getMatrixTouch());
         mMBuffer1.postConcat(mMatrixOffset);
         return mMBuffer1;
     }
 
-    private Matrix mMBuffer2 = new Matrix();
+    private final Matrix mMBuffer2 = new Matrix();
 
     public Matrix getPixelToValueMatrix() {
         getValueToPixelMatrix().invert(mMBuffer2);
