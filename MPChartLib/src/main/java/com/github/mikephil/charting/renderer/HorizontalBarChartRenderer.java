@@ -24,6 +24,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * Renderer for the HorizontalBarChart.
  *
@@ -51,10 +53,10 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 		}
 	}
 
-	private RectF mBarShadowRectBuffer = new RectF();
+	private final RectF mBarShadowRectBuffer = new RectF();
 
 	@Override
-	protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
+	protected void drawDataSet(@NonNull Canvas c, IBarDataSet dataSet, int index) {
 
 		Transformer trans = chart.getTransformer(dataSet.getAxisDependency());
 
@@ -162,15 +164,15 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 	}
 
 	@Override
-	public void drawValues(Canvas c) {
+	public void drawValues(@NonNull Canvas c) {
 		// if values are drawn
 		if (isDrawingValuesAllowed(chart)) {
 
 			List<IBarDataSet> dataSets = chart.getBarData().getDataSets();
 
 			final float valueOffsetPlus = Utils.convertDpToPixel(5f);
-			float posOffset = 0f;
-			float negOffset = 0f;
+			float posOffset;
+			float negOffset;
 			final boolean drawValueAboveBar = chart.isDrawValueAboveBarEnabled();
 
 			for (int i = 0; i < chart.getBarData().getDataSetCount(); i++) {
