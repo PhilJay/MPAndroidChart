@@ -18,34 +18,30 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 public class YAxisRenderer extends AxisRenderer {
 
     protected YAxis mYAxis;
 
     protected Paint mZeroLinePaint;
 
-    public YAxisRenderer(ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans) {
+    public YAxisRenderer(@NonNull ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans) {
         super(viewPortHandler, trans, yAxis);
 
         this.mYAxis = yAxis;
 
-        if(this.viewPortHandler != null) {
+		mAxisLabelPaint.setColor(Color.BLACK);
+		mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
 
-            mAxisLabelPaint.setColor(Color.BLACK);
-            mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
-
-            mZeroLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mZeroLinePaint.setColor(Color.GRAY);
-            mZeroLinePaint.setStrokeWidth(1f);
-            mZeroLinePaint.setStyle(Paint.Style.STROKE);
-        }
-    }
+		mZeroLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mZeroLinePaint.setColor(Color.GRAY);
+		mZeroLinePaint.setStrokeWidth(1f);
+		mZeroLinePaint.setStyle(Paint.Style.STROKE);
+	}
 
     /**
      * Return the axis label x position based on axis dependency and label position
-     * @param dependency
-     * @param labelPosition
-     * @return
      */
     private float calculateAxisLabelsXPosition(AxisDependency dependency, YAxisLabelPosition labelPosition) {
         float viewPortBase = dependency == AxisDependency.LEFT ? viewPortHandler.offsetLeft() : viewPortHandler.contentRight();
@@ -56,9 +52,6 @@ public class YAxisRenderer extends AxisRenderer {
 
     /**
      * Return the text align based on axis dependency and label position
-     * @param dependency
-     * @param labelPosition
-     * @return
      */
     private Align getAxisLabelTextAlign(AxisDependency dependency, YAxisLabelPosition labelPosition) {
         if (dependency == AxisDependency.LEFT ^ labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
@@ -114,9 +107,6 @@ public class YAxisRenderer extends AxisRenderer {
 
     /**
      * draws the y-labels on the specified x-position
-     *
-     * @param fixedPosition
-     * @param positions
      */
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
 
@@ -200,11 +190,6 @@ public class YAxisRenderer extends AxisRenderer {
 
     /**
      * Calculates the path for a grid line.
-     *
-     * @param p
-     * @param i
-     * @param positions
-     * @return
      */
     protected Path linePath(Path p, int i, float[] positions) {
 
@@ -218,8 +203,6 @@ public class YAxisRenderer extends AxisRenderer {
     /**
      * Transforms the values contained in the axis entries to screen pixels and returns them in form of a float array
      * of x- and y-coordinates.
-     *
-     * @return
      */
     protected float[] getTransformedPositions() {
 
@@ -283,8 +266,6 @@ public class YAxisRenderer extends AxisRenderer {
     protected RectF mLimitLineClippingRect = new RectF();
     /**
      * Draws the LimitLines associated with this axis to the screen.
-     *
-     * @param c
      */
     @Override
     public void renderLimitLines(Canvas c) {
@@ -331,7 +312,7 @@ public class YAxisRenderer extends AxisRenderer {
             String label = l.getLabel();
 
             // if drawing the limit-value label is enabled
-            if (label != null && !label.equals("")) {
+            if (label != null && !label.isEmpty()) {
 
                 mLimitLinePaint.setStyle(l.getTextStyle());
                 mLimitLinePaint.setPathEffect(null);

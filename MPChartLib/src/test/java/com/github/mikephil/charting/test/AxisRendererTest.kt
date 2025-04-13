@@ -3,6 +3,7 @@ package com.github.mikephil.charting.test
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.renderer.AxisRenderer
 import com.github.mikephil.charting.renderer.YAxisRenderer
+import com.github.mikephil.charting.utils.ViewPortHandler
 import org.junit.Assert
 import org.junit.Test
 
@@ -11,7 +12,7 @@ class AxisRendererTest {
     fun testComputeAxisValues() {
         var yAxis = YAxis()
         yAxis.labelCount = 6
-        var renderer: AxisRenderer = YAxisRenderer(null, yAxis, null)
+        var renderer: AxisRenderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 100f, false)
         var entries = yAxis.mEntries
@@ -24,7 +25,7 @@ class AxisRendererTest {
         yAxis = YAxis()
         yAxis.labelCount = 6
         yAxis.granularity = 50f
-        renderer = YAxisRenderer(null, yAxis, null)
+        renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 100f, false)
         entries = yAxis.mEntries
@@ -36,7 +37,7 @@ class AxisRendererTest {
 
         yAxis = YAxis()
         yAxis.setLabelCount(5, true)
-        renderer = YAxisRenderer(null, yAxis, null)
+        renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 100f, false)
         entries = yAxis.mEntries
@@ -48,7 +49,7 @@ class AxisRendererTest {
 
         yAxis = YAxis()
         yAxis.setLabelCount(5, true)
-        renderer = YAxisRenderer(null, yAxis, null)
+        renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 0.01f, false)
         entries = yAxis.mEntries
@@ -60,7 +61,7 @@ class AxisRendererTest {
 
         yAxis = YAxis()
         yAxis.setLabelCount(5, false)
-        renderer = YAxisRenderer(null, yAxis, null)
+        renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 0.01f, false)
         entries = yAxis.mEntries
@@ -72,7 +73,7 @@ class AxisRendererTest {
 
         yAxis = YAxis()
         yAxis.labelCount = 6
-        renderer = YAxisRenderer(null, yAxis, null)
+        renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(-50f, 50f, false)
         entries = yAxis.mEntries
@@ -84,7 +85,7 @@ class AxisRendererTest {
 
         yAxis = YAxis()
         yAxis.labelCount = 6
-        renderer = YAxisRenderer(null, yAxis, null)
+        renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(-50f, 100f, false)
         entries = yAxis.mEntries
