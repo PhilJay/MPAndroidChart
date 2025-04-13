@@ -51,7 +51,7 @@ abstract class AxisRenderer(
     /**
      * paint for the x-label values
      */
-    var paintAxisLabels: Paint? = null
+    public var paintAxisLabels: Paint? = null
         protected set
 
     /**
@@ -102,8 +102,9 @@ abstract class AxisRenderer(
 
         var minLocal = min
         var maxLocal = max
-        transformer?.let {
-            if (viewPortHandler.contentWidth() > 10 && !viewPortHandler.isFullyZoomedOutY) {
+
+        if (viewPortHandler.contentWidth() > 10 && !viewPortHandler.isFullyZoomedOutY) {
+            transformer?.let {
                 val p1 = it.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop())
                 val p2 = it.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentBottom())
 
@@ -118,9 +119,8 @@ abstract class AxisRenderer(
                 MPPointD.recycleInstance(p1)
                 MPPointD.recycleInstance(p2)
             }
-
-            computeAxisValues(minLocal, maxLocal)
         }
+        computeAxisValues(minLocal, maxLocal)
     }
 
     /**

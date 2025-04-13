@@ -230,7 +230,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 i += 2
             }
 
-            transformer.pointValuesToPixel(positions)
+            transformer?.pointValuesToPixel(positions)
             return positions
         }
 
@@ -249,21 +249,22 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         c.clipRect(zeroLineClippingRect)
 
         // draw zero line
-        val pos = transformer.getPixelForValues(0f, 0f)
+        val pos = transformer?.getPixelForValues(0f, 0f)
+        pos?.let {
+            zeroLinePaint!!.color = yAxis.zeroLineColor
+            zeroLinePaint!!.strokeWidth = yAxis.zeroLineWidth
 
-        zeroLinePaint!!.color = yAxis.zeroLineColor
-        zeroLinePaint!!.strokeWidth = yAxis.zeroLineWidth
+            val zeroLinePath = drawZeroLinePath
+            zeroLinePath.reset()
 
-        val zeroLinePath = drawZeroLinePath
-        zeroLinePath.reset()
+            zeroLinePath.moveTo(viewPortHandler.contentLeft(), it.y.toFloat())
+            zeroLinePath.lineTo(viewPortHandler.contentRight(), it.y.toFloat())
 
-        zeroLinePath.moveTo(viewPortHandler.contentLeft(), pos.y.toFloat())
-        zeroLinePath.lineTo(viewPortHandler.contentRight(), pos.y.toFloat())
+            // draw a path because lines don't support dashing on lower android versions
+            c.drawPath(zeroLinePath, zeroLinePaint!!)
 
-        // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(zeroLinePath, zeroLinePaint!!)
-
-        c.restoreToCount(clipRestoreCount)
+            c.restoreToCount(clipRestoreCount)
+        }
     }
 
     protected var renderLimitLines: Path = Path()
@@ -316,7 +317,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
             pts[1] = l.limit
 
-            transformer.pointValuesToPixel(pts)
+            transformer?.pointValuesToPixel(pts)
 
             limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
             limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
