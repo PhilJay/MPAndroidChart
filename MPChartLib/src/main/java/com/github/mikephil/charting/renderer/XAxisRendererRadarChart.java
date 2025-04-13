@@ -29,9 +29,9 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         final MPPointF drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f);
 
-        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
-        mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-        mAxisLabelPaint.setColor(mXAxis.getTextColor());
+        paintAxisLabels.setTypeface(mXAxis.getTypeface());
+        paintAxisLabels.setTextSize(mXAxis.getTextSize());
+        paintAxisLabels.setColor(mXAxis.getTextColor());
 
         float sliceangle = mChart.getSliceAngle();
 
