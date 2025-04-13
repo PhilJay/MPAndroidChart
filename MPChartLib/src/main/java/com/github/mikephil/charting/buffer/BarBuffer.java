@@ -4,6 +4,8 @@ package com.github.mikephil.charting.buffer;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
+import java.util.Arrays;
+
 public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
     protected int mDataSetIndex = 0;
@@ -38,6 +40,19 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
         buffer[index++] = top;
         buffer[index++] = right;
         buffer[index++] = bottom;
+    }
+
+    @Override
+    public String toString() {
+        return "BarBuffer{" +
+                "mDataSetIndex=" + mDataSetIndex +
+                ", mDataSetCount=" + mDataSetCount +
+                ", mContainsStacks=" + mContainsStacks +
+                ", mInverted=" + mInverted +
+                ", mBarWidth=" + mBarWidth +
+                ", buffer=" + Arrays.toString(buffer) +
+                ", index=" + index +
+                '}';
     }
 
     @Override
