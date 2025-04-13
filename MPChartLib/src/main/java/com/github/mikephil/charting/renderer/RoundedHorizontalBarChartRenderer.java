@@ -87,7 +87,7 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 			}
 		}
 
-		BarBuffer buffer = barBuffers[index];
+		BarBuffer buffer = barBuffers.get(index);
 		buffer.setPhases(phaseX, phaseY);
 		buffer.setDataSet(index);
 		buffer.setInverted(chart.isInverted(dataSet.getAxisDependency()));
