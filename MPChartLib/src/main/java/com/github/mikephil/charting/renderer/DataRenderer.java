@@ -72,10 +72,7 @@ public abstract class DataRenderer extends Renderer {
     }
 
     /**
-     * Returns the Paint object this renderer uses for drawing the values
-     * (value-text).
-     *
-     * @return
+     * Returns the Paint object this renderer uses for drawing the values (value-text).
      */
     public Paint getPaintValues() {
         return mValuePaint;
@@ -84,8 +81,6 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Returns the Paint object this renderer uses for drawing highlight
      * indicators.
-     *
-     * @return
      */
     public Paint getPaintHighlight() {
         return highlightPaint;
@@ -93,8 +88,6 @@ public abstract class DataRenderer extends Renderer {
 
     /**
      * Returns the Paint object used for rendering.
-     *
-     * @return
      */
     public Paint getPaintRender() {
         return renderPaint;
@@ -103,8 +96,6 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Applies the required styling (provided by the DataSet) to the value-paint
      * object.
-     *
-     * @param set
      */
     protected void applyValueTextStyle(IDataSet set) {
 
@@ -121,15 +112,11 @@ public abstract class DataRenderer extends Renderer {
 
     /**
      * Draws the actual data in form of lines, bars, ... depending on Renderer subclass.
-     *
-     * @param c
      */
     public abstract void drawData(Canvas c);
 
     /**
      * Loops over all Entrys and draws their values.
-     *
-     * @param c
      */
     public abstract void drawValues(Canvas c);
 
@@ -143,7 +130,6 @@ public abstract class DataRenderer extends Renderer {
      * @param dataSetIndex the index of the DataSet the drawn Entry belongs to
      * @param x            position
      * @param y            position
-     * @param color
      */
     public void drawValue(Canvas c, IValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
         mValuePaint.setColor(color);
@@ -152,15 +138,11 @@ public abstract class DataRenderer extends Renderer {
 
     /**
      * Draws any kind of additional information (e.g. line-circles).
-     *
-     * @param c
      */
     public abstract void drawExtras(Canvas c);
 
     /**
      * Draws all highlight indicators for the values that are currently highlighted.
-     *
-     * @param c
      * @param indices the highlighted values
      */
     public abstract void drawHighlighted(Canvas c, Highlight[] indices);
