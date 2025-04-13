@@ -28,11 +28,6 @@ abstract class AbstractBuffer<T>(size: Int) {
     /** indicates to which x-index the visible data ranges  */
     protected var to: Int = 0
 
-    /**
-     * Initialization with buffer-size.
-     *
-     * @param size
-     */
     init {
         index = 0
         buffer = FloatArray(size)
@@ -63,12 +58,8 @@ abstract class AbstractBuffer<T>(size: Int) {
 
     /**
      * Returns the size (length) of the buffer array.
-     *
-     * @return
      */
-    fun size(): Int {
-        return buffer.size
-    }
+    fun size() = buffer.size
 
     /**
      * Set the phases used for animations.
