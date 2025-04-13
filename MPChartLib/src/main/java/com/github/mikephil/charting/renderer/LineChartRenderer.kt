@@ -30,6 +30,7 @@ class LineChartRenderer(
      * paint for the inner circle of the value indicators
      */
     protected var circlePaintInner: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var lineBuffer = FloatArray(4)
 
     /**
      * Bitmap object used for drawing the paths (otherwise they are too long if
@@ -67,7 +68,8 @@ class LineChartRenderer(
                 drawBitmapLocal = createBitmap(width, height, mBitmapConfig)
                 this.drawBitmap = WeakReference(drawBitmapLocal)
                 bitmapCanvas = Canvas(drawBitmapLocal)
-            } else return
+            } else
+                return
         }
 
         drawBitmapLocal.eraseColor(Color.TRANSPARENT)
@@ -81,8 +83,9 @@ class LineChartRenderer(
         c.drawBitmap(drawBitmapLocal, 0f, 0f, renderPaint)
     }
 
-    protected fun drawDataSet(c: Canvas?, dataSet: ILineDataSet) {
-        if (dataSet.entryCount < 1) return
+    protected fun drawDataSet(c: Canvas, dataSet: ILineDataSet) {
+        if (dataSet.entryCount < 1)
+            return
 
         renderPaint.strokeWidth = dataSet.lineWidth
         renderPaint.setPathEffect(dataSet.dashPathEffect)
@@ -102,18 +105,18 @@ class LineChartRenderer(
 
         val trans = chart.getTransformer(dataSet.axisDependency)
 
-        mXBounds[chart] = dataSet
+        xBounds[chart] = dataSet
 
         cubicPath.reset()
 
-        if (mXBounds.range >= 1) {
-            var prev = dataSet.getEntryForIndex(mXBounds.min)
+        if (xBounds.range >= 1) {
+            var prev = dataSet.getEntryForIndex(xBounds.min)
             var cur = prev
 
             // let the spline start
             cubicPath.moveTo(cur.x, cur.y * phaseY)
 
-            for (j in mXBounds.min + 1..mXBounds.range + mXBounds.min) {
+            for (j in xBounds.min + 1..xBounds.range + xBounds.min) {
                 prev = cur
                 cur = dataSet.getEntryForIndex(j)
 
@@ -133,7 +136,7 @@ class LineChartRenderer(
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
             // create a new path, this is bad for performance
-            drawCubicFill(bitmapCanvas, dataSet, cubicFillPath, trans!!, mXBounds)
+            bitmapCanvas?.let { drawCubicFill(it, dataSet, cubicFillPath, trans!!, xBounds) }
         }
 
         renderPaint.color = dataSet.color
@@ -152,13 +155,13 @@ class LineChartRenderer(
 
         val trans = chart.getTransformer(dataSet.axisDependency)
 
-        mXBounds[chart] = dataSet
+        xBounds[chart] = dataSet
 
         val intensity = dataSet.cubicIntensity
 
         cubicPath.reset()
 
-        if (mXBounds.range >= 1) {
+        if (xBounds.range >= 1) {
             var prevDx: Float
             var prevDy: Float
             var curDx: Float
@@ -168,8 +171,8 @@ class LineChartRenderer(
             // That's because we need 4 points for a cubic bezier (cubic=4), otherwise we get lines moving and doing weird stuff on the edges of the chart.
             // So in the starting `prev` and `cur`, go -2, -1
             // And in the `lastIndex`, add +1
-            val firstIndex = mXBounds.min + 1
-            val lastIndex = mXBounds.min + mXBounds.range
+            val firstIndex = xBounds.min + 1
+            val lastIndex = xBounds.min + xBounds.range
 
             var prevPrev: Entry?
             var prev = dataSet.getEntryForIndex(max((firstIndex - 2).toDouble(), 0.0).toInt())
@@ -182,7 +185,7 @@ class LineChartRenderer(
             // let the spline start
             cubicPath.moveTo(cur.x, cur.y * phaseY)
 
-            for (j in mXBounds.min + 1..mXBounds.range + mXBounds.min) {
+            for (j in xBounds.min + 1..xBounds.range + xBounds.min) {
                 prevPrev = prev
                 prev = cur
                 cur = if (nextIndex == j) next else dataSet.getEntryForIndex(j)
@@ -208,7 +211,7 @@ class LineChartRenderer(
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
 
-            drawCubicFill(bitmapCanvas, dataSet, cubicFillPath, trans!!, mXBounds)
+            bitmapCanvas?.let { drawCubicFill(it, dataSet, cubicFillPath, trans!!, xBounds) }
         }
 
         renderPaint.color = dataSet.color
@@ -222,9 +225,8 @@ class LineChartRenderer(
         renderPaint.setPathEffect(null)
     }
 
-    protected fun drawCubicFill(c: Canvas?, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
-        val fillMin = dataSet.fillFormatter
-            .getFillLinePosition(dataSet, chart)
+    protected fun drawCubicFill(c: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
+        val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, chart)
 
         spline.lineTo(dataSet.getEntryForIndex(bounds.min + bounds.range).x, fillMin)
         spline.lineTo(dataSet.getEntryForIndex(bounds.min).x, fillMin)
@@ -240,15 +242,10 @@ class LineChartRenderer(
         }
     }
 
-    private var mLineBuffer = FloatArray(4)
-
     /**
      * Draws a normal line.
-     *
-     * @param c
-     * @param dataSet
      */
-    protected fun drawLinear(c: Canvas?, dataSet: ILineDataSet) {
+    protected fun drawLinear(c: Canvas, dataSet: ILineDataSet) {
         val entryCount = dataSet.entryCount
 
         val isDrawSteppedEnabled = dataSet.isDrawSteppedEnabled
@@ -267,59 +264,60 @@ class LineChartRenderer(
             c
         }
 
-        mXBounds[chart] = dataSet
+        xBounds[chart] = dataSet
 
         // if drawing filled is enabled
         if (dataSet.isDrawFilledEnabled && entryCount > 0) {
-            drawLinearFill(c, dataSet, trans!!, mXBounds)
+            drawLinearFill(c, dataSet, trans!!, xBounds)
         }
 
         // more than 1 color
         if (dataSet.colors.size > 1) {
             val numberOfFloats = pointsPerEntryPair * 2
 
-            if (mLineBuffer.size <= numberOfFloats) mLineBuffer = FloatArray(numberOfFloats * 2)
+            if (lineBuffer.size <= numberOfFloats)
+                lineBuffer = FloatArray(numberOfFloats * 2)
 
-            val max = mXBounds.min + mXBounds.range
+            val max = xBounds.min + xBounds.range
 
-            for (j in mXBounds.min..<max) {
+            for (j in xBounds.min..<max) {
                 var entry: Entry = dataSet.getEntryForIndex(j) ?: continue
 
-                mLineBuffer[0] = entry.x
-                mLineBuffer[1] = entry.y * phaseY
+                lineBuffer[0] = entry.x
+                lineBuffer[1] = entry.y * phaseY
 
-                if (j < mXBounds.max) {
+                if (j < xBounds.max) {
                     entry = dataSet.getEntryForIndex(j + 1)
 
                     if (entry == null) break
 
                     if (isDrawSteppedEnabled) {
-                        mLineBuffer[2] = entry.x
-                        mLineBuffer[3] = mLineBuffer[1]
-                        mLineBuffer[4] = mLineBuffer[2]
-                        mLineBuffer[5] = mLineBuffer[3]
-                        mLineBuffer[6] = entry.x
-                        mLineBuffer[7] = entry.y * phaseY
+                        lineBuffer[2] = entry.x
+                        lineBuffer[3] = lineBuffer[1]
+                        lineBuffer[4] = lineBuffer[2]
+                        lineBuffer[5] = lineBuffer[3]
+                        lineBuffer[6] = entry.x
+                        lineBuffer[7] = entry.y * phaseY
                     } else {
-                        mLineBuffer[2] = entry.x
-                        mLineBuffer[3] = entry.y * phaseY
+                        lineBuffer[2] = entry.x
+                        lineBuffer[3] = entry.y * phaseY
                     }
                 } else {
-                    mLineBuffer[2] = mLineBuffer[0]
-                    mLineBuffer[3] = mLineBuffer[1]
+                    lineBuffer[2] = lineBuffer[0]
+                    lineBuffer[3] = lineBuffer[1]
                 }
 
                 // Determine the start and end coordinates of the line, and make sure they differ.
-                val firstCoordinateX = mLineBuffer[0]
-                val firstCoordinateY = mLineBuffer[1]
-                val lastCoordinateX = mLineBuffer[numberOfFloats - 2]
-                val lastCoordinateY = mLineBuffer[numberOfFloats - 1]
+                val firstCoordinateX = lineBuffer[0]
+                val firstCoordinateY = lineBuffer[1]
+                val lastCoordinateX = lineBuffer[numberOfFloats - 2]
+                val lastCoordinateY = lineBuffer[numberOfFloats - 1]
 
                 if (firstCoordinateX == lastCoordinateX &&
                     firstCoordinateY == lastCoordinateY
                 ) continue
 
-                trans!!.pointValuesToPixel(mLineBuffer)
+                trans!!.pointValuesToPixel(lineBuffer)
 
                 if (!viewPortHandler.isInBoundsRight(firstCoordinateX)) break
 
@@ -338,49 +336,49 @@ class LineChartRenderer(
                 // get the color that is set for this line-segment
                 renderPaint.color = dataSet.getColor(j)
 
-                canvas!!.drawLines(mLineBuffer, 0, pointsPerEntryPair * 2, renderPaint)
+                canvas!!.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, renderPaint)
             }
         } else { // only one color per dataset
 
-            if (mLineBuffer.size < max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2) mLineBuffer = FloatArray(
+            if (lineBuffer.size < max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2) lineBuffer = FloatArray(
                 (max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 4).toInt()
             )
 
             var e1: Entry?
             var e2: Entry?
 
-            e1 = dataSet.getEntryForIndex(mXBounds.min)
+            e1 = dataSet.getEntryForIndex(xBounds.min)
 
             if (e1 != null) {
                 var j = 0
-                for (x in mXBounds.min..mXBounds.range + mXBounds.min) {
+                for (x in xBounds.min..xBounds.range + xBounds.min) {
                     e1 = dataSet.getEntryForIndex(if (x == 0) 0 else (x - 1))
                     e2 = dataSet.getEntryForIndex(x)
 
                     if (e1 == null || e2 == null) continue
 
-                    mLineBuffer[j++] = e1.x
-                    mLineBuffer[j++] = e1.y * phaseY
+                    lineBuffer[j++] = e1.x
+                    lineBuffer[j++] = e1.y * phaseY
 
                     if (isDrawSteppedEnabled) {
-                        mLineBuffer[j++] = e2.x
-                        mLineBuffer[j++] = e1.y * phaseY
-                        mLineBuffer[j++] = e2.x
-                        mLineBuffer[j++] = e1.y * phaseY
+                        lineBuffer[j++] = e2.x
+                        lineBuffer[j++] = e1.y * phaseY
+                        lineBuffer[j++] = e2.x
+                        lineBuffer[j++] = e1.y * phaseY
                     }
 
-                    mLineBuffer[j++] = e2.x
-                    mLineBuffer[j++] = e2.y * phaseY
+                    lineBuffer[j++] = e2.x
+                    lineBuffer[j++] = e2.y * phaseY
                 }
 
                 if (j > 0) {
-                    trans!!.pointValuesToPixel(mLineBuffer)
+                    trans!!.pointValuesToPixel(lineBuffer)
 
-                    val size = (max(((mXBounds.range + 1) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2).toInt()
+                    val size = (max(((xBounds.range + 1) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2).toInt()
 
                     renderPaint.color = dataSet.color
 
-                    canvas!!.drawLines(mLineBuffer, 0, size, renderPaint)
+                    canvas!!.drawLines(lineBuffer, 0, size, renderPaint)
                 }
             }
         }
@@ -398,7 +396,7 @@ class LineChartRenderer(
      * @param trans
      * @param bounds
      */
-    protected fun drawLinearFill(c: Canvas?, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
+    protected fun drawLinearFill(c: Canvas, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
         val filled = mGenerateFilledPathBuffer
 
         val startingIndex = bounds.min
@@ -512,11 +510,11 @@ class LineChartRenderer(
 
                 if (!dataSet.isDrawCirclesEnabled) valOffset = valOffset / 2
 
-                mXBounds[chart] = dataSet
+                xBounds[chart] = dataSet
 
                 val positions = trans!!.generateTransformedValuesLine(
                     dataSet, animator.phaseX, animator
-                        .phaseY, mXBounds.min, mXBounds.max
+                        .phaseY, xBounds.min, xBounds.max
                 )
 
                 val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
@@ -535,7 +533,7 @@ class LineChartRenderer(
                         continue
                     }
 
-                    val entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min)
+                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
                     if (entry != null) {
                         if (dataSet.isDrawValuesEnabled) {
@@ -604,7 +602,7 @@ class LineChartRenderer(
 
             val trans = chart.getTransformer(dataSet.axisDependency)
 
-            mXBounds[chart] = dataSet
+            xBounds[chart] = dataSet
 
             val circleRadius = dataSet.circleRadius
             val circleHoleRadius = dataSet.circleHoleRadius
@@ -628,9 +626,9 @@ class LineChartRenderer(
                 imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole)
             }
 
-            val boundsRangeCount = mXBounds.range + mXBounds.min
+            val boundsRangeCount = xBounds.range + xBounds.min
 
-            for (j in mXBounds.min..boundsRangeCount) {
+            for (j in xBounds.min..boundsRangeCount) {
                 val e = dataSet.getEntryForIndex(j) ?: break
 
                 mCirclesBuffer[0] = e.x
@@ -700,14 +698,12 @@ class LineChartRenderer(
      * Releases the drawing bitmap. This should be called when [LineChart.onDetachedFromWindow].
      */
     fun releaseBitmap() {
-        if (bitmapCanvas != null) {
-            bitmapCanvas!!.setBitmap(null)
-            bitmapCanvas = null
-        }
+        bitmapCanvas?.setBitmap(null)
+        bitmapCanvas = null
         if (drawBitmap != null) {
-            val drawBitmap = drawBitmap!!.get()
+            val drawBitmap = drawBitmap?.get()
             drawBitmap?.recycle()
-            this.drawBitmap!!.clear()
+            this.drawBitmap?.clear()
             this.drawBitmap = null
         }
     }
