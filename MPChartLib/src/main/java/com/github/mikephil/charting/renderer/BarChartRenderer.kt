@@ -18,7 +18,8 @@ import kotlin.math.ceil
 import kotlin.math.min
 
 open class BarChartRenderer(
-    @JvmField var chart: BarDataProvider, animator: ChartAnimator?,
+    @JvmField var chart: BarDataProvider,
+    animator: ChartAnimator?,
     viewPortHandler: ViewPortHandler?
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     /**
