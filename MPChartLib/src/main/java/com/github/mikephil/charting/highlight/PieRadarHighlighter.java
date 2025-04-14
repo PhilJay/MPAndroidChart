@@ -9,58 +9,57 @@ import java.util.List;
 /**
  * Created by philipp on 12/06/16.
  */
-public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implements IHighlighter
-{
+public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implements IHighlighter {
 
-    protected T mChart;
+	protected T mChart;
 
-    /**
-     * buffer for storing previously highlighted values
-     */
-    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
+	/**
+	 * buffer for storing previously highlighted values
+	 */
+	protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
 
-    public PieRadarHighlighter(T chart) {
-        this.mChart = chart;
-    }
+	public PieRadarHighlighter(T chart) {
+		this.mChart = chart;
+	}
 
-    @Override
-    public Highlight getHighlight(float x, float y) {
+	@Override
+	public Highlight getHighlight(float x, float y) {
 
-        float touchDistanceToCenter = mChart.distanceToCenter(x, y);
+		float touchDistanceToCenter = mChart.distanceToCenter(x, y);
 
-        // check if a slice was touched
-        if (touchDistanceToCenter > mChart.getRadius()) {
+		// check if a slice was touched
+		if (touchDistanceToCenter > mChart.getRadius()) {
 
-            // if no slice was touched, highlight nothing
-            return null;
+			// if no slice was touched, highlight nothing
+			return null;
 
-        } else {
+		} else {
 
-            float angle = mChart.getAngleForPoint(x, y);
+			float angle = mChart.getAngleForPoint(x, y);
 
-            if (mChart instanceof PieChart) {
-                angle /= mChart.getAnimator().getPhaseY();
-            }
+			if (mChart instanceof PieChart) {
+				angle /= mChart.getAnimator().getPhaseY();
+			}
 
-            int index = mChart.getIndexForAngle(angle);
+			int index = mChart.getIndexForAngle(angle);
 
-            // check if the index could be found
-            if (index < 0 || index >= mChart.getData().getMaxEntryCountSet().getEntryCount()) {
-                return null;
+			// check if the index could be found
+			if (index < 0 || index >= mChart.getData().getMaxEntryCountSet().getEntryCount()) {
+				return null;
 
-            } else {
-                return getClosestHighlight(index, x, y);
-            }
-        }
-    }
+			} else {
+				return getClosestHighlight(index, x, y);
+			}
+		}
+	}
 
-    /**
-     * Returns the closest Highlight object of the given objects based on the touch position inside the chart.
-     *
-     * @param index
-     * @param x
-     * @param y
-     * @return
-     */
-    protected abstract Highlight getClosestHighlight(int index, float x, float y);
+	/**
+	 * Returns the closest Highlight object of the given objects based on the touch position inside the chart.
+	 *
+	 * @param index
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	protected abstract Highlight getClosestHighlight(int index, float x, float y);
 }

@@ -269,7 +269,7 @@ abstract class AxisRenderer(
 
     /**
      * Sets the text color to use for the labels. Make sure to use
-     * getResources().getColor(...) when using a color from the resources.
+     * ContextCompat.getColor(context,...) when using a color from the resources.
      *
      * @param color
      */

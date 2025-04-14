@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Typeface
+import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.formatter.IValueFormatter
@@ -134,7 +135,7 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
      * as soon as the number of Entries the DataSet represents is higher than
      * the size of the colors array. If you are using colors from the resources,
      * make sure that the colors are already prepared (by calling
-     * getResources().getColor(...)) before adding them to the DataSet.
+     * ContextCompat.getColor(context,..) before adding them to the DataSet.
      *
      * @param colors
      */
@@ -147,7 +148,7 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
      * as soon as the number of Entries the DataSet represents is higher than
      * the size of the colors array. If you are using colors from the resources,
      * make sure that the colors are already prepared (by calling
-     * getResources().getColor(...)) before adding them to the DataSet.
+     * ContextCompat.getColor(context,...)) before adding them to the DataSet.
      *
      * @param colors
      */
@@ -161,16 +162,15 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
      * the size of the colors array. You can use
      * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
      * this method. Internally, the colors are resolved using
-     * getResources().getColor(...)
+     * ContextCompat.getColor(context,...)
      *
      * @param colors
      */
-    fun setColors(colors: IntArray, c: Context) {
-
+    fun setColors(colors: IntArray, context: Context) {
         mColors.clear()
 
         for (color in colors) {
-            mColors.add(c.resources.getColor(color))
+            mColors.add(ContextCompat.getColor(context, color))
         }
     }
 
@@ -266,7 +266,7 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
         mValueColors = colors
     }
 
-    override fun setValueTypeface(tf: Typeface) {
+    override fun setValueTypeface(tf: Typeface?) {
         mValueTypeface = tf
     }
 
@@ -282,8 +282,8 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
         return mValueColors[index % mValueColors.size]
     }
 
-    override fun getValueTypeface(): Typeface {
-        return mValueTypeface!!
+    override fun getValueTypeface(): Typeface? {
+        return mValueTypeface
     }
 
     override fun getValueTextSize(): Float {
@@ -318,8 +318,8 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
         mFormLineDashEffect = dashPathEffect
     }
 
-    override fun getFormLineDashEffect(): DashPathEffect {
-        return mFormLineDashEffect!!
+    override fun getFormLineDashEffect(): DashPathEffect? {
+        return mFormLineDashEffect
     }
 
     override fun setDrawValues(enabled: Boolean) {
