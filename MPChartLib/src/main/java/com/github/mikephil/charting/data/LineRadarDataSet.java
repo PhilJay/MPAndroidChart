@@ -125,7 +125,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
     }
 
     protected void copy(LineRadarDataSet lineRadarDataSet) {
-        super.copy(lineRadarDataSet);
+        super.copy((BaseDataSet<?>) lineRadarDataSet);
         lineRadarDataSet.mDrawFilled = mDrawFilled;
         lineRadarDataSet.mFillAlpha = mFillAlpha;
         lineRadarDataSet.mFillColor = mFillColor;

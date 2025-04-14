@@ -64,7 +64,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     protected void copy(BarDataSet barDataSet) {
-        super.copy(barDataSet);
+        super.copy((BaseDataSet<?>) barDataSet);
         barDataSet.mStackSize = mStackSize;
         barDataSet.mBarShadowColor = mBarShadowColor;
         barDataSet.mBarBorderWidth = mBarBorderWidth;

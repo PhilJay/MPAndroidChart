@@ -57,7 +57,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     }
 
     protected void copy(ScatterDataSet scatterDataSet) {
-        super.copy(scatterDataSet);
+        super.copy((BaseDataSet<?>) scatterDataSet);
         scatterDataSet.mShapeSize = mShapeSize;
         scatterDataSet.mShapeRenderer = mShapeRenderer;
         scatterDataSet.mScatterShapeHoleRadius = mScatterShapeHoleRadius;

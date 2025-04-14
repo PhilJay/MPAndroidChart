@@ -111,7 +111,7 @@ public abstract class LineScatterCandleRadarDataSet<T extends Entry> extends Bar
     }
 
     protected void copy(LineScatterCandleRadarDataSet lineScatterCandleRadarDataSet) {
-        super.copy(lineScatterCandleRadarDataSet);
+        super.copy((BaseDataSet<?>) lineScatterCandleRadarDataSet);
         lineScatterCandleRadarDataSet.mDrawHorizontalHighlightIndicator = mDrawHorizontalHighlightIndicator;
         lineScatterCandleRadarDataSet.mDrawVerticalHighlightIndicator = mDrawVerticalHighlightIndicator;
         lineScatterCandleRadarDataSet.mHighlightLineWidth = mHighlightLineWidth;
