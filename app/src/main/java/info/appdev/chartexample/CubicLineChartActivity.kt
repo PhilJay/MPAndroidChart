@@ -125,7 +125,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.lineWidth = 1.8f
             set1.circleRadius = 4f
             set1.setCircleColor(Color.WHITE)
-            set1.highLightColor = Color.rgb(244, 117, 117)
+            set1.setHighLightColor(Color.rgb(244, 117, 117))
             set1.color = Color.WHITE
             set1.fillColor = Color.WHITE
             set1.fillAlpha = 100

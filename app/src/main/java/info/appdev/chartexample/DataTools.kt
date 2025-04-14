@@ -194,7 +194,7 @@ class DataTools {
 
             // customize legend entry
             lineDataSet01.formLineWidth = 1f
-            lineDataSet01.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+            lineDataSet01.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
             lineDataSet01.formSize = 15f
 
             // text size of values
