@@ -62,12 +62,12 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         float barSpace = dataSet.getBarSpace();
         boolean showCandleBar = dataSet.getShowCandleBar();
 
-        mXBounds.set(mChart, dataSet);
+        xBounds.set(mChart, dataSet);
 
         renderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
         // draw the body
-        for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
+        for (int j = xBounds.min; j <= xBounds.range + xBounds.min; j++) {
 
             // get the entry
             CandleEntry e = dataSet.getEntryForIndex(j);
@@ -275,10 +275,10 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                mXBounds.set(mChart, dataSet);
+                xBounds.set(mChart, dataSet);
 
                 float[] positions = trans.generateTransformedValuesCandle(
-                        dataSet, animator.getPhaseX(), animator.getPhaseY(), mXBounds.min, mXBounds.max);
+                        dataSet, animator.getPhaseX(), animator.getPhaseY(), xBounds.min, xBounds.max);
 
                 float yOffset = Utils.convertDpToPixel(5f);
 
@@ -297,7 +297,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                     if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y))
                         continue;
 
-                    CandleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
+                    CandleEntry entry = dataSet.getEntryForIndex(j / 2 + xBounds.min);
 
                     if (dataSet.isDrawValuesEnabled()) {
                         drawValue(c,

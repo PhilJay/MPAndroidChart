@@ -74,7 +74,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         float phaseY = animator.getPhaseY();
 
-        mXBounds.set(mChart, dataSet);
+        xBounds.set(mChart, dataSet);
 
         sizeBuffer[0] = 0f;
         sizeBuffer[2] = 1f;
@@ -88,7 +88,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         final float maxBubbleHeight = Math.abs(viewPortHandler.contentBottom() - viewPortHandler.contentTop());
         final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-        for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
+        for (int j = xBounds.min; j <= xBounds.range + xBounds.min; j++) {
 
             final BubbleEntry entry = dataSet.getEntryForIndex(j);
 
@@ -146,10 +146,10 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 final float phaseX = Math.max(0.f, Math.min(1.f, animator.getPhaseX()));
                 final float phaseY = animator.getPhaseY();
 
-                mXBounds.set(mChart, dataSet);
+                xBounds.set(mChart, dataSet);
 
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
-                        .generateTransformedValuesBubble(dataSet, phaseY, mXBounds.min, mXBounds.max);
+                        .generateTransformedValuesBubble(dataSet, phaseY, xBounds.min, xBounds.max);
 
                 final float alpha = phaseX == 1 ? phaseY : phaseX;
 
@@ -159,7 +159,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                 for (int j = 0; j < positions.length; j += 2) {
 
-                    int valueTextColor = dataSet.getValueTextColor(j / 2 + mXBounds.min);
+                    int valueTextColor = dataSet.getValueTextColor(j / 2 + xBounds.min);
                     valueTextColor = Color.argb(Math.round(255.f * alpha), Color.red(valueTextColor),
                             Color.green(valueTextColor), Color.blue(valueTextColor));
 
@@ -172,7 +172,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
                     if ((!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y)))
                         continue;
 
-                    BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
+                    BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + xBounds.min);
 
                     if (dataSet.isDrawValuesEnabled()) {
                         drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
