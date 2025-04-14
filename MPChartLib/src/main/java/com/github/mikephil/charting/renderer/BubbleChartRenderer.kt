@@ -81,8 +81,8 @@ open class BubbleChartRenderer(
 
             val color = dataSet.getColor(j)
 
-            renderPaint.color = color
-            c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, renderPaint)
+            paintRender.color = color
+            c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintRender)
         }
     }
 
@@ -93,7 +93,7 @@ open class BubbleChartRenderer(
         if (isDrawingValuesAllowed(chart)) {
             val dataSets = bubbleData.dataSets
 
-            val lineHeight = Utils.calcTextHeight(mValuePaint, "1").toFloat()
+            val lineHeight = Utils.calcTextHeight(paintValues, "1").toFloat()
 
             for (i in dataSets.indices) {
                 val dataSet = dataSets[i]
@@ -178,10 +178,10 @@ open class BubbleChartRenderer(
     private val _hsvBuffer = FloatArray(3)
 
     init {
-        renderPaint.style = Paint.Style.FILL
+        paintRender.style = Paint.Style.FILL
 
-        highlightPaint.style = Paint.Style.STROKE
-        highlightPaint.strokeWidth = Utils.convertDpToPixel(1.5f)
+        paintHighlight.style = Paint.Style.STROKE
+        paintHighlight.strokeWidth = Utils.convertDpToPixel(1.5f)
     }
 
     override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
@@ -246,9 +246,9 @@ open class BubbleChartRenderer(
             _hsvBuffer[2] *= 0.5f
             val color = Color.HSVToColor(Color.alpha(originalColor), _hsvBuffer)
 
-            highlightPaint.color = color
-            highlightPaint.strokeWidth = set.highlightCircleWidth
-            c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, highlightPaint)
+            paintHighlight.color = color
+            paintHighlight.strokeWidth = set.highlightCircleWidth
+            c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintHighlight)
         }
     }
 }

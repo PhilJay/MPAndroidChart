@@ -61,18 +61,18 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
         } else {
             // save
 
-            val previous = renderPaint.style
-            val previousColor = renderPaint.color
+            val previous = paintRender.style
+            val previousColor = paintRender.color
 
             // set
-            renderPaint.style = Paint.Style.FILL
-            renderPaint.color = color
+            paintRender.style = Paint.Style.FILL
+            paintRender.color = color
 
-            c.drawPath(filledPath, renderPaint)
+            c.drawPath(filledPath, paintRender)
 
             // restore
-            renderPaint.color = previousColor
-            renderPaint.style = previous
+            paintRender.color = previousColor
+            paintRender.style = previous
         }
     }
 

@@ -68,7 +68,7 @@ open class RadarChartRenderer(
         var hasMovedToPoint = false
 
         for (j in 0..<dataSet.entryCount) {
-            renderPaint.color = dataSet.getColor(j)
+            paintRender.color = dataSet.getColor(j)
 
             val e = dataSet.getEntryForIndex(j)
 
@@ -102,11 +102,11 @@ open class RadarChartRenderer(
             }
         }
 
-        renderPaint.strokeWidth = dataSet.lineWidth
-        renderPaint.style = Paint.Style.STROKE
+        paintRender.strokeWidth = dataSet.lineWidth
+        paintRender.style = Paint.Style.STROKE
 
         // draw the line (only if filled is disabled or alpha is below 255)
-        if (!dataSet.isDrawFilledEnabled || dataSet.fillAlpha < 255) c.drawPath(surface, renderPaint)
+        if (!dataSet.isDrawFilledEnabled || dataSet.fillAlpha < 255) c.drawPath(surface, paintRender)
 
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)
@@ -348,10 +348,10 @@ open class RadarChartRenderer(
     protected var mDrawHighlightCirclePathBuffer: Path = Path()
 
     init {
-        highlightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        highlightPaint.style = Paint.Style.STROKE
-        highlightPaint.strokeWidth = 2f
-        highlightPaint.color = Color.rgb(255, 187, 115)
+        paintHighlight = Paint(Paint.ANTI_ALIAS_FLAG)
+        paintHighlight.style = Paint.Style.STROKE
+        paintHighlight.strokeWidth = 2f
+        paintHighlight.color = Color.rgb(255, 187, 115)
 
         paint.style = Paint.Style.FILL
         paint.strokeWidth = 2f

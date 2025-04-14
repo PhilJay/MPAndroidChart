@@ -41,7 +41,7 @@ open class CandleStickChartRenderer(
 
         xBounds[chart] = dataSet
 
-        renderPaint.strokeWidth = dataSet.shadowWidth
+        paintRender.strokeWidth = dataSet.shadowWidth
 
         // draw the body
         for (j in xBounds.min..xBounds.range + xBounds.min) {
@@ -84,18 +84,18 @@ open class CandleStickChartRenderer(
 
                 // draw the shadows
                 if (dataSet.shadowColorSameAsCandle) {
-                    if (open > close) renderPaint.color =
+                    if (open > close) paintRender.color =
                         if (dataSet.decreasingColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.decreasingColor
-                    else if (open < close) renderPaint.color =
+                    else if (open < close) paintRender.color =
                         if (dataSet.increasingColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.increasingColor
-                    else renderPaint.color = if (dataSet.neutralColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.neutralColor
+                    else paintRender.color = if (dataSet.neutralColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.neutralColor
                 } else {
-                    renderPaint.color = if (dataSet.shadowColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.shadowColor
+                    paintRender.color = if (dataSet.shadowColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.shadowColor
                 }
 
-                renderPaint.style = Paint.Style.STROKE
+                paintRender.style = Paint.Style.STROKE
 
-                c.drawLines(shadowBuffers, renderPaint)
+                c.drawLines(shadowBuffers, paintRender)
 
                 // calculate the body
                 bodyBuffers[0] = xPos - 0.5f + barSpace
@@ -109,44 +109,44 @@ open class CandleStickChartRenderer(
                 if (open > close) { // decreasing
 
                     if (dataSet.decreasingColor == ColorTemplate.COLOR_NONE) {
-                        renderPaint.color = dataSet.getColor(j)
+                        paintRender.color = dataSet.getColor(j)
                     } else {
-                        renderPaint.color = dataSet.decreasingColor
+                        paintRender.color = dataSet.decreasingColor
                     }
 
-                    renderPaint.style = dataSet.decreasingPaintStyle
+                    paintRender.style = dataSet.decreasingPaintStyle
 
                     c.drawRect(
                         bodyBuffers[0], bodyBuffers[3],
                         bodyBuffers[2], bodyBuffers[1],
-                        renderPaint
+                        paintRender
                     )
                 } else if (open < close) {
                     if (dataSet.increasingColor == ColorTemplate.COLOR_NONE) {
-                        renderPaint.color = dataSet.getColor(j)
+                        paintRender.color = dataSet.getColor(j)
                     } else {
-                        renderPaint.color = dataSet.increasingColor
+                        paintRender.color = dataSet.increasingColor
                     }
 
-                    renderPaint.style = dataSet.increasingPaintStyle
+                    paintRender.style = dataSet.increasingPaintStyle
 
                     c.drawRect(
                         bodyBuffers[0], bodyBuffers[1],
                         bodyBuffers[2], bodyBuffers[3],
-                        renderPaint
+                        paintRender
                     )
                 } else { // equal values
 
                     if (dataSet.neutralColor == ColorTemplate.COLOR_NONE) {
-                        renderPaint.color = dataSet.getColor(j)
+                        paintRender.color = dataSet.getColor(j)
                     } else {
-                        renderPaint.color = dataSet.neutralColor
+                        paintRender.color = dataSet.neutralColor
                     }
 
                     c.drawLine(
                         bodyBuffers[0], bodyBuffers[1],
                         bodyBuffers[2], bodyBuffers[3],
-                        renderPaint
+                        paintRender
                     )
                 }
             } else {
@@ -183,21 +183,21 @@ open class CandleStickChartRenderer(
                 else
                     dataSet.neutralColor
 
-                renderPaint.color = barColor
+                paintRender.color = barColor
                 c.drawLine(
                     rangeBuffers[0], rangeBuffers[1],
                     rangeBuffers[2], rangeBuffers[3],
-                    renderPaint
+                    paintRender
                 )
                 c.drawLine(
                     openBuffers[0], openBuffers[1],
                     openBuffers[2], openBuffers[3],
-                    renderPaint
+                    paintRender
                 )
                 c.drawLine(
                     closeBuffers[0], closeBuffers[1],
                     closeBuffers[2], closeBuffers[3],
-                    renderPaint
+                    paintRender
                 )
             }
         }

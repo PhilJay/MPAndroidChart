@@ -24,11 +24,11 @@ abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator?, viewPort
     protected fun drawHighlightLines(c: Canvas, x: Float, y: Float, set: ILineScatterCandleRadarDataSet<*>) {
         // set color and stroke-width
 
-        highlightPaint.color = set.highLightColor
-        highlightPaint.strokeWidth = set.highlightLineWidth
+        paintHighlight.color = set.highLightColor
+        paintHighlight.strokeWidth = set.highlightLineWidth
 
         // draw highlighted lines (if enabled)
-        highlightPaint.setPathEffect(set.dashPathEffectHighlight)
+        paintHighlight.setPathEffect(set.dashPathEffectHighlight)
 
         // draw vertical highlight lines
         if (set.isVerticalHighlightIndicatorEnabled) {
@@ -38,7 +38,7 @@ abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator?, viewPort
             highlightLinePath.moveTo(x, viewPortHandler.contentTop())
             highlightLinePath.lineTo(x, viewPortHandler.contentBottom())
 
-            c.drawPath(highlightLinePath, highlightPaint)
+            c.drawPath(highlightLinePath, paintHighlight)
         }
 
         // draw horizontal highlight lines
@@ -49,7 +49,7 @@ abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator?, viewPort
             highlightLinePath.moveTo(viewPortHandler.contentLeft(), y)
             highlightLinePath.lineTo(viewPortHandler.contentRight(), y)
 
-            c.drawPath(highlightLinePath, highlightPaint)
+            c.drawPath(highlightLinePath, paintHighlight)
         }
     }
 }

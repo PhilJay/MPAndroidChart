@@ -19,9 +19,8 @@ import kotlin.math.min
 
 /**
  * Renderer for the HorizontalBarChart.
- *
- * @author Philipp Jahoda
  */
+@Suppress("MemberVisibilityCanBePrivate")
 open class HorizontalBarChartRenderer(
     chart: BarDataProvider, animator: ChartAnimator?,
     viewPortHandler: ViewPortHandler?
@@ -42,7 +41,7 @@ open class HorizontalBarChartRenderer(
     private val mBarShadowRectBuffer = RectF()
 
     init {
-        mValuePaint.textAlign = Align.LEFT
+        paintValues.textAlign = Align.LEFT
     }
 
     override fun drawDataSet(c: Canvas, dataSet: IBarDataSet, index: Int) {
@@ -112,7 +111,7 @@ open class HorizontalBarChartRenderer(
         val isInverted = chart.isInverted(dataSet.axisDependency)
 
         if (isSingleColor) {
-            renderPaint.color = dataSet.color
+            paintRender.color = dataSet.color
         }
 
         var j = 0
@@ -131,13 +130,13 @@ open class HorizontalBarChartRenderer(
             if (!isSingleColor) {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
-                renderPaint.color = dataSet.getColor(j / 4)
+                paintRender.color = dataSet.getColor(j / 4)
             }
 
             if (isCustomFill) {
                 dataSet.getFill(pos)
                     .fillRect(
-                        c, renderPaint,
+                        c, paintRender,
                         buffer.buffer[j],
                         buffer.buffer[j + 1],
                         buffer.buffer[j + 2],
@@ -148,7 +147,7 @@ open class HorizontalBarChartRenderer(
             } else {
                 c.drawRect(
                     buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3], renderPaint
+                    buffer.buffer[j + 3], paintRender
                 )
             }
 
@@ -186,7 +185,7 @@ open class HorizontalBarChartRenderer(
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet)
-                val halfTextHeight = Utils.calcTextHeight(mValuePaint, "10") / 2f
+                val halfTextHeight = Utils.calcTextHeight(paintValues, "10") / 2f
 
                 val formatter = dataSet.valueFormatter
 
@@ -224,7 +223,7 @@ open class HorizontalBarChartRenderer(
                         val formattedValue = formatter.getFormattedValue(`val`, entry, i, viewPortHandler)
 
                         // calculate the correct offset depending on the draw position of the value
-                        val valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue).toFloat()
+                        val valueTextWidth = Utils.calcTextWidth(paintValues, formattedValue).toFloat()
                         posOffset = (if (drawValueAboveBar) valueOffsetPlus else -(valueTextWidth + valueOffsetPlus))
                         negOffset = ((if (drawValueAboveBar) -(valueTextWidth + valueOffsetPlus) else valueOffsetPlus)
                                 - (buffer.buffer[j + 2] - buffer.buffer[j]))
@@ -301,7 +300,7 @@ open class HorizontalBarChartRenderer(
                             )
 
                             // calculate the correct offset depending on the draw position of the value
-                            val valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue).toFloat()
+                            val valueTextWidth = Utils.calcTextWidth(paintValues, formattedValue).toFloat()
                             posOffset = (if (drawValueAboveBar) valueOffsetPlus else -(valueTextWidth + valueOffsetPlus))
                             negOffset = (if (drawValueAboveBar) -(valueTextWidth + valueOffsetPlus) else valueOffsetPlus)
 
@@ -379,7 +378,7 @@ open class HorizontalBarChartRenderer(
                                 )
 
                                 // calculate the correct offset depending on the draw position of the value
-                                val valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue).toFloat()
+                                val valueTextWidth = Utils.calcTextWidth(paintValues, formattedValue).toFloat()
                                 posOffset = (if (drawValueAboveBar) valueOffsetPlus else -(valueTextWidth + valueOffsetPlus))
                                 negOffset = (if (drawValueAboveBar) -(valueTextWidth + valueOffsetPlus) else valueOffsetPlus)
 
@@ -441,8 +440,8 @@ open class HorizontalBarChartRenderer(
     }
 
     protected fun drawValue(c: Canvas, valueText: String, x: Float, y: Float, color: Int) {
-        mValuePaint.color = color
-        c.drawText(valueText, x, y, mValuePaint)
+        paintValues.color = color
+        c.drawText(valueText, x, y, paintValues)
     }
 
     override fun prepareBarHighlight(x: Float, y1: Float, y2: Float, barWidthHalf: Float, trans: Transformer) {

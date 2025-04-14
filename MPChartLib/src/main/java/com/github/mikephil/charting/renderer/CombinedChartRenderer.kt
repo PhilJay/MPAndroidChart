@@ -14,50 +14,51 @@ import java.lang.ref.WeakReference
 /**
  * Renderer class that is responsible for rendering multiple different data-types.
  */
-class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) : DataRenderer(animator, viewPortHandler) {
+@Suppress("MemberVisibilityCanBePrivate")
+open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, viewPortHandler: ViewPortHandler) : DataRenderer(animator, viewPortHandler) {
     /**
      * all rederers for the different kinds of data this combined-renderer can draw
      */
-    protected var mRenderers: MutableList<DataRenderer> = ArrayList(5)
+    protected var dataRenderers: MutableList<DataRenderer> = ArrayList(5)
 
-    protected var mChart: WeakReference<Chart<*>> = WeakReference(chart)
+    protected var weakChart: WeakReference<Chart<*>> = WeakReference(chart)
 
     /**
      * Creates the renderers needed for this combined-renderer in the required order. Also takes the DrawOrder into
      * consideration.
      */
     fun createRenderers() {
-        mRenderers.clear()
+        dataRenderers.clear()
 
-        val chart = mChart.get() as CombinedChart? ?: return
+        val chart = weakChart.get() as CombinedChart? ?: return
 
         val orders = chart.drawOrder
 
         for (order in orders) {
             when (order) {
-                DrawOrder.BAR -> if (chart.barData != null) mRenderers.add(BarChartRenderer(chart, animator, viewPortHandler))
-                DrawOrder.BUBBLE -> if (chart.bubbleData != null) mRenderers.add(BubbleChartRenderer(chart, animator, viewPortHandler))
-                DrawOrder.LINE -> mRenderers.add(LineChartRenderer(chart, animator, viewPortHandler))
-                DrawOrder.CANDLE -> if (chart.candleData != null) mRenderers.add(CandleStickChartRenderer(chart, animator, viewPortHandler))
-                DrawOrder.SCATTER -> if (chart.scatterData != null) mRenderers.add(ScatterChartRenderer(chart, animator, viewPortHandler))
+                DrawOrder.BAR -> if (chart.barData != null) dataRenderers.add(BarChartRenderer(chart, animator, viewPortHandler))
+                DrawOrder.BUBBLE -> if (chart.bubbleData != null) dataRenderers.add(BubbleChartRenderer(chart, animator, viewPortHandler))
+                DrawOrder.LINE -> dataRenderers.add(LineChartRenderer(chart, animator, viewPortHandler))
+                DrawOrder.CANDLE -> if (chart.candleData != null) dataRenderers.add(CandleStickChartRenderer(chart, animator, viewPortHandler))
+                DrawOrder.SCATTER -> if (chart.scatterData != null) dataRenderers.add(ScatterChartRenderer(chart, animator, viewPortHandler))
             }
         }
     }
 
     override fun initBuffers() {
-        for (renderer in mRenderers) renderer.initBuffers()
+        for (renderer in dataRenderers) renderer.initBuffers()
     }
 
     override fun drawData(c: Canvas) {
-        for (renderer in mRenderers) renderer.drawData(c)
+        for (renderer in dataRenderers) renderer.drawData(c)
     }
 
     override fun drawValues(c: Canvas) {
-        for (renderer in mRenderers) renderer.drawValues(c)
+        for (renderer in dataRenderers) renderer.drawValues(c)
     }
 
     override fun drawExtras(c: Canvas) {
-        for (renderer in mRenderers) renderer.drawExtras(c)
+        for (renderer in dataRenderers) renderer.drawExtras(c)
     }
 
     protected var mHighlightBuffer: MutableList<Highlight> = ArrayList()
@@ -67,9 +68,9 @@ class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator?, view
     }
 
     override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
-        val chart = mChart.get() ?: return
+        val chart = weakChart.get() ?: return
 
-        for (renderer in mRenderers) {
+        for (renderer in dataRenderers) {
             var data: ChartData<*>? = null
 
             if (renderer is BarChartRenderer) data = renderer.chart.barData
@@ -100,8 +101,8 @@ class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator?, view
      * @return
      */
     fun getSubRenderer(index: Int): DataRenderer? {
-        return if (index >= mRenderers.size || index < 0) null
-        else mRenderers[index]
+        return if (index >= dataRenderers.size || index < 0) null
+        else dataRenderers[index]
     }
 
     val subRenderers: List<DataRenderer>
@@ -110,9 +111,9 @@ class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator?, view
          *
          * @return
          */
-        get() = mRenderers
+        get() = dataRenderers
 
     fun setSubRenderers(renderers: MutableList<DataRenderer>) {
-        this.mRenderers = renderers
+        this.dataRenderers = renderers
     }
 }
