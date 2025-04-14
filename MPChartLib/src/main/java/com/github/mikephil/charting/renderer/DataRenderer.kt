@@ -18,24 +18,14 @@ import com.github.mikephil.charting.utils.ViewPortHandler
  */
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class DataRenderer(
-    /**
-     * the animator object used to perform animations on the chart data
-     */
     @JvmField protected var animator: ChartAnimator, viewPortHandler: ViewPortHandler
 ) : Renderer(viewPortHandler) {
-    /**
-     * Returns the Paint object used for rendering.
-     */
     /**
      * main paint object used for rendering
      */
     var paintRender: Paint
         protected set
 
-    /**
-     * Returns the Paint object this renderer uses for drawing highlight
-     * indicators.
-     */
     /**
      * paint used for highlighting values
      */
@@ -44,9 +34,6 @@ abstract class DataRenderer(
 
     protected var drawPaint: Paint
 
-    /**
-     * Returns the Paint object this renderer uses for drawing the values (value-text).
-     */
     /**
      * paint object for drawing values (text representing values of chart
      * entries)
@@ -72,8 +59,7 @@ abstract class DataRenderer(
     }
 
     protected open fun isDrawingValuesAllowed(chart: ChartInterface): Boolean {
-        return (chart.data!!.entryCount < chart.maxVisibleCount
-                * viewPortHandler.scaleX)
+        return chart.data!!.entryCount < chart.maxVisibleCount * viewPortHandler.scaleX
     }
 
     /**
