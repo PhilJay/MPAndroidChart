@@ -88,11 +88,11 @@ open class BarChartRenderer(
     private val barShadowRectBuffer = RectF()
 
     init {
-        highlightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        highlightPaint.style = Paint.Style.FILL
-        highlightPaint.color = Color.rgb(0, 0, 0)
+        paintHighlight = Paint(Paint.ANTI_ALIAS_FLAG)
+        paintHighlight.style = Paint.Style.FILL
+        paintHighlight.color = Color.rgb(0, 0, 0)
         // set alpha after color
-        highlightPaint.alpha = 120
+        paintHighlight.alpha = 120
 
         shadowPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         shadowPaint.style = Paint.Style.FILL
@@ -170,7 +170,7 @@ open class BarChartRenderer(
         val isInverted = chart.isInverted(dataSet.axisDependency)
 
         if (isSingleColor) {
-            renderPaint.color = dataSet.color
+            paintRender.color = dataSet.color
         }
 
         var j = 0
@@ -189,13 +189,13 @@ open class BarChartRenderer(
             if (!isSingleColor) {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
-                renderPaint.color = dataSet.getColor(pos)
+                paintRender.color = dataSet.getColor(pos)
             }
 
             if (isCustomFill) {
                 dataSet.getFill(pos)
                     .fillRect(
-                        c, renderPaint,
+                        c, paintRender,
                         buffer.buffer[j],
                         buffer.buffer[j + 1],
                         buffer.buffer[j + 2],
@@ -209,12 +209,12 @@ open class BarChartRenderer(
                         RectF(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                             buffer.buffer[j + 3]
-                        ), roundedBarRadius, roundedBarRadius, renderPaint
+                        ), roundedBarRadius, roundedBarRadius, paintRender
                     )
                 } else {
                     c.drawRect(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], renderPaint
+                        buffer.buffer[j + 3], paintRender
                     )
                 }
             }
@@ -277,7 +277,7 @@ open class BarChartRenderer(
 
                 // calculate the correct offset depending on the draw position of
                 // the value
-                val valueTextHeight = Utils.calcTextHeight(mValuePaint, "8").toFloat()
+                val valueTextHeight = Utils.calcTextHeight(paintValues, "8").toFloat()
                 posOffset = (if (drawValueAboveBar) -valueOffsetPlus else valueTextHeight + valueOffsetPlus)
                 negOffset = (if (drawValueAboveBar) valueTextHeight + valueOffsetPlus else -valueOffsetPlus)
 
@@ -512,8 +512,8 @@ open class BarChartRenderer(
 
             val trans = chart.getTransformer(set.axisDependency)
 
-            highlightPaint.color = set.highLightColor
-            highlightPaint.alpha = set.highLightAlpha
+            paintHighlight.color = set.highLightColor
+            paintHighlight.alpha = set.highLightAlpha
 
             val isStack = if (high.stackIndex >= 0 && e.isStacked) true else false
 
@@ -540,9 +540,9 @@ open class BarChartRenderer(
             setHighlightDrawPos(high, barRect)
 
             if (drawRoundedBars) {
-                c.drawRoundRect(RectF(barRect), roundedBarRadius, roundedBarRadius, highlightPaint)
+                c.drawRoundRect(RectF(barRect), roundedBarRadius, roundedBarRadius, paintHighlight)
             } else {
-                c.drawRect(barRect, highlightPaint)
+                c.drawRect(barRect, paintHighlight)
             }
         }
     }

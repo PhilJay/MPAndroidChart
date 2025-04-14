@@ -32,8 +32,8 @@ import kotlin.math.sqrt
 import kotlin.math.tan
 
 open class PieChartRenderer(
-    protected var chart: PieChart, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    protected var chart: PieChart, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : DataRenderer(animator, viewPortHandler) {
     /**
      * paint for the hole in the center of the pie chart and the transparent
@@ -227,7 +227,7 @@ open class PieChartRenderer(
 
             val accountForSliceSpacing = sliceSpace > 0f && sliceAngle <= 180f
 
-            renderPaint.color = dataSet.getColor(j)
+            paintRender.color = dataSet.getColor(j)
 
             // Set current data set color to paint object
             roundedCornerPaint.color = dataSet.getColor(j)
@@ -348,7 +348,7 @@ open class PieChartRenderer(
 
             mPathBuffer.close()
 
-            bitmapCanvas!!.drawPath(mPathBuffer, renderPaint)
+            bitmapCanvas!!.drawPath(mPathBuffer, paintRender)
 
             // Draw rounded corner path with paint object slice with the given radius
             if (roundedCornerRadius > 0) {
@@ -418,7 +418,7 @@ open class PieChartRenderer(
             // apply the text-styling defined by the DataSet
             applyValueTextStyle(dataSet)
 
-            val lineHeight = (Utils.calcTextHeight(mValuePaint, "Q")
+            val lineHeight = (Utils.calcTextHeight(paintValues, "Q")
                     + Utils.convertDpToPixel(4f))
 
             val formatter = dataSet.valueFormatter
@@ -502,7 +502,7 @@ open class PieChartRenderer(
                         pt2x = pt1x - polyline2Width
                         pt2y = pt1y
 
-                        mValuePaint.textAlign = Align.RIGHT
+                        paintValues.textAlign = Align.RIGHT
 
                         if (drawXOutside) paintEntryLabels.textAlign = Align.RIGHT
 
@@ -511,7 +511,7 @@ open class PieChartRenderer(
                     } else {
                         pt2x = pt1x + polyline2Width
                         pt2y = pt1y
-                        mValuePaint.textAlign = Align.LEFT
+                        paintValues.textAlign = Align.LEFT
 
                         if (drawXOutside) paintEntryLabels.textAlign = Align.LEFT
 
@@ -563,7 +563,7 @@ open class PieChartRenderer(
                     val x = labelRadius * sliceXBase + center.x
                     val y = labelRadius * sliceYBase + center.y
 
-                    mValuePaint.textAlign = Align.CENTER
+                    paintValues.textAlign = Align.CENTER
 
                     // draw everything, depending on settings
                     if (drawXInside && drawYInside) {
@@ -758,9 +758,9 @@ open class PieChartRenderer(
         paintCenterText.color = Color.BLACK
         paintCenterText.textSize = Utils.convertDpToPixel(12f)
 
-        mValuePaint.textSize = Utils.convertDpToPixel(13f)
-        mValuePaint.color = Color.WHITE
-        mValuePaint.textAlign = Align.CENTER
+        paintValues.textSize = Utils.convertDpToPixel(13f)
+        paintValues.color = Color.WHITE
+        paintValues.textAlign = Align.CENTER
 
         paintEntryLabels = Paint(Paint.ANTI_ALIAS_FLAG)
         paintEntryLabels.color = Color.WHITE
@@ -839,7 +839,7 @@ open class PieChartRenderer(
 
             var highlightColor = set.highlightColor
             if (highlightColor == null) highlightColor = set.getColor(index)
-            renderPaint.color = highlightColor
+            paintRender.color = highlightColor
 
             val sliceSpaceAngleOuter = if (visibleAngleCount == 1) 0f else sliceSpace / (Utils.FDEG2RAD * radius)
 
@@ -950,7 +950,7 @@ open class PieChartRenderer(
 
             mPathBuffer.close()
 
-            bitmapCanvas!!.drawPath(mPathBuffer, renderPaint)
+            bitmapCanvas!!.drawPath(mPathBuffer, paintRender)
         }
 
         MPPointF.recycleInstance(center)
@@ -996,8 +996,8 @@ open class PieChartRenderer(
                 val y = ((r - circleRadius)
                         * sin(v) + center.y).toFloat()
 
-                renderPaint.color = dataSet.getColor(j)
-                bitmapCanvas!!.drawCircle(x, y, circleRadius, renderPaint)
+                paintRender.color = dataSet.getColor(j)
+                bitmapCanvas!!.drawCircle(x, y, circleRadius, paintRender)
             }
 
             angle += sliceAngle * phaseX

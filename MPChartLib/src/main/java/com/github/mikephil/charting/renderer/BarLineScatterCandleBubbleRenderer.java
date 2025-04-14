@@ -8,9 +8,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBub
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-/**
- * Created by Philipp Jahoda on 09/06/16.
- */
 public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
 
     /**

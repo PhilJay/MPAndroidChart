@@ -147,7 +147,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString())
 
         // prepare the legend again
-        binding.chart1.legendRenderer.computeLegend(binding.chart1.data)
+        binding.chart1.data?.let { binding.chart1.legendRenderer.computeLegend(it) }
     }
 
     override fun onEntryMoved(entry: Entry) {

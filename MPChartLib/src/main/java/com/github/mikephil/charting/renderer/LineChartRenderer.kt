@@ -80,15 +80,15 @@ class LineChartRenderer(
             if (set.isVisible) drawDataSet(c, set)
         }
 
-        c.drawBitmap(drawBitmapLocal, 0f, 0f, renderPaint)
+        c.drawBitmap(drawBitmapLocal, 0f, 0f, paintRender)
     }
 
     protected fun drawDataSet(c: Canvas, dataSet: ILineDataSet) {
         if (dataSet.entryCount < 1)
             return
 
-        renderPaint.strokeWidth = dataSet.lineWidth
-        renderPaint.setPathEffect(dataSet.dashPathEffect)
+        paintRender.strokeWidth = dataSet.lineWidth
+        paintRender.setPathEffect(dataSet.dashPathEffect)
 
         when (dataSet.mode) {
             LineDataSet.Mode.LINEAR, LineDataSet.Mode.STEPPED -> drawLinear(c, dataSet)
@@ -97,7 +97,7 @@ class LineChartRenderer(
             else -> drawLinear(c, dataSet)
         }
 
-        renderPaint.setPathEffect(null)
+        paintRender.setPathEffect(null)
     }
 
     protected fun drawHorizontalBezier(dataSet: ILineDataSet) {
@@ -139,15 +139,15 @@ class LineChartRenderer(
             bitmapCanvas?.let { drawCubicFill(it, dataSet, cubicFillPath, trans!!, xBounds) }
         }
 
-        renderPaint.color = dataSet.color
+        paintRender.color = dataSet.color
 
-        renderPaint.style = Paint.Style.STROKE
+        paintRender.style = Paint.Style.STROKE
 
         trans!!.pathValueToPixel(cubicPath)
 
-        bitmapCanvas!!.drawPath(cubicPath, renderPaint)
+        bitmapCanvas!!.drawPath(cubicPath, paintRender)
 
-        renderPaint.setPathEffect(null)
+        paintRender.setPathEffect(null)
     }
 
     protected fun drawCubicBezier(dataSet: ILineDataSet) {
@@ -214,15 +214,15 @@ class LineChartRenderer(
             bitmapCanvas?.let { drawCubicFill(it, dataSet, cubicFillPath, trans!!, xBounds) }
         }
 
-        renderPaint.color = dataSet.color
+        paintRender.color = dataSet.color
 
-        renderPaint.style = Paint.Style.STROKE
+        paintRender.style = Paint.Style.STROKE
 
         trans!!.pathValueToPixel(cubicPath)
 
-        bitmapCanvas!!.drawPath(cubicPath, renderPaint)
+        bitmapCanvas!!.drawPath(cubicPath, paintRender)
 
-        renderPaint.setPathEffect(null)
+        paintRender.setPathEffect(null)
     }
 
     protected fun drawCubicFill(c: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
@@ -255,7 +255,7 @@ class LineChartRenderer(
 
         val phaseY = animator.phaseY
 
-        renderPaint.style = Paint.Style.STROKE
+        paintRender.style = Paint.Style.STROKE
 
         // if the data-set is dashed, draw on bitmap-canvas
         val canvas: Canvas? = if (dataSet.isDashedLineEnabled) {
@@ -334,9 +334,9 @@ class LineChartRenderer(
                 ) continue
 
                 // get the color that is set for this line-segment
-                renderPaint.color = dataSet.getColor(j)
+                paintRender.color = dataSet.getColor(j)
 
-                canvas!!.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, renderPaint)
+                canvas!!.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, paintRender)
             }
         } else { // only one color per dataset
 
@@ -376,14 +376,14 @@ class LineChartRenderer(
 
                     val size = (max(((xBounds.range + 1) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2).toInt()
 
-                    renderPaint.color = dataSet.color
+                    paintRender.color = dataSet.color
 
-                    canvas!!.drawLines(lineBuffer, 0, size, renderPaint)
+                    canvas!!.drawLines(lineBuffer, 0, size, paintRender)
                 }
             }
         }
 
-        renderPaint.setPathEffect(null)
+        paintRender.setPathEffect(null)
     }
 
     protected var mGenerateFilledPathBuffer: Path = Path()
@@ -584,7 +584,7 @@ class LineChartRenderer(
     }
 
     protected fun drawCircles(c: Canvas) {
-        renderPaint.style = Paint.Style.FILL
+        paintRender.style = Paint.Style.FILL
 
         val phaseY = animator.phaseY
 
@@ -752,7 +752,7 @@ class LineChartRenderer(
 
                 val canvas = Canvas(circleBitmap)
                 circleBitmaps!![i] = circleBitmap
-                renderPaint.color = set.getCircleColor(i)
+                paintRender.color = set.getCircleColor(i)
 
                 if (drawTransparentCircleHole) {
                     // Begin path for circle with hole
@@ -774,13 +774,13 @@ class LineChartRenderer(
                     )
 
                     // Fill in-between
-                    canvas.drawPath(mCirclePathBuffer, renderPaint)
+                    canvas.drawPath(mCirclePathBuffer, paintRender)
                 } else {
                     canvas.drawCircle(
                         circleRadius,
                         circleRadius,
                         circleRadius,
-                        renderPaint
+                        paintRender
                     )
 
                     if (drawCircleHole) {
