@@ -95,29 +95,35 @@ open class XAxisRenderer(
         paintAxisLabels!!.color = xAxis.textColor
 
         val pointF = MPPointF.getInstance(0f, 0f)
-        if (xAxis.position == XAxisPosition.TOP) {
-            pointF.x = 0.5f
-            pointF.y = 1.0f
-            drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
-        } else if (xAxis.position == XAxisPosition.TOP_INSIDE) {
-            pointF.x = 0.5f
-            pointF.y = 1.0f
-            drawLabels(c, viewPortHandler.contentTop() + yoffset + xAxis.mLabelHeight, pointF)
-        } else if (xAxis.position == XAxisPosition.BOTTOM) {
-            pointF.x = 0.5f
-            pointF.y = 0.0f
-            drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
-        } else if (xAxis.position == XAxisPosition.BOTTOM_INSIDE) {
-            pointF.x = 0.5f
-            pointF.y = 0.0f
-            drawLabels(c, viewPortHandler.contentBottom() - yoffset - xAxis.mLabelHeight, pointF)
-        } else { // BOTH SIDED
-            pointF.x = 0.5f
-            pointF.y = 1.0f
-            drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
-            pointF.x = 0.5f
-            pointF.y = 0.0f
-            drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
+        when (xAxis.position) {
+            XAxisPosition.TOP -> {
+                pointF.x = 0.5f
+                pointF.y = 1.0f
+                drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
+            }
+            XAxisPosition.TOP_INSIDE -> {
+                pointF.x = 0.5f
+                pointF.y = 1.0f
+                drawLabels(c, viewPortHandler.contentTop() + yoffset + xAxis.mLabelHeight, pointF)
+            }
+            XAxisPosition.BOTTOM -> {
+                pointF.x = 0.5f
+                pointF.y = 0.0f
+                drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
+            }
+            XAxisPosition.BOTTOM_INSIDE -> {
+                pointF.x = 0.5f
+                pointF.y = 0.0f
+                drawLabels(c, viewPortHandler.contentBottom() - yoffset - xAxis.mLabelHeight, pointF)
+            }
+            else -> { // BOTH SIDED
+                pointF.x = 0.5f
+                pointF.y = 1.0f
+                drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
+                pointF.x = 0.5f
+                pointF.y = 0.0f
+                drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
+            }
         }
         MPPointF.recycleInstance(pointF)
     }
@@ -377,26 +383,31 @@ open class XAxisRenderer(
 
             val labelPosition = limitLine.labelPosition
 
-            if (labelPosition == LimitLabelPosition.RIGHT_TOP) {
-                val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                limitLinePaint.textAlign = Align.LEFT
-                c.drawText(
-                    label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
-                    limitLinePaint
-                )
-            } else if (labelPosition == LimitLabelPosition.RIGHT_BOTTOM) {
-                limitLinePaint.textAlign = Align.LEFT
-                c.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
-            } else if (labelPosition == LimitLabelPosition.LEFT_TOP) {
-                limitLinePaint.textAlign = Align.RIGHT
-                val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                c.drawText(
-                    label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
-                    limitLinePaint
-                )
-            } else {
-                limitLinePaint.textAlign = Align.RIGHT
-                c.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+            when (labelPosition) {
+                LimitLabelPosition.RIGHT_TOP -> {
+                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                    limitLinePaint.textAlign = Align.LEFT
+                    c.drawText(
+                        label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
+                        limitLinePaint
+                    )
+                }
+                LimitLabelPosition.RIGHT_BOTTOM -> {
+                    limitLinePaint.textAlign = Align.LEFT
+                    c.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                }
+                LimitLabelPosition.LEFT_TOP -> {
+                    limitLinePaint.textAlign = Align.RIGHT
+                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                    c.drawText(
+                        label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
+                        limitLinePaint
+                    )
+                }
+                else -> {
+                    limitLinePaint.textAlign = Align.RIGHT
+                    c.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                }
             }
         }
     }

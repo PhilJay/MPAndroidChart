@@ -326,41 +326,46 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
                     val position = l.labelPosition
 
-                    if (position == LimitLabelPosition.RIGHT_TOP) {
-                        limitLinePaint.textAlign = Align.RIGHT
-                        limitLinePaint.let {
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                pts[1] - yOffset + labelLineHeight, it
-                            )
+                    when (position) {
+                        LimitLabelPosition.RIGHT_TOP -> {
+                            limitLinePaint.textAlign = Align.RIGHT
+                            limitLinePaint.let {
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    pts[1] - yOffset + labelLineHeight, it
+                                )
+                            }
                         }
-                    } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-                        limitLinePaint.let {
-                            it.textAlign = Align.RIGHT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                pts[1] + yOffset, it
-                            )
+                        LimitLabelPosition.RIGHT_BOTTOM -> {
+                            limitLinePaint.let {
+                                it.textAlign = Align.RIGHT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    pts[1] + yOffset, it
+                                )
+                            }
                         }
-                    } else if (position == LimitLabelPosition.LEFT_TOP) {
-                        limitLinePaint.let {
-                            it.textAlign = Align.LEFT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentLeft() + xOffset,
-                                pts[1] - yOffset + labelLineHeight, it
-                            )
+                        LimitLabelPosition.LEFT_TOP -> {
+                            limitLinePaint.let {
+                                it.textAlign = Align.LEFT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentLeft() + xOffset,
+                                    pts[1] - yOffset + labelLineHeight, it
+                                )
+                            }
                         }
-                    } else {
-                        limitLinePaint.let {
-                            it.textAlign = Align.LEFT
-                            c.drawText(
-                                label,
-                                viewPortHandler.offsetLeft() + xOffset,
-                                pts[1] + yOffset, it
-                            )
+                        else -> {
+                            limitLinePaint.let {
+                                it.textAlign = Align.LEFT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.offsetLeft() + xOffset,
+                                    pts[1] + yOffset, it
+                                )
+                            }
                         }
                     }
                 }

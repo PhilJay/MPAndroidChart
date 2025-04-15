@@ -15,7 +15,8 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withSave
 
-class YAxisRendererHorizontalBarChart(
+@Suppress("MemberVisibilityCanBePrivate")
+open class YAxisRendererHorizontalBarChart(
     viewPortHandler: ViewPortHandler, yAxis: YAxis,
     trans: Transformer?
 ) : YAxisRenderer(viewPortHandler, yAxis, trans) {
@@ -30,7 +31,7 @@ class YAxisRendererHorizontalBarChart(
      */
     override fun computeAxis(min: Float, max: Float, inverted: Boolean) {
         // calculate the starting and entry point of the y-labels (depending on
-        // zoom / contentrect bounds)
+        // zoom / content rect bounds)
 
         var yMin = min
         var yMax = max
@@ -274,20 +275,25 @@ class YAxisRendererHorizontalBarChart(
 
                     val position = l.labelPosition
 
-                    if (position == LimitLabelPosition.RIGHT_TOP) {
-                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                        limitLinePaint!!.textAlign = Align.LEFT
-                        c.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
-                    } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-                        limitLinePaint!!.textAlign = Align.LEFT
-                        c.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
-                    } else if (position == LimitLabelPosition.LEFT_TOP) {
-                        limitLinePaint!!.textAlign = Align.RIGHT
-                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                        c.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
-                    } else {
-                        limitLinePaint!!.textAlign = Align.RIGHT
-                        c.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                    when (position) {
+                        LimitLabelPosition.RIGHT_TOP -> {
+                            val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                            limitLinePaint!!.textAlign = Align.LEFT
+                            c.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
+                        }
+                        LimitLabelPosition.RIGHT_BOTTOM -> {
+                            limitLinePaint!!.textAlign = Align.LEFT
+                            c.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                        }
+                        LimitLabelPosition.LEFT_TOP -> {
+                            limitLinePaint!!.textAlign = Align.RIGHT
+                            val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                            c.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
+                        }
+                        else -> {
+                            limitLinePaint!!.textAlign = Align.RIGHT
+                            c.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                        }
                     }
                 }
 
