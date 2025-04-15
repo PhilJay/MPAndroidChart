@@ -353,12 +353,12 @@ open class XAxisRenderer(
         mLimitLinePath.moveTo(mLimitLineSegmentsBuffer[0], mLimitLineSegmentsBuffer[1])
         mLimitLinePath.lineTo(mLimitLineSegmentsBuffer[2], mLimitLineSegmentsBuffer[3])
 
-        limitLinePaint!!.style = Paint.Style.STROKE
-        limitLinePaint!!.color = limitLine.lineColor
-        limitLinePaint!!.strokeWidth = limitLine.lineWidth
-        limitLinePaint!!.setPathEffect(limitLine.dashPathEffect)
+        limitLinePaint.style = Paint.Style.STROKE
+        limitLinePaint.color = limitLine.lineColor
+        limitLinePaint.strokeWidth = limitLine.lineWidth
+        limitLinePaint.setPathEffect(limitLine.dashPathEffect)
 
-        c.drawPath(mLimitLinePath, limitLinePaint!!)
+        c.drawPath(mLimitLinePath, limitLinePaint)
     }
 
     fun renderLimitLineLabel(c: Canvas, limitLine: LimitLine, position: FloatArray, yOffset: Float) {
@@ -366,11 +366,11 @@ open class XAxisRenderer(
 
         // if drawing the limit-value label is enabled
         if (label != null && label != "") {
-            limitLinePaint!!.style = limitLine.textStyle
-            limitLinePaint!!.setPathEffect(null)
-            limitLinePaint!!.color = limitLine.textColor
-            limitLinePaint!!.strokeWidth = 0.5f
-            limitLinePaint!!.textSize = limitLine.textSize
+            limitLinePaint.style = limitLine.textStyle
+            limitLinePaint.setPathEffect(null)
+            limitLinePaint.color = limitLine.textColor
+            limitLinePaint.strokeWidth = 0.5f
+            limitLinePaint.textSize = limitLine.textSize
 
 
             val xOffset = limitLine.lineWidth + limitLine.xOffset
@@ -379,24 +379,24 @@ open class XAxisRenderer(
 
             if (labelPosition == LimitLabelPosition.RIGHT_TOP) {
                 val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                limitLinePaint!!.textAlign = Align.LEFT
+                limitLinePaint.textAlign = Align.LEFT
                 c.drawText(
                     label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
-                    limitLinePaint!!
+                    limitLinePaint
                 )
             } else if (labelPosition == LimitLabelPosition.RIGHT_BOTTOM) {
-                limitLinePaint!!.textAlign = Align.LEFT
-                c.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                limitLinePaint.textAlign = Align.LEFT
+                c.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
             } else if (labelPosition == LimitLabelPosition.LEFT_TOP) {
-                limitLinePaint!!.textAlign = Align.RIGHT
+                limitLinePaint.textAlign = Align.RIGHT
                 val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
                 c.drawText(
                     label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
-                    limitLinePaint!!
+                    limitLinePaint
                 )
             } else {
-                limitLinePaint!!.textAlign = Align.RIGHT
-                c.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                limitLinePaint.textAlign = Align.RIGHT
+                c.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
             }
         }
     }
