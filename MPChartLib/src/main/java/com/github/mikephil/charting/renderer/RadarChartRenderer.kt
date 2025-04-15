@@ -12,6 +12,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import androidx.core.graphics.withSave
 
 open class RadarChartRenderer(
     protected var chart: RadarChart, animator: ChartAnimator?,
@@ -374,30 +375,29 @@ open class RadarChartRenderer(
     ) {
         var innerRadiusLocal = innerRadius
         var outerRadiusLocal = outerRadius
-        c.save()
+        c.withSave {
+            outerRadiusLocal = Utils.convertDpToPixel(outerRadiusLocal)
+            innerRadiusLocal = Utils.convertDpToPixel(innerRadiusLocal)
 
-        outerRadiusLocal = Utils.convertDpToPixel(outerRadiusLocal)
-        innerRadiusLocal = Utils.convertDpToPixel(innerRadiusLocal)
-
-        if (fillColor != ColorTemplate.COLOR_NONE) {
-            val p = mDrawHighlightCirclePathBuffer
-            p.reset()
-            p.addCircle(point.x, point.y, outerRadiusLocal, Path.Direction.CW)
-            if (innerRadiusLocal > 0f) {
-                p.addCircle(point.x, point.y, innerRadiusLocal, Path.Direction.CCW)
+            if (fillColor != ColorTemplate.COLOR_NONE) {
+                val p = mDrawHighlightCirclePathBuffer
+                p.reset()
+                p.addCircle(point.x, point.y, outerRadiusLocal, Path.Direction.CW)
+                if (innerRadiusLocal > 0f) {
+                    p.addCircle(point.x, point.y, innerRadiusLocal, Path.Direction.CCW)
+                }
+                highlightCirclePaint.color = fillColor
+                highlightCirclePaint.style = Paint.Style.FILL
+                drawPath(p, highlightCirclePaint)
             }
-            highlightCirclePaint.color = fillColor
-            highlightCirclePaint.style = Paint.Style.FILL
-            c.drawPath(p, highlightCirclePaint)
-        }
 
-        if (strokeColor != ColorTemplate.COLOR_NONE) {
-            highlightCirclePaint.color = strokeColor
-            highlightCirclePaint.style = Paint.Style.STROKE
-            highlightCirclePaint.strokeWidth = Utils.convertDpToPixel(strokeWidth)
-            c.drawCircle(point.x, point.y, outerRadiusLocal, highlightCirclePaint)
-        }
+            if (strokeColor != ColorTemplate.COLOR_NONE) {
+                highlightCirclePaint.color = strokeColor
+                highlightCirclePaint.style = Paint.Style.STROKE
+                highlightCirclePaint.strokeWidth = Utils.convertDpToPixel(strokeWidth)
+                drawCircle(point.x, point.y, outerRadiusLocal, highlightCirclePaint)
+            }
 
-        c.restore()
+        }
     }
 }

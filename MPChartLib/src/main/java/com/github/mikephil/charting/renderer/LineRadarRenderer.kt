@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import androidx.core.graphics.withClip
 
 abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
     LineScatterCandleRadarRenderer(animator, viewPortHandler) {
@@ -19,18 +20,15 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
      */
     protected fun drawFilledPath(c: Canvas, filledPath: Path, drawable: Drawable) {
         if (clipPathSupported()) {
-            val save = c.save()
-            c.clipPath(filledPath)
-
-            drawable.setBounds(
-                viewPortHandler.contentLeft().toInt(),
-                viewPortHandler.contentTop().toInt(),
-                viewPortHandler.contentRight().toInt(),
-                viewPortHandler.contentBottom().toInt()
-            )
-            drawable.draw(c)
-
-            c.restoreToCount(save)
+            c.withClip(filledPath) {
+                drawable.setBounds(
+                    viewPortHandler.contentLeft().toInt(),
+                    viewPortHandler.contentTop().toInt(),
+                    viewPortHandler.contentRight().toInt(),
+                    viewPortHandler.contentBottom().toInt()
+                )
+                drawable.draw(c)
+            }
         } else {
             throw RuntimeException(
                 "Fill-drawables not (yet) supported below API level 18, " +
@@ -52,12 +50,9 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
         val color = (fillAlpha shl 24) or (fillColor and 0xffffff)
 
         if (clipPathSupported()) {
-            val save = c.save()
-
-            c.clipPath(filledPath)
-
-            c.drawColor(color)
-            c.restoreToCount(save)
+            c.withClip(filledPath) {
+                c.drawColor(color)
+            }
         } else {
             // save
 

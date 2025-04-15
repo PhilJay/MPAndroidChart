@@ -48,6 +48,7 @@ android {
 dependencies {
     implementation 'androidx.annotation:annotation:1.9.1'
     implementation 'androidx.core:core:1.16.0'
+    implementation "androidx.activity:activity-ktx:1.10.1"
     testImplementation 'junit:junit:4.13.2'
 }
 
@@ -90,7 +91,7 @@ mavenPublishing {
     // Github packages
     repositories {
         maven {
-            version = version+"-SNAPSHOT"
+            version = version + "-SNAPSHOT"
             name = "GitHubPackages"
             url = "https://maven.pkg.github.com/AppDevNext/AndroidChart"
             credentials {

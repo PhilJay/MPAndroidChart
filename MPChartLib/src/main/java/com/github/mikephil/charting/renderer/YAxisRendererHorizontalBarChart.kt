@@ -13,6 +13,7 @@ import com.github.mikephil.charting.utils.MPPointD
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import androidx.core.graphics.withSave
 
 class YAxisRendererHorizontalBarChart(
     viewPortHandler: ViewPortHandler, yAxis: YAxis,
@@ -179,27 +180,27 @@ class YAxisRendererHorizontalBarChart(
     }
 
     override fun drawZeroLine(c: Canvas) {
-        val clipRestoreCount = c.save()
-        zeroLineClippingRect.set(viewPortHandler.contentRect)
-        zeroLineClippingRect.inset(-yAxis.zeroLineWidth, 0f)
-        c.clipRect(limitLineClippingRect)
+        c.withSave {
+            zeroLineClippingRect.set(viewPortHandler.contentRect)
+            zeroLineClippingRect.inset(-yAxis.zeroLineWidth, 0f)
+            c.clipRect(limitLineClippingRect)
 
-        // draw zero line
-        val pos = transformer!!.getPixelForValues(0f, 0f)
+            // draw zero line
+            val pos = transformer!!.getPixelForValues(0f, 0f)
 
-        zeroLinePaint!!.color = yAxis.zeroLineColor
-        zeroLinePaint!!.strokeWidth = yAxis.zeroLineWidth
+            zeroLinePaint!!.color = yAxis.zeroLineColor
+            zeroLinePaint!!.strokeWidth = yAxis.zeroLineWidth
 
-        val zeroLinePath = drawZeroLinePathBuffer
-        zeroLinePath.reset()
+            val zeroLinePath = drawZeroLinePathBuffer
+            zeroLinePath.reset()
 
-        zeroLinePath.moveTo(pos.x.toFloat() - 1, viewPortHandler.contentTop())
-        zeroLinePath.lineTo(pos.x.toFloat() - 1, viewPortHandler.contentBottom())
+            zeroLinePath.moveTo(pos.x.toFloat() - 1, viewPortHandler.contentTop())
+            zeroLinePath.lineTo(pos.x.toFloat() - 1, viewPortHandler.contentBottom())
 
-        // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(zeroLinePath, zeroLinePaint!!)
+            // draw a path because lines don't support dashing on lower android versions
+            c.drawPath(zeroLinePath, zeroLinePaint!!)
 
-        c.restoreToCount(clipRestoreCount)
+        }
     }
 
     protected var mRenderLimitLinesPathBuffer: Path = Path()
@@ -233,64 +234,64 @@ class YAxisRendererHorizontalBarChart(
 
             if (!l.isEnabled) continue
 
-            val clipRestoreCount = c.save()
-            limitLineClippingRect.set(viewPortHandler.contentRect)
-            limitLineClippingRect.inset(-l.lineWidth, 0f)
-            c.clipRect(limitLineClippingRect)
+            c.withSave {
+                limitLineClippingRect.set(viewPortHandler.contentRect)
+                limitLineClippingRect.inset(-l.lineWidth, 0f)
+                c.clipRect(limitLineClippingRect)
 
-            pts[0] = l.limit
-            pts[2] = l.limit
+                pts[0] = l.limit
+                pts[2] = l.limit
 
-            transformer!!.pointValuesToPixel(pts)
+                transformer!!.pointValuesToPixel(pts)
 
-            pts[1] = viewPortHandler.contentTop()
-            pts[3] = viewPortHandler.contentBottom()
+                pts[1] = viewPortHandler.contentTop()
+                pts[3] = viewPortHandler.contentBottom()
 
-            limitLinePath.moveTo(pts[0], pts[1])
-            limitLinePath.lineTo(pts[2], pts[3])
+                limitLinePath.moveTo(pts[0], pts[1])
+                limitLinePath.lineTo(pts[2], pts[3])
 
-            limitLinePaint!!.style = Paint.Style.STROKE
-            limitLinePaint!!.color = l.lineColor
-            limitLinePaint!!.setPathEffect(l.dashPathEffect)
-            limitLinePaint!!.strokeWidth = l.lineWidth
+                limitLinePaint!!.style = Paint.Style.STROKE
+                limitLinePaint!!.color = l.lineColor
+                limitLinePaint!!.setPathEffect(l.dashPathEffect)
+                limitLinePaint!!.strokeWidth = l.lineWidth
 
-            c.drawPath(limitLinePath, limitLinePaint!!)
-            limitLinePath.reset()
+                c.drawPath(limitLinePath, limitLinePaint!!)
+                limitLinePath.reset()
 
-            val label = l.label
+                val label = l.label
 
-            // if drawing the limit-value label is enabled
-            if (label != null && label != "") {
-                limitLinePaint!!.style = l.textStyle
-                limitLinePaint!!.setPathEffect(null)
-                limitLinePaint!!.color = l.textColor
-                limitLinePaint!!.setTypeface(l.typeface)
-                limitLinePaint!!.strokeWidth = 0.5f
-                limitLinePaint!!.textSize = l.textSize
+                // if drawing the limit-value label is enabled
+                if (label != null && label != "") {
+                    limitLinePaint!!.style = l.textStyle
+                    limitLinePaint!!.setPathEffect(null)
+                    limitLinePaint!!.color = l.textColor
+                    limitLinePaint!!.setTypeface(l.typeface)
+                    limitLinePaint!!.strokeWidth = 0.5f
+                    limitLinePaint!!.textSize = l.textSize
 
-                val xOffset = l.lineWidth + l.xOffset
-                val yOffset = Utils.convertDpToPixel(2f) + l.yOffset
+                    val xOffset = l.lineWidth + l.xOffset
+                    val yOffset = Utils.convertDpToPixel(2f) + l.yOffset
 
-                val position = l.labelPosition
+                    val position = l.labelPosition
 
-                if (position == LimitLabelPosition.RIGHT_TOP) {
-                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                    limitLinePaint!!.textAlign = Align.LEFT
-                    c.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
-                } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-                    limitLinePaint!!.textAlign = Align.LEFT
-                    c.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
-                } else if (position == LimitLabelPosition.LEFT_TOP) {
-                    limitLinePaint!!.textAlign = Align.RIGHT
-                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                    c.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
-                } else {
-                    limitLinePaint!!.textAlign = Align.RIGHT
-                    c.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                    if (position == LimitLabelPosition.RIGHT_TOP) {
+                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                        limitLinePaint!!.textAlign = Align.LEFT
+                        c.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
+                    } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
+                        limitLinePaint!!.textAlign = Align.LEFT
+                        c.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                    } else if (position == LimitLabelPosition.LEFT_TOP) {
+                        limitLinePaint!!.textAlign = Align.RIGHT
+                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                        c.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
+                    } else {
+                        limitLinePaint!!.textAlign = Align.RIGHT
+                        c.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                    }
                 }
-            }
 
-            c.restoreToCount(clipRestoreCount)
+            }
         }
     }
 }
