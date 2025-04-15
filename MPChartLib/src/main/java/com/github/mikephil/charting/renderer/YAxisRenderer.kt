@@ -292,10 +292,10 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             limitLineClippingRect.inset(0f, -l.lineWidth)
             c.clipRect(limitLineClippingRect)
 
-            limitLinePaint?.style = Paint.Style.STROKE
-            limitLinePaint?.color = l.lineColor
-            limitLinePaint?.strokeWidth = l.lineWidth
-            limitLinePaint?.setPathEffect(l.dashPathEffect)
+            limitLinePaint.style = Paint.Style.STROKE
+            limitLinePaint.color = l.lineColor
+            limitLinePaint.strokeWidth = l.lineWidth
+            limitLinePaint.setPathEffect(l.dashPathEffect)
 
             pts[1] = l.limit
 
@@ -304,7 +304,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
             limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
 
-            limitLinePaint?.let { c.drawPath(limitLinePath, it) }
+            c.drawPath(limitLinePath, limitLinePaint)
             limitLinePath.reset()
 
             // c.drawLines(pts, mLimitLinePaint);
@@ -312,12 +312,12 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
             // if drawing the limit-value label is enabled
             if (label != null && label != "") {
-                limitLinePaint?.style = l.textStyle
-                limitLinePaint?.setPathEffect(null)
-                limitLinePaint?.color = l.textColor
-                limitLinePaint?.setTypeface(l.typeface)
-                limitLinePaint?.strokeWidth = 0.5f
-                limitLinePaint?.textSize = l.textSize
+                limitLinePaint.style = l.textStyle
+                limitLinePaint.setPathEffect(null)
+                limitLinePaint.color = l.textColor
+                limitLinePaint.setTypeface(l.typeface)
+                limitLinePaint.strokeWidth = 0.5f
+                limitLinePaint.textSize = l.textSize
 
                 val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
                 val xOffset = Utils.convertDpToPixel(4f) + l.xOffset
@@ -326,8 +326,8 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 val position = l.labelPosition
 
                 if (position == LimitLabelPosition.RIGHT_TOP) {
-                    limitLinePaint?.textAlign = Align.RIGHT
-                    limitLinePaint?.let {
+                    limitLinePaint.textAlign = Align.RIGHT
+                    limitLinePaint.let {
                         c.drawText(
                             label,
                             viewPortHandler.contentRight() - xOffset,
@@ -335,7 +335,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                         )
                     }
                 } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-                    limitLinePaint?.let {
+                    limitLinePaint.let {
                         it.textAlign = Align.RIGHT
                         c.drawText(
                             label,
@@ -344,7 +344,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                         )
                     }
                 } else if (position == LimitLabelPosition.LEFT_TOP) {
-                    limitLinePaint?.let {
+                    limitLinePaint.let {
                         it.textAlign = Align.LEFT
                         c.drawText(
                             label,
@@ -353,7 +353,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                         )
                     }
                 } else {
-                    limitLinePaint?.let {
+                    limitLinePaint.let {
                         it.textAlign = Align.LEFT
                         c.drawText(
                             label,

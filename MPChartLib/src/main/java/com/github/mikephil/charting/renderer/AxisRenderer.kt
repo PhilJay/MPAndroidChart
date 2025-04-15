@@ -70,7 +70,7 @@ abstract class AxisRenderer(
      * paint used for the limit lines
      */
     @JvmField
-    protected var limitLinePaint: Paint? = null
+    protected var limitLinePaint: Paint
 
     init {
         paintAxisLabels = Paint(Paint.ANTI_ALIAS_FLAG)
