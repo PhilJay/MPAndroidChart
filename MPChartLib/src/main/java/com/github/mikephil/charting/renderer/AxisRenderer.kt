@@ -75,19 +75,21 @@ abstract class AxisRenderer(
     init {
         paintAxisLabels = Paint(Paint.ANTI_ALIAS_FLAG)
 
-        paintGrid = Paint()
-        paintGrid!!.color = Color.GRAY
-        paintGrid!!.strokeWidth = 1f
-        paintGrid!!.style = Paint.Style.STROKE
-        paintGrid!!.alpha = 90
+        paintGrid = Paint().apply {
+            color = Color.GRAY
+            strokeWidth = 1f
+            style = Paint.Style.STROKE
+            alpha = 90
+        }
 
-        paintAxisLine = Paint()
-        paintAxisLine!!.color = Color.BLACK
-        paintAxisLine!!.strokeWidth = 1f
-        paintAxisLine!!.style = Paint.Style.STROKE
-
-        limitLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        limitLinePaint!!.style = Paint.Style.STROKE
+        paintAxisLine = Paint().apply {
+            color = Color.BLACK
+            strokeWidth = 1f
+            style = Paint.Style.STROKE
+        }
+        limitLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+        }
     }
 
     /**
