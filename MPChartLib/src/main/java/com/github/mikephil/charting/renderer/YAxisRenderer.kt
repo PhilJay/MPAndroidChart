@@ -13,6 +13,7 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import androidx.core.graphics.withSave
 
 open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected var yAxis: YAxis, trans: Transformer?) :
     AxisRenderer(viewPortHandler, trans, yAxis) {
@@ -287,84 +288,89 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
             if (!l.isEnabled) continue
 
-            val clipRestoreCount = c.save()
-            limitLineClippingRect.set(viewPortHandler.contentRect)
-            limitLineClippingRect.inset(0f, -l.lineWidth)
-            c.clipRect(limitLineClippingRect)
+            c.withSave {
+                limitLineClippingRect.set(viewPortHandler.contentRect)
+                limitLineClippingRect.inset(0f, -l.lineWidth)
+                c.clipRect(limitLineClippingRect)
 
-            limitLinePaint.style = Paint.Style.STROKE
-            limitLinePaint.color = l.lineColor
-            limitLinePaint.strokeWidth = l.lineWidth
-            limitLinePaint.setPathEffect(l.dashPathEffect)
+                limitLinePaint.style = Paint.Style.STROKE
+                limitLinePaint.color = l.lineColor
+                limitLinePaint.strokeWidth = l.lineWidth
+                limitLinePaint.setPathEffect(l.dashPathEffect)
 
-            pts[1] = l.limit
+                pts[1] = l.limit
 
-            transformer?.pointValuesToPixel(pts)
+                transformer?.pointValuesToPixel(pts)
 
-            limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
-            limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
+                limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
+                limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
 
-            c.drawPath(limitLinePath, limitLinePaint)
-            limitLinePath.reset()
+                c.drawPath(limitLinePath, limitLinePaint)
+                limitLinePath.reset()
 
-            // c.drawLines(pts, mLimitLinePaint);
-            val label = l.label
+                // c.drawLines(pts, mLimitLinePaint);
+                val label = l.label
 
-            // if drawing the limit-value label is enabled
-            if (label != null && label != "") {
-                limitLinePaint.style = l.textStyle
-                limitLinePaint.setPathEffect(null)
-                limitLinePaint.color = l.textColor
-                limitLinePaint.setTypeface(l.typeface)
-                limitLinePaint.strokeWidth = 0.5f
-                limitLinePaint.textSize = l.textSize
+                // if drawing the limit-value label is enabled
+                if (label != null && label != "") {
+                    limitLinePaint.style = l.textStyle
+                    limitLinePaint.setPathEffect(null)
+                    limitLinePaint.color = l.textColor
+                    limitLinePaint.setTypeface(l.typeface)
+                    limitLinePaint.strokeWidth = 0.5f
+                    limitLinePaint.textSize = l.textSize
 
-                val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                val xOffset = Utils.convertDpToPixel(4f) + l.xOffset
-                val yOffset = l.lineWidth + labelLineHeight + l.yOffset
+                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                    val xOffset = Utils.convertDpToPixel(4f) + l.xOffset
+                    val yOffset = l.lineWidth + labelLineHeight + l.yOffset
 
-                val position = l.labelPosition
+                    val position = l.labelPosition
 
-                if (position == LimitLabelPosition.RIGHT_TOP) {
-                    limitLinePaint.textAlign = Align.RIGHT
-                    limitLinePaint.let {
-                        c.drawText(
-                            label,
-                            viewPortHandler.contentRight() - xOffset,
-                            pts[1] - yOffset + labelLineHeight, it
-                        )
-                    }
-                } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-                    limitLinePaint.let {
-                        it.textAlign = Align.RIGHT
-                        c.drawText(
-                            label,
-                            viewPortHandler.contentRight() - xOffset,
-                            pts[1] + yOffset, it
-                        )
-                    }
-                } else if (position == LimitLabelPosition.LEFT_TOP) {
-                    limitLinePaint.let {
-                        it.textAlign = Align.LEFT
-                        c.drawText(
-                            label,
-                            viewPortHandler.contentLeft() + xOffset,
-                            pts[1] - yOffset + labelLineHeight, it
-                        )
-                    }
-                } else {
-                    limitLinePaint.let {
-                        it.textAlign = Align.LEFT
-                        c.drawText(
-                            label,
-                            viewPortHandler.offsetLeft() + xOffset,
-                            pts[1] + yOffset, it
-                        )
+                    when (position) {
+                        LimitLabelPosition.RIGHT_TOP -> {
+                            limitLinePaint.textAlign = Align.RIGHT
+                            limitLinePaint.let {
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    pts[1] - yOffset + labelLineHeight, it
+                                )
+                            }
+                        }
+                        LimitLabelPosition.RIGHT_BOTTOM -> {
+                            limitLinePaint.let {
+                                it.textAlign = Align.RIGHT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    pts[1] + yOffset, it
+                                )
+                            }
+                        }
+                        LimitLabelPosition.LEFT_TOP -> {
+                            limitLinePaint.let {
+                                it.textAlign = Align.LEFT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentLeft() + xOffset,
+                                    pts[1] - yOffset + labelLineHeight, it
+                                )
+                            }
+                        }
+                        else -> {
+                            limitLinePaint.let {
+                                it.textAlign = Align.LEFT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.offsetLeft() + xOffset,
+                                    pts[1] + yOffset, it
+                                )
+                            }
+                        }
                     }
                 }
-            }
 
-            c.restoreToCount(clipRestoreCount)
+            }
         }
     }
 }

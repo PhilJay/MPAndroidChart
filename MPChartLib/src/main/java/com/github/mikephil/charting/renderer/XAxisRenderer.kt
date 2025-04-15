@@ -16,6 +16,8 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import androidx.core.graphics.withClip
+import androidx.core.graphics.withSave
 
 open class XAxisRenderer(
     viewPortHandler: ViewPortHandler,
@@ -93,29 +95,35 @@ open class XAxisRenderer(
         paintAxisLabels!!.color = xAxis.textColor
 
         val pointF = MPPointF.getInstance(0f, 0f)
-        if (xAxis.position == XAxisPosition.TOP) {
-            pointF.x = 0.5f
-            pointF.y = 1.0f
-            drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
-        } else if (xAxis.position == XAxisPosition.TOP_INSIDE) {
-            pointF.x = 0.5f
-            pointF.y = 1.0f
-            drawLabels(c, viewPortHandler.contentTop() + yoffset + xAxis.mLabelHeight, pointF)
-        } else if (xAxis.position == XAxisPosition.BOTTOM) {
-            pointF.x = 0.5f
-            pointF.y = 0.0f
-            drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
-        } else if (xAxis.position == XAxisPosition.BOTTOM_INSIDE) {
-            pointF.x = 0.5f
-            pointF.y = 0.0f
-            drawLabels(c, viewPortHandler.contentBottom() - yoffset - xAxis.mLabelHeight, pointF)
-        } else { // BOTH SIDED
-            pointF.x = 0.5f
-            pointF.y = 1.0f
-            drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
-            pointF.x = 0.5f
-            pointF.y = 0.0f
-            drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
+        when (xAxis.position) {
+            XAxisPosition.TOP -> {
+                pointF.x = 0.5f
+                pointF.y = 1.0f
+                drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
+            }
+            XAxisPosition.TOP_INSIDE -> {
+                pointF.x = 0.5f
+                pointF.y = 1.0f
+                drawLabels(c, viewPortHandler.contentTop() + yoffset + xAxis.mLabelHeight, pointF)
+            }
+            XAxisPosition.BOTTOM -> {
+                pointF.x = 0.5f
+                pointF.y = 0.0f
+                drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
+            }
+            XAxisPosition.BOTTOM_INSIDE -> {
+                pointF.x = 0.5f
+                pointF.y = 0.0f
+                drawLabels(c, viewPortHandler.contentBottom() - yoffset - xAxis.mLabelHeight, pointF)
+            }
+            else -> { // BOTH SIDED
+                pointF.x = 0.5f
+                pointF.y = 1.0f
+                drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
+                pointF.x = 0.5f
+                pointF.y = 0.0f
+                drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
+            }
         }
         MPPointF.recycleInstance(pointF)
     }
@@ -220,48 +228,46 @@ open class XAxisRenderer(
     override fun renderGridLines(c: Canvas) {
         if (!xAxis.isDrawGridLinesEnabled || !xAxis.isEnabled) return
 
-        val clipRestoreCount = c.save()
-        c.clipRect(gridClippingRect!!)
-
-        if (axis.isShowSpecificPositions) {
-            if (mRenderGridLinesBuffer.size != axis.specificPositions.size * 2) {
-                mRenderGridLinesBuffer = FloatArray(xAxis.specificPositions.size * 2)
+        c.withClip(gridClippingRect!!) {
+            if (axis.isShowSpecificPositions) {
+                if (mRenderGridLinesBuffer.size != axis.specificPositions.size * 2) {
+                    mRenderGridLinesBuffer = FloatArray(xAxis.specificPositions.size * 2)
+                }
+            } else {
+                if (mRenderGridLinesBuffer.size != axis.mEntryCount * 2) {
+                    mRenderGridLinesBuffer = FloatArray(xAxis.mEntryCount * 2)
+                }
             }
-        } else {
-            if (mRenderGridLinesBuffer.size != axis.mEntryCount * 2) {
-                mRenderGridLinesBuffer = FloatArray(xAxis.mEntryCount * 2)
-            }
-        }
-        val positions = mRenderGridLinesBuffer
+            val positions = mRenderGridLinesBuffer
 
-        run {
+            run {
+                var i = 0
+                while (i < positions.size) {
+                    if (axis.isShowSpecificPositions) {
+                        positions[i] = xAxis.specificPositions[i / 2]
+                        positions[i + 1] = xAxis.specificPositions[i / 2]
+                    } else {
+                        positions[i] = xAxis.mEntries[i / 2]
+                        positions[i + 1] = xAxis.mEntries[i / 2]
+                    }
+                    i += 2
+                }
+            }
+
+            transformer!!.pointValuesToPixel(positions)
+
+            setupGridPaint()
+
+            val gridLinePath = mRenderGridLinesPath
+            gridLinePath.reset()
+
             var i = 0
             while (i < positions.size) {
-                if (axis.isShowSpecificPositions) {
-                    positions[i] = xAxis.specificPositions[i / 2]
-                    positions[i + 1] = xAxis.specificPositions[i / 2]
-                } else {
-                    positions[i] = xAxis.mEntries[i / 2]
-                    positions[i + 1] = xAxis.mEntries[i / 2]
-                }
+                drawGridLine(c, positions[i], positions[i + 1], gridLinePath)
                 i += 2
             }
+
         }
-
-        transformer!!.pointValuesToPixel(positions)
-
-        setupGridPaint()
-
-        val gridLinePath = mRenderGridLinesPath
-        gridLinePath.reset()
-
-        var i = 0
-        while (i < positions.size) {
-            drawGridLine(c, positions[i], positions[i + 1], gridLinePath)
-            i += 2
-        }
-
-        c.restoreToCount(clipRestoreCount)
     }
 
     @JvmField
@@ -317,20 +323,20 @@ open class XAxisRenderer(
 
             if (!l.isEnabled) continue
 
-            val clipRestoreCount = c.save()
-            mLimitLineClippingRect.set(viewPortHandler.contentRect)
-            mLimitLineClippingRect.inset(-l.lineWidth, 0f)
-            c.clipRect(mLimitLineClippingRect)
+            c.withSave {
+                mLimitLineClippingRect.set(viewPortHandler.contentRect)
+                mLimitLineClippingRect.inset(-l.lineWidth, 0f)
+                c.clipRect(mLimitLineClippingRect)
 
-            position[0] = l.limit
-            position[1] = 0f
+                position[0] = l.limit
+                position[1] = 0f
 
-            transformer!!.pointValuesToPixel(position)
+                transformer!!.pointValuesToPixel(position)
 
-            renderLimitLineLine(c, l, position)
-            renderLimitLineLabel(c, l, position, 2f + l.yOffset)
+                renderLimitLineLine(c, l, position)
+                renderLimitLineLabel(c, l, position, 2f + l.yOffset)
 
-            c.restoreToCount(clipRestoreCount)
+            }
         }
     }
 
@@ -377,26 +383,31 @@ open class XAxisRenderer(
 
             val labelPosition = limitLine.labelPosition
 
-            if (labelPosition == LimitLabelPosition.RIGHT_TOP) {
-                val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                limitLinePaint.textAlign = Align.LEFT
-                c.drawText(
-                    label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
-                    limitLinePaint
-                )
-            } else if (labelPosition == LimitLabelPosition.RIGHT_BOTTOM) {
-                limitLinePaint.textAlign = Align.LEFT
-                c.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
-            } else if (labelPosition == LimitLabelPosition.LEFT_TOP) {
-                limitLinePaint.textAlign = Align.RIGHT
-                val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                c.drawText(
-                    label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
-                    limitLinePaint
-                )
-            } else {
-                limitLinePaint.textAlign = Align.RIGHT
-                c.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+            when (labelPosition) {
+                LimitLabelPosition.RIGHT_TOP -> {
+                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                    limitLinePaint.textAlign = Align.LEFT
+                    c.drawText(
+                        label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
+                        limitLinePaint
+                    )
+                }
+                LimitLabelPosition.RIGHT_BOTTOM -> {
+                    limitLinePaint.textAlign = Align.LEFT
+                    c.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                }
+                LimitLabelPosition.LEFT_TOP -> {
+                    limitLinePaint.textAlign = Align.RIGHT
+                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                    c.drawText(
+                        label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
+                        limitLinePaint
+                    )
+                }
+                else -> {
+                    limitLinePaint.textAlign = Align.RIGHT
+                    c.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                }
             }
         }
     }

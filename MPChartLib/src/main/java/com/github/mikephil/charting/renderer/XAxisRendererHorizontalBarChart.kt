@@ -14,8 +14,10 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import androidx.core.graphics.withSave
 
-class XAxisRendererHorizontalBarChart(
+@Suppress("MemberVisibilityCanBePrivate")
+open class XAxisRendererHorizontalBarChart(
     viewPortHandler: ViewPortHandler, xAxis: XAxis,
     trans: Transformer?
 ) : XAxisRenderer(viewPortHandler, xAxis, trans) {
@@ -24,7 +26,7 @@ class XAxisRendererHorizontalBarChart(
 
     override fun computeAxis(min: Float, max: Float, inverted: Boolean) {
         // calculate the starting and entry point of the y-labels (depending on
-        // zoom / contentrect bounds)
+        // zoom / content rect bounds)
 
         var minLocal = min
         var maxLocal = max
@@ -73,7 +75,7 @@ class XAxisRendererHorizontalBarChart(
     override fun renderAxisLabels(c: Canvas) {
         if (!xAxis.isEnabled || !xAxis.isDrawLabelsEnabled) return
 
-        val xoffset = xAxis.xOffset
+        val xOffset = xAxis.xOffset
 
         paintAxisLabels!!.setTypeface(xAxis.typeface)
         paintAxisLabels!!.textSize = xAxis.textSize
@@ -81,29 +83,35 @@ class XAxisRendererHorizontalBarChart(
 
         val pointF = MPPointF.getInstance(0f, 0f)
 
-        if (xAxis.position == XAxisPosition.TOP) {
-            pointF.x = 0.0f
-            pointF.y = 0.5f
-            drawLabels(c, viewPortHandler.contentRight() + xoffset, pointF)
-        } else if (xAxis.position == XAxisPosition.TOP_INSIDE) {
-            pointF.x = 1.0f
-            pointF.y = 0.5f
-            drawLabels(c, viewPortHandler.contentRight() - xoffset, pointF)
-        } else if (xAxis.position == XAxisPosition.BOTTOM) {
-            pointF.x = 1.0f
-            pointF.y = 0.5f
-            drawLabels(c, viewPortHandler.contentLeft() - xoffset, pointF)
-        } else if (xAxis.position == XAxisPosition.BOTTOM_INSIDE) {
-            pointF.x = 1.0f
-            pointF.y = 0.5f
-            drawLabels(c, viewPortHandler.contentLeft() + xoffset, pointF)
-        } else { // BOTH SIDED
-            pointF.x = 0.0f
-            pointF.y = 0.5f
-            drawLabels(c, viewPortHandler.contentRight() + xoffset, pointF)
-            pointF.x = 1.0f
-            pointF.y = 0.5f
-            drawLabels(c, viewPortHandler.contentLeft() - xoffset, pointF)
+        when (xAxis.position) {
+            XAxisPosition.TOP -> {
+                pointF.x = 0.0f
+                pointF.y = 0.5f
+                drawLabels(c, viewPortHandler.contentRight() + xOffset, pointF)
+            }
+            XAxisPosition.TOP_INSIDE -> {
+                pointF.x = 1.0f
+                pointF.y = 0.5f
+                drawLabels(c, viewPortHandler.contentRight() - xOffset, pointF)
+            }
+            XAxisPosition.BOTTOM -> {
+                pointF.x = 1.0f
+                pointF.y = 0.5f
+                drawLabels(c, viewPortHandler.contentLeft() - xOffset, pointF)
+            }
+            XAxisPosition.BOTTOM_INSIDE -> {
+                pointF.x = 1.0f
+                pointF.y = 0.5f
+                drawLabels(c, viewPortHandler.contentLeft() + xOffset, pointF)
+            }
+            else -> { // BOTH SIDED
+                pointF.x = 0.0f
+                pointF.y = 0.5f
+                drawLabels(c, viewPortHandler.contentRight() + xOffset, pointF)
+                pointF.x = 1.0f
+                pointF.y = 0.5f
+                drawLabels(c, viewPortHandler.contentLeft() - xOffset, pointF)
+            }
         }
 
         MPPointF.recycleInstance(pointF)
@@ -205,75 +213,80 @@ class XAxisRendererHorizontalBarChart(
 
             if (!l.isEnabled) continue
 
-            val clipRestoreCount = c.save()
-            mLimitLineClippingRect.set(viewPortHandler.contentRect)
-            mLimitLineClippingRect.inset(0f, -l.lineWidth)
-            c.clipRect(mLimitLineClippingRect)
+            c.withSave {
+                mLimitLineClippingRect.set(viewPortHandler.contentRect)
+                mLimitLineClippingRect.inset(0f, -l.lineWidth)
+                c.clipRect(mLimitLineClippingRect)
 
-            limitLinePaint!!.style = Paint.Style.STROKE
-            limitLinePaint!!.color = l.lineColor
-            limitLinePaint!!.strokeWidth = l.lineWidth
-            limitLinePaint!!.setPathEffect(l.dashPathEffect)
+                limitLinePaint!!.style = Paint.Style.STROKE
+                limitLinePaint!!.color = l.lineColor
+                limitLinePaint!!.strokeWidth = l.lineWidth
+                limitLinePaint!!.setPathEffect(l.dashPathEffect)
 
-            pts[1] = l.limit
+                pts[1] = l.limit
 
-            transformer!!.pointValuesToPixel(pts)
+                transformer!!.pointValuesToPixel(pts)
 
-            limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
-            limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
+                limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
+                limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
 
-            c.drawPath(limitLinePath, limitLinePaint!!)
-            limitLinePath.reset()
+                c.drawPath(limitLinePath, limitLinePaint!!)
+                limitLinePath.reset()
 
-            // c.drawLines(pts, mLimitLinePaint);
-            val label = l.label
+                // c.drawLines(pts, mLimitLinePaint);
+                val label = l.label
 
-            // if drawing the limit-value label is enabled
-            if (label != null && label != "") {
-                limitLinePaint!!.style = l.textStyle
-                limitLinePaint!!.setPathEffect(null)
-                limitLinePaint!!.color = l.textColor
-                limitLinePaint!!.strokeWidth = 0.5f
-                limitLinePaint!!.textSize = l.textSize
+                // if drawing the limit-value label is enabled
+                if (label != null && label != "") {
+                    limitLinePaint!!.style = l.textStyle
+                    limitLinePaint!!.setPathEffect(null)
+                    limitLinePaint!!.color = l.textColor
+                    limitLinePaint!!.strokeWidth = 0.5f
+                    limitLinePaint!!.textSize = l.textSize
 
-                val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                val xOffset = Utils.convertDpToPixel(4f) + l.xOffset
-                val yOffset = l.lineWidth + labelLineHeight + l.yOffset
+                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                    val xOffset = Utils.convertDpToPixel(4f) + l.xOffset
+                    val yOffset = l.lineWidth + labelLineHeight + l.yOffset
 
-                val position = l.labelPosition
+                    val position = l.labelPosition
 
-                if (position == LimitLabelPosition.RIGHT_TOP) {
-                    limitLinePaint!!.textAlign = Align.RIGHT
-                    c.drawText(
-                        label,
-                        viewPortHandler.contentRight() - xOffset,
-                        pts[1] - yOffset + labelLineHeight, limitLinePaint!!
-                    )
-                } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-                    limitLinePaint!!.textAlign = Align.RIGHT
-                    c.drawText(
-                        label,
-                        viewPortHandler.contentRight() - xOffset,
-                        pts[1] + yOffset, limitLinePaint!!
-                    )
-                } else if (position == LimitLabelPosition.LEFT_TOP) {
-                    limitLinePaint!!.textAlign = Align.LEFT
-                    c.drawText(
-                        label,
-                        viewPortHandler.contentLeft() + xOffset,
-                        pts[1] - yOffset + labelLineHeight, limitLinePaint!!
-                    )
-                } else {
-                    limitLinePaint!!.textAlign = Align.LEFT
-                    c.drawText(
-                        label,
-                        viewPortHandler.offsetLeft() + xOffset,
-                        pts[1] + yOffset, limitLinePaint!!
-                    )
+                    when (position) {
+                        LimitLabelPosition.RIGHT_TOP -> {
+                            limitLinePaint!!.textAlign = Align.RIGHT
+                            c.drawText(
+                                label,
+                                viewPortHandler.contentRight() - xOffset,
+                                pts[1] - yOffset + labelLineHeight, limitLinePaint!!
+                            )
+                        }
+                        LimitLabelPosition.RIGHT_BOTTOM -> {
+                            limitLinePaint!!.textAlign = Align.RIGHT
+                            c.drawText(
+                                label,
+                                viewPortHandler.contentRight() - xOffset,
+                                pts[1] + yOffset, limitLinePaint!!
+                            )
+                        }
+                        LimitLabelPosition.LEFT_TOP -> {
+                            limitLinePaint!!.textAlign = Align.LEFT
+                            c.drawText(
+                                label,
+                                viewPortHandler.contentLeft() + xOffset,
+                                pts[1] - yOffset + labelLineHeight, limitLinePaint!!
+                            )
+                        }
+                        else -> {
+                            limitLinePaint!!.textAlign = Align.LEFT
+                            c.drawText(
+                                label,
+                                viewPortHandler.offsetLeft() + xOffset,
+                                pts[1] + yOffset, limitLinePaint!!
+                            )
+                        }
+                    }
                 }
-            }
 
-            c.restoreToCount(clipRestoreCount)
+            }
         }
     }
 }

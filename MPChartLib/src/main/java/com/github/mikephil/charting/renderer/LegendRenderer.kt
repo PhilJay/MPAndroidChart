@@ -20,6 +20,7 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import java.util.Collections
 import kotlin.math.min
+import androidx.core.graphics.withSave
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class LegendRenderer(
@@ -430,57 +431,57 @@ open class LegendRenderer(
     ) {
         if (entry.formColor == ColorTemplate.COLOR_SKIP || entry.formColor == ColorTemplate.COLOR_NONE || entry.formColor == 0) return
 
-        val restoreCount = c.save()
+        c.withSave {
 
-        var form = entry.form
-        if (form == LegendForm.DEFAULT) form = legend.form
+            var form = entry.form
+            if (form == LegendForm.DEFAULT) form = legend.form
 
-        formPaint.color = entry.formColor
+            formPaint.color = entry.formColor
 
-        val formSize = Utils.convertDpToPixel(
-            if (java.lang.Float.isNaN(entry.formSize))
-                legend.formSize
-            else
-                entry.formSize
-        )
-        val half = formSize / 2f
-
-        when (form) {
-            LegendForm.NONE -> {}
-            LegendForm.EMPTY -> {}
-            LegendForm.DEFAULT, LegendForm.CIRCLE -> {
-                formPaint.style = Paint.Style.FILL
-                c.drawCircle(x + half, y, half, formPaint)
-            }
-
-            LegendForm.SQUARE -> {
-                formPaint.style = Paint.Style.FILL
-                c.drawRect(x, y - half, x + formSize, y + half, formPaint)
-            }
-
-            LegendForm.LINE -> {
-                val formLineWidth = Utils.convertDpToPixel(
-                    if (java.lang.Float.isNaN(entry.formLineWidth))
-                        legend.formLineWidth
-                    else
-                        entry.formLineWidth
-                )
-                val formLineDashEffect = if (entry.formLineDashEffect == null)
-                    legend.formLineDashEffect
+            val formSize = Utils.convertDpToPixel(
+                if (java.lang.Float.isNaN(entry.formSize))
+                    legend.formSize
                 else
-                    entry.formLineDashEffect
-                formPaint.style = Paint.Style.STROKE
-                formPaint.strokeWidth = formLineWidth
-                formPaint.setPathEffect(formLineDashEffect)
+                    entry.formSize
+            )
+            val half = formSize / 2f
 
-                mLineFormPath.reset()
-                mLineFormPath.moveTo(x, y)
-                mLineFormPath.lineTo(x + formSize, y)
-                c.drawPath(mLineFormPath, formPaint)
+            when (form) {
+                LegendForm.NONE -> {}
+                LegendForm.EMPTY -> {}
+                LegendForm.DEFAULT, LegendForm.CIRCLE -> {
+                    formPaint.style = Paint.Style.FILL
+                    c.drawCircle(x + half, y, half, formPaint)
+                }
+
+                LegendForm.SQUARE -> {
+                    formPaint.style = Paint.Style.FILL
+                    c.drawRect(x, y - half, x + formSize, y + half, formPaint)
+                }
+
+                LegendForm.LINE -> {
+                    val formLineWidth = Utils.convertDpToPixel(
+                        if (java.lang.Float.isNaN(entry.formLineWidth))
+                            legend.formLineWidth
+                        else
+                            entry.formLineWidth
+                    )
+                    val formLineDashEffect = if (entry.formLineDashEffect == null)
+                        legend.formLineDashEffect
+                    else
+                        entry.formLineDashEffect
+                    formPaint.style = Paint.Style.STROKE
+                    formPaint.strokeWidth = formLineWidth
+                    formPaint.setPathEffect(formLineDashEffect)
+
+                    mLineFormPath.reset()
+                    mLineFormPath.moveTo(x, y)
+                    mLineFormPath.lineTo(x + formSize, y)
+                    c.drawPath(mLineFormPath, formPaint)
+                }
             }
-        }
 
-        c.restoreToCount(restoreCount)
+        }
     }
 
     /**
