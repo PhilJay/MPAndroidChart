@@ -21,9 +21,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
     /**
      * Return the axis label x position based on axis dependency and label position
-     * @param dependency
-     * @param labelPosition
-     * @return
      */
     private fun calculateAxisLabelsXPosition(dependency: AxisDependency, labelPosition: YAxisLabelPosition): Float {
         val viewPortBase = if (dependency == AxisDependency.LEFT) viewPortHandler.offsetLeft() else viewPortHandler.contentRight()
@@ -34,9 +31,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
     /**
      * Return the text align based on axis dependency and label position
-     * @param dependency
-     * @param labelPosition
-     * @return
      */
     private fun getAxisLabelTextAlign(dependency: AxisDependency, labelPosition: YAxisLabelPosition): Align {
         if ((dependency == AxisDependency.LEFT) xor (labelPosition == YAxisLabelPosition.OUTSIDE_CHART)) {
@@ -94,9 +88,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
     /**
      * draws the y-labels on the specified x-position
-     *
-     * @param fixedPosition
-     * @param positions
      */
     protected open fun drawYLabels(c: Canvas, fixedPosition: Float, positions: FloatArray, offset: Float) {
         val from: Int
@@ -185,11 +176,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
     /**
      * Calculates the path for a grid line.
-     *
-     * @param p
-     * @param i
-     * @param positions
-     * @return
      */
     protected open fun linePath(p: Path, i: Int, positions: FloatArray): Path? {
         p.moveTo(viewPortHandler.offsetLeft(), positions[i + 1])
@@ -204,8 +190,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         /**
          * Transforms the values contained in the axis entries to screen pixels and returns them in form of a float array
          * of x- and y-coordinates.
-         *
-         * @return
          */
         get() {
             if (yAxis.isShowSpecificPositions) {
@@ -286,8 +270,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
     /**
      * Draws the LimitLines associated with this axis to the screen.
-     *
-     * @param c
      */
     override fun renderLimitLines(c: Canvas) {
         val limitLines = yAxis.limitLines

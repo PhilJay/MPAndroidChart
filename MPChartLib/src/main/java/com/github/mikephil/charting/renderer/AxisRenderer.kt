@@ -51,7 +51,7 @@ abstract class AxisRenderer(
     /**
      * paint for the x-label values
      */
-    public var paintAxisLabels: Paint? = null
+    var paintAxisLabels: Paint? = null
         protected set
 
     /**
@@ -98,7 +98,7 @@ abstract class AxisRenderer(
      */
     open fun computeAxis(min: Float, max: Float, inverted: Boolean) {
         // calculate the starting and entry point of the y-labels (depending on
-        // zoom / contentrect bounds)
+        // zoom / content rect bounds)
 
         var minLocal = min
         var maxLocal = max
@@ -129,7 +129,6 @@ abstract class AxisRenderer(
      * @return
      */
     protected open fun computeAxisValues(min: Float, max: Float) {
-
         val labelCount = axis.labelCount
         val range = abs((max - min).toDouble())
 
