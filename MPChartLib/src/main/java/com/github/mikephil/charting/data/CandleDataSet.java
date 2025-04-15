@@ -89,7 +89,7 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     }
 
     protected void copy(CandleDataSet candleDataSet) {
-        super.copy(candleDataSet);
+        super.copy((BaseDataSet<?>) candleDataSet);
         candleDataSet.mShadowWidth = mShadowWidth;
         candleDataSet.mShowCandleBar = mShowCandleBar;
         candleDataSet.mBarSpace = mBarSpace;

@@ -111,7 +111,7 @@ public class RadarDataSet extends LineRadarDataSet<RadarEntry> implements IRadar
     }
 
     protected void copy(RadarDataSet radarDataSet) {
-        super.copy(radarDataSet);
+        super.copy((BaseDataSet<?>) radarDataSet);
         radarDataSet.mDrawHighlightCircleEnabled = mDrawHighlightCircleEnabled;
         radarDataSet.mHighlightCircleFillColor = mHighlightCircleFillColor;
         radarDataSet.mHighlightCircleInnerRadius = mHighlightCircleInnerRadius;

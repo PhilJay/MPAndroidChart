@@ -50,7 +50,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     }
 
     protected void copy(PieDataSet pieDataSet) {
-        super.copy(pieDataSet);
+        super.copy((BaseDataSet<?>) pieDataSet);
     }
 
     @Override

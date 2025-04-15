@@ -94,7 +94,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     }
 
     protected void copy(LineDataSet lineDataSet) {
-        super.copy(lineDataSet);
+        super.copy((BaseDataSet<?>) lineDataSet);
         lineDataSet.mCircleColors = mCircleColors;
         lineDataSet.mCircleHoleColor = mCircleHoleColor;
         lineDataSet.mCircleHoleRadius = mCircleHoleRadius;
