@@ -68,10 +68,10 @@ open class YAxisRendererHorizontalBarChart(
 
         val positions = transformedPositions
 
-        paintAxisLabels!!.setTypeface(yAxis.typeface)
-        paintAxisLabels!!.textSize = yAxis.textSize
-        paintAxisLabels!!.color = yAxis.textColor
-        paintAxisLabels!!.textAlign = Align.CENTER
+        paintAxisLabels.setTypeface(yAxis.typeface)
+        paintAxisLabels.textSize = yAxis.textSize
+        paintAxisLabels.color = yAxis.textColor
+        paintAxisLabels.textAlign = Align.CENTER
 
         val baseYOffset = Utils.convertDpToPixel(2.5f)
         val textHeight = Utils.calcTextHeight(paintAxisLabels, "Q").toFloat()
@@ -99,20 +99,20 @@ open class YAxisRendererHorizontalBarChart(
     override fun renderAxisLine(c: Canvas) {
         if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled) return
 
-        paintAxisLine!!.color = yAxis.axisLineColor
-        paintAxisLine!!.strokeWidth = yAxis.axisLineWidth
+        paintAxisLine.color = yAxis.axisLineColor
+        paintAxisLine.strokeWidth = yAxis.axisLineWidth
 
         if (yAxis.axisDependency == AxisDependency.LEFT) {
             c.drawLine(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentTop(), viewPortHandler.contentRight(),
-                viewPortHandler.contentTop(), paintAxisLine!!
+                viewPortHandler.contentTop(), paintAxisLine
             )
         } else {
             c.drawLine(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), viewPortHandler.contentRight(),
-                viewPortHandler.contentBottom(), paintAxisLine!!
+                viewPortHandler.contentBottom(), paintAxisLine
             )
         }
     }
@@ -124,9 +124,9 @@ open class YAxisRendererHorizontalBarChart(
      * @param positions
      */
     override fun drawYLabels(c: Canvas, fixedPosition: Float, positions: FloatArray, offset: Float) {
-        paintAxisLabels!!.setTypeface(yAxis.typeface)
-        paintAxisLabels!!.textSize = yAxis.textSize
-        paintAxisLabels!!.color = yAxis.textColor
+        paintAxisLabels.setTypeface(yAxis.typeface)
+        paintAxisLabels.textSize = yAxis.textSize
+        paintAxisLabels.color = yAxis.textColor
 
         val from = if (yAxis.isDrawBottomYLabelEntryEnabled) 0 else 1
         val to = if (yAxis.isDrawTopYLabelEntryEnabled)
@@ -143,7 +143,7 @@ open class YAxisRendererHorizontalBarChart(
                 text,
                 positions[i * 2],
                 fixedPosition - offset + xOffset,
-                paintAxisLabels!!
+                paintAxisLabels
             )
         }
     }
@@ -189,8 +189,8 @@ open class YAxisRendererHorizontalBarChart(
             // draw zero line
             val pos = transformer!!.getPixelForValues(0f, 0f)
 
-            zeroLinePaint!!.color = yAxis.zeroLineColor
-            zeroLinePaint!!.strokeWidth = yAxis.zeroLineWidth
+            zeroLinePaint.color = yAxis.zeroLineColor
+            zeroLinePaint.strokeWidth = yAxis.zeroLineWidth
 
             val zeroLinePath = drawZeroLinePathBuffer
             zeroLinePath.reset()
@@ -199,7 +199,7 @@ open class YAxisRendererHorizontalBarChart(
             zeroLinePath.lineTo(pos.x.toFloat() - 1, viewPortHandler.contentBottom())
 
             // draw a path because lines don't support dashing on lower android versions
-            c.drawPath(zeroLinePath, zeroLinePaint!!)
+            c.drawPath(zeroLinePath, zeroLinePaint)
 
         }
     }
@@ -208,7 +208,7 @@ open class YAxisRendererHorizontalBarChart(
     protected var mRenderLimitLinesBuffer: FloatArray = FloatArray(4)
 
     init {
-        limitLinePaint!!.textAlign = Align.LEFT
+        limitLinePaint.textAlign = Align.LEFT
     }
 
     /**
@@ -251,24 +251,24 @@ open class YAxisRendererHorizontalBarChart(
                 limitLinePath.moveTo(pts[0], pts[1])
                 limitLinePath.lineTo(pts[2], pts[3])
 
-                limitLinePaint!!.style = Paint.Style.STROKE
-                limitLinePaint!!.color = l.lineColor
-                limitLinePaint!!.setPathEffect(l.dashPathEffect)
-                limitLinePaint!!.strokeWidth = l.lineWidth
+                limitLinePaint.style = Paint.Style.STROKE
+                limitLinePaint.color = l.lineColor
+                limitLinePaint.setPathEffect(l.dashPathEffect)
+                limitLinePaint.strokeWidth = l.lineWidth
 
-                c.drawPath(limitLinePath, limitLinePaint!!)
+                c.drawPath(limitLinePath, limitLinePaint)
                 limitLinePath.reset()
 
                 val label = l.label
 
                 // if drawing the limit-value label is enabled
                 if (label != null && label != "") {
-                    limitLinePaint!!.style = l.textStyle
-                    limitLinePaint!!.setPathEffect(null)
-                    limitLinePaint!!.color = l.textColor
-                    limitLinePaint!!.setTypeface(l.typeface)
-                    limitLinePaint!!.strokeWidth = 0.5f
-                    limitLinePaint!!.textSize = l.textSize
+                    limitLinePaint.style = l.textStyle
+                    limitLinePaint.setPathEffect(null)
+                    limitLinePaint.color = l.textColor
+                    limitLinePaint.setTypeface(l.typeface)
+                    limitLinePaint.strokeWidth = 0.5f
+                    limitLinePaint.textSize = l.textSize
 
                     val xOffset = l.lineWidth + l.xOffset
                     val yOffset = Utils.convertDpToPixel(2f) + l.yOffset
@@ -278,21 +278,21 @@ open class YAxisRendererHorizontalBarChart(
                     when (position) {
                         LimitLabelPosition.RIGHT_TOP -> {
                             val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                            limitLinePaint!!.textAlign = Align.LEFT
-                            c.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
+                            limitLinePaint.textAlign = Align.LEFT
+                            c.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
                         }
                         LimitLabelPosition.RIGHT_BOTTOM -> {
-                            limitLinePaint!!.textAlign = Align.LEFT
-                            c.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                            limitLinePaint.textAlign = Align.LEFT
+                            c.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
                         }
                         LimitLabelPosition.LEFT_TOP -> {
-                            limitLinePaint!!.textAlign = Align.RIGHT
+                            limitLinePaint.textAlign = Align.RIGHT
                             val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                            c.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint!!)
+                            c.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
                         }
                         else -> {
-                            limitLinePaint!!.textAlign = Align.RIGHT
-                            c.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint!!)
+                            limitLinePaint.textAlign = Align.RIGHT
+                            c.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
                         }
                     }
                 }
