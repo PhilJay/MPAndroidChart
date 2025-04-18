@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withSave
+import androidx.core.graphics.withClip
 
 open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected var yAxis: YAxis, trans: Transformer?) :
     AxisRenderer(viewPortHandler, trans, yAxis) {
@@ -135,27 +136,25 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         if (!yAxis.isEnabled) return
 
         if (yAxis.isDrawGridLinesEnabled) {
-            val clipRestoreCount = c.save()
-            c.clipRect(gridClippingRect!!)
+            c.withClip(gridClippingRect!!) {
+                val positions = transformedPositions
 
-            val positions = transformedPositions
+                paintGrid.color = yAxis.gridColor
+                paintGrid.strokeWidth = yAxis.gridLineWidth
+                paintGrid.setPathEffect(yAxis.gridDashPathEffect)
 
-            paintGrid.color = yAxis.gridColor
-            paintGrid.strokeWidth = yAxis.gridLineWidth
-            paintGrid.setPathEffect(yAxis.gridDashPathEffect)
-
-            val gridLinePath = renderGridLinesPath
-            gridLinePath.reset()
-
-            // draw the grid
-            var i = 0
-            while (i < positions.size) {
-                // draw a path because lines don't support dashing on lower android versions
-                c.drawPath(linePath(gridLinePath, i, positions)!!, paintGrid)
+                val gridLinePath = renderGridLinesPath
                 gridLinePath.reset()
-                i += 2
+
+                // draw the grid
+                var i = 0
+                while (i < positions.size) {
+                    // draw a path because lines don't support dashing on lower android versions
+                    c.drawPath(linePath(gridLinePath, i, positions)!!, paintGrid)
+                    gridLinePath.reset()
+                    i += 2
+                }
             }
-            c.restoreToCount(clipRestoreCount)
         }
 
 
