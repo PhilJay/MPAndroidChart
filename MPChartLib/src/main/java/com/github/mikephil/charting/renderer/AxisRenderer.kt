@@ -25,22 +25,16 @@ abstract class AxisRenderer(
     @JvmField
     protected var axis: AxisBase
 ) : Renderer(viewPortHandler) {
-    /**
-     * Returns the Transformer object used for transforming the axis values.
-     *
-     * @return
-     */
 
-    /**
-     * Returns the Paint object that is used for drawing the grid-lines of the
-     * axis.
-     *
-     * @return
-     */
     /**
      * paint object for the grid lines
      */
-    var paintGrid: Paint? = null
+    var paintGrid = Paint().apply {
+        color = Color.GRAY
+        strokeWidth = 1f
+        style = Paint.Style.STROKE
+        alpha = 90
+    }
         protected set
 
     /**
@@ -51,45 +45,25 @@ abstract class AxisRenderer(
     /**
      * paint for the x-label values
      */
-    var paintAxisLabels: Paint? = null
+    var paintAxisLabels = Paint(Paint.ANTI_ALIAS_FLAG)
         protected set
 
     /**
-     * Returns the Paint object that is used for drawing the axis-line that goes
-     * alongside the axis.
-     *
-     * @return
-     */
-    /**
      * paint for the line surrounding the chart
      */
-    var paintAxisLine: Paint? = null
+    var paintAxisLine = Paint().apply {
+        color = Color.BLACK
+        strokeWidth = 1f
+        style = Paint.Style.STROKE
+    }
         protected set
 
     /**
      * paint used for the limit lines
      */
     @JvmField
-    protected var limitLinePaint: Paint
-
-    init {
-        paintAxisLabels = Paint(Paint.ANTI_ALIAS_FLAG)
-
-        paintGrid = Paint().apply {
-            color = Color.GRAY
-            strokeWidth = 1f
-            style = Paint.Style.STROKE
-            alpha = 90
-        }
-
-        paintAxisLine = Paint().apply {
-            color = Color.BLACK
-            strokeWidth = 1f
-            style = Paint.Style.STROKE
-        }
-        limitLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            style = Paint.Style.STROKE
-        }
+    protected var limitLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
     }
 
     /**
