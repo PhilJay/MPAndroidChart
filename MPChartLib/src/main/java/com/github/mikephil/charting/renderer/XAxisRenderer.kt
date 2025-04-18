@@ -26,9 +26,9 @@ open class XAxisRenderer(
 ) :
     AxisRenderer(viewPortHandler, trans, xAxis) {
     protected fun setupGridPaint() {
-        paintGrid!!.color = xAxis.gridColor
-        paintGrid!!.strokeWidth = xAxis.gridLineWidth
-        paintGrid!!.setPathEffect(xAxis.gridDashPathEffect)
+        paintGrid.color = xAxis.gridColor
+        paintGrid.strokeWidth = xAxis.gridLineWidth
+        paintGrid.setPathEffect(xAxis.gridDashPathEffect)
     }
 
     override fun computeAxis(min: Float, max: Float, inverted: Boolean) {
@@ -65,8 +65,8 @@ open class XAxisRenderer(
     protected open fun computeSize() {
         val longest = xAxis.longestLabel
 
-        paintAxisLabels!!.setTypeface(xAxis.typeface)
-        paintAxisLabels!!.textSize = xAxis.textSize
+        paintAxisLabels.setTypeface(xAxis.typeface)
+        paintAxisLabels.textSize = xAxis.textSize
 
         val labelSize = Utils.calcTextSize(paintAxisLabels, longest)
 
@@ -92,7 +92,7 @@ open class XAxisRenderer(
 
         val yoffset = xAxis.yOffset
 
-        paintAxisLabels!!.color = xAxis.textColor
+        paintAxisLabels.color = xAxis.textColor
 
         val pointF = MPPointF.getInstance(0f, 0f)
         when (xAxis.position) {
@@ -131,15 +131,15 @@ open class XAxisRenderer(
     override fun renderAxisLine(c: Canvas) {
         if (!xAxis.isDrawAxisLineEnabled || !xAxis.isEnabled) return
 
-        paintAxisLine!!.color = xAxis.axisLineColor
-        paintAxisLine!!.strokeWidth = xAxis.axisLineWidth
-        paintAxisLine!!.setPathEffect(xAxis.axisLineDashPathEffect)
+        paintAxisLine.color = xAxis.axisLineColor
+        paintAxisLine.strokeWidth = xAxis.axisLineWidth
+        paintAxisLine.setPathEffect(xAxis.axisLineDashPathEffect)
 
         if (xAxis.position == XAxisPosition.TOP || xAxis.position == XAxisPosition.TOP_INSIDE || xAxis.position == XAxisPosition.BOTH_SIDED) {
             c.drawLine(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentTop(), viewPortHandler.contentRight(),
-                viewPortHandler.contentTop(), paintAxisLine!!
+                viewPortHandler.contentTop(), paintAxisLine
             )
         }
 
@@ -147,7 +147,7 @@ open class XAxisRenderer(
             c.drawLine(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), viewPortHandler.contentRight(),
-                viewPortHandler.contentBottom(), paintAxisLine!!
+                viewPortHandler.contentBottom(), paintAxisLine
             )
         }
     }
@@ -223,8 +223,8 @@ open class XAxisRenderer(
         Utils.drawXAxisValue(c, formattedLabel, x, y, paintAxisLabels, anchor, angleDegrees)
     }
 
-    protected var mRenderGridLinesPath: Path = Path()
-    protected var mRenderGridLinesBuffer: FloatArray = FloatArray(2)
+    protected open var mRenderGridLinesPath: Path = Path()
+    protected open var mRenderGridLinesBuffer: FloatArray = FloatArray(2)
     override fun renderGridLines(c: Canvas) {
         if (!xAxis.isDrawGridLinesEnabled || !xAxis.isEnabled) return
 
@@ -280,6 +280,21 @@ open class XAxisRenderer(
             return mGridClippingRect
         }
 
+    @JvmField
+    protected var mRenderLimitLinesBuffer: FloatArray = FloatArray(2)
+
+    @JvmField
+    protected var mLimitLineClippingRect: RectF = RectF()
+
+    var limitLineSegmentsBuffer: FloatArray = FloatArray(4)
+    private val mLimitLinePath = Path()
+
+    init {
+        paintAxisLabels.color = Color.BLACK
+        paintAxisLabels.textAlign = Align.CENTER
+        paintAxisLabels.textSize = Utils.convertDpToPixel(10f)
+    }
+
     /**
      * Draws the grid line at the specified position using the provided path.
      *
@@ -293,16 +308,28 @@ open class XAxisRenderer(
         gridLinePath.lineTo(x, viewPortHandler.contentTop())
 
         // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(gridLinePath, paintGrid!!)
+        c.drawPath(gridLinePath, paintGrid)
 
         gridLinePath.reset()
     }
 
-    @JvmField
-    protected var mRenderLimitLinesBuffer: FloatArray = FloatArray(2)
+    fun renderLimitLineLine(c: Canvas, limitLine: LimitLine, position: FloatArray) {
+        limitLineSegmentsBuffer[0] = position[0]
+        limitLineSegmentsBuffer[1] = viewPortHandler.contentTop()
+        limitLineSegmentsBuffer[2] = position[0]
+        limitLineSegmentsBuffer[3] = viewPortHandler.contentBottom()
 
-    @JvmField
-    protected var mLimitLineClippingRect: RectF = RectF()
+        mLimitLinePath.reset()
+        mLimitLinePath.moveTo(limitLineSegmentsBuffer[0], limitLineSegmentsBuffer[1])
+        mLimitLinePath.lineTo(limitLineSegmentsBuffer[2], limitLineSegmentsBuffer[3])
+
+        limitLinePaint.style = Paint.Style.STROKE
+        limitLinePaint.color = limitLine.lineColor
+        limitLinePaint.strokeWidth = limitLine.lineWidth
+        limitLinePaint.setPathEffect(limitLine.dashPathEffect)
+
+        c.drawPath(mLimitLinePath, limitLinePaint)
+    }
 
     /**
      * Draws the LimitLines associated with this axis to the screen.
@@ -338,33 +365,6 @@ open class XAxisRenderer(
 
             }
         }
-    }
-
-    var mLimitLineSegmentsBuffer: FloatArray = FloatArray(4)
-    private val mLimitLinePath = Path()
-
-    init {
-        paintAxisLabels!!.color = Color.BLACK
-        paintAxisLabels!!.textAlign = Align.CENTER
-        paintAxisLabels!!.textSize = Utils.convertDpToPixel(10f)
-    }
-
-    fun renderLimitLineLine(c: Canvas, limitLine: LimitLine, position: FloatArray) {
-        mLimitLineSegmentsBuffer[0] = position[0]
-        mLimitLineSegmentsBuffer[1] = viewPortHandler.contentTop()
-        mLimitLineSegmentsBuffer[2] = position[0]
-        mLimitLineSegmentsBuffer[3] = viewPortHandler.contentBottom()
-
-        mLimitLinePath.reset()
-        mLimitLinePath.moveTo(mLimitLineSegmentsBuffer[0], mLimitLineSegmentsBuffer[1])
-        mLimitLinePath.lineTo(mLimitLineSegmentsBuffer[2], mLimitLineSegmentsBuffer[3])
-
-        limitLinePaint.style = Paint.Style.STROKE
-        limitLinePaint.color = limitLine.lineColor
-        limitLinePaint.strokeWidth = limitLine.lineWidth
-        limitLinePaint.setPathEffect(limitLine.dashPathEffect)
-
-        c.drawPath(mLimitLinePath, limitLinePaint)
     }
 
     fun renderLimitLineLabel(c: Canvas, limitLine: LimitLine, position: FloatArray, yOffset: Float) {

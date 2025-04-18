@@ -17,8 +17,13 @@ import androidx.core.graphics.withSave
 
 open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected var yAxis: YAxis, trans: Transformer?) :
     AxisRenderer(viewPortHandler, trans, yAxis) {
+
     @JvmField
-    protected var zeroLinePaint: Paint? = null
+    protected var zeroLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.GRAY
+        strokeWidth = 1f
+        style = Paint.Style.STROKE
+    }
 
     /**
      * Return the axis label x position based on axis dependency and label position
@@ -49,41 +54,38 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
         val positions = transformedPositions
 
-        paintAxisLabels?.let {
-            it.setTypeface(yAxis.typeface)
-            it.textSize = yAxis.textSize
-            it.color = yAxis.textColor
+        paintAxisLabels.setTypeface(yAxis.typeface)
+        paintAxisLabels.textSize = yAxis.textSize
+        paintAxisLabels.color = yAxis.textColor
 
-            val yOffset = Utils.calcTextHeight(it, "A") / 2.5f + yAxis.yOffset
+        val yOffset = Utils.calcTextHeight(paintAxisLabels, "A") / 2.5f + yAxis.yOffset
 
-            val dependency = yAxis.axisDependency
-            val labelPosition = yAxis.labelPosition
+        val dependency = yAxis.axisDependency
+        val labelPosition = yAxis.labelPosition
 
-            val xPos = calculateAxisLabelsXPosition(dependency, labelPosition)
-            it.textAlign = getAxisLabelTextAlign(dependency, labelPosition)
+        val xPos = calculateAxisLabelsXPosition(dependency, labelPosition)
+        paintAxisLabels.textAlign = getAxisLabelTextAlign(dependency, labelPosition)
 
-            drawYLabels(c, xPos, positions, yOffset)
-        }
+        drawYLabels(c, xPos, positions, yOffset)
     }
 
     override fun renderAxisLine(c: Canvas) {
-        if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled) return
+        if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled)
+            return
 
-        paintAxisLine?.color = yAxis.axisLineColor
-        paintAxisLine?.strokeWidth = yAxis.axisLineWidth
+        paintAxisLine.color = yAxis.axisLineColor
+        paintAxisLine.strokeWidth = yAxis.axisLineWidth
 
-        paintAxisLine?.let {
-            if (yAxis.axisDependency == AxisDependency.LEFT) {
-                c.drawLine(
-                    viewPortHandler.contentLeft(), viewPortHandler.contentTop(), viewPortHandler.contentLeft(),
-                    viewPortHandler.contentBottom(), it
-                )
-            } else {
-                c.drawLine(
-                    viewPortHandler.contentRight(), viewPortHandler.contentTop(), viewPortHandler.contentRight(),
-                    viewPortHandler.contentBottom(), it
-                )
-            }
+        if (yAxis.axisDependency == AxisDependency.LEFT) {
+            c.drawLine(
+                viewPortHandler.contentLeft(), viewPortHandler.contentTop(), viewPortHandler.contentLeft(),
+                viewPortHandler.contentBottom(), paintAxisLine
+            )
+        } else {
+            c.drawLine(
+                viewPortHandler.contentRight(), viewPortHandler.contentTop(), viewPortHandler.contentRight(),
+                viewPortHandler.contentBottom(), paintAxisLine
+            )
         }
     }
 
@@ -118,14 +120,12 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 yAxis.getFormattedLabel(i)
             }
 
-            paintAxisLabels?.let {
-                c.drawText(
-                    text!!,
-                    fixedPosition + xOffset,
-                    positions[i * 2 + 1] + offset,
-                    it
-                )
-            }
+            c.drawText(
+                text!!,
+                fixedPosition + xOffset,
+                positions[i * 2 + 1] + offset,
+                paintAxisLabels
+            )
         }
     }
 
@@ -139,26 +139,24 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
             val positions = transformedPositions
 
-            paintGrid?.let {
-                it.color = yAxis.gridColor
-                it.strokeWidth = yAxis.gridLineWidth
-                it.setPathEffect(yAxis.gridDashPathEffect)
+            paintGrid.color = yAxis.gridColor
+            paintGrid.strokeWidth = yAxis.gridLineWidth
+            paintGrid.setPathEffect(yAxis.gridDashPathEffect)
 
-                val gridLinePath = renderGridLinesPath
+            val gridLinePath = renderGridLinesPath
+            gridLinePath.reset()
+
+            // draw the grid
+            var i = 0
+            while (i < positions.size) {
+                // draw a path because lines don't support dashing on lower android versions
+                c.drawPath(linePath(gridLinePath, i, positions)!!, paintGrid)
                 gridLinePath.reset()
-
-                // draw the grid
-                var i = 0
-                while (i < positions.size) {
-                    // draw a path because lines don't support dashing on lower android versions
-                    c.drawPath(linePath(gridLinePath, i, positions)!!, it)
-                    gridLinePath.reset()
-                    i += 2
-                }
-                c.restoreToCount(clipRestoreCount)
+                i += 2
             }
-
+            c.restoreToCount(clipRestoreCount)
         }
+
 
         if (yAxis.isDrawZeroLineEnabled) {
             drawZeroLine(c)
@@ -236,8 +234,8 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         // draw zero line
         val pos = transformer?.getPixelForValues(0f, 0f)
         pos?.let {
-            zeroLinePaint!!.color = yAxis.zeroLineColor
-            zeroLinePaint!!.strokeWidth = yAxis.zeroLineWidth
+            zeroLinePaint.color = yAxis.zeroLineColor
+            zeroLinePaint.strokeWidth = yAxis.zeroLineWidth
 
             val zeroLinePath = drawZeroLinePath
             zeroLinePath.reset()
@@ -246,7 +244,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             zeroLinePath.lineTo(viewPortHandler.contentRight(), it.y.toFloat())
 
             // draw a path because lines don't support dashing on lower android versions
-            c.drawPath(zeroLinePath, zeroLinePaint!!)
+            c.drawPath(zeroLinePath, zeroLinePaint)
 
             c.restoreToCount(clipRestoreCount)
         }
@@ -259,14 +257,10 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     protected var limitLineClippingRect: RectF = RectF()
 
     init {
-        paintAxisLabels?.let {
-            it.color = Color.BLACK
-            it.textSize = Utils.convertDpToPixel(10f)
+        paintAxisLabels.apply {
+            color = Color.BLACK
+            textSize = Utils.convertDpToPixel(10f)
         }
-        zeroLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        zeroLinePaint!!.color = Color.GRAY
-        zeroLinePaint!!.strokeWidth = 1f
-        zeroLinePaint!!.style = Paint.Style.STROKE
     }
 
     /**
@@ -337,6 +331,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                                 )
                             }
                         }
+
                         LimitLabelPosition.RIGHT_BOTTOM -> {
                             limitLinePaint.let {
                                 it.textAlign = Align.RIGHT
@@ -347,6 +342,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                                 )
                             }
                         }
+
                         LimitLabelPosition.LEFT_TOP -> {
                             limitLinePaint.let {
                                 it.textAlign = Align.LEFT
@@ -357,6 +353,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                                 )
                             }
                         }
+
                         else -> {
                             limitLinePaint.let {
                                 it.textAlign = Align.LEFT
