@@ -109,6 +109,11 @@ public abstract class AxisBase extends ComponentBase {
     protected List<LimitLine> mLimitLines;
 
     /**
+     * array of limit ranges that can be set for the axis
+     */
+    protected List<LimitRange> mLimitRanges;
+
+    /**
      * flag indicating the limit lines layer depth
      */
     protected boolean mDrawLimitLineBehindData = false;
@@ -204,6 +209,7 @@ public abstract class AxisBase extends ComponentBase {
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(5f);
         this.mLimitLines = new ArrayList<LimitLine>();
+        this.mLimitRanges = new ArrayList<LimitRange>();
     }
 
     /**
@@ -454,6 +460,18 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
+     * Adds a new LimitLine to this axis.
+     */
+    public void addLimitRange(LimitRange l) {
+        mLimitRanges.add(l);
+
+        if (mLimitRanges.size() > 6) {
+            Log.e("MPAndroiChart",
+                    "Warning! You have more than 6 LimitLines on your axis, do you really want that?");
+        }
+    }
+
+    /**
      * Removes the specified LimitLine from the axis.
      *
      * @param l
@@ -470,12 +488,37 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
+     * Removes the specified LimitRange from the axis.
+     *
+     * @param l
+     */
+    public void removeLimitRange(LimitRange l) {
+        mLimitRanges.remove(l);
+    }
+
+    /**
+     * Removes all LimitLines from the axis.
+     */
+    public void removeAllLimitRanges() {
+        mLimitRanges.clear();
+    }
+
+    /**
      * Returns the LimitLines of this axis.
      *
      * @return
      */
     public List<LimitLine> getLimitLines() {
         return mLimitLines;
+    }
+
+    /**
+     * Returns the LimitRanges of this axis.
+     *
+     * @return
+     */
+    public List<LimitRange> getLimitRanges() {
+        return mLimitRanges;
     }
 
     /**

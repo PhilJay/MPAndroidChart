@@ -205,7 +205,7 @@ open class YAxisRendererHorizontalBarChart(
     }
 
     protected var mRenderLimitLinesPathBuffer: Path = Path()
-    protected var mRenderLimitLinesBuffer: FloatArray = FloatArray(4)
+    override var renderLimitLinesBuffer: FloatArray = FloatArray(4)
 
     init {
         limitLinePaint.textAlign = Align.LEFT
@@ -222,7 +222,7 @@ open class YAxisRendererHorizontalBarChart(
 
         if (limitLines == null || limitLines.size <= 0) return
 
-        val pts = mRenderLimitLinesBuffer
+        val pts = renderLimitLinesBuffer
         pts[0] = 0f
         pts[1] = 0f
         pts[2] = 0f

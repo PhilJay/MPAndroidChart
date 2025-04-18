@@ -17,6 +17,7 @@ import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
+import com.github.mikephil.charting.components.LimitRange
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.highlight.Highlight
@@ -108,6 +109,19 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             lineColor = Color.GREEN
         }
 
+        val limitRange = LimitRange(45f, 90f, "Middle Range").apply {
+            lineWidth = 2f
+            labelPosition = LimitLabelPosition.RIGHT_TOP
+            textSize = 10f
+            typeface = tfRegular
+            lineColor = Color.RED
+            rangeColor = Color.argb(30, 255, 235, 0)
+        }
+
+        val limitRangeLower = LimitRange(45f, 52f).apply {
+            rangeColor = Color.argb(30, 230, 0, 0)
+        }
+
         // draw limit lines behind data instead of on top
         binding.chart1.axisLeft.setDrawLimitLinesBehindData(true)
         binding.chart1.xAxis.setDrawLimitLinesBehindData(true)
@@ -116,6 +130,10 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         binding.chart1.axisLeft.addLimitLine(limitLineUpper)
         binding.chart1.axisLeft.addLimitLine(limitLineLower)
         // binding.chart1.axisLeft.addLimitLine(llXAxis10)
+
+        // add limit range
+        binding.chart1.axisLeft.addLimitRange(limitRange)
+        binding.chart1.axisLeft.addLimitRange(limitRangeLower)
 
         // add data
         binding.seekBarX.progress = 45
