@@ -515,7 +515,7 @@ open class BarChartRenderer(
             paintHighlight.color = set.highLightColor
             paintHighlight.alpha = set.highLightAlpha
 
-            val isStack = if (high.stackIndex >= 0 && e.isStacked) true else false
+            val isStack = high.stackIndex >= 0 && e.isStacked
 
             val y1: Float
             val y2: Float
