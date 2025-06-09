@@ -5,8 +5,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.renderer.LineChartRenderer;
+
+import java.util.Locale;
 
 /**
  * Chart that draws lines, surfaces, circles, ...
@@ -46,5 +49,33 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
             ((LineChartRenderer) mRenderer).releaseBitmap();
         }
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public String getAccessibilityDescription() {
+
+        LineData lineData = getLineData();
+
+        int numberOfPoints = lineData.getEntryCount();
+
+        // Min and max values...
+        ValueFormatter yAxisValueFormmater = getAxisLeft().getValueFormatter();
+        String minVal = yAxisValueFormmater.getFormattedValue(lineData.getYMin());
+        String maxVal = yAxisValueFormmater.getFormattedValue(lineData.getYMax());
+
+        // Data range...
+        ValueFormatter xAxisValueFormatter = getXAxis().getValueFormatter();
+        String minRange = xAxisValueFormatter.getFormattedValue(lineData.getXMin());
+        String maxRange = xAxisValueFormatter.getFormattedValue(lineData.getXMax());
+
+        String entries = numberOfPoints == 1 ? "entry" : "entries";
+
+        String description = String.format(Locale.getDefault(), "The line chart has %d %s. " +
+                        "The minimum value is %s and maximum value is %s." +
+                        "Data ranges from %s to %s.",
+                numberOfPoints, entries, minVal, maxVal, minRange, maxRange);
+
+
+        return description;
     }
 }

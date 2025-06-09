@@ -40,4 +40,9 @@ public class BubbleChart extends BarLineChartBase<BubbleData> implements BubbleD
     public BubbleData getBubbleData() {
         return mData;
     }
+
+    @Override
+    public String getAccessibilityDescription() {
+        return "This is bubble chart";
+    }
 }
