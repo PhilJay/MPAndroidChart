@@ -5,6 +5,8 @@ import com.github.mikephil.charting.utils.ObjectPool;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,51 +14,52 @@ import java.util.List;
 /**
  * Created by otheruser on 6/28/16.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ObjectPoolTest {
 
-    static class TestPoolable extends ObjectPool.Poolable{
+    static class TestPoolable extends ObjectPool.Poolable {
 
         private static ObjectPool<TestPoolable> pool;
 
         static {
-            pool = ObjectPool.create(4, new TestPoolable(0,0));
+            pool = ObjectPool.create(4, new TestPoolable(0, 0));
         }
 
         public int foo = 0;
         public int bar = 0;
 
-        protected ObjectPool.Poolable instantiate(){
-            return new TestPoolable(0,0);
+        protected ObjectPool.Poolable instantiate() {
+            return new TestPoolable(0, 0);
         }
 
-        private TestPoolable(int foo, int bar){
+        private TestPoolable(int foo, int bar) {
             this.foo = foo;
             this.bar = bar;
         }
 
-        public static TestPoolable getInstance(int foo, int bar){
+        public static TestPoolable getInstance(int foo, int bar) {
             TestPoolable result = pool.get();
             result.foo = foo;
             result.bar = bar;
             return result;
         }
 
-        public static void recycleInstance(TestPoolable instance){
+        public static void recycleInstance(TestPoolable instance) {
             pool.recycle(instance);
         }
 
-        public static void recycleInstances(List<TestPoolable> instances){
+        public static void recycleInstances(List<TestPoolable> instances) {
             pool.recycle(instances);
         }
 
-        public static ObjectPool getPool(){
+        public static ObjectPool getPool() {
             return pool;
         }
 
     }
 
     @Test
-    public void testObjectPool(){
+    public void testObjectPool() {
 
         int poolCapacity = TestPoolable.getPool().getPoolCapacity();
         int poolCount = TestPoolable.getPool().getPoolCount();
@@ -66,7 +69,7 @@ public class ObjectPoolTest {
         Assert.assertEquals(4, poolCapacity);
         Assert.assertEquals(4, poolCount);
 
-        testPoolable = TestPoolable.getInstance(6,7);
+        testPoolable = TestPoolable.getInstance(6, 7);
         Assert.assertEquals(6, testPoolable.foo);
         Assert.assertEquals(7, testPoolable.bar);
 
@@ -84,7 +87,7 @@ public class ObjectPoolTest {
         Assert.assertEquals(4, poolCount);
 
 
-        testPoolable = TestPoolable.getInstance(20,30);
+        testPoolable = TestPoolable.getInstance(20, 30);
         Assert.assertEquals(20, testPoolable.foo);
         Assert.assertEquals(30, testPoolable.bar);
 
@@ -95,10 +98,10 @@ public class ObjectPoolTest {
         Assert.assertEquals(4, poolCapacity);
         Assert.assertEquals(4, poolCount);
 
-        testPoolables.add(TestPoolable.getInstance(12,24));
-        testPoolables.add(TestPoolable.getInstance(1,2));
-        testPoolables.add(TestPoolable.getInstance(3,5));
-        testPoolables.add(TestPoolable.getInstance(6,8));
+        testPoolables.add(TestPoolable.getInstance(12, 24));
+        testPoolables.add(TestPoolable.getInstance(1, 2));
+        testPoolables.add(TestPoolable.getInstance(3, 5));
+        testPoolables.add(TestPoolable.getInstance(6, 8));
 
         poolCapacity = TestPoolable.getPool().getPoolCapacity();
         poolCount = TestPoolable.getPool().getPoolCount();
@@ -115,11 +118,11 @@ public class ObjectPoolTest {
         testPoolables.clear();
 
 
-        testPoolables.add(TestPoolable.getInstance(12,24));
-        testPoolables.add(TestPoolable.getInstance(1,2));
-        testPoolables.add(TestPoolable.getInstance(3,5));
-        testPoolables.add(TestPoolable.getInstance(6,8));
-        testPoolables.add(TestPoolable.getInstance(8,9));
+        testPoolables.add(TestPoolable.getInstance(12, 24));
+        testPoolables.add(TestPoolable.getInstance(1, 2));
+        testPoolables.add(TestPoolable.getInstance(3, 5));
+        testPoolables.add(TestPoolable.getInstance(6, 8));
+        testPoolables.add(TestPoolable.getInstance(8, 9));
         Assert.assertEquals(12, testPoolables.get(0).foo);
         Assert.assertEquals(24, testPoolables.get(0).bar);
         Assert.assertEquals(1, testPoolables.get(1).foo);
@@ -146,16 +149,16 @@ public class ObjectPoolTest {
         testPoolables.clear();
 
 
-        testPoolables.add(TestPoolable.getInstance(0,0));
-        testPoolables.add(TestPoolable.getInstance(6,8));
-        testPoolables.add(TestPoolable.getInstance(1,2));
-        testPoolables.add(TestPoolable.getInstance(3,5));
-        testPoolables.add(TestPoolable.getInstance(8,9));
-        testPoolables.add(TestPoolable.getInstance(12,24));
-        testPoolables.add(TestPoolable.getInstance(12,24));
-        testPoolables.add(TestPoolable.getInstance(12,24));
-        testPoolables.add(TestPoolable.getInstance(6,8));
-        testPoolables.add(TestPoolable.getInstance(6,8));
+        testPoolables.add(TestPoolable.getInstance(0, 0));
+        testPoolables.add(TestPoolable.getInstance(6, 8));
+        testPoolables.add(TestPoolable.getInstance(1, 2));
+        testPoolables.add(TestPoolable.getInstance(3, 5));
+        testPoolables.add(TestPoolable.getInstance(8, 9));
+        testPoolables.add(TestPoolable.getInstance(12, 24));
+        testPoolables.add(TestPoolable.getInstance(12, 24));
+        testPoolables.add(TestPoolable.getInstance(12, 24));
+        testPoolables.add(TestPoolable.getInstance(6, 8));
+        testPoolables.add(TestPoolable.getInstance(6, 8));
         Assert.assertEquals(0, testPoolables.get(0).foo);
         Assert.assertEquals(0, testPoolables.get(0).bar);
         Assert.assertEquals(6, testPoolables.get(1).foo);
@@ -177,7 +180,7 @@ public class ObjectPoolTest {
         Assert.assertEquals(6, testPoolables.get(9).foo);
         Assert.assertEquals(8, testPoolables.get(9).bar);
 
-        for(TestPoolable p : testPoolables){
+        for (TestPoolable p : testPoolables) {
             TestPoolable.recycleInstance(p);
         }
 
@@ -186,7 +189,7 @@ public class ObjectPoolTest {
         Assert.assertEquals(16, poolCapacity);
         Assert.assertEquals(16, poolCount);
 
-        testPoolable = TestPoolable.getInstance(9001,9001);
+        testPoolable = TestPoolable.getInstance(9001, 9001);
         Assert.assertEquals(9001, testPoolable.foo);
         Assert.assertEquals(9001, testPoolable.bar);
 
@@ -204,12 +207,12 @@ public class ObjectPoolTest {
         Assert.assertEquals(16, poolCount);
 
         Exception e = null;
-        try{
+        try {
             // expect an exception.
             TestPoolable.recycleInstance(testPoolable);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             e = ex;
-        }finally{
+        } finally {
             Assert.assertEquals(e.getMessage(), true, e != null);
         }
 
@@ -217,8 +220,8 @@ public class ObjectPoolTest {
 
         TestPoolable.getPool().setReplenishPercentage(0.5f);
         int i = 16;
-        while(i > 0){
-            testPoolables.add(TestPoolable.getInstance(0,0));
+        while (i > 0) {
+            testPoolables.add(TestPoolable.getInstance(0, 0));
             i--;
         }
 
@@ -227,7 +230,7 @@ public class ObjectPoolTest {
         Assert.assertEquals(16, poolCapacity);
         Assert.assertEquals(0, poolCount);
 
-        testPoolables.add(TestPoolable.getInstance(0,0));
+        testPoolables.add(TestPoolable.getInstance(0, 0));
 
         poolCapacity = TestPoolable.getPool().getPoolCapacity();
         poolCount = TestPoolable.getPool().getPoolCount();
