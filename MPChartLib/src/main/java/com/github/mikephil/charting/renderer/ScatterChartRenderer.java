@@ -88,7 +88,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             renderer.renderShape(
                     c, dataSet, mViewPortHandler,
                     mPixelBuffer[0], mPixelBuffer[1],
-                    mRenderPaint);
+                    mRenderPaint, e);
         }
     }
 
