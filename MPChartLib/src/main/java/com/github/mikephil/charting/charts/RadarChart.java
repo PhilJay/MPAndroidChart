@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
@@ -45,9 +44,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private int mWebColorInner = Color.rgb(122, 122, 122);
 
     /**
-     * transparency the grid is drawn with (0-255)
+     * transparency the y axis grid is drawn with (0-255)
      */
     private int mWebAlpha = 150;
+
+    /**
+     * transparency the x axis "inner-web" grid is drawn with (0-255)
+     */
+    private int mWebAlphaInner = 150;
 
     /**
      * flag indicating if the web lines should be drawn or not
@@ -257,6 +261,25 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public int getWebAlpha() {
         return mWebAlpha;
+    }    
+    
+    /**
+     * Sets the transparency (alpha) value for all web lines, default: 150, 255
+     * = 100% opaque, 0 = 100% transparent
+     *
+     * @param alpha
+     */
+    public void setWebAlphaInner(int alpha) {
+        mWebAlphaInner = alpha;
+    }
+
+    /**
+     * Returns the alpha value for all web lines.
+     *
+     * @return
+     */
+    public int getWebAlphaInner() {
+        return mWebAlphaInner;
     }
 
     /**

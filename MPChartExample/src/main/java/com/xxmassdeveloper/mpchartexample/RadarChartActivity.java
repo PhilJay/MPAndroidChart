@@ -53,6 +53,7 @@ public class RadarChartActivity extends DemoBase {
         chart.setWebLineWidthInner(1f);
         chart.setWebColorInner(Color.LTGRAY);
         chart.setWebAlpha(100);
+        chart.setWebAlphaInner(125);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
