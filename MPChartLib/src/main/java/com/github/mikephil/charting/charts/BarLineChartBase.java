@@ -1159,6 +1159,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         this.mScaleYEnabled = enabled;
     }
 
+    /**
+     * Returns true if scale X or scale Y is enabled, false otherwise.
+     *
+     * @return
+     */
+    public boolean isScaleEnabled() { return mScaleXEnabled || mScaleYEnabled; }
+
     public void setScaleXEnabled(boolean enabled) {
         mScaleXEnabled = enabled;
     }
