@@ -95,6 +95,11 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
     }
 
     @Override
+    public void onMarkerSingleTapped(MotionEvent me) {
+        Log.i("MarkerSingleTap", "Marker single-tapped.");
+    }
+
+    @Override
     public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
         Log.i("Fling", "Chart fling. VelocityX: " + velocityX + ", VelocityY: " + velocityY);
     }

@@ -158,10 +158,20 @@ public class MarkerImage implements IMarker {
 
         int saveId = canvas.save();
         // translate to the correct position and draw
-        canvas.translate(posX + offset.x, posY + offset.y);
+        float drawingPosX = posX + offset.x;
+        float drawingPosY = posY + offset.y;
+        canvas.translate(drawingPosX, drawingPosY);
         mDrawable.draw(canvas);
         canvas.restoreToCount(saveId);
 
         mDrawable.setBounds(mDrawableBoundsCache);
+    }
+
+    @Override
+    public boolean isClickOnMarker(float posX, float posY) {
+        if(mDrawableBoundsCache == null) {
+            return false;
+        }
+        return mDrawableBoundsCache.contains((int) posX, (int) posY);
     }
 }

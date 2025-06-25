@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -44,4 +45,12 @@ public interface IMarker {
      * @param posY
      */
     void draw(Canvas canvas, float posX, float posY);
+
+    /**
+     * Checks the click position is on the marker or not
+     *
+     * @param posX
+     * @param posY
+     */
+    boolean isClickOnMarker(float posX, float posY);
 }
