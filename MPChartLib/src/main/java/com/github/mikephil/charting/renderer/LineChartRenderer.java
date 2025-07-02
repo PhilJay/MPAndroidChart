@@ -462,14 +462,25 @@ public class LineChartRenderer extends LineRadarRenderer {
         do {
             currentStartIndex = startingIndex + (iterations * indexInterval);
             currentEndIndex = currentStartIndex + indexInterval;
-            currentEndIndex = currentEndIndex > endingIndex ? endingIndex : currentEndIndex;
+            currentEndIndex = Math.min(currentEndIndex, endingIndex);
 
             if (currentStartIndex <= currentEndIndex) {
-                generateFilledPath(dataSet, currentStartIndex, currentEndIndex, filled);
+                final Drawable drawable = dataSet.getFillDrawable();
+
+                int startIndex = currentStartIndex;
+                int endIndex = currentEndIndex;
+
+                // Add a little extra to the path for drawables, larger data sets were showing space between adjacent drawables
+                if (drawable != null && dataSet.getEntryCount() > 200) {
+
+                    startIndex = Math.max(0, currentStartIndex - 1);
+                    endIndex = Math.min(endingIndex, currentEndIndex + 1);
+                }
+
+                generateFilledPath(dataSet, startIndex, endIndex, filled);
 
                 trans.pathValueToPixel(filled);
 
-                final Drawable drawable = dataSet.getFillDrawable();
                 if (drawable != null) {
 
                     drawFilledPath(c, filled, drawable);
