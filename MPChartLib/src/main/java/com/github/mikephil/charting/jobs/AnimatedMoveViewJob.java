@@ -36,6 +36,7 @@ public class AnimatedMoveViewJob extends AnimatedViewPortJob {
     }
 
     public static void recycleInstance(AnimatedMoveViewJob instance){
+        instance.recycle();
         pool.recycle(instance);
     }
 
