@@ -229,7 +229,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                     formattedValue,
                                     buffer.buffer[j + 2] + (val >= 0 ? posOffset : negOffset),
                                     y + halfTextHeight,
-                                    dataSet.getValueTextColor(j / 2));
+                                    dataSet.getValueTextColor(j / 4));
                         }
 
                         if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
