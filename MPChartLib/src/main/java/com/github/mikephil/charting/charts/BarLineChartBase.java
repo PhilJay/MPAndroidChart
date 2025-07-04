@@ -210,6 +210,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (mXAxis.isEnabled())
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
+        // Y-axis labels could have changed in size affecting the offsets
+        if (mAutoScaleMinMaxEnabled) {
+            calculateOffsets();
+            mViewPortHandler.refresh(mViewPortHandler.getMatrixTouch(), this, false);
+        }
+
         mXAxisRenderer.renderAxisLine(canvas);
         mAxisRendererLeft.renderAxisLine(canvas);
         mAxisRendererRight.renderAxisLine(canvas);
@@ -366,19 +372,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mData.calcMinMaxY(fromX, toX);
 
-        mXAxis.calculate(mData.getXMin(), mData.getXMax());
-
-        // calculate axis range (min / max) according to provided data
-
-        if (mAxisLeft.isEnabled())
-            mAxisLeft.calculate(mData.getYMin(AxisDependency.LEFT),
-                    mData.getYMax(AxisDependency.LEFT));
-
-        if (mAxisRight.isEnabled())
-            mAxisRight.calculate(mData.getYMin(AxisDependency.RIGHT),
-                    mData.getYMax(AxisDependency.RIGHT));
-
-        calculateOffsets();
+        calcMinMax();
     }
 
     @Override
