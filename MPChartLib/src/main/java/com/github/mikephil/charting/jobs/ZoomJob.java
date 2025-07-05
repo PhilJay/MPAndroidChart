@@ -42,10 +42,8 @@ public class ZoomJob extends ViewPortJob {
         instance.yValue = 0f;
         instance.scaleX = 0f;
         instance.scaleY = 0f;
-        instance.mViewPortHandler = null;
-        instance.mTrans = null;
         instance.axisDependency = null;
-        instance.view = null;
+        instance.recycle();
         pool.recycle(instance);
     }
 
