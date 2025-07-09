@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -137,7 +138,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             llXAxis.enableDashedLine(10f, 10f, 0f);
             llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
             llXAxis.setTextSize(10f);
-            llXAxis.setTypeface(tfRegular);
+            Typeface tfBold = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
+            llXAxis.setTypeface(tfBold);
 
             LimitLine ll1 = new LimitLine(150f, "Upper Limit");
             ll1.setLineWidth(4f);
@@ -160,7 +162,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             // add limit lines
             yAxis.addLimitLine(ll1);
             yAxis.addLimitLine(ll2);
-            //xAxis.addLimitLine(llXAxis);
+            xAxis.addLimitLine(llXAxis);
         }
 
         // add data
