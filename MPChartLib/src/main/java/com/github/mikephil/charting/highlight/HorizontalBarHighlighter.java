@@ -11,6 +11,9 @@ import com.github.mikephil.charting.utils.MPPointD;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.mikephil.charting.data.BarEntry;
+
+
 /**
  * Created by Philipp Jahoda on 22/07/15.
  */
@@ -24,24 +27,54 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 	public Highlight getHighlight(float x, float y) {
 
 		BarData barData = mChart.getBarData();
-
 		MPPointD pos = getValsForTouch(y, x);
 
 		Highlight high = getHighlightForX((float) pos.y, y, x);
-		if (high == null)
+		if (high == null) {
+			android.util.Log.d("HIGHLIGHT", "high is null after getHighlightForX");  // ← ADD
 			return null;
+		}
 
 		IBarDataSet set = barData.getDataSetByIndex(high.getDataSetIndex());
 		if (set.isStacked()) {
-
-			return getStackedHighlight(high,
-					set,
-					(float) pos.y,
-					(float) pos.x);
+			Highlight result = getStackedHighlight(high, set, (float) pos.y, (float) pos.x);
+			android.util.Log.d("HIGHLIGHT", "stacked result: " + (result == null ? "NULL" : "x=" + result.getX() + " xPx=" + result.getXPx() + " yPx=" + result.getYPx()));  // ← ADD
+			return result;
 		}
 
-		MPPointD.recycleInstance(pos);
+		// ─── TRANSLATED DATA-BOUNDS FIX ───
+		BarEntry entry = set.getEntryForXValue(high.getX(), high.getY());
+		if (entry != null) {
 
+			// Vertical Category Check: Ensure touch y is within the slot height bounds
+			float barWidthHalf = barData.getBarWidth() / 2f;
+			float barBottom = entry.getX() - barWidthHalf;
+			float barTop = entry.getX() + barWidthHalf;
+
+			if (pos.y < barBottom || pos.y > barTop) {
+				MPPointD.recycleInstance(pos);
+				return null;
+			}
+
+			// Horizontal Value Length Check: Ensure touch x matches the bar length range
+			float val = entry.getY();
+			if (val >= 0) {
+				if (pos.x > val || pos.x < 0) {
+					MPPointD.recycleInstance(pos);
+					return null;
+				}
+			} else {
+				if (pos.x < val || pos.x > 0) {
+					MPPointD.recycleInstance(pos);
+					return null;
+				}
+			}
+		}
+		// ─── END OF FIX ───
+
+		MPPointD.recycleInstance(pos);
+		MPPointD.recycleInstance(pos);
+		android.util.Log.d("HIGHLIGHT", "Returning high: x=" + high.getX() + " y=" + high.getY());  // ← ADD
 		return high;
 	}
 
@@ -81,5 +114,10 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 	@Override
 	protected float getDistance(float x1, float y1, float x2, float y2) {
 		return Math.abs(y1 - y2);
+	}
+	@Override
+	protected float getHighlightPos(Highlight h) {
+
+		return h.getXPx();
 	}
 }

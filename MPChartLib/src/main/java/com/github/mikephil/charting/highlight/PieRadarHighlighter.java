@@ -28,30 +28,44 @@ public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implement
 
         float touchDistanceToCenter = mChart.distanceToCenter(x, y);
 
-        // check if a slice was touched
-        if (touchDistanceToCenter > mChart.getRadius()) {
+        // ─── SAFE PROPORTIONAL BOUNDARY FOR PIE CHARTS ───
+        float extendedRadius = mChart.getRadius() * 1.25f;
 
-            // if no slice was touched, highlight nothing
+        if (touchDistanceToCenter > extendedRadius) {
             return null;
+        }
 
-        } else {
+        float angle = mChart.getAngleForPoint(x, y);
 
-            float angle = mChart.getAngleForPoint(x, y);
+        if (mChart instanceof PieChart) {
+            angle /= mChart.getAnimator().getPhaseY();
+        }
 
-            if (mChart instanceof PieChart) {
-                angle /= mChart.getAnimator().getPhaseY();
-            }
+        int index = mChart.getIndexForAngle(angle);
 
-            int index = mChart.getIndexForAngle(angle);
+        // check if the index could be found
+        if (index < 0 || index >= mChart.getData().getMaxEntryCountSet().getEntryCount()) {
+            return null;
+        }
 
-            // check if the index could be found
-            if (index < 0 || index >= mChart.getData().getMaxEntryCountSet().getEntryCount()) {
+        Highlight hint = getClosestHighlight(index, x, y);
+
+        // ─── NEW RADAR CHART PROXIMITY FILTER ───
+        // If it's a Radar Chart, enforce a comfortable 40dp finger-sized touch boundary
+        if (!(mChart instanceof PieChart) && hint != null) {
+            float density = mChart.getContext().getResources().getDisplayMetrics().density;
+            float maxSelectionDistance = 40f * density;
+
+            // Calculate absolute distance between your touch point and the actual drawn vertex
+            float distanceToVertex = (float) Math.hypot(x - hint.getXPx(), y - hint.getYPx());
+
+            // If your finger is further than 40dp from the actual point, reject the touch
+            if (distanceToVertex > maxSelectionDistance) {
                 return null;
-
-            } else {
-                return getClosestHighlight(index, x, y);
             }
         }
+
+        return hint;
     }
 
     /**

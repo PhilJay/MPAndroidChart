@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by Philipp Jahoda on 21/07/15.
+ * Fully optimized interaction targeting engine fork.
  */
 public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> implements IHighlighter
 {
@@ -78,9 +79,94 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         YAxis.AxisDependency axis = leftAxisMinDist < rightAxisMinDist ? YAxis.AxisDependency.LEFT : YAxis.AxisDependency.RIGHT;
 
-        Highlight detail = getClosestHighlightByPixel(closestValues, x, y, axis, mChart.getMaxHighlightDistance());
+        float density = ((android.view.View) mChart).getContext().getResources().getDisplayMetrics().density;
+
+        // Default safety bubble for standard line/scatter charts
+        float maxSelectionDistance = 40f * density;
+
+        Highlight detail = getClosestHighlightByPixel(closestValues, x, y, axis, maxSelectionDistance);
 
         return detail;
+    }
+
+    /**
+     * Returns the Highlight of the DataSet that contains the closest value on the
+     * y-axis.
+     *
+     * @param closestValues        contains two Highlight objects per DataSet closest to the selected x-position
+     * @param x
+     * @param y
+     * @param axis                 the closest axis
+     * @param minSelectionDistance
+     * @return
+     */
+    public Highlight getClosestHighlightByPixel(List<Highlight> closestValues, float x, float y,
+                                                YAxis.AxisDependency axis, float minSelectionDistance) {
+
+        Highlight closest = null;
+        float shortestDistance = Float.MAX_VALUE;
+
+        boolean isBubble = mChart instanceof com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
+
+        for (int i = 0; i < closestValues.size(); i++) {
+            Highlight high = closestValues.get(i);
+
+            if (axis == null || high.getAxis() == axis) {
+                float cDistance = getDistance(x, y, high.getXPx(), high.getYPx());
+
+                if (isBubble) {
+                    com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet dataSet =
+                            (com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet) mChart.getData().getDataSetByIndex(high.getDataSetIndex());
+
+                    if (dataSet == null) continue;
+
+                    Entry entry = dataSet.getEntryForXValue(high.getX(), Float.NaN, DataSet.Rounding.CLOSEST);
+
+                    if (entry instanceof com.github.mikephil.charting.data.BubbleEntry) {
+                        com.github.mikephil.charting.data.BubbleEntry bubbleEntry = (com.github.mikephil.charting.data.BubbleEntry) entry;
+
+                        float density = ((android.view.View) mChart).getContext().getResources().getDisplayMetrics().density;
+
+// 1. SAFE ZOOM SCALE TRACKING VIA BASE CHART VIEW
+                        float currentZoomScale = 1.0f;
+                        if (mChart instanceof com.github.mikephil.charting.charts.BarLineChartBase) {
+                            currentZoomScale = ((com.github.mikephil.charting.charts.BarLineChartBase) mChart).getViewPortHandler().getScaleX();
+                        }
+
+// Calculate the base radius drawn on screen
+                        float rawSize = bubbleEntry.getSize();
+                        float baseRadius = rawSize / 2f;
+
+// Multiply by currentZoomScale so the touch footprint expands dynamically as the user zooms in!
+                        float physicalBubbleRadius = baseRadius * density * currentZoomScale;
+
+                        // 2. THE TINY-BUBBLE ACCESSIBILITY BOOST
+                        // Give all small/nested entries an absolute floor touch radius of 15dp
+                        // This guarantees tiny hidden dots remain physically clickable over massive background shapes
+                        float minimumTouchFloor = 15f * density;
+                        if (physicalBubbleRadius < minimumTouchFloor) {
+                            physicalBubbleRadius = minimumTouchFloor;
+                        }
+
+                        // 3. SELECTION RESOLUTION
+                        if (cDistance <= physicalBubbleRadius) {
+                            if (cDistance < shortestDistance) {
+                                shortestDistance = cDistance;
+                                closest = high;
+                            }
+                        }
+                    }
+                } else {
+                    // Standard 40dp safety target mapping for Line/Scatter plots
+                    if (cDistance < minSelectionDistance && cDistance < shortestDistance) {
+                        shortestDistance = cDistance;
+                        closest = high;
+                    }
+                }
+            }
+        }
+
+        return closest;
     }
 
     /**
@@ -113,12 +199,11 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     }
 
     protected float getHighlightPos(Highlight h) {
-        return h.getYPx();
+        return h.getYPx(); // default for vertical charts
     }
 
     /**
      * Returns a list of Highlight objects representing the entries closest to the given xVal.
-     * The returned list contains two objects per DataSet (closest rounding up, closest rounding down).
      *
      * @param xVal the transformed x-value of the x-touch position
      * @param x    touch position
@@ -150,12 +235,6 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
     /**
      * An array of `Highlight` objects corresponding to the selected xValue and dataSetIndex.
-     *
-     * @param set
-     * @param dataSetIndex
-     * @param xVal
-     * @param rounding
-     * @return
      */
     protected List<Highlight> buildHighlights(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
@@ -190,53 +269,9 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     }
 
     /**
-     * Returns the Highlight of the DataSet that contains the closest value on the
-     * y-axis.
-     *
-     * @param closestValues        contains two Highlight objects per DataSet closest to the selected x-position (determined by
-     *                             rounding up an down)
-     * @param x
-     * @param y
-     * @param axis                 the closest axis
-     * @param minSelectionDistance
-     * @return
-     */
-    public Highlight getClosestHighlightByPixel(List<Highlight> closestValues, float x, float y,
-                                                YAxis.AxisDependency axis, float minSelectionDistance) {
-
-        Highlight closest = null;
-        float distance = minSelectionDistance;
-
-        for (int i = 0; i < closestValues.size(); i++) {
-
-            Highlight high = closestValues.get(i);
-
-            if (axis == null || high.getAxis() == axis) {
-
-                float cDistance = getDistance(x, y, high.getXPx(), high.getYPx());
-
-                if (cDistance < distance) {
-                    closest = high;
-                    distance = cDistance;
-                }
-            }
-        }
-
-        return closest;
-    }
-
-    /**
      * Calculates the distance between the two given points.
-     *
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @return
      */
     protected float getDistance(float x1, float y1, float x2, float y2) {
-        //return Math.abs(y1 - y2);
-        //return Math.abs(x1 - x2);
         return (float) Math.hypot(x1 - x2, y1 - y2);
     }
 
