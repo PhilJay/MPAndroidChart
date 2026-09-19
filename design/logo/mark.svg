@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="MPAndroidChart">
+  <defs>
+    <linearGradient id="teal" gradientUnits="userSpaceOnUse" x1="32" y1="8" x2="53" y2="44">
+      <stop offset="0" stop-color="#5DD39E"/><stop offset="1" stop-color="#2FB4B6"/>
+    </linearGradient>
+    <linearGradient id="coral" gradientUnits="userSpaceOnUse" x1="49" y1="49" x2="11" y2="44">
+      <stop offset="0" stop-color="#F9845F"/><stop offset="1" stop-color="#F97066"/>
+    </linearGradient>
+    <linearGradient id="amber" gradientUnits="userSpaceOnUse" x1="8" y1="38" x2="20" y2="11">
+      <stop offset="0" stop-color="#F5B041"/><stop offset="1" stop-color="#F5C441"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(32 32)" fill="none" stroke-width="10" stroke-linecap="round">
+    <path d="M0 -24A24 24 0 0 1 20.8 12" stroke="url(#teal)"/>
+    <path d="M17 17A24 24 0 0 1 -20.8 12" stroke="url(#coral)"/>
+    <path d="M-24 6A24 24 0 0 1 -12 -20.8" stroke="url(#amber)"/>
+  </g>
+</svg>

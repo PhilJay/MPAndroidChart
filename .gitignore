@@ -12,7 +12,6 @@
 bin/
 gen/
 generated/
-docs/
 finalOutput/
 projectFilesBackup/
 
@@ -45,3 +44,11 @@ build/
 target/
 
 .DS_Store
+docs/*
+!docs/superpowers/
+
+# Rendered decimation comparison images, not committed
+/decimation-images/
+
+# Kotlin compiler working directory
+.kotlin/

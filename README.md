@@ -1,200 +1,159 @@
-![banner](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic_smaller.png)
+![MPAndroidChart](design/logo/png/banner.png)
 
 [![Release](https://img.shields.io/github/release/PhilJay/MPAndroidChart.svg?style=flat)](https://jitpack.io/#PhilJay/MPAndroidChart)
-[![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
-[![Android Arsenal](http://img.shields.io/badge/Android%20Arsenal-MPAndroidChart-orange.svg?style=flat)](http://android-arsenal.com/details/1/741)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PhilJay/MPAndroidChart?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
-[![Twitter](https://img.shields.io/badge/Twitter-@mpandroidchart-blue.svg?style=flat)](http://twitter.com/mpandroidchart)
+[![API](https://img.shields.io/badge/API-23%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=23)
 
-:zap: A powerful & easy to use chart library for Android :zap:
+A chart library for Android, written in Kotlin, with a Jetpack Compose module. Line, bar, horizontal bar, pie, scatter, candlestick, bubble, radar and combined charts with zooming, dragging, highlighting, markers, animations and full styling control.
 
-[**Charts**](https://github.com/danielgindi/Charts) is the iOS version of this library
+[Charts](https://github.com/danielgindi/Charts) is the iOS version of this library.
 
-## Table of Contents
-1. [Quick Start](#quick-start)
-    1. [Gradle](#gradle-setup)
-    1. [Maven](#maven-setup)
-1. [Documentation](#documentation)
-1. [Examples](#examples)
-1. [Questions](#report)
-1. [Donate](#donate)
-1. [Social Media](#social)
-1. [More Examples](#more-examples)
-1. [License](#licence)
-1. [Creators](#creators)
+## Gallery
 
-### Gradle Setup
+The example app opens with every chart type in one consistent style, in a dark and a light variant, drawn by the library. The styling code is in `MPChartExample/src/main/kotlin/com/xxmassdeveloper/mpchartexample/design/`.
 
-```gradle
-repositories {
-    maven { url 'https://jitpack.io' }
+![Every chart type, dark](screenshots/nightfall/nightfall-dark.png)
+
+![Every chart type, light](screenshots/nightfall/nightfall-light.png)
+
+## Documentation
+
+The guides at [philjay.cc](https://philjay.cc/mpandroidchart/docs/) cover the library in 35 chapters, from a first chart to theming, Compose, custom renderers and troubleshooting. Every class, function and property also has KDoc, and the generated API reference is served by JitPack for each release: [MPChartLib](https://jitpack.io/com/github/PhilJay/MPAndroidChart/MPChartLib/v4.0.0-beta01/javadoc/) and [MPChartCompose](https://jitpack.io/com/github/PhilJay/MPAndroidChart/MPChartCompose/v4.0.0-beta01/javadoc/). To build it locally run `./gradlew dokkaGenerate` and open `build/dokka/html/index.html`.
+
+## Requirements
+
+minSdk 23, compileSdk 35, Java 17 and Kotlin 2.0 or newer. The Compose module needs compileSdk 37, because Compose itself does. Java callers need no Kotlin at all. Coming from the Java 3.x versions? Read [MIGRATION.md](MIGRATION.md) or the longer [migration guide](https://philjay.cc/mpandroidchart/docs/migration/). [CHANGELOG.md](CHANGELOG.md) lists what changed in 4.0.
+
+## Install
+
+4.0 is a rewrite in Kotlin and is currently a beta. Its coordinates differ from 3.x, so a project on `com.github.PhilJay:MPAndroidChart:v3.1.0` keeps building untouched. Pin the version, do not track the newest one.
+
+```kotlin
+// settings.gradle.kts
+dependencyResolutionManagement {
+    repositories {
+        maven("https://jitpack.io")
+    }
 }
 
+// build.gradle.kts
 dependencies {
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation("com.github.PhilJay.MPAndroidChart:MPChartLib:v4.0.0-beta01")
+    implementation("com.github.PhilJay.MPAndroidChart:MPChartCompose:v4.0.0-beta01") // only for Compose
 }
 ```
 
-### Maven Setup
+## Quick start with Views
+
+Put a chart in a layout:
 
 ```xml
-<!-- <repositories> section of pom.xml -->
-<repository>
-    <id>jitpack.io</id>
-   <url>https://jitpack.io</url>
-</repository>
-
-<!-- <dependencies> section of pom.xml -->
-<dependency>
-    <groupId>com.github.PhilJay</groupId>
-    <artifactId>MPAndroidChart</artifactId>
-    <version>v3.1.0</version>
-</dependency>
+<com.github.mikephil.charting.charts.LineChart
+    android:id="@+id/chart"
+    android:layout_width="match_parent"
+    android:layout_height="300dp" />
 ```
 
-<br/>
+Give it data. Entries are points, a data set is one series with its styling, and the data object holds all series of a chart:
 
-<h2 id="documentation">Documentation :notebook_with_decorative_cover:</h2>
+```kotlin
+val entries = listOf(Entry(0f, 4f), Entry(1f, 8f), Entry(2f, 6f))
+val set = LineDataSet(entries, "Sales").apply {
+    color = Color.BLUE
+    lineWidth = 2f
+    mode = LineDataSet.Mode.CUBIC_BEZIER
+    isDrawValuesEnabled = false
+}
+chart.data = LineData(set)
+chart.animateX(500)
+```
 
-See the [**documentation**](https://weeklycoding.com/mpandroidchart/) for examples and general use of MPAndroidChart.
+Every chart type follows the same pattern: `BarEntry` into `BarDataSet` into `BarData` for a `BarChart`, `PieEntry` into `PieDataSet` into `PieData` for a `PieChart`, and so on. Stacked bars take a list of values: `BarEntry(0f, listOf(3f, 5f))`.
 
-See the [**javadocs**](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v3.1.0/javadoc/) for more advanced documentation.
+Configuration is done through properties:
 
-<br/>
+```kotlin
+chart.apply {
+    description.isEnabled = false
+    legend.form = Legend.LegendForm.LINE
+    xAxis.position = XAxis.XAxisPosition.BOTTOM
+    xAxis.granularity = 1f
+    axisRight.isEnabled = false
+    axisLeft.axisMinimum = 0f
+    axisLeft.addLimitLine(LimitLine(10f, "Target"))
+    isDragEnabled = true
+    isScaleEnabled = true
+    isPinchZoomEnabled = true
+}
+```
 
-<h2 id="examples">Examples :eyes:</h2>
+Formatters and listeners are lambdas:
 
-Download the [MPAndroidChart Example App](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) or look at the [source code](https://github.com/PhilJay/MPAndroidChart/tree/master/MPChartExample).
+```kotlin
+chart.xAxis.valueFormatter = IAxisValueFormatter { value, _ -> months[value.toInt()] }
+set.valueFormatter = IValueFormatter { value, _, _, _ -> "%.1f".format(value) }
+chart.onValueSelected { entry, highlight -> showDetails(entry) }
+```
 
-[![ScreenShot](https://github.com/PhilJay/MPAndroidChart/blob/master/design/video_thumbnail.png)](https://www.youtube.com/watch?v=ufaK_Hd6BpI)
+To change data later, replace it with `chart.data = LineData(newSet)`, or change the entries in place and call `chart.notifyDataSetChanged()`. One call is enough, it also redraws.
 
-<br/>
+Markers show a view at the highlighted entry. Extend `MarkerView` with your own layout and assign it to `chart.marker`. Save a chart with `chart.saveToGallery("chart.png")`.
 
-<h2 id="report">Questions & Issues :thinking:</h2>
+## Quick start with Compose
 
-This repository's issue tracker is only for bugs and feature requests. The maintainers ask that you refrain from asking questions about how to use MPAndroidChart through the issue tracker.
+Every chart type has a composable with the same name. Pass the data as state, configure the view once in `setup`, and read selection and viewport back through the state:
 
-Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) first, then ask all your questions on [stackoverflow.com](https://stackoverflow.com/questions/tagged/mpandroidchart) for the fastest answer.
+```kotlin
+val state = rememberChartState()
+LaunchedEffect(lineData) { state.animateX(500) }
 
-<br/>
+LineChart(
+    data = lineData,
+    modifier = Modifier.fillMaxWidth().height(300.dp),
+    state = state,
+    contentDescription = "Sales per month",
+    marker = { entry, _ -> Text("${entry.y}") },
+    setup = {
+        description.isEnabled = false
+        axisRight.isEnabled = false
+    },
+)
+Text("Selected: ${state.selectedEntry?.y}")
+Button(onClick = { state.zoomIn() }) { Text("Zoom in") }
+```
 
-<h2 id="donate">Donations :heart:</h2>
+- A new `data` instance is applied to the chart. After changing data in place, call `state.notifyDataChanged()`.
+- `setup` runs once, so values it reads are frozen. Use `update` for anything that depends on theme or state.
+- `ChartState` exposes `selectedEntry`, `lowestVisibleX`, `highestVisibleX`, `zoomX`, `zoomY` and `rotationAngle`, and offers `highlight`, `zoomIn`, `zoomOut`, `fitScreen`, `moveViewToX` and the animate functions. `rememberChartState` survives configuration changes. One state belongs to one chart.
+- `setColors(List<Color>)`, `rememberTypeface(fontFamily)` and `rememberDrawable(painter, size)` turn Compose colors, fonts and painters into what the library takes. For a single color use `toArgb()`.
+- Android Studio previews show a placeholder in place of the chart.
 
-**This project needs you!** If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, **feel free to donate**. Your donation is highly appreciated (and I love food, coffee and beer). Thank you!
+## Typed payloads
 
-**PayPal**
+Entries can carry your own object. `Entry(1f, 2f)` has no payload, `Entry(1f, 2f, data = order)` is an `Entry<Order>`, and a `LineDataSet<Order>` built from such entries returns the payload typed:
 
-- [**Donate 5 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7G52RA87ED8NY): Thank's for creating this project, here's a coffee (or some beer) for you!
-- [**Donate 10 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4C9TPE67F5PUQ): Wow, I am stunned. Let me take you to the movies!
-- [**Donate 15 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YKMPTFMVK3JMC): I really appreciate your work, let's grab some lunch!
-- [**Donate 25 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H9JA4QX7UHXCY): That's some awesome stuff you did right there, dinner is on me!
-- Or you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
+```kotlin
+val order: Order? = set.getEntryForXValue(1f)?.data
+```
 
-<br/>
+## Example app
 
-<h2 id="social">Social Media :fire:</h2>
+The `MPChartExample` module in this repository shows every chart type and feature, starting with the showcase below, plus a Compose screen. Open the project in Android Studio and run it.
 
-If you like this library, please tell others about it :two_hearts: :two_hearts:
+## Questions and issues
 
-[![Share on Twitter](https://github.com/PhilJay/MPAndroidChart/blob/master/design/twitter_icon.png)](https://twitter.com/intent/tweet?text=Check%20out%20the%20awesome%20MPAndroidChart%20library%20on%20Github:%20https://github.com/PhilJay/MPAndroidChart)
-[![Share on Google+](https://github.com/PhilJay/MPAndroidChart/blob/master/design/googleplus_icon.png)](https://plus.google.com/share?url=https://github.com/PhilJay/MPAndroidChart)
-[![Share on Facebook](https://github.com/PhilJay/MPAndroidChart/blob/master/design/facebook_icon.png)](https://www.facebook.com/sharer/sharer.php?u=https://github.com/PhilJay/MPAndroidChart)
+The issue tracker is for bugs and feature requests. Ask usage questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/mpandroidchart) with the `mpandroidchart` tag.
 
-If you like, you can follow me on Twitter [**@PhilippJahoda**](https://twitter.com/PhilippJahoda).
+## Support the project
 
-<br/>
+If this library helps you, [a donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS) is appreciated.
 
-<h2 id="more-examples">More Examples :+1:</h2>
+## License
 
-<br/>
+Copyright 2014-2026 Philipp Jahoda
 
-**LineChart (with legend, simple design)**
+Licensed under the Apache License, Version 2.0. [LICENSE](LICENSE) holds the full text and [NOTICE](NOTICE) the attribution.
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
-<br/><br/>
-
-**LineChart (with legend, simple design)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
-<br/><br/>
-
-**LineChart (cubic lines)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/cubiclinechart.png)
-<br/><br/>
-
-**LineChart (gradient fill)**
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/line_chart_gradient.png)
-<br/><br/>
-
-**BarChart (with legend, simple design)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
-<br/><br/>
-
-**BarChart (grouped DataSets)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/groupedbarchart.png)
-<br/><br/>
-
-**Horizontal-BarChart**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.png)
-<br/><br/>
-
-**Combined-Chart (bar- and linechart in this case)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/combined_chart.png)
-<br/><br/>
-
-**PieChart (with selection, ...)**
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
-<br/><br/>
-
-**ScatterChart** (with squares, triangles, circles, ... and more)
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/scatterchart.png)
-<br/><br/>
-
-**CandleStickChart** (for financial data)
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
-<br/><br/>
-
-**BubbleChart** (area covered by bubbles indicates the yValue)
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/bubblechart.png)
-<br/><br/>
-
-**RadarChart** (spider web chart)
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/radarchart.png)
-
-<br/>
-
-<h1 id="license">License :page_facing_up:</h1>
-
-Copyright 2020 Philipp Jahoda
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-> http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-<br/>
-
-<h2 id="creators">Special Thanks :heart:</h2>
-
-These people rock!
+## Special thanks
 
 - [danielgindi](https://github.com/danielgindi) - Daniel Gindi
 - [mikegr](https://github.com/mikegr) - Michael Greifeneder
