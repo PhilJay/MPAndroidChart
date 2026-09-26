@@ -303,8 +303,8 @@ public open class XAxisRenderer(viewPortHandler: ViewPortHandler, protected val 
     protected val limitLineClippingRect: RectF = RectF()
 
     /**
-     * Draws each enabled limit line as a vertical line at the pixel x of its limit value and its label at the top
-     * or bottom of the content rectangle.
+     * Draws each enabled limit line as a vertical line at the pixel x of its limit value and, while the line is
+     * inside the content rectangle, its label at the top or bottom of the content rectangle.
      */
     override fun renderLimitLines(c: Canvas) {
         val limitLines = xAxis.limitLines
@@ -328,7 +328,9 @@ public open class XAxisRenderer(viewPortHandler: ViewPortHandler, protected val 
             transformer?.pointValuesToPixel(position)
 
             renderLimitLineLine(c, l, position)
-            renderLimitLineLabel(c, l, position, 2f + Utils.convertDpToPixel(l.yOffset))
+            if (position[0] >= limitLineClippingRect.left && position[0] <= limitLineClippingRect.right) {
+                renderLimitLineLabel(c, l, position, 2f + Utils.convertDpToPixel(l.yOffset))
+            }
 
             c.restoreToCount(clipRestoreCount)
         }
@@ -362,8 +364,8 @@ public open class XAxisRenderer(viewPortHandler: ViewPortHandler, protected val 
     }
 
     /**
-     * Draws the label of [limitLine] next to its line, at the corner given by its label position. Does nothing for
-     * an empty label.
+     * Draws the label of [limitLine] next to its line, at the corner given by its label position, moved sideways
+     * where needed so it stays inside the content rectangle. Does nothing for an empty label.
      *
      * @param position pixel position of the limit value, x at index 0
      * @param yOffset distance in pixels between the label and the top or bottom content edge
@@ -380,25 +382,28 @@ public open class XAxisRenderer(viewPortHandler: ViewPortHandler, protected val 
             limitLinePaint.typeface = limitLine.typeface
 
             val xOffset = Utils.convertDpToPixel(limitLine.lineWidth) + Utils.convertDpToPixel(limitLine.xOffset)
+            val labelWidth = Utils.calcTextWidth(limitLinePaint, label).toFloat()
+            val rightX = minOf(position[0] + xOffset, viewPortHandler.contentRight - labelWidth)
+            val leftX = maxOf(position[0] - xOffset, viewPortHandler.contentLeft + labelWidth)
 
             when (limitLine.labelPosition) {
                 LimitLine.LimitLabelPosition.RIGHT_TOP -> {
                     val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
                     limitLinePaint.textAlign = Paint.Align.LEFT
-                    c.drawText(label, position[0] + xOffset, viewPortHandler.contentTop + yOffset + labelLineHeight, limitLinePaint)
+                    c.drawText(label, rightX, viewPortHandler.contentTop + yOffset + labelLineHeight, limitLinePaint)
                 }
                 LimitLine.LimitLabelPosition.RIGHT_BOTTOM -> {
                     limitLinePaint.textAlign = Paint.Align.LEFT
-                    c.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom - yOffset, limitLinePaint)
+                    c.drawText(label, rightX, viewPortHandler.contentBottom - yOffset, limitLinePaint)
                 }
                 LimitLine.LimitLabelPosition.LEFT_TOP -> {
                     limitLinePaint.textAlign = Paint.Align.RIGHT
                     val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                    c.drawText(label, position[0] - xOffset, viewPortHandler.contentTop + yOffset + labelLineHeight, limitLinePaint)
+                    c.drawText(label, leftX, viewPortHandler.contentTop + yOffset + labelLineHeight, limitLinePaint)
                 }
                 LimitLine.LimitLabelPosition.LEFT_BOTTOM -> {
                     limitLinePaint.textAlign = Paint.Align.RIGHT
-                    c.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom - yOffset, limitLinePaint)
+                    c.drawText(label, leftX, viewPortHandler.contentBottom - yOffset, limitLinePaint)
                 }
             }
         }

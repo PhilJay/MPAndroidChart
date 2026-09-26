@@ -199,7 +199,8 @@ public open class XAxisRendererHorizontalBarChart(
 
     /**
      * Draws each enabled limit line as a horizontal line at the pixel y of its limit value and its label at the
-     * left or right of the content rectangle.
+     * left or right of the content rectangle. A label that would stick out of the content rectangle is moved inside
+     * it; the label of a line outside the content rectangle is not drawn.
      */
     override fun renderLimitLines(c: Canvas) {
         val limitLines = xAxis.limitLines
@@ -236,8 +237,9 @@ public open class XAxisRendererHorizontalBarChart(
             limitLinePath.reset()
 
             val label = l.label
+            val lineVisible = pts[1] >= limitLineClippingRect.top && pts[1] <= limitLineClippingRect.bottom
 
-            if (label.isNotEmpty()) {
+            if (label.isNotEmpty() && lineVisible) {
                 limitLinePaint.style = l.textStyle
                 limitLinePaint.pathEffect = null
                 limitLinePaint.color = l.textColor
@@ -247,23 +249,25 @@ public open class XAxisRendererHorizontalBarChart(
                 val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
                 val xOffset = Utils.convertDpToPixel(4f) + Utils.convertDpToPixel(l.xOffset)
                 val yOffset = Utils.convertDpToPixel(l.lineWidth) + labelLineHeight + Utils.convertDpToPixel(l.yOffset)
+                val topBaseline = pts[1] - yOffset + labelLineHeight
+                val bottomBaseline = pts[1] + yOffset
+                val baseline = when (l.labelPosition) {
+                    LimitLine.LimitLabelPosition.RIGHT_TOP, LimitLine.LimitLabelPosition.LEFT_TOP -> topBaseline
+                    LimitLine.LimitLabelPosition.RIGHT_BOTTOM, LimitLine.LimitLabelPosition.LEFT_BOTTOM -> bottomBaseline
+                }.coerceIn(viewPortHandler.contentTop + labelLineHeight, maxOf(viewPortHandler.contentBottom, viewPortHandler.contentTop + labelLineHeight))
 
                 when (l.labelPosition) {
-                    LimitLine.LimitLabelPosition.RIGHT_TOP -> {
+                    LimitLine.LimitLabelPosition.RIGHT_TOP, LimitLine.LimitLabelPosition.RIGHT_BOTTOM -> {
                         limitLinePaint.textAlign = Paint.Align.RIGHT
-                        c.drawText(label, viewPortHandler.contentRight - xOffset, pts[1] - yOffset + labelLineHeight, limitLinePaint)
-                    }
-                    LimitLine.LimitLabelPosition.RIGHT_BOTTOM -> {
-                        limitLinePaint.textAlign = Paint.Align.RIGHT
-                        c.drawText(label, viewPortHandler.contentRight - xOffset, pts[1] + yOffset, limitLinePaint)
+                        c.drawText(label, viewPortHandler.contentRight - xOffset, baseline, limitLinePaint)
                     }
                     LimitLine.LimitLabelPosition.LEFT_TOP -> {
                         limitLinePaint.textAlign = Paint.Align.LEFT
-                        c.drawText(label, viewPortHandler.contentLeft + xOffset, pts[1] - yOffset + labelLineHeight, limitLinePaint)
+                        c.drawText(label, viewPortHandler.contentLeft + xOffset, baseline, limitLinePaint)
                     }
                     LimitLine.LimitLabelPosition.LEFT_BOTTOM -> {
                         limitLinePaint.textAlign = Paint.Align.LEFT
-                        c.drawText(label, viewPortHandler.offsetLeft + xOffset, pts[1] + yOffset, limitLinePaint)
+                        c.drawText(label, viewPortHandler.offsetLeft + xOffset, baseline, limitLinePaint)
                     }
                 }
             }
