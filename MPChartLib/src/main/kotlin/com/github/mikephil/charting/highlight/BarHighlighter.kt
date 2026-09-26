@@ -88,6 +88,14 @@ public open class BarHighlighter(chart: BarDataProvider) : ChartHighlighter<BarD
         return if (value > ranges[length].to) length else 0
     }
 
+    /** Keeps only the candidates nearest to the touch, so the y axis choice cannot skip the touched bar. */
+    override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): List<Highlight> {
+        val highlights = super.getHighlightsAtXValue(xVal, x, y)
+        val nearest = highlights.minOfOrNull { getDistance(x, y, it.xPx, it.yPx) } ?: return highlights
+        highlightBuffer.removeAll { getDistance(x, y, it.xPx, it.yPx) > nearest }
+        return highlightBuffer
+    }
+
     /** Only the horizontal distance counts for bars. */
     override fun getDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float = abs(x1 - x2)
 
