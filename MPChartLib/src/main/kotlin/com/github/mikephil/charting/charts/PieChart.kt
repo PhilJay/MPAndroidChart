@@ -54,6 +54,12 @@ public open class PieChart @JvmOverloads constructor(
     /** Whether slice ends are rounded. Only applies with the hole drawn and slices not under the hole. */
     public var isDrawRoundedSlicesEnabled: Boolean = false
 
+    /**
+     * Whether rounded slice ends point counter-clockwise instead of clockwise: each slice then bulges out at its
+     * start and is hollowed at its end. Only applies with [isDrawRoundedSlicesEnabled]. Default false.
+     */
+    public var isRoundedSlicesReversed: Boolean = false
+
     /** Text drawn in the center of the pie while [isDrawCenterTextEnabled] is true. */
     public var centerText: CharSequence = ""
 

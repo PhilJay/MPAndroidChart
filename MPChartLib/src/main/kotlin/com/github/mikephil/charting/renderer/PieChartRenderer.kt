@@ -238,6 +238,7 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
         val userInnerRadius = if (drawInnerArc) radius * (chart.holeRadius / 100f) else 0f
         val roundedRadius = (radius - (radius * chart.holeRadius / 100f)) / 2f
         val drawRoundedSlices = drawInnerArc && chart.isDrawRoundedSlicesEnabled
+        val roundedStartSweep = if (chart.isRoundedSlicesReversed) 180f else -180f
 
         var visibleAngleCount = 0
         for (j in 0 until entryCount) {
@@ -291,7 +292,7 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
                 pathBuffer.addCircle(center.x, center.y, radius, Path.Direction.CW)
             } else {
                 if (drawRoundedSlices) {
-                    pathBuffer.arcTo(roundedCircleBox, startAngleOuter + 180, -180f)
+                    pathBuffer.arcTo(roundedCircleBox, startAngleOuter + 180, roundedStartSweep)
                 }
 
                 pathBuffer.arcTo(circleBox, startAngleOuter, sweepAngleOuter)
@@ -334,7 +335,7 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
                         val x = center.x + (radius - roundedRadius) * cos(endAngleInner * Utils.FDEG2RAD)
                         val y = center.y + (radius - roundedRadius) * sin(endAngleInner * Utils.FDEG2RAD)
                         roundedCircleBox.set(x - roundedRadius, y - roundedRadius, x + roundedRadius, y + roundedRadius)
-                        pathBuffer.arcTo(roundedCircleBox, endAngleInner, 180f)
+                        pathBuffer.arcTo(roundedCircleBox, endAngleInner, -roundedStartSweep)
                     } else {
                         pathBuffer.lineTo(
                             center.x + innerRadius * cos(endAngleInner * Utils.FDEG2RAD),
@@ -403,7 +404,8 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
 
             if (!chart.isDrawSlicesUnderHoleEnabled && chart.isDrawRoundedSlicesEnabled) {
                 // shift by the rounded slice so the label sits inside it
-                rotationAngle += (roundedRadius * 360 / (Math.PI * 2 * radius)).toFloat()
+                val roundedAngle = (roundedRadius * 360 / (Math.PI * 2 * radius)).toFloat()
+                rotationAngle += if (chart.isRoundedSlicesReversed) -roundedAngle else roundedAngle
             }
         }
 
@@ -761,6 +763,7 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
     override fun drawHighlighted(c: Canvas, indices: List<Highlight>) {
         val drawInnerArc = chart.isDrawHoleEnabled && !chart.isDrawSlicesUnderHoleEnabled
         val drawRoundedSlices = drawInnerArc && chart.isDrawRoundedSlicesEnabled
+        val roundedStartSweep = if (chart.isRoundedSlicesReversed) 180f else -180f
 
         val bitmapCanvas = bitmapCanvas ?: return
         val data = chart.data ?: return
@@ -840,7 +843,7 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
                     val x = center.x + (highlightedRadius - roundedRadius) * cos(startAngleShifted * Utils.FDEG2RAD)
                     val y = center.y + (highlightedRadius - roundedRadius) * sin(startAngleShifted * Utils.FDEG2RAD)
                     roundedCircleBox.set(x - roundedRadius, y - roundedRadius, x + roundedRadius, y + roundedRadius)
-                    pathBuffer.arcTo(roundedCircleBox, startAngleShifted + 180f, -180f)
+                    pathBuffer.arcTo(roundedCircleBox, startAngleShifted + 180f, roundedStartSweep)
                 } else {
                     pathBuffer.moveTo(
                         center.x + highlightedRadius * cos(startAngleShifted * Utils.FDEG2RAD),
@@ -894,7 +897,7 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
                         val x = center.x + (highlightedRadius - roundedRadius) * cos(endAngleInner * Utils.FDEG2RAD)
                         val y = center.y + (highlightedRadius - roundedRadius) * sin(endAngleInner * Utils.FDEG2RAD)
                         roundedCircleBox.set(x - roundedRadius, y - roundedRadius, x + roundedRadius, y + roundedRadius)
-                        pathBuffer.arcTo(roundedCircleBox, endAngleInner, 180f)
+                        pathBuffer.arcTo(roundedCircleBox, endAngleInner, -roundedStartSweep)
                     } else {
                         pathBuffer.lineTo(
                             center.x + innerRadius * cos(endAngleInner * Utils.FDEG2RAD),

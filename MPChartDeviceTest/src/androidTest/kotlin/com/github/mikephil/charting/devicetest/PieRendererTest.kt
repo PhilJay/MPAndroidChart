@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.devicetest
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -9,6 +10,8 @@ import com.github.mikephil.charting.data.PieEntry
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.math.cos
+import kotlin.math.sin
 
 @RunWith(AndroidJUnit4::class)
 class PieRendererTest {
@@ -40,5 +43,36 @@ class PieRendererTest {
         assertEquals(single.x, lines[0].x, 0.01f)
         assertEquals(single.x, lines[1].x, 0.01f)
         assertEquals(single.y, (lines[0].y + lines[1].y) / 2f, 0.01f)
+    }
+
+    /** The pixel of [chart] drawn at [angle] degrees and [radiusPercent] of the pie radius from the center. */
+    private fun pixelAt(chart: PieChart, angle: Float, radiusPercent: Float): Int {
+        val bitmap = Bitmap.createBitmap(Fixtures.WIDTH, Fixtures.HEIGHT, Bitmap.Config.ARGB_8888)
+        chart.draw(android.graphics.Canvas(bitmap))
+        val center = chart.centerCircleBox
+        val r = chart.radius * radiusPercent / 100f
+        val radians = Math.toRadians(angle.toDouble())
+        return bitmap.getPixel((center.x + r * cos(radians)).toInt(), (center.y + r * sin(radians)).toInt())
+    }
+
+    @Test
+    fun reversedRoundedSlicesBulgeTheOtherWay() {
+        fun roundedPie(reversed: Boolean) = pie(PieEntry(1f), PieEntry(1f)) { set ->
+            set.colors = listOf(Color.RED, Color.BLUE)
+            set.isDrawValuesEnabled = false
+            isDrawEntryLabelsEnabled = false
+            isDrawRoundedSlicesEnabled = true
+            isRoundedSlicesReversed = reversed
+            rotationAngle = 270f
+        }
+
+        // The red slice starts at the top; the blue one ends there.
+        val normal = roundedPie(false)
+        assertEquals(Color.BLUE, pixelAt(normal, 262f, 75f))
+        assertEquals(Color.BLUE, pixelAt(normal, 278f, 75f))
+
+        val reversed = roundedPie(true)
+        assertEquals(Color.RED, pixelAt(reversed, 262f, 75f))
+        assertEquals(Color.RED, pixelAt(reversed, 278f, 75f))
     }
 }
