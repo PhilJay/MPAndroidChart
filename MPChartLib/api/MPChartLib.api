@@ -581,6 +581,8 @@ public class com/github/mikephil/charting/charts/PieChart : com/github/mikephil/
 	public final fun isDrawHoleEnabled ()Z
 	public final fun isDrawRoundedSlicesEnabled ()Z
 	public final fun isDrawSlicesUnderHoleEnabled ()Z
+	public final fun isRoundedSlicesReversed ()Z
+	public final fun isTransparentCircleClippedToSlices ()Z
 	public final fun isUsePercentValuesEnabled ()Z
 	public final fun needsHighlight (I)Z
 	protected fun onDetachedFromWindow ()V
@@ -605,7 +607,9 @@ public class com/github/mikephil/charting/charts/PieChart : com/github/mikephil/
 	public final fun setHoleRadius (F)V
 	public final fun setMaxAngle (F)V
 	public final fun setMinAngleForSlices (F)V
+	public final fun setRoundedSlicesReversed (Z)V
 	public final fun setTransparentCircleAlpha (I)V
+	public final fun setTransparentCircleClippedToSlices (Z)V
 	public final fun setTransparentCircleColor (I)V
 	public final fun setTransparentCircleRadius (F)V
 	public final fun setUsePercentValuesEnabled (Z)V
@@ -1029,6 +1033,7 @@ public class com/github/mikephil/charting/components/YAxis : com/github/mikephil
 	public fun calculate (FF)V
 	public final fun getAxisDependency ()Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
 	public final fun getLabelPosition ()Lcom/github/mikephil/charting/components/YAxis$YAxisLabelPosition;
+	public final fun getLabelRotationAngle ()F
 	public final fun getLabelXOffset ()F
 	public final fun getMaxWidth ()F
 	public final fun getMinWidth ()F
@@ -1048,6 +1053,7 @@ public class com/github/mikephil/charting/components/YAxis : com/github/mikephil
 	public final fun setDrawZeroLineEnabled (Z)V
 	public final fun setInverted (Z)V
 	public final fun setLabelPosition (Lcom/github/mikephil/charting/components/YAxis$YAxisLabelPosition;)V
+	public final fun setLabelRotationAngle (F)V
 	public final fun setLabelXOffset (F)V
 	public final fun setMaxWidth (F)V
 	public final fun setMinWidth (F)V
@@ -1788,6 +1794,7 @@ public class com/github/mikephil/charting/highlight/BarHighlighter : com/github/
 	protected fun getData ()Lcom/github/mikephil/charting/data/BarLineScatterCandleBubbleData;
 	protected fun getDistance (FFFF)F
 	public fun getHighlight (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+	protected fun getHighlightsAtXValue (FFF)Ljava/util/List;
 	public final fun getStackedHighlight (Lcom/github/mikephil/charting/highlight/Highlight;Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;FF)Lcom/github/mikephil/charting/highlight/Highlight;
 }
 
@@ -1810,6 +1817,7 @@ public class com/github/mikephil/charting/highlight/ChartHighlighter : com/githu
 public class com/github/mikephil/charting/highlight/CombinedHighlighter : com/github/mikephil/charting/highlight/ChartHighlighter {
 	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/CombinedDataProvider;Lcom/github/mikephil/charting/interfaces/dataprovider/BarDataProvider;)V
 	protected final fun getBarHighlighter ()Lcom/github/mikephil/charting/highlight/BarHighlighter;
+	protected fun getHighlightForX (FFF)Lcom/github/mikephil/charting/highlight/Highlight;
 	protected fun getHighlightsAtXValue (FFF)Ljava/util/List;
 }
 
@@ -2569,6 +2577,7 @@ public class com/github/mikephil/charting/renderer/PieChartRenderer : com/github
 	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
 	protected fun drawHole (Landroid/graphics/Canvas;)V
 	protected fun drawRoundedSlices (Landroid/graphics/Canvas;)V
+	public fun drawValue (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/formatter/IValueFormatter;FLcom/github/mikephil/charting/data/Entry;IFFI)V
 	public fun drawValues (Landroid/graphics/Canvas;)V
 	protected final fun getBitmapCanvas ()Landroid/graphics/Canvas;
 	protected final fun getChart ()Lcom/github/mikephil/charting/charts/PieChart;
