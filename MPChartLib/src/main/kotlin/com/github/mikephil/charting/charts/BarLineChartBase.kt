@@ -320,8 +320,8 @@ public abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IB
 
         xAxis.calculate(data.xMin, data.xMax)
 
-        if (axisLeft.isEnabled) axisLeft.calculate(data.getYMin(AxisDependency.LEFT), data.getYMax(AxisDependency.LEFT))
-        if (axisRight.isEnabled) axisRight.calculate(data.getYMin(AxisDependency.RIGHT), data.getYMax(AxisDependency.RIGHT))
+        axisLeft.calculate(data.getYMin(AxisDependency.LEFT), data.getYMax(AxisDependency.LEFT))
+        axisRight.calculate(data.getYMin(AxisDependency.RIGHT), data.getYMax(AxisDependency.RIGHT))
 
         calculateOffsets()
     }
