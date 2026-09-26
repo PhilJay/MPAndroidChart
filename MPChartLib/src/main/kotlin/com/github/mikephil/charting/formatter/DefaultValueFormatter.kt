@@ -23,10 +23,11 @@ public open class DefaultValueFormatter(digits: Int) : IValueFormatter {
     }
 
     /**
-     * Rebuilds the number format.
+     * Rebuilds the number format. Does nothing when [digits] equals the current [decimalDigits].
      * @param digits number of decimal digits; 0 or less formats whole numbers
      */
     public fun setup(digits: Int) {
+        if (::format.isInitialized && digits == decimalDigits) return
         decimalDigits = digits
         format = DecimalFormat("###,###,###,##0" + decimalPattern(digits))
     }

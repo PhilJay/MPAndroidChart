@@ -10,6 +10,8 @@ import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.StackedValueFormatter
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotSame
+import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
 import java.util.Locale
@@ -25,6 +27,19 @@ class FormatterTest {
     fun defaultValueFormatterUsesRequestedDigits() {
         assertEquals("1,234", DefaultValueFormatter(0).getFormattedValue(1234.4f, Entry(0f, 0f), 0, ViewPortHandler()))
         assertEquals("1,234.40", DefaultValueFormatter(2).getFormattedValue(1234.4f, Entry(0f, 0f), 0, ViewPortHandler()))
+    }
+
+    @Test
+    fun defaultValueFormatterRebuildsOnlyWhenDigitsChange() {
+        val formatter = object : DefaultValueFormatter(2) {
+            val current get() = format
+        }
+        val built = formatter.current
+        formatter.setup(2)
+        assertSame(built, formatter.current)
+        formatter.setup(3)
+        assertNotSame(built, formatter.current)
+        assertEquals("1.500", formatter.getFormattedValue(1.5f, Entry(0f, 0f), 0, ViewPortHandler()))
     }
 
     @Test
