@@ -5,40 +5,24 @@ about: Create a bug report to help us improve
 ---
 
 <!---
-BEFORE YOU SUBMIT please read the following:
-
-Please search open/closed issues before submitting since someone might have asked the same thing before!
-
-If you have a support request or question please submit them on StackOverflow:
-  https://stackoverflow.com/questions/tagged/mpandroidchart
-using the tags `android` & `mpandroidchart`
-
-Please also look at the CONTRIBUTING file before opening an issue:
-  https://github.com/PhilJay/MPAndroidChart/blob/master/CONTRIBUTING.md
-
-Issues on GitHub are only related to problems with MPAndroidChart itself and we cannot answer
-support questions here. We will close your issue without a response.
+Search open and closed issues first, someone may have reported this already. Ask usage questions on Stack Overflow with the `mpandroidchart` tag: https://stackoverflow.com/questions/tagged/mpandroidchart
 -->
 
 **Summary**
-<!-- A clear and concise description of what the bug is. -->
+<!-- What goes wrong. -->
 
-**Expected Behavior**
-<!-- A clear and concise description of what you expected to happen. -->
+**Expected behavior**
+<!-- What you expected instead. -->
 
-**Possible Solution**
-<!-- Not required, but suggest a fix/ reason for the bug, -->
-<!-- or ideas how to implement the addition or change -->
+**Code to reproduce**
+<!-- The smallest chart setup that shows the bug, as Kotlin or Java. A Gist works too. -->
 
-**Device (please complete the following information):**
- - Device: [e.g. Google Pixel]
- - Android Version [e.g. 7.0]
- - Library Version (e.g. 3.1.0-alpha)
+**Environment**
+ - Library version: [e.g. 4.0.0]
+ - Views or Compose:
+ - Device and Android version: [e.g. Pixel 8, Android 15]
 
-**Additional Context**
-<!-- Add any other context about the problem here.
-If you have source code demonstrating this bug, create a Gist:
-  https://help.github.com/articles/creating-gists/
-and link to it here. -->
+**Possible solution**
+<!-- Optional: a fix or a reason for the bug. -->
 
-ADD A REWARD using [Speed](speedoss.com) to SOLVE this issue QUICKLY and SUPPORT this project.
+ADD A REWARD using [Speed](https://speedoss.com) to SOLVE this issue QUICKLY and SUPPORT this project.

@@ -1,15 +1,9 @@
-## PR Checklist:
-- [ ] I have tested this extensively and it does not break any existing behavior.
-- [ ] I have added/updated examples and tests for any new behavior.
-- [ ] If this is a significant change, an issue has already been created where the problem / solution was discussed: [N/A, or add link to issue here]
-       <!-- If you'd like to suggest a significant change, please
-            create an issue to discuss those changes and gather
-            feedback BEFORE submitting your PR. -->
+## Checklist
 
+- [ ] I ran `./gradlew :MPChartLib:test :MPChartExample:compileDebugUnitTestKotlin dokkaGenerate` and tried the change in the example app.
+- [ ] New public members have KDoc, and new behavior has an example or a test.
+- [ ] A significant change was discussed in an issue first: [N/A, or link]
 
-## PR Description
-<!-- Describe Your PR Here! -->
+## Description
 
-<!-- What does this add/ remove/ fix/ change? -->
-
-<!-- WHY should this PR be merged into the main library? -->
+<!-- What does this change, and why should it be in the library? -->

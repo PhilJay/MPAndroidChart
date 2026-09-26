@@ -1,0 +1,3059 @@
+public class com/github/mikephil/charting/animation/ChartAnimator {
+	public fun <init> ()V
+	public fun <init> (Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V
+	public synthetic fun <init> (Landroid/animation/ValueAnimator$AnimatorUpdateListener;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun animateX (I)V
+	public final fun animateX (ILcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun animateX (ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun animateX$default (Lcom/github/mikephil/charting/animation/ChartAnimator;ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun animateXY (II)V
+	public final fun animateXY (IILcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun animateXY (IILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun animateXY (IILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun animateXY$default (Lcom/github/mikephil/charting/animation/ChartAnimator;IILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun animateY (I)V
+	public final fun animateY (ILcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun animateY (ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun animateY$default (Lcom/github/mikephil/charting/animation/ChartAnimator;ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun getPhaseX ()F
+	public final fun getPhaseY ()F
+	public final fun isAnimating ()Z
+	public final fun setPhaseX (F)V
+	public final fun setPhaseY (F)V
+	public final fun stop ()V
+}
+
+public final class com/github/mikephil/charting/animation/Easing {
+	public static final field INSTANCE Lcom/github/mikephil/charting/animation/Easing;
+	public final fun getEaseInBack ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInBounce ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInCirc ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInCubic ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInElastic ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInExpo ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutBack ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutBounce ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutCirc ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutCubic ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutElastic ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutExpo ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutQuad ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutQuart ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInOutSine ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInQuad ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInQuart ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseInSine ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutBack ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutBounce ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutCirc ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutCubic ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutElastic ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutExpo ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutQuad ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutQuart ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getEaseOutSine ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+	public final fun getLinear ()Lcom/github/mikephil/charting/animation/Easing$EasingFunction;
+}
+
+public abstract interface class com/github/mikephil/charting/animation/Easing$EasingFunction : android/animation/TimeInterpolator {
+}
+
+public abstract class com/github/mikephil/charting/buffer/AbstractBuffer {
+	public fun <init> (I)V
+	public abstract fun feed (Ljava/lang/Object;)V
+	public final fun getBuffer ()[F
+	protected final fun getIndex ()I
+	protected final fun getPhaseX ()F
+	protected final fun getPhaseY ()F
+	public final fun getSize ()I
+	public final fun reset ()V
+	protected final fun setIndex (I)V
+	protected final fun setPhaseX (F)V
+	protected final fun setPhaseY (F)V
+	public final fun setPhases (FF)V
+}
+
+public class com/github/mikephil/charting/buffer/BarBuffer : com/github/mikephil/charting/buffer/AbstractBuffer {
+	public fun <init> (IIZ)V
+	protected final fun addBar (FFFF)V
+	protected fun addEntry (Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;IF)V
+	public final fun entryOfBar (I)I
+	public fun feed (Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;)V
+	public fun feed (Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;II)V
+	public fun feed (Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;[I[II)V
+	public synthetic fun feed (Ljava/lang/Object;)V
+	public final fun getBarWidth ()F
+	public final fun getBarsPerEntry ()I
+	public final fun getColumnWidth ()F
+	public final fun getContainsStacks ()Z
+	protected final fun getDataSetCount ()I
+	public final fun getDataSetIndex ()I
+	public final fun getFilledSize ()I
+	public final fun getFirstEntry ()I
+	public final fun isInverted ()Z
+	public final fun positionOfBar (I)I
+	public final fun setBarWidth (F)V
+	protected final fun setBarsPerEntry (I)V
+	public final fun setColumnWidth (F)V
+	public final fun setDataSetIndex (I)V
+	protected final fun setFilledSize (I)V
+	protected final fun setFirstEntry (I)V
+	public final fun setInverted (Z)V
+	public final fun widthOfBar (I)F
+}
+
+public final class com/github/mikephil/charting/buffer/HorizontalBarBuffer : com/github/mikephil/charting/buffer/BarBuffer {
+	public fun <init> (IIZ)V
+}
+
+public class com/github/mikephil/charting/charts/BarChart : com/github/mikephil/charting/charts/BarLineChartBase, com/github/mikephil/charting/interfaces/dataprovider/BarDataProvider {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun calcMinMax ()V
+	public final fun getBarBounds (Lcom/github/mikephil/charting/data/BarEntry;)Landroid/graphics/RectF;
+	public fun getBarBounds (Lcom/github/mikephil/charting/data/BarEntry;Landroid/graphics/RectF;)V
+	public fun getBarData ()Lcom/github/mikephil/charting/data/BarData;
+	public fun getHighlightByTouchPoint (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+	public final fun groupBars (FFF)V
+	protected fun init ()V
+	public fun isDrawBarShadowEnabled ()Z
+	public fun isDrawValueAboveBarEnabled ()Z
+	public final fun isFitBarsEnabled ()Z
+	public fun isHighlightFullBarEnabled ()Z
+	public fun setDrawBarShadowEnabled (Z)V
+	public fun setDrawValueAboveBarEnabled (Z)V
+	public final fun setFitBarsEnabled (Z)V
+	public fun setHighlightFullBarEnabled (Z)V
+}
+
+public abstract class com/github/mikephil/charting/charts/BarLineChartBase : com/github/mikephil/charting/charts/Chart, com/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider {
+	protected field axisLeft Lcom/github/mikephil/charting/components/YAxis;
+	protected field axisRight Lcom/github/mikephil/charting/components/YAxis;
+	protected field borderPaint Landroid/graphics/Paint;
+	public field gridBackgroundPaint Landroid/graphics/Paint;
+	protected field leftAxisTransformer Lcom/github/mikephil/charting/utils/Transformer;
+	public field rendererLeftYAxis Lcom/github/mikephil/charting/renderer/YAxisRenderer;
+	public field rendererRightYAxis Lcom/github/mikephil/charting/renderer/YAxisRenderer;
+	public field rendererXAxis Lcom/github/mikephil/charting/renderer/XAxisRenderer;
+	protected field rightAxisTransformer Lcom/github/mikephil/charting/utils/Transformer;
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun autoScale ()V
+	protected fun calcMinMax ()V
+	protected fun calculateLegendOffsets (Landroid/graphics/RectF;)V
+	public fun calculateOffsets ()V
+	public final fun centerViewTo (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public final fun centerViewToAnimated (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;J)V
+	public final fun centerViewToY (FLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public fun computeScroll ()V
+	protected final fun drawGridBackground (Landroid/graphics/Canvas;)V
+	public final fun fitScreen ()V
+	public final fun getAxis (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)Lcom/github/mikephil/charting/components/YAxis;
+	public final fun getAxisLeft ()Lcom/github/mikephil/charting/components/YAxis;
+	protected final fun getAxisRange (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)F
+	public final fun getAxisRight ()Lcom/github/mikephil/charting/components/YAxis;
+	public final fun getBorderColor ()I
+	protected final fun getBorderPaint ()Landroid/graphics/Paint;
+	public final fun getBorderWidth ()F
+	public synthetic fun getData ()Lcom/github/mikephil/charting/data/BarLineScatterCandleBubbleData;
+	public final fun getDataSetByTouchPoint (FF)Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;
+	public final fun getDragOffsetX ()F
+	public final fun getDragOffsetY ()F
+	public final fun getEntryByTouchPoint (FF)Lcom/github/mikephil/charting/data/Entry;
+	protected final fun getFitScreenMatrixBuffer ()Landroid/graphics/Matrix;
+	public final fun getGridBackgroundColor ()I
+	public final fun getGridBackgroundPaint ()Landroid/graphics/Paint;
+	public final fun getHasNoDragOffset ()Z
+	public fun getHighestVisibleX ()F
+	protected final fun getLeftAxisTransformer ()Lcom/github/mikephil/charting/utils/Transformer;
+	public fun getLowestVisibleX ()F
+	public fun getMaxVisibleCount ()I
+	public final fun getMinOffset ()F
+	public final fun getPixelForValues (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;)Lcom/github/mikephil/charting/utils/MPPointD;
+	protected final fun getPosForGetHighestVisibleX ()Lcom/github/mikephil/charting/utils/MPPointD;
+	protected final fun getPosForGetLowestVisibleX ()Lcom/github/mikephil/charting/utils/MPPointD;
+	public fun getPosition (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getRendererLeftYAxis ()Lcom/github/mikephil/charting/renderer/YAxisRenderer;
+	public final fun getRendererRightYAxis ()Lcom/github/mikephil/charting/renderer/YAxisRenderer;
+	public final fun getRendererXAxis ()Lcom/github/mikephil/charting/renderer/XAxisRenderer;
+	protected final fun getRightAxisTransformer ()Lcom/github/mikephil/charting/utils/Transformer;
+	public fun getTransformer (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)Lcom/github/mikephil/charting/utils/Transformer;
+	public final fun getValuesByTouchPoint (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;)Lcom/github/mikephil/charting/utils/MPPointD;
+	public final fun getValuesByTouchPoint (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;Lcom/github/mikephil/charting/utils/MPPointD;)V
+	public final fun getVisibleXRange ()F
+	public fun getYChartMax ()F
+	public fun getYChartMin ()F
+	protected final fun getZoomMatrixBuffer ()Landroid/graphics/Matrix;
+	public final fun getZoomX ()F
+	public final fun getZoomY ()F
+	protected fun init ()V
+	public final fun isAnyAxisInverted ()Z
+	public final fun isAutoScaleMinMaxEnabled ()Z
+	public final fun isClipDataToContentEnabled ()Z
+	public final fun isClipValuesToContentEnabled ()Z
+	public fun isDecimationEnabled ()Z
+	public final fun isDoubleTapToZoomEnabled ()Z
+	public final fun isDragEnabled ()Z
+	public final fun isDragXEnabled ()Z
+	public final fun isDragYEnabled ()Z
+	public final fun isDrawBordersEnabled ()Z
+	public final fun isDrawGridBackgroundEnabled ()Z
+	public final fun isFullyZoomedOut ()Z
+	public final fun isHighlightPerDragEnabled ()Z
+	public fun isInverted (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)Z
+	public final fun isKeepPositionOnRotation ()Z
+	public final fun isPinchZoomEnabled ()Z
+	public final fun isScaleEnabled ()Z
+	public final fun isScaleXEnabled ()Z
+	public final fun isScaleYEnabled ()Z
+	public final fun moveViewTo (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public final fun moveViewToAnimated (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;J)V
+	public final fun moveViewToX (F)V
+	public fun notifyDataSetChanged ()V
+	protected fun onDraw (Landroid/graphics/Canvas;)V
+	protected fun onSizeChanged (IIII)V
+	public fun onTouchEvent (Landroid/view/MotionEvent;)Z
+	protected final fun prepareOffsetMatrix ()V
+	protected fun prepareValuePxMatrix ()V
+	public final fun resetTracking ()V
+	public final fun resetViewPortOffsets ()V
+	public final fun resetZoom ()V
+	public final fun setAutoScaleMinMaxEnabled (Z)V
+	protected final fun setAxisLeft (Lcom/github/mikephil/charting/components/YAxis;)V
+	protected final fun setAxisRight (Lcom/github/mikephil/charting/components/YAxis;)V
+	public final fun setBorderColor (I)V
+	protected final fun setBorderPaint (Landroid/graphics/Paint;)V
+	public final fun setBorderWidth (F)V
+	public final fun setClipDataToContentEnabled (Z)V
+	public final fun setClipValuesToContentEnabled (Z)V
+	public fun setDecimationEnabled (Z)V
+	public final fun setDoubleTapToZoomEnabled (Z)V
+	public final fun setDragEnabled (Z)V
+	public final fun setDragOffsetX (F)V
+	public final fun setDragOffsetY (F)V
+	public final fun setDragXEnabled (Z)V
+	public final fun setDragYEnabled (Z)V
+	public final fun setDrawBordersEnabled (Z)V
+	public final fun setDrawGridBackgroundEnabled (Z)V
+	public final fun setGridBackgroundColor (I)V
+	public final fun setGridBackgroundPaint (Landroid/graphics/Paint;)V
+	public final fun setHighlightPerDragEnabled (Z)V
+	public final fun setKeepPositionOnRotation (Z)V
+	protected final fun setLeftAxisTransformer (Lcom/github/mikephil/charting/utils/Transformer;)V
+	public fun setMaxVisibleCount (I)V
+	public final fun setMinOffset (F)V
+	public final fun setPinchZoomEnabled (Z)V
+	public final fun setRendererLeftYAxis (Lcom/github/mikephil/charting/renderer/YAxisRenderer;)V
+	public final fun setRendererRightYAxis (Lcom/github/mikephil/charting/renderer/YAxisRenderer;)V
+	public final fun setRendererXAxis (Lcom/github/mikephil/charting/renderer/XAxisRenderer;)V
+	protected final fun setRightAxisTransformer (Lcom/github/mikephil/charting/utils/Transformer;)V
+	public final fun setScaleEnabled (Z)V
+	public final fun setScaleMinima (FF)V
+	public final fun setScaleXEnabled (Z)V
+	public final fun setScaleYEnabled (Z)V
+	public final fun setViewPortOffsets (FFFF)V
+	public fun setVisibleXRange (FF)V
+	public fun setVisibleXRangeMaximum (F)V
+	public fun setVisibleXRangeMinimum (F)V
+	public fun setVisibleYRange (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public fun setVisibleYRangeMaximum (FLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public fun setVisibleYRangeMinimum (FLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public final fun zoom (FFFF)V
+	public final fun zoom (FFFFLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public final fun zoomAndCenterAnimated (FFFFLcom/github/mikephil/charting/components/YAxis$AxisDependency;J)V
+	public final fun zoomIn ()V
+	public final fun zoomOut ()V
+	public final fun zoomToCenter (FF)V
+}
+
+public class com/github/mikephil/charting/charts/BubbleChart : com/github/mikephil/charting/charts/BarLineChartBase, com/github/mikephil/charting/interfaces/dataprovider/BubbleDataProvider {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun drawNoDataIcon (Landroid/graphics/Canvas;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
+	public fun getBubbleData ()Lcom/github/mikephil/charting/data/BubbleData;
+	protected fun init ()V
+}
+
+public class com/github/mikephil/charting/charts/CandleStickChart : com/github/mikephil/charting/charts/BarLineChartBase, com/github/mikephil/charting/interfaces/dataprovider/CandleDataProvider {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getCandleData ()Lcom/github/mikephil/charting/data/CandleData;
+	protected fun init ()V
+}
+
+public abstract class com/github/mikephil/charting/charts/Chart : android/view/ViewGroup, com/github/mikephil/charting/interfaces/dataprovider/ChartInterface {
+	public static final field Companion Lcom/github/mikephil/charting/charts/Chart$Companion;
+	public static final field LOG_TAG Ljava/lang/String;
+	protected field animator Lcom/github/mikephil/charting/animation/ChartAnimator;
+	public field chartTouchListener Lcom/github/mikephil/charting/listener/ChartTouchListener;
+	public field description Lcom/github/mikephil/charting/components/Description;
+	public field descriptionPaint Landroid/graphics/Paint;
+	public field highlighter Lcom/github/mikephil/charting/highlight/IHighlighter;
+	public field infoPaint Landroid/graphics/Paint;
+	protected field legend Lcom/github/mikephil/charting/components/Legend;
+	protected field legendRenderer Lcom/github/mikephil/charting/renderer/LegendRenderer;
+	public field renderer Lcom/github/mikephil/charting/renderer/DataRenderer;
+	protected field xAxis Lcom/github/mikephil/charting/components/XAxis;
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun addViewportJob (Ljava/lang/Runnable;)V
+	public final fun animateDataChange (Lcom/github/mikephil/charting/data/ChartData;ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun animateDataChange$default (Lcom/github/mikephil/charting/charts/Chart;Lcom/github/mikephil/charting/data/ChartData;ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun animateValue (Lcom/github/mikephil/charting/data/Entry;FILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun animateValue$default (Lcom/github/mikephil/charting/charts/Chart;Lcom/github/mikephil/charting/data/Entry;FILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun animateX (I)V
+	public final fun animateX (ILcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun animateX (ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun animateX$default (Lcom/github/mikephil/charting/charts/Chart;ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun animateXY (II)V
+	public final fun animateXY (IILcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun animateXY (IILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun animateXY (IILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun animateXY$default (Lcom/github/mikephil/charting/charts/Chart;IILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun animateY (I)V
+	public final fun animateY (ILcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun animateY (ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun animateY$default (Lcom/github/mikephil/charting/charts/Chart;ILcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	protected abstract fun calcMinMax ()V
+	protected abstract fun calculateOffsets ()V
+	public final fun clear ()V
+	public final fun clearAllViewportJobs ()V
+	public final fun clearValues ()V
+	public final fun disableScroll ()V
+	protected final fun drawDescription (Landroid/graphics/Canvas;)V
+	protected fun drawEmptyState (Landroid/graphics/Canvas;)V
+	protected fun drawMarkers (Landroid/graphics/Canvas;)V
+	protected fun drawNoDataIcon (Landroid/graphics/Canvas;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
+	public final fun enableScroll ()V
+	public final fun getAnimator ()Lcom/github/mikephil/charting/animation/ChartAnimator;
+	public final fun getCenter ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public fun getCenterOfView ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public fun getCenterOffsets ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getChartTouchListener ()Lcom/github/mikephil/charting/listener/ChartTouchListener;
+	public fun getContentRect ()Landroid/graphics/RectF;
+	public fun getData ()Lcom/github/mikephil/charting/data/ChartData;
+	public fun getDefaultValueFormatter ()Lcom/github/mikephil/charting/formatter/IValueFormatter;
+	protected final fun getDefaultValueFormatterInternal ()Lcom/github/mikephil/charting/formatter/DefaultValueFormatter;
+	public final fun getDescription ()Lcom/github/mikephil/charting/components/Description;
+	public final fun getDescriptionPaint ()Landroid/graphics/Paint;
+	public final fun getDragDecelerationFrictionCoef ()F
+	public final fun getExtraBottomOffset ()F
+	public final fun getExtraLeftOffset ()F
+	public final fun getExtraRightOffset ()F
+	public final fun getExtraTopOffset ()F
+	public final fun getGestureListeners ()Ljava/util/List;
+	public fun getHighlightByTouchPoint (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+	public final fun getHighlighted ()Ljava/util/List;
+	public final fun getHighlighter ()Lcom/github/mikephil/charting/highlight/IHighlighter;
+	public final fun getInfoPaint ()Landroid/graphics/Paint;
+	public final fun getJobs ()Ljava/util/List;
+	public final fun getLegend ()Lcom/github/mikephil/charting/components/Legend;
+	public final fun getLegendLabelPaint ()Landroid/graphics/Paint;
+	public final fun getLegendRenderer ()Lcom/github/mikephil/charting/renderer/LegendRenderer;
+	public final fun getLoadingText ()Ljava/lang/String;
+	public final fun getMarker ()Lcom/github/mikephil/charting/components/IMarker;
+	protected fun getMarkerPosition (Lcom/github/mikephil/charting/highlight/Highlight;)[F
+	public fun getMaxHighlightDistance ()F
+	public final fun getNoDataIcon ()Landroid/graphics/drawable/Drawable;
+	public final fun getNoDataIconColor ()I
+	public final fun getNoDataText ()Ljava/lang/String;
+	public final fun getNoDataTextAlignment ()Landroid/graphics/Paint$Align;
+	public final fun getNoDataTextColor ()I
+	public final fun getNoDataTextSize ()F
+	public final fun getNoDataTextTypeface ()Landroid/graphics/Typeface;
+	public final fun getOnChartGestureListener ()Lcom/github/mikephil/charting/listener/OnChartGestureListener;
+	public final fun getOnChartValueSelectedListener ()Lcom/github/mikephil/charting/listener/OnChartValueSelectedListener;
+	public final fun getRenderer ()Lcom/github/mikephil/charting/renderer/DataRenderer;
+	protected final fun getShowsEmptyState ()Z
+	public final fun getValueSelectedListeners ()Ljava/util/List;
+	public final fun getViewPortHandler ()Lcom/github/mikephil/charting/utils/ViewPortHandler;
+	public final fun getXAxis ()Lcom/github/mikephil/charting/components/XAxis;
+	public fun getXChartMax ()F
+	public fun getXChartMin ()F
+	public fun getXRange ()F
+	public final fun getYMax ()F
+	public final fun getYMin ()F
+	public final fun highlightValue (FFIIIZ)V
+	public final fun highlightValue (FIIIZ)V
+	public final fun highlightValue (Lcom/github/mikephil/charting/highlight/Highlight;Z)V
+	public static synthetic fun highlightValue$default (Lcom/github/mikephil/charting/charts/Chart;FFIIIZILjava/lang/Object;)V
+	public static synthetic fun highlightValue$default (Lcom/github/mikephil/charting/charts/Chart;FIIIZILjava/lang/Object;)V
+	public static synthetic fun highlightValue$default (Lcom/github/mikephil/charting/charts/Chart;Lcom/github/mikephil/charting/highlight/Highlight;ZILjava/lang/Object;)V
+	public final fun highlightValues (Ljava/util/List;)V
+	protected fun init ()V
+	public final fun isAnimating ()Z
+	public final fun isDragDecelerationEnabled ()Z
+	public final fun isDrawMarkersEnabled ()Z
+	public final fun isEmpty ()Z
+	public final fun isHardwareAccelerationEnabled ()Z
+	public final fun isHighlightPerTapEnabled ()Z
+	public final fun isLoading ()Z
+	public final fun isLogEnabled ()Z
+	public final fun isNoDataIconEnabled ()Z
+	public final fun isTouchEnabled ()Z
+	public final fun isUnbindEnabled ()Z
+	public abstract fun notifyDataSetChanged ()V
+	protected fun onDetachedFromWindow ()V
+	protected fun onDraw (Landroid/graphics/Canvas;)V
+	protected fun onLayout (ZIIII)V
+	protected fun onMeasure (II)V
+	protected fun onSizeChanged (IIII)V
+	public final fun onValueSelected (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun onValueSelected$default (Lcom/github/mikephil/charting/charts/Chart;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+	public final fun removeViewportJob (Ljava/lang/Runnable;)V
+	public final fun saveToGallery (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap$CompressFormat;I)Z
+	public static synthetic fun saveToGallery$default (Lcom/github/mikephil/charting/charts/Chart;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap$CompressFormat;IILjava/lang/Object;)Z
+	protected final fun setAnimator (Lcom/github/mikephil/charting/animation/ChartAnimator;)V
+	public final fun setChartTouchListener (Lcom/github/mikephil/charting/listener/ChartTouchListener;)V
+	public fun setData (Lcom/github/mikephil/charting/data/ChartData;)V
+	public final fun setDescription (Lcom/github/mikephil/charting/components/Description;)V
+	public final fun setDescriptionPaint (Landroid/graphics/Paint;)V
+	public final fun setDragDecelerationEnabled (Z)V
+	public final fun setDragDecelerationFrictionCoef (F)V
+	public final fun setDrawMarkersEnabled (Z)V
+	public final fun setExtraBottomOffset (F)V
+	public final fun setExtraLeftOffset (F)V
+	public final fun setExtraOffsets (FFFF)V
+	public final fun setExtraRightOffset (F)V
+	public final fun setExtraTopOffset (F)V
+	public final fun setHardwareAccelerationEnabled (Z)V
+	public final fun setHighlightPerTapEnabled (Z)V
+	protected final fun setHighlighted (Ljava/util/List;)V
+	public final fun setHighlighter (Lcom/github/mikephil/charting/highlight/IHighlighter;)V
+	public final fun setInfoPaint (Landroid/graphics/Paint;)V
+	protected final fun setLastHighlighted (Ljava/util/List;)V
+	protected final fun setLegend (Lcom/github/mikephil/charting/components/Legend;)V
+	public final fun setLegendLabelPaint (Landroid/graphics/Paint;)V
+	protected final fun setLegendRenderer (Lcom/github/mikephil/charting/renderer/LegendRenderer;)V
+	public final fun setLoading (Z)V
+	public final fun setLoadingText (Ljava/lang/String;)V
+	public final fun setLogEnabled (Z)V
+	public final fun setMarker (Lcom/github/mikephil/charting/components/IMarker;)V
+	public fun setMaxHighlightDistance (F)V
+	public final fun setNoDataIcon (Landroid/graphics/drawable/Drawable;)V
+	public final fun setNoDataIconColor (I)V
+	public final fun setNoDataIconEnabled (Z)V
+	public final fun setNoDataText (Ljava/lang/String;)V
+	public final fun setNoDataTextAlignment (Landroid/graphics/Paint$Align;)V
+	public final fun setNoDataTextColor (I)V
+	public final fun setNoDataTextSize (F)V
+	public final fun setNoDataTextTypeface (Landroid/graphics/Typeface;)V
+	public final fun setOnChartGestureListener (Lcom/github/mikephil/charting/listener/OnChartGestureListener;)V
+	public final fun setOnChartValueSelectedListener (Lcom/github/mikephil/charting/listener/OnChartValueSelectedListener;)V
+	public final fun setRenderer (Lcom/github/mikephil/charting/renderer/DataRenderer;)V
+	public final fun setTouchEnabled (Z)V
+	public final fun setUnbindEnabled (Z)V
+	protected final fun setViewPortHandler (Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun setXAxis (Lcom/github/mikephil/charting/components/XAxis;)V
+	protected final fun setupDefaultFormatter (FF)V
+	public final fun stopAnimations ()V
+	public final fun toBitmap ()Landroid/graphics/Bitmap;
+	public final fun valuesToHighlight ()Z
+}
+
+public final class com/github/mikephil/charting/charts/Chart$Companion {
+}
+
+public class com/github/mikephil/charting/charts/CombinedChart : com/github/mikephil/charting/charts/BarLineChartBase, com/github/mikephil/charting/interfaces/dataprovider/CombinedDataProvider {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun drawMarkers (Landroid/graphics/Canvas;)V
+	public fun getBarData ()Lcom/github/mikephil/charting/data/BarData;
+	public fun getBubbleData ()Lcom/github/mikephil/charting/data/BubbleData;
+	public fun getCandleData ()Lcom/github/mikephil/charting/data/CandleData;
+	public fun getCombinedData ()Lcom/github/mikephil/charting/data/CombinedData;
+	public synthetic fun getData ()Lcom/github/mikephil/charting/data/BarLineScatterCandleBubbleData;
+	public synthetic fun getData ()Lcom/github/mikephil/charting/data/ChartData;
+	public fun getData ()Lcom/github/mikephil/charting/data/CombinedData;
+	public final fun getDrawOrder ()Ljava/util/List;
+	public fun getHighlightByTouchPoint (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+	public fun getLineData ()Lcom/github/mikephil/charting/data/LineData;
+	public fun getScatterData ()Lcom/github/mikephil/charting/data/ScatterData;
+	protected fun init ()V
+	public fun isDrawBarShadowEnabled ()Z
+	public fun isDrawValueAboveBarEnabled ()Z
+	public fun isHighlightFullBarEnabled ()Z
+	public synthetic fun setData (Lcom/github/mikephil/charting/data/ChartData;)V
+	public fun setData (Lcom/github/mikephil/charting/data/CombinedData;)V
+	public fun setDrawBarShadowEnabled (Z)V
+	public final fun setDrawOrder (Ljava/util/List;)V
+	public fun setDrawValueAboveBarEnabled (Z)V
+	public fun setHighlightFullBarEnabled (Z)V
+}
+
+public final class com/github/mikephil/charting/charts/CombinedChart$DrawOrder : java/lang/Enum {
+	public static final field BAR Lcom/github/mikephil/charting/charts/CombinedChart$DrawOrder;
+	public static final field BUBBLE Lcom/github/mikephil/charting/charts/CombinedChart$DrawOrder;
+	public static final field CANDLE Lcom/github/mikephil/charting/charts/CombinedChart$DrawOrder;
+	public static final field LINE Lcom/github/mikephil/charting/charts/CombinedChart$DrawOrder;
+	public static final field SCATTER Lcom/github/mikephil/charting/charts/CombinedChart$DrawOrder;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/charts/CombinedChart$DrawOrder;
+	public static fun values ()[Lcom/github/mikephil/charting/charts/CombinedChart$DrawOrder;
+}
+
+public class com/github/mikephil/charting/charts/HorizontalBarChart : com/github/mikephil/charting/charts/BarChart {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun calculateLegendOffsets (Landroid/graphics/RectF;)V
+	public fun calculateOffsets ()V
+	protected fun drawNoDataIcon (Landroid/graphics/Canvas;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
+	public fun getBarBounds (Lcom/github/mikephil/charting/data/BarEntry;Landroid/graphics/RectF;)V
+	public fun getHighestVisibleX ()F
+	public fun getHighlightByTouchPoint (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+	public fun getLowestVisibleX ()F
+	protected fun getMarkerPosition (Lcom/github/mikephil/charting/highlight/Highlight;)[F
+	public fun getPosition (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)Lcom/github/mikephil/charting/utils/MPPointF;
+	protected fun init ()V
+	protected fun prepareValuePxMatrix ()V
+	public fun setVisibleXRange (FF)V
+	public fun setVisibleXRangeMaximum (F)V
+	public fun setVisibleXRangeMinimum (F)V
+	public fun setVisibleYRange (FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public fun setVisibleYRangeMaximum (FLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public fun setVisibleYRangeMinimum (FLcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+}
+
+public class com/github/mikephil/charting/charts/LineChart : com/github/mikephil/charting/charts/BarLineChartBase, com/github/mikephil/charting/interfaces/dataprovider/LineDataProvider {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun drawNoDataIcon (Landroid/graphics/Canvas;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
+	public fun getLineData ()Lcom/github/mikephil/charting/data/LineData;
+	protected fun init ()V
+	protected fun onDetachedFromWindow ()V
+}
+
+public class com/github/mikephil/charting/charts/PieChart : com/github/mikephil/charting/charts/PieRadarChartBase {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun calcMinMax ()V
+	public fun calculateOffsets ()V
+	protected fun drawNoDataIcon (Landroid/graphics/Canvas;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
+	public final fun getAbsoluteAngles ()[F
+	public final fun getCenterCircleBox ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getCenterText ()Ljava/lang/CharSequence;
+	public final fun getCenterTextColor ()I
+	public final fun getCenterTextOffset ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getCenterTextPaint ()Landroid/text/TextPaint;
+	public final fun getCenterTextRadiusPercent ()F
+	public final fun getCenterTextSize ()F
+	public final fun getCenterTextTypeface ()Landroid/graphics/Typeface;
+	public final fun getCircleBox ()Landroid/graphics/RectF;
+	public final fun getDataSetIndexForIndex (I)I
+	public final fun getDrawAngles ()[F
+	public final fun getEntryLabelColor ()I
+	public final fun getEntryLabelTextSize ()F
+	public final fun getEntryLabelTypeface ()Landroid/graphics/Typeface;
+	public final fun getHoleColor ()I
+	public final fun getHolePaint ()Landroid/graphics/Paint;
+	public final fun getHoleRadius ()F
+	public fun getIndexForAngle (F)I
+	protected fun getMarkerPosition (Lcom/github/mikephil/charting/highlight/Highlight;)[F
+	public final fun getMaxAngle ()F
+	public final fun getMinAngleForSlices ()F
+	public fun getRadius ()F
+	protected fun getRequiredBaseOffset ()F
+	protected fun getRequiredLegendOffset ()F
+	public final fun getTransparentCircleAlpha ()I
+	public final fun getTransparentCircleColor ()I
+	public final fun getTransparentCircleRadius ()F
+	protected fun init ()V
+	public final fun isDrawCenterTextEnabled ()Z
+	public final fun isDrawEntryLabelsEnabled ()Z
+	public final fun isDrawHoleEnabled ()Z
+	public final fun isDrawRoundedSlicesEnabled ()Z
+	public final fun isDrawSlicesUnderHoleEnabled ()Z
+	public final fun isUsePercentValuesEnabled ()Z
+	public final fun needsHighlight (I)Z
+	protected fun onDetachedFromWindow ()V
+	protected fun onDraw (Landroid/graphics/Canvas;)V
+	public final fun setCenterText (Ljava/lang/CharSequence;)V
+	public final fun setCenterTextColor (I)V
+	public final fun setCenterTextOffset (FF)V
+	public final fun setCenterTextPaint (Landroid/text/TextPaint;)V
+	public final fun setCenterTextRadiusPercent (F)V
+	public final fun setCenterTextSize (F)V
+	public final fun setCenterTextTypeface (Landroid/graphics/Typeface;)V
+	public final fun setDrawCenterTextEnabled (Z)V
+	public final fun setDrawEntryLabelsEnabled (Z)V
+	public final fun setDrawHoleEnabled (Z)V
+	public final fun setDrawRoundedSlicesEnabled (Z)V
+	public final fun setDrawSlicesUnderHoleEnabled (Z)V
+	public final fun setEntryLabelColor (I)V
+	public final fun setEntryLabelTextSize (F)V
+	public final fun setEntryLabelTypeface (Landroid/graphics/Typeface;)V
+	public final fun setHoleColor (I)V
+	public final fun setHolePaint (Landroid/graphics/Paint;)V
+	public final fun setHoleRadius (F)V
+	public final fun setMaxAngle (F)V
+	public final fun setMinAngleForSlices (F)V
+	public final fun setTransparentCircleAlpha (I)V
+	public final fun setTransparentCircleColor (I)V
+	public final fun setTransparentCircleRadius (F)V
+	public final fun setUsePercentValuesEnabled (Z)V
+}
+
+public abstract class com/github/mikephil/charting/charts/PieRadarChartBase : com/github/mikephil/charting/charts/Chart {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun calcMinMax ()V
+	public fun calculateOffsets ()V
+	public fun computeScroll ()V
+	public final fun distanceToCenter (FF)F
+	public final fun getAngleForPoint (FF)F
+	public final fun getDiameter ()F
+	public abstract fun getIndexForAngle (F)I
+	public fun getMaxVisibleCount ()I
+	public final fun getMinOffset ()F
+	public final fun getPosition (Lcom/github/mikephil/charting/utils/MPPointF;FF)Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getPosition (Lcom/github/mikephil/charting/utils/MPPointF;FFLcom/github/mikephil/charting/utils/MPPointF;)V
+	public abstract fun getRadius ()F
+	public final fun getRawRotationAngle ()F
+	protected abstract fun getRequiredBaseOffset ()F
+	protected abstract fun getRequiredLegendOffset ()F
+	protected fun getRequiredVerticalBaseOffset ()F
+	public final fun getRotationAngle ()F
+	public fun getYChartMax ()F
+	public fun getYChartMin ()F
+	protected fun init ()V
+	public final fun isRotationEnabled ()Z
+	public fun notifyDataSetChanged ()V
+	public fun onTouchEvent (Landroid/view/MotionEvent;)Z
+	public final fun setMinOffset (F)V
+	public final fun setRotationAngle (F)V
+	public final fun setRotationEnabled (Z)V
+	public final fun spin (IFF)V
+	public final fun spin (IFFLcom/github/mikephil/charting/animation/Easing$EasingFunction;)V
+	public final fun spin (IFFLcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun spin$default (Lcom/github/mikephil/charting/charts/PieRadarChartBase;IFFLcom/github/mikephil/charting/animation/Easing$EasingFunction;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+}
+
+public class com/github/mikephil/charting/charts/RadarChart : com/github/mikephil/charting/charts/PieRadarChartBase {
+	public field xAxisRenderer Lcom/github/mikephil/charting/renderer/XAxisRendererRadarChart;
+	public field yAxisRenderer Lcom/github/mikephil/charting/renderer/YAxisRendererRadarChart;
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun calcMinMax ()V
+	protected fun drawNoDataIcon (Landroid/graphics/Canvas;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
+	public final fun getFactor ()F
+	public fun getIndexForAngle (F)I
+	public fun getRadius ()F
+	protected fun getRequiredBaseOffset ()F
+	protected fun getRequiredLegendOffset ()F
+	protected fun getRequiredVerticalBaseOffset ()F
+	public final fun getSkipWebLineCount ()I
+	public final fun getSliceAngle ()F
+	public final fun getWebAlpha ()I
+	public final fun getWebColor ()I
+	public final fun getWebColorInner ()I
+	public final fun getWebLineWidth ()F
+	public final fun getWebLineWidthInner ()F
+	public final fun getXAxisRenderer ()Lcom/github/mikephil/charting/renderer/XAxisRendererRadarChart;
+	public final fun getYAxis ()Lcom/github/mikephil/charting/components/YAxis;
+	public final fun getYAxisRenderer ()Lcom/github/mikephil/charting/renderer/YAxisRendererRadarChart;
+	public fun getYChartMax ()F
+	public fun getYChartMin ()F
+	public final fun getYRange ()F
+	protected fun init ()V
+	public final fun isDrawWebEnabled ()Z
+	public fun notifyDataSetChanged ()V
+	protected fun onDraw (Landroid/graphics/Canvas;)V
+	public final fun setDrawWebEnabled (Z)V
+	public final fun setSkipWebLineCount (I)V
+	public final fun setWebAlpha (I)V
+	public final fun setWebColor (I)V
+	public final fun setWebColorInner (I)V
+	public final fun setWebLineWidth (F)V
+	public final fun setWebLineWidthInner (F)V
+	public final fun setXAxisRenderer (Lcom/github/mikephil/charting/renderer/XAxisRendererRadarChart;)V
+	public final fun setYAxisRenderer (Lcom/github/mikephil/charting/renderer/YAxisRendererRadarChart;)V
+}
+
+public class com/github/mikephil/charting/charts/ScatterChart : com/github/mikephil/charting/charts/BarLineChartBase, com/github/mikephil/charting/interfaces/dataprovider/ScatterDataProvider {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
+	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
+	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	protected fun drawNoDataIcon (Landroid/graphics/Canvas;Landroid/graphics/RectF;Landroid/graphics/Paint;)V
+	public fun getScatterData ()Lcom/github/mikephil/charting/data/ScatterData;
+	protected fun init ()V
+}
+
+public final class com/github/mikephil/charting/charts/ScatterChart$ScatterShape : java/lang/Enum {
+	public static final field CHEVRON_DOWN Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+	public static final field CHEVRON_UP Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+	public static final field CIRCLE Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+	public static final field CROSS Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+	public static final field SQUARE Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+	public static final field TRIANGLE Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+	public static final field X Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public fun toString ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+	public static fun values ()[Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;
+}
+
+public abstract class com/github/mikephil/charting/components/AxisBase : com/github/mikephil/charting/components/ComponentBase {
+	public fun <init> ()V
+	public final fun addLimitLine (Lcom/github/mikephil/charting/components/LimitLine;)V
+	public final fun applyAxisRange (FF)V
+	public fun calculate (FF)V
+	public final fun disableAxisLineDashedLine ()V
+	public final fun disableGridDashedLine ()V
+	protected final fun emptyRangePadding (F)F
+	public final fun enableAxisLineDashedLine (FFF)V
+	public final fun enableGridDashedLine (FFF)V
+	public final fun getAxisLineColor ()I
+	public final fun getAxisLineDashPathEffect ()Landroid/graphics/DashPathEffect;
+	public final fun getAxisLineWidth ()F
+	public final fun getAxisMaxLabels ()I
+	public final fun getAxisMaximum ()F
+	public final fun getAxisMinLabels ()I
+	public final fun getAxisMinimum ()F
+	public final fun getAxisRange ()F
+	public final fun getCenteredEntries ()[F
+	public final fun getDecimals ()I
+	public final fun getEntries ()[F
+	public final fun getEntryCount ()I
+	public final fun getFormattedLabel (I)Ljava/lang/String;
+	public final fun getGranularity ()F
+	public final fun getGridColor ()I
+	public final fun getGridDashPathEffect ()Landroid/graphics/DashPathEffect;
+	public final fun getGridLineWidth ()F
+	public final fun getLabelCount ()I
+	public final fun getLimitLines ()Ljava/util/List;
+	public final fun getLongestLabel ()Ljava/lang/String;
+	public final fun getSpaceMax ()F
+	public final fun getSpaceMin ()F
+	public final fun getValueFormatter ()Lcom/github/mikephil/charting/formatter/IAxisValueFormatter;
+	public final fun isAxisLineDashedLineEnabled ()Z
+	public final fun isAxisMaxCustom ()Z
+	public final fun isAxisMinCustom ()Z
+	public final fun isCenterAxisLabelsEnabled ()Z
+	public final fun isDrawAxisLineEnabled ()Z
+	public final fun isDrawGridLinesBehindDataEnabled ()Z
+	public final fun isDrawGridLinesEnabled ()Z
+	public final fun isDrawLabelsEnabled ()Z
+	public final fun isDrawLimitLinesBehindDataEnabled ()Z
+	public final fun isForceLabelsEnabled ()Z
+	public final fun isGranularityEnabled ()Z
+	public final fun isGridDashedLineEnabled ()Z
+	public final fun removeAllLimitLines ()V
+	public final fun removeLimitLine (Lcom/github/mikephil/charting/components/LimitLine;)V
+	public final fun resetAxisMaximum ()V
+	public final fun resetAxisMinimum ()V
+	public final fun setAxisLineColor (I)V
+	public final fun setAxisLineDashPathEffect (Landroid/graphics/DashPathEffect;)V
+	public final fun setAxisLineWidth (F)V
+	public final fun setAxisMaxLabels (I)V
+	public final fun setAxisMaximum (F)V
+	public final fun setAxisMinLabels (I)V
+	public final fun setAxisMinimum (F)V
+	protected final fun setAxisRange (F)V
+	public final fun setCenterAxisLabelsEnabled (Z)V
+	public final fun setDrawAxisLineEnabled (Z)V
+	public final fun setDrawGridLinesBehindDataEnabled (Z)V
+	public final fun setDrawGridLinesEnabled (Z)V
+	public final fun setDrawLabelsEnabled (Z)V
+	public final fun setDrawLimitLinesBehindDataEnabled (Z)V
+	public final fun setForceLabelsEnabled (Z)V
+	public final fun setGranularity (F)V
+	public final fun setGranularityEnabled (Z)V
+	public final fun setGridColor (I)V
+	public final fun setGridDashPathEffect (Landroid/graphics/DashPathEffect;)V
+	public final fun setGridLineWidth (F)V
+	public final fun setLabelCount (I)V
+	public final fun setSpaceMax (F)V
+	public final fun setSpaceMin (F)V
+	public final fun setValueFormatter (Lcom/github/mikephil/charting/formatter/IAxisValueFormatter;)V
+}
+
+public abstract class com/github/mikephil/charting/components/ComponentBase {
+	public fun <init> ()V
+	public final fun getTextColor ()I
+	public final fun getTextSize ()F
+	public final fun getTypeface ()Landroid/graphics/Typeface;
+	public final fun getXOffset ()F
+	public final fun getYOffset ()F
+	public final fun isEnabled ()Z
+	public final fun setEnabled (Z)V
+	public final fun setTextColor (I)V
+	public final fun setTextSize (F)V
+	public final fun setTypeface (Landroid/graphics/Typeface;)V
+	public final fun setXOffset (F)V
+	public final fun setYOffset (F)V
+}
+
+public class com/github/mikephil/charting/components/Description : com/github/mikephil/charting/components/ComponentBase {
+	public fun <init> ()V
+	public final fun getPosition ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getText ()Ljava/lang/String;
+	public final fun getTextAlign ()Landroid/graphics/Paint$Align;
+	public final fun setPosition (FF)V
+	public final fun setPosition (Lcom/github/mikephil/charting/utils/MPPointF;)V
+	public final fun setText (Ljava/lang/String;)V
+	public final fun setTextAlign (Landroid/graphics/Paint$Align;)V
+}
+
+public abstract interface class com/github/mikephil/charting/components/IMarker {
+	public abstract fun draw (Landroid/graphics/Canvas;FF)V
+	public abstract fun getOffset ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public abstract fun getOffsetForDrawingAtPoint (FF)Lcom/github/mikephil/charting/utils/MPPointF;
+	public abstract fun refreshContent (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/highlight/Highlight;)V
+}
+
+public class com/github/mikephil/charting/components/Legend : com/github/mikephil/charting/components/ComponentBase {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public final fun calculateDimensions (Landroid/graphics/Paint;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	public final fun getCalculatedLabelBreakPoints ()Ljava/util/List;
+	public final fun getCalculatedLabelSizes ()Ljava/util/List;
+	public final fun getCalculatedLineSizes ()Ljava/util/List;
+	public final fun getDirection ()Lcom/github/mikephil/charting/components/Legend$LegendDirection;
+	public final fun getEntries ()Ljava/util/List;
+	public final fun getExtraEntries ()Ljava/util/List;
+	public final fun getForm ()Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public final fun getFormLineDashEffect ()Landroid/graphics/DashPathEffect;
+	public final fun getFormLineWidth ()F
+	public final fun getFormSize ()F
+	public final fun getFormToTextSpace ()F
+	public final fun getHorizontalAlignment ()Lcom/github/mikephil/charting/components/Legend$LegendHorizontalAlignment;
+	public final fun getMaxSizePercent ()F
+	public final fun getMaximumEntryHeight (Landroid/graphics/Paint;)F
+	public final fun getMaximumEntryWidth (Landroid/graphics/Paint;)F
+	public final fun getNeededHeight ()F
+	public final fun getNeededWidth ()F
+	public final fun getOrientation ()Lcom/github/mikephil/charting/components/Legend$LegendOrientation;
+	public final fun getStackSpace ()F
+	public final fun getTextHeightMax ()F
+	public final fun getTextWidthMax ()F
+	public final fun getVerticalAlignment ()Lcom/github/mikephil/charting/components/Legend$LegendVerticalAlignment;
+	public final fun getXEntrySpace ()F
+	public final fun getYEntrySpace ()F
+	public final fun isDrawInsideEnabled ()Z
+	public final fun isLegendCustom ()Z
+	public final fun isWordWrapEnabled ()Z
+	public final fun resetCustom ()V
+	public final fun setDirection (Lcom/github/mikephil/charting/components/Legend$LegendDirection;)V
+	public final fun setDrawInsideEnabled (Z)V
+	public final fun setEntries (Ljava/util/List;)V
+	public final fun setExtra (Ljava/util/List;Ljava/util/List;)V
+	public final fun setExtraEntries (Ljava/util/List;)V
+	public final fun setForm (Lcom/github/mikephil/charting/components/Legend$LegendForm;)V
+	public final fun setFormLineDashEffect (Landroid/graphics/DashPathEffect;)V
+	public final fun setFormLineWidth (F)V
+	public final fun setFormSize (F)V
+	public final fun setFormToTextSpace (F)V
+	public final fun setHorizontalAlignment (Lcom/github/mikephil/charting/components/Legend$LegendHorizontalAlignment;)V
+	public final fun setMaxSizePercent (F)V
+	public final fun setOrientation (Lcom/github/mikephil/charting/components/Legend$LegendOrientation;)V
+	public final fun setStackSpace (F)V
+	public final fun setVerticalAlignment (Lcom/github/mikephil/charting/components/Legend$LegendVerticalAlignment;)V
+	public final fun setWordWrapEnabled (Z)V
+	public final fun setXEntrySpace (F)V
+	public final fun setYEntrySpace (F)V
+}
+
+public final class com/github/mikephil/charting/components/Legend$LegendDirection : java/lang/Enum {
+	public static final field LEFT_TO_RIGHT Lcom/github/mikephil/charting/components/Legend$LegendDirection;
+	public static final field RIGHT_TO_LEFT Lcom/github/mikephil/charting/components/Legend$LegendDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/Legend$LegendDirection;
+	public static fun values ()[Lcom/github/mikephil/charting/components/Legend$LegendDirection;
+}
+
+public final class com/github/mikephil/charting/components/Legend$LegendForm : java/lang/Enum {
+	public static final field CIRCLE Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public static final field DEFAULT Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public static final field EMPTY Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public static final field LINE Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public static final field NONE Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public static final field SQUARE Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public static fun values ()[Lcom/github/mikephil/charting/components/Legend$LegendForm;
+}
+
+public final class com/github/mikephil/charting/components/Legend$LegendHorizontalAlignment : java/lang/Enum {
+	public static final field CENTER Lcom/github/mikephil/charting/components/Legend$LegendHorizontalAlignment;
+	public static final field LEFT Lcom/github/mikephil/charting/components/Legend$LegendHorizontalAlignment;
+	public static final field RIGHT Lcom/github/mikephil/charting/components/Legend$LegendHorizontalAlignment;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/Legend$LegendHorizontalAlignment;
+	public static fun values ()[Lcom/github/mikephil/charting/components/Legend$LegendHorizontalAlignment;
+}
+
+public final class com/github/mikephil/charting/components/Legend$LegendOrientation : java/lang/Enum {
+	public static final field HORIZONTAL Lcom/github/mikephil/charting/components/Legend$LegendOrientation;
+	public static final field VERTICAL Lcom/github/mikephil/charting/components/Legend$LegendOrientation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/Legend$LegendOrientation;
+	public static fun values ()[Lcom/github/mikephil/charting/components/Legend$LegendOrientation;
+}
+
+public final class com/github/mikephil/charting/components/Legend$LegendVerticalAlignment : java/lang/Enum {
+	public static final field BOTTOM Lcom/github/mikephil/charting/components/Legend$LegendVerticalAlignment;
+	public static final field CENTER Lcom/github/mikephil/charting/components/Legend$LegendVerticalAlignment;
+	public static final field TOP Lcom/github/mikephil/charting/components/Legend$LegendVerticalAlignment;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/Legend$LegendVerticalAlignment;
+	public static fun values ()[Lcom/github/mikephil/charting/components/Legend$LegendVerticalAlignment;
+}
+
+public final class com/github/mikephil/charting/components/LegendEntry {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Lcom/github/mikephil/charting/components/Legend$LegendForm;FFLandroid/graphics/DashPathEffect;I)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/github/mikephil/charting/components/Legend$LegendForm;FFLandroid/graphics/DashPathEffect;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getForm ()Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public final fun getFormColor ()I
+	public final fun getFormLineDashEffect ()Landroid/graphics/DashPathEffect;
+	public final fun getFormLineWidth ()F
+	public final fun getFormSize ()F
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun setForm (Lcom/github/mikephil/charting/components/Legend$LegendForm;)V
+	public final fun setFormColor (I)V
+	public final fun setFormLineDashEffect (Landroid/graphics/DashPathEffect;)V
+	public final fun setFormLineWidth (F)V
+	public final fun setFormSize (F)V
+	public final fun setLabel (Ljava/lang/String;)V
+}
+
+public class com/github/mikephil/charting/components/LimitLine : com/github/mikephil/charting/components/ComponentBase {
+	public fun <init> (FLjava/lang/String;)V
+	public synthetic fun <init> (FLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun disableDashedLine ()V
+	public final fun enableDashedLine (FFF)V
+	public final fun getDashPathEffect ()Landroid/graphics/DashPathEffect;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getLabelPosition ()Lcom/github/mikephil/charting/components/LimitLine$LimitLabelPosition;
+	public final fun getLimit ()F
+	public final fun getLineColor ()I
+	public final fun getLineWidth ()F
+	public final fun getTextStyle ()Landroid/graphics/Paint$Style;
+	public final fun isDashedLineEnabled ()Z
+	public final fun setDashPathEffect (Landroid/graphics/DashPathEffect;)V
+	public final fun setLabel (Ljava/lang/String;)V
+	public final fun setLabelPosition (Lcom/github/mikephil/charting/components/LimitLine$LimitLabelPosition;)V
+	public final fun setLineColor (I)V
+	public final fun setLineWidth (F)V
+	public final fun setTextStyle (Landroid/graphics/Paint$Style;)V
+}
+
+public final class com/github/mikephil/charting/components/LimitLine$LimitLabelPosition : java/lang/Enum {
+	public static final field LEFT_BOTTOM Lcom/github/mikephil/charting/components/LimitLine$LimitLabelPosition;
+	public static final field LEFT_TOP Lcom/github/mikephil/charting/components/LimitLine$LimitLabelPosition;
+	public static final field RIGHT_BOTTOM Lcom/github/mikephil/charting/components/LimitLine$LimitLabelPosition;
+	public static final field RIGHT_TOP Lcom/github/mikephil/charting/components/LimitLine$LimitLabelPosition;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/LimitLine$LimitLabelPosition;
+	public static fun values ()[Lcom/github/mikephil/charting/components/LimitLine$LimitLabelPosition;
+}
+
+public class com/github/mikephil/charting/components/MarkerImage : com/github/mikephil/charting/components/IMarker {
+	public fun <init> (Landroid/content/Context;I)V
+	public fun draw (Landroid/graphics/Canvas;FF)V
+	public final fun getChartView ()Lcom/github/mikephil/charting/charts/Chart;
+	public fun getOffset ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public fun getOffsetForDrawingAtPoint (FF)Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getSize ()Lcom/github/mikephil/charting/utils/FSize;
+	public fun refreshContent (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/highlight/Highlight;)V
+	public final fun setChartView (Lcom/github/mikephil/charting/charts/Chart;)V
+	public final fun setOffset (FF)V
+	public fun setOffset (Lcom/github/mikephil/charting/utils/MPPointF;)V
+	public final fun setSize (Lcom/github/mikephil/charting/utils/FSize;)V
+}
+
+public class com/github/mikephil/charting/components/MarkerView : android/widget/RelativeLayout, com/github/mikephil/charting/components/IMarker {
+	public fun <init> (Landroid/content/Context;I)V
+	public fun draw (Landroid/graphics/Canvas;FF)V
+	public final fun getChartView ()Lcom/github/mikephil/charting/charts/Chart;
+	public fun getOffset ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public fun getOffsetForDrawingAtPoint (FF)Lcom/github/mikephil/charting/utils/MPPointF;
+	public fun refreshContent (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/highlight/Highlight;)V
+	public final fun setChartView (Lcom/github/mikephil/charting/charts/Chart;)V
+	public final fun setOffset (FF)V
+	public fun setOffset (Lcom/github/mikephil/charting/utils/MPPointF;)V
+}
+
+public class com/github/mikephil/charting/components/XAxis : com/github/mikephil/charting/components/AxisBase {
+	public fun <init> ()V
+	public final fun getLabelHeight ()I
+	public final fun getLabelRotatedHeight ()I
+	public final fun getLabelRotatedWidth ()I
+	public final fun getLabelRotationAngle ()F
+	public final fun getLabelWidth ()I
+	public final fun getPosition ()Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;
+	public final fun isAvoidFirstLastClippingEnabled ()Z
+	public final fun setAvoidFirstLastClippingEnabled (Z)V
+	public final fun setLabelRotationAngle (F)V
+	public final fun setPosition (Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;)V
+}
+
+public final class com/github/mikephil/charting/components/XAxis$XAxisPosition : java/lang/Enum {
+	public static final field BOTH_SIDED Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;
+	public static final field BOTTOM Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;
+	public static final field BOTTOM_INSIDE Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;
+	public static final field TOP Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;
+	public static final field TOP_INSIDE Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;
+	public static fun values ()[Lcom/github/mikephil/charting/components/XAxis$XAxisPosition;
+}
+
+public class com/github/mikephil/charting/components/YAxis : com/github/mikephil/charting/components/AxisBase {
+	public fun <init> ()V
+	public fun <init> (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public synthetic fun <init> (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun calculate (FF)V
+	public final fun getAxisDependency ()Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
+	public final fun getLabelPosition ()Lcom/github/mikephil/charting/components/YAxis$YAxisLabelPosition;
+	public final fun getLabelXOffset ()F
+	public final fun getMaxWidth ()F
+	public final fun getMinWidth ()F
+	public final fun getNeedsOffset ()Z
+	public final fun getRequiredHeightSpace (Landroid/graphics/Paint;)F
+	public final fun getRequiredWidthSpace (Landroid/graphics/Paint;)F
+	public final fun getSpaceBottom ()F
+	public final fun getSpaceTop ()F
+	public final fun getZeroLineColor ()I
+	public final fun getZeroLineWidth ()F
+	public final fun isDrawBottomYLabelEntryEnabled ()Z
+	public final fun isDrawTopYLabelEntryEnabled ()Z
+	public final fun isDrawZeroLineEnabled ()Z
+	public final fun isInverted ()Z
+	public final fun setDrawBottomYLabelEntryEnabled (Z)V
+	public final fun setDrawTopYLabelEntryEnabled (Z)V
+	public final fun setDrawZeroLineEnabled (Z)V
+	public final fun setInverted (Z)V
+	public final fun setLabelPosition (Lcom/github/mikephil/charting/components/YAxis$YAxisLabelPosition;)V
+	public final fun setLabelXOffset (F)V
+	public final fun setMaxWidth (F)V
+	public final fun setMinWidth (F)V
+	public final fun setSpaceBottom (F)V
+	public final fun setSpaceTop (F)V
+	public final fun setZeroLineColor (I)V
+	public final fun setZeroLineWidth (F)V
+}
+
+public final class com/github/mikephil/charting/components/YAxis$AxisDependency : java/lang/Enum {
+	public static final field LEFT Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
+	public static final field RIGHT Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
+	public static fun values ()[Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
+}
+
+public final class com/github/mikephil/charting/components/YAxis$YAxisLabelPosition : java/lang/Enum {
+	public static final field INSIDE_CHART Lcom/github/mikephil/charting/components/YAxis$YAxisLabelPosition;
+	public static final field OUTSIDE_CHART Lcom/github/mikephil/charting/components/YAxis$YAxisLabelPosition;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/components/YAxis$YAxisLabelPosition;
+	public static fun values ()[Lcom/github/mikephil/charting/components/YAxis$YAxisLabelPosition;
+}
+
+public class com/github/mikephil/charting/data/BarData : com/github/mikephil/charting/data/BarLineScatterCandleBubbleData {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;)V
+	public final fun getBarWidth ()F
+	public final fun getGroupWidth (FF)F
+	public final fun groupBars (FFF)V
+	public final fun setBarWidth (F)V
+}
+
+public class com/github/mikephil/charting/data/BarDataSet : com/github/mikephil/charting/data/BarLineScatterCandleBubbleDataSet, com/github/mikephil/charting/interfaces/datasets/IBarDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public fun calcMinMax ()V
+	protected fun calcMinMax (Lcom/github/mikephil/charting/data/BarEntry;)V
+	public synthetic fun calcMinMax (Lcom/github/mikephil/charting/data/Entry;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/DataSet;
+	protected final fun copy (Lcom/github/mikephil/charting/data/BarDataSet;)V
+	public fun getBarBorderColor ()I
+	public fun getBarBorderWidth ()F
+	public fun getBarCornerRadius ()F
+	public fun getBarShadowColor ()I
+	public final fun getEntryCountStacks ()I
+	public fun getFill (I)Lcom/github/mikephil/charting/utils/Fill;
+	public fun getFills ()Ljava/util/List;
+	public fun getHighlightAlpha ()I
+	public fun getStackLabels ()Ljava/util/List;
+	public fun getStackSize ()I
+	public fun isStackSectionsRounded ()Z
+	public fun isStacked ()Z
+	public fun setBarBorderColor (I)V
+	public fun setBarBorderWidth (F)V
+	public fun setBarCornerRadius (F)V
+	public fun setBarShadowColor (I)V
+	public fun setFills (Ljava/util/List;)V
+	public final fun setGradientColor (II)V
+	public fun setHighlightAlpha (I)V
+	public fun setStackLabels (Ljava/util/List;)V
+	public fun setStackSectionsRounded (Z)V
+	protected fun setStackSize (I)V
+}
+
+public class com/github/mikephil/charting/data/BarEntry : com/github/mikephil/charting/data/Entry {
+	public fun <init> (FFLandroid/graphics/drawable/Drawable;Ljava/lang/Object;)V
+	public synthetic fun <init> (FFLandroid/graphics/drawable/Drawable;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (FLjava/util/List;Landroid/graphics/drawable/Drawable;Ljava/lang/Object;)V
+	public synthetic fun <init> (FLjava/util/List;Landroid/graphics/drawable/Drawable;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/BarEntry;
+	public synthetic fun copy ()Lcom/github/mikephil/charting/data/Entry;
+	public final fun getNegativeSum ()F
+	public final fun getPositiveSum ()F
+	public final fun getRanges ()Ljava/util/List;
+	public final fun getStackValues ()Ljava/util/List;
+	public final fun getSumBelow (I)F
+	public final fun isStacked ()Z
+	public final fun setStackValues (Ljava/util/List;)V
+}
+
+public final class com/github/mikephil/charting/data/BarEntryKt {
+	public static final fun BarEntry (FFLandroid/graphics/drawable/Drawable;)Lcom/github/mikephil/charting/data/BarEntry;
+	public static final fun BarEntry (FLjava/util/List;Landroid/graphics/drawable/Drawable;)Lcom/github/mikephil/charting/data/BarEntry;
+	public static synthetic fun BarEntry$default (FFLandroid/graphics/drawable/Drawable;ILjava/lang/Object;)Lcom/github/mikephil/charting/data/BarEntry;
+	public static synthetic fun BarEntry$default (FLjava/util/List;Landroid/graphics/drawable/Drawable;ILjava/lang/Object;)Lcom/github/mikephil/charting/data/BarEntry;
+}
+
+public abstract class com/github/mikephil/charting/data/BarLineScatterCandleBubbleData : com/github/mikephil/charting/data/ChartData {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;)V
+}
+
+public abstract class com/github/mikephil/charting/data/BarLineScatterCandleBubbleDataSet : com/github/mikephil/charting/data/DataSet, com/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	protected fun copy (Lcom/github/mikephil/charting/data/BarLineScatterCandleBubbleDataSet;)V
+	public fun getHighlightColor ()I
+	public fun setHighlightColor (I)V
+}
+
+public abstract class com/github/mikephil/charting/data/BaseDataSet : com/github/mikephil/charting/interfaces/datasets/IDataSet {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun addColor (I)V
+	public fun contains (Lcom/github/mikephil/charting/data/Entry;)Z
+	protected fun copy (Lcom/github/mikephil/charting/data/BaseDataSet;)V
+	public fun getAxisDependency ()Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
+	public fun getColor ()I
+	public fun getColor (I)I
+	public fun getColors ()Ljava/util/List;
+	public fun getForm ()Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public fun getFormLineDashEffect ()Landroid/graphics/DashPathEffect;
+	public fun getFormLineWidth ()F
+	public fun getFormSize ()F
+	public fun getHasNonFiniteY ()Z
+	public fun getIconsOffset ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public fun getIndexInEntries (I)I
+	public fun getLabel ()Ljava/lang/String;
+	public fun getNeedsFormatter ()Z
+	public fun getValueFormatter ()Lcom/github/mikephil/charting/formatter/IValueFormatter;
+	public fun getValueTextColor ()I
+	public fun getValueTextColor (I)I
+	public fun getValueTextColors ()Ljava/util/List;
+	public fun getValueTextSize ()F
+	public fun getValueTypeface ()Landroid/graphics/Typeface;
+	public fun isDrawIconsEnabled ()Z
+	public fun isDrawValuesEnabled ()Z
+	public fun isHighlightEnabled ()Z
+	public fun isVisible ()Z
+	public final fun notifyDataSetChanged ()V
+	public fun removeEntry (I)Z
+	public fun removeEntryByXValue (F)Z
+	public fun removeFirst ()Z
+	public fun removeLast ()Z
+	public final fun resetColors ()V
+	public fun setAxisDependency (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public fun setColor (I)V
+	public final fun setColor (II)V
+	public fun setColors (Ljava/util/List;)V
+	public final fun setColors (Ljava/util/List;I)V
+	public final fun setColors (Ljava/util/List;Landroid/content/Context;)V
+	public final fun setColors ([I)V
+	public fun setDrawIconsEnabled (Z)V
+	public fun setDrawValuesEnabled (Z)V
+	public fun setForm (Lcom/github/mikephil/charting/components/Legend$LegendForm;)V
+	public fun setFormLineDashEffect (Landroid/graphics/DashPathEffect;)V
+	public fun setFormLineWidth (F)V
+	public fun setFormSize (F)V
+	public fun setHighlightEnabled (Z)V
+	public fun setIconsOffset (Lcom/github/mikephil/charting/utils/MPPointF;)V
+	public fun setLabel (Ljava/lang/String;)V
+	public fun setValueFormatter (Lcom/github/mikephil/charting/formatter/IValueFormatter;)V
+	public fun setValueTextColor (I)V
+	public fun setValueTextColors (Ljava/util/List;)V
+	public fun setValueTextSize (F)V
+	public fun setValueTypeface (Landroid/graphics/Typeface;)V
+	public fun setVisible (Z)V
+}
+
+public abstract class com/github/mikephil/charting/data/BaseEntry {
+	public fun <init> (FLandroid/graphics/drawable/Drawable;Ljava/lang/Object;)V
+	public synthetic fun <init> (FLandroid/graphics/drawable/Drawable;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getData ()Ljava/lang/Object;
+	public final fun getIcon ()Landroid/graphics/drawable/Drawable;
+	public final fun getY ()F
+	public final fun setIcon (Landroid/graphics/drawable/Drawable;)V
+	public final fun setY (F)V
+}
+
+public class com/github/mikephil/charting/data/BubbleData : com/github/mikephil/charting/data/BarLineScatterCandleBubbleData {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/github/mikephil/charting/interfaces/datasets/IBubbleDataSet;)V
+	public final fun setHighlightCircleWidth (F)V
+}
+
+public class com/github/mikephil/charting/data/BubbleDataSet : com/github/mikephil/charting/data/BarLineScatterCandleBubbleDataSet, com/github/mikephil/charting/interfaces/datasets/IBubbleDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public fun calcMinMax ()V
+	protected fun calcMinMax (Lcom/github/mikephil/charting/data/BubbleEntry;)V
+	public synthetic fun calcMinMax (Lcom/github/mikephil/charting/data/Entry;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/DataSet;
+	protected final fun copy (Lcom/github/mikephil/charting/data/BubbleDataSet;)V
+	public fun getHighlightCircleWidth ()F
+	public fun getMaxSize ()F
+	public fun isNormalizeSizeEnabled ()Z
+	public fun setHighlightCircleWidth (F)V
+	protected fun setMaxSize (F)V
+	public fun setNormalizeSizeEnabled (Z)V
+}
+
+public class com/github/mikephil/charting/data/BubbleEntry : com/github/mikephil/charting/data/Entry {
+	public fun <init> (FFFLandroid/graphics/drawable/Drawable;Ljava/lang/Object;)V
+	public synthetic fun <init> (FFFLandroid/graphics/drawable/Drawable;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/BubbleEntry;
+	public synthetic fun copy ()Lcom/github/mikephil/charting/data/Entry;
+	public final fun getSize ()F
+	public final fun setSize (F)V
+}
+
+public final class com/github/mikephil/charting/data/BubbleEntryKt {
+	public static final fun BubbleEntry (FFFLandroid/graphics/drawable/Drawable;)Lcom/github/mikephil/charting/data/BubbleEntry;
+	public static synthetic fun BubbleEntry$default (FFFLandroid/graphics/drawable/Drawable;ILjava/lang/Object;)Lcom/github/mikephil/charting/data/BubbleEntry;
+}
+
+public class com/github/mikephil/charting/data/CandleData : com/github/mikephil/charting/data/BarLineScatterCandleBubbleData {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/github/mikephil/charting/interfaces/datasets/ICandleDataSet;)V
+}
+
+public class com/github/mikephil/charting/data/CandleDataSet : com/github/mikephil/charting/data/LineScatterCandleRadarDataSet, com/github/mikephil/charting/interfaces/datasets/ICandleDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	protected fun calcMinMax (Lcom/github/mikephil/charting/data/CandleEntry;)V
+	public synthetic fun calcMinMax (Lcom/github/mikephil/charting/data/Entry;)V
+	protected fun calcMinMaxY (Lcom/github/mikephil/charting/data/CandleEntry;)V
+	public synthetic fun calcMinMaxY (Lcom/github/mikephil/charting/data/Entry;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/DataSet;
+	protected final fun copy (Lcom/github/mikephil/charting/data/CandleDataSet;)V
+	public fun getBarSpace ()F
+	public fun getDecreasingColor ()I
+	public fun getDecreasingPaintStyle ()Landroid/graphics/Paint$Style;
+	public fun getIncreasingColor ()I
+	public fun getIncreasingPaintStyle ()Landroid/graphics/Paint$Style;
+	public fun getNeutralColor ()I
+	public fun getShadowColor ()I
+	public fun getShadowColorSameAsCandle ()Z
+	public fun getShadowWidth ()F
+	public fun getShowCandleBar ()Z
+	public fun setBarSpace (F)V
+	public fun setDecreasingColor (I)V
+	public fun setDecreasingPaintStyle (Landroid/graphics/Paint$Style;)V
+	public fun setIncreasingColor (I)V
+	public fun setIncreasingPaintStyle (Landroid/graphics/Paint$Style;)V
+	public fun setNeutralColor (I)V
+	public fun setShadowColor (I)V
+	public fun setShadowColorSameAsCandle (Z)V
+	public fun setShadowWidth (F)V
+	public fun setShowCandleBar (Z)V
+}
+
+public class com/github/mikephil/charting/data/CandleEntry : com/github/mikephil/charting/data/Entry {
+	public fun <init> (FFFFFLandroid/graphics/drawable/Drawable;Ljava/lang/Object;)V
+	public synthetic fun <init> (FFFFFLandroid/graphics/drawable/Drawable;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/CandleEntry;
+	public synthetic fun copy ()Lcom/github/mikephil/charting/data/Entry;
+	public final fun getBodyRange ()F
+	public final fun getClose ()F
+	public final fun getHigh ()F
+	public final fun getLow ()F
+	public final fun getOpen ()F
+	public final fun getShadowRange ()F
+	public final fun setClose (F)V
+	public final fun setHigh (F)V
+	public final fun setLow (F)V
+	public final fun setOpen (F)V
+}
+
+public final class com/github/mikephil/charting/data/CandleEntryKt {
+	public static final fun CandleEntry (FFFFFLandroid/graphics/drawable/Drawable;)Lcom/github/mikephil/charting/data/CandleEntry;
+	public static synthetic fun CandleEntry$default (FFFFFLandroid/graphics/drawable/Drawable;ILjava/lang/Object;)Lcom/github/mikephil/charting/data/CandleEntry;
+}
+
+public abstract class com/github/mikephil/charting/data/ChartData {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)V
+	public final fun addDataSet (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)V
+	public final fun addEntry (Lcom/github/mikephil/charting/data/Entry;I)V
+	protected fun calcMinMax ()V
+	protected final fun calcMinMax (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	protected final fun calcMinMax (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)V
+	public final fun calcMinMaxY (FF)V
+	public final fun clearValues ()V
+	public final fun contains (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)Z
+	public final fun getColors ()Ljava/util/List;
+	public fun getDataSetByIndex (I)Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;
+	public fun getDataSetByLabel (Ljava/lang/String;Z)Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;
+	public final fun getDataSetCount ()I
+	public final fun getDataSetForEntry (Lcom/github/mikephil/charting/data/Entry;)Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;
+	protected final fun getDataSetIndexByLabel (Ljava/util/List;Ljava/lang/String;Z)I
+	public final fun getDataSetLabels ()Ljava/util/List;
+	public final fun getDataSets ()Ljava/util/List;
+	public final fun getEntryCount ()I
+	public fun getEntryForHighlight (Lcom/github/mikephil/charting/highlight/Highlight;)Lcom/github/mikephil/charting/data/Entry;
+	protected final fun getFirstLeft (Ljava/util/List;)Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;
+	public final fun getFirstRight (Ljava/util/List;)Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;
+	public final fun getIndexOfDataSet (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)I
+	protected final fun getLeftAxisMax ()F
+	protected final fun getLeftAxisMin ()F
+	public final fun getMaxEntryCountSet ()Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;
+	protected final fun getRightAxisMax ()F
+	protected final fun getRightAxisMin ()F
+	public final fun getXMax ()F
+	public final fun getXMin ()F
+	public final fun getYMax ()F
+	public final fun getYMax (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)F
+	public final fun getYMin ()F
+	public final fun getYMin (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)F
+	public final fun isHighlightEnabled ()Z
+	public fun notifyDataChanged ()V
+	public fun removeDataSet (I)Z
+	public fun removeDataSet (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)Z
+	public fun removeEntry (FI)Z
+	public fun removeEntry (Lcom/github/mikephil/charting/data/Entry;I)Z
+	public final fun setDrawValues (Z)V
+	public final fun setHighlightEnabled (Z)V
+	protected final fun setLeftAxisMax (F)V
+	protected final fun setLeftAxisMin (F)V
+	protected final fun setRightAxisMax (F)V
+	protected final fun setRightAxisMin (F)V
+	public final fun setValueFormatter (Lcom/github/mikephil/charting/formatter/IValueFormatter;)V
+	public final fun setValueTextColor (I)V
+	public final fun setValueTextColors (Ljava/util/List;)V
+	public final fun setValueTextSize (F)V
+	public final fun setValueTypeface (Landroid/graphics/Typeface;)V
+	protected final fun setXMax (F)V
+	protected final fun setXMin (F)V
+	protected final fun setYMax (F)V
+	protected final fun setYMin (F)V
+}
+
+public class com/github/mikephil/charting/data/CombinedData : com/github/mikephil/charting/data/BarLineScatterCandleBubbleData {
+	public fun <init> ()V
+	public fun calcMinMax ()V
+	public final fun getAllData ()Ljava/util/List;
+	public final fun getBarData ()Lcom/github/mikephil/charting/data/BarData;
+	public final fun getBubbleData ()Lcom/github/mikephil/charting/data/BubbleData;
+	public final fun getCandleData ()Lcom/github/mikephil/charting/data/CandleData;
+	public final fun getDataByIndex (I)Lcom/github/mikephil/charting/data/BarLineScatterCandleBubbleData;
+	public final fun getDataIndex (Lcom/github/mikephil/charting/data/ChartData;)I
+	public final fun getDataSetByHighlight (Lcom/github/mikephil/charting/highlight/Highlight;)Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;
+	public fun getEntryForHighlight (Lcom/github/mikephil/charting/highlight/Highlight;)Lcom/github/mikephil/charting/data/Entry;
+	public final fun getLineData ()Lcom/github/mikephil/charting/data/LineData;
+	public final fun getScatterData ()Lcom/github/mikephil/charting/data/ScatterData;
+	public fun notifyDataChanged ()V
+	public fun removeDataSet (I)Z
+	public fun removeDataSet (Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;)Z
+	public synthetic fun removeDataSet (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)Z
+	public fun removeEntry (FI)Z
+	public fun removeEntry (Lcom/github/mikephil/charting/data/Entry;I)Z
+	public final fun setBarData (Lcom/github/mikephil/charting/data/BarData;)V
+	public final fun setBubbleData (Lcom/github/mikephil/charting/data/BubbleData;)V
+	public final fun setCandleData (Lcom/github/mikephil/charting/data/CandleData;)V
+	public final fun setLineData (Lcom/github/mikephil/charting/data/LineData;)V
+	public final fun setScatterData (Lcom/github/mikephil/charting/data/ScatterData;)V
+}
+
+public abstract class com/github/mikephil/charting/data/DataSet : com/github/mikephil/charting/data/BaseDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public fun addEntry (Lcom/github/mikephil/charting/data/Entry;)Z
+	public fun addEntryOrdered (Lcom/github/mikephil/charting/data/Entry;)V
+	public fun calcMinMax ()V
+	protected fun calcMinMax (Lcom/github/mikephil/charting/data/Entry;)V
+	protected final fun calcMinMaxX (Lcom/github/mikephil/charting/data/Entry;)V
+	public fun calcMinMaxY (FF)V
+	protected fun calcMinMaxY (Lcom/github/mikephil/charting/data/Entry;)V
+	public fun clear ()V
+	public abstract fun copy ()Lcom/github/mikephil/charting/data/DataSet;
+	protected fun copy (Lcom/github/mikephil/charting/data/DataSet;)V
+	public final fun getEntries ()Ljava/util/List;
+	public fun getEntriesForXValue (F)Ljava/util/List;
+	public fun getEntryCount ()I
+	public fun getEntryForIndex (I)Lcom/github/mikephil/charting/data/Entry;
+	public fun getEntryForXValue (FFLcom/github/mikephil/charting/data/DataSet$Rounding;)Lcom/github/mikephil/charting/data/Entry;
+	public fun getEntryIndex (FFLcom/github/mikephil/charting/data/DataSet$Rounding;)I
+	public fun getEntryIndex (Lcom/github/mikephil/charting/data/Entry;)I
+	public fun getHasNonFiniteY ()Z
+	public fun getXMax ()F
+	public fun getXMin ()F
+	public fun getYMax ()F
+	public fun getYMin ()F
+	public fun removeEntry (Lcom/github/mikephil/charting/data/Entry;)Z
+	public final fun setEntries (Ljava/util/List;)V
+	protected fun setHasNonFiniteY (Z)V
+	protected fun setXMax (F)V
+	protected fun setXMin (F)V
+	protected fun setYMax (F)V
+	protected fun setYMin (F)V
+	public final fun toSimpleString ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/github/mikephil/charting/data/DataSet$Rounding : java/lang/Enum {
+	public static final field CLOSEST Lcom/github/mikephil/charting/data/DataSet$Rounding;
+	public static final field DOWN Lcom/github/mikephil/charting/data/DataSet$Rounding;
+	public static final field UP Lcom/github/mikephil/charting/data/DataSet$Rounding;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/data/DataSet$Rounding;
+	public static fun values ()[Lcom/github/mikephil/charting/data/DataSet$Rounding;
+}
+
+public class com/github/mikephil/charting/data/Entry : com/github/mikephil/charting/data/BaseEntry, android/os/Parcelable {
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public static final field Companion Lcom/github/mikephil/charting/data/Entry$Companion;
+	public fun <init> (FFLandroid/graphics/drawable/Drawable;Ljava/lang/Object;)V
+	public synthetic fun <init> (FFLandroid/graphics/drawable/Drawable;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/Entry;
+	public fun describeContents ()I
+	public final fun equalTo (Lcom/github/mikephil/charting/data/Entry;)Z
+	public final fun getX ()F
+	public final fun setX (F)V
+	public fun toString ()Ljava/lang/String;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/github/mikephil/charting/data/Entry$Companion {
+}
+
+public final class com/github/mikephil/charting/data/EntryKt {
+	public static final fun Entry (FFLandroid/graphics/drawable/Drawable;)Lcom/github/mikephil/charting/data/Entry;
+	public static synthetic fun Entry$default (FFLandroid/graphics/drawable/Drawable;ILjava/lang/Object;)Lcom/github/mikephil/charting/data/Entry;
+}
+
+public class com/github/mikephil/charting/data/LineData : com/github/mikephil/charting/data/BarLineScatterCandleBubbleData {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;)V
+}
+
+public class com/github/mikephil/charting/data/LineDataSet : com/github/mikephil/charting/data/LineRadarDataSet, com/github/mikephil/charting/interfaces/datasets/ILineDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/DataSet;
+	protected final fun copy (Lcom/github/mikephil/charting/data/LineDataSet;)V
+	public final fun disableDashedLine ()V
+	public final fun enableDashedLine (FFF)V
+	public final fun getCircleColor ()I
+	public fun getCircleColor (I)I
+	public fun getCircleColorCount ()I
+	public final fun getCircleColors ()Ljava/util/List;
+	public fun getCircleHoleColor ()I
+	public fun getCircleHoleRadius ()F
+	public fun getCircleRadius ()F
+	public fun getCubicIntensity ()F
+	public fun getDashPathEffect ()Landroid/graphics/DashPathEffect;
+	public fun getFillFormatter ()Lcom/github/mikephil/charting/formatter/IFillFormatter;
+	public fun getHighlightCircleRadius ()F
+	public fun getMode ()Lcom/github/mikephil/charting/data/LineDataSet$Mode;
+	public fun isDashedLineEnabled ()Z
+	public fun isDrawCircleHoleEnabled ()Z
+	public fun isDrawCirclesEnabled ()Z
+	public fun isDrawHighlightCircleEnabled ()Z
+	public final fun resetCircleColors ()V
+	public final fun setCircleColor (I)V
+	public final fun setCircleColors (Ljava/util/List;)V
+	public final fun setCircleColors (Ljava/util/List;Landroid/content/Context;)V
+	public final fun setCircleColors ([I)V
+	public fun setCircleHoleColor (I)V
+	public fun setCircleHoleRadius (F)V
+	public fun setCircleRadius (F)V
+	public fun setCubicIntensity (F)V
+	protected fun setDashPathEffect (Landroid/graphics/DashPathEffect;)V
+	public fun setDrawCircleHoleEnabled (Z)V
+	public fun setDrawCirclesEnabled (Z)V
+	public fun setDrawHighlightCircleEnabled (Z)V
+	public fun setFillFormatter (Lcom/github/mikephil/charting/formatter/IFillFormatter;)V
+	public fun setHighlightCircleRadius (F)V
+	public fun setMode (Lcom/github/mikephil/charting/data/LineDataSet$Mode;)V
+}
+
+public final class com/github/mikephil/charting/data/LineDataSet$Mode : java/lang/Enum {
+	public static final field CUBIC_BEZIER Lcom/github/mikephil/charting/data/LineDataSet$Mode;
+	public static final field HORIZONTAL_BEZIER Lcom/github/mikephil/charting/data/LineDataSet$Mode;
+	public static final field LINEAR Lcom/github/mikephil/charting/data/LineDataSet$Mode;
+	public static final field STEPPED Lcom/github/mikephil/charting/data/LineDataSet$Mode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/data/LineDataSet$Mode;
+	public static fun values ()[Lcom/github/mikephil/charting/data/LineDataSet$Mode;
+}
+
+public abstract class com/github/mikephil/charting/data/LineRadarDataSet : com/github/mikephil/charting/data/LineScatterCandleRadarDataSet, com/github/mikephil/charting/interfaces/datasets/ILineRadarDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	protected fun copy (Lcom/github/mikephil/charting/data/LineRadarDataSet;)V
+	public fun getFillAlpha ()I
+	public fun getFillColor ()I
+	public fun getFillDrawable ()Landroid/graphics/drawable/Drawable;
+	public fun getLineWidth ()F
+	public fun isDrawFilledEnabled ()Z
+	public fun setDrawFilledEnabled (Z)V
+	public fun setFillAlpha (I)V
+	public fun setFillColor (I)V
+	public fun setFillDrawable (Landroid/graphics/drawable/Drawable;)V
+	public fun setLineWidth (F)V
+}
+
+public abstract class com/github/mikephil/charting/data/LineScatterCandleRadarDataSet : com/github/mikephil/charting/data/BarLineScatterCandleBubbleDataSet, com/github/mikephil/charting/interfaces/datasets/ILineScatterCandleRadarDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	protected fun copy (Lcom/github/mikephil/charting/data/LineScatterCandleRadarDataSet;)V
+	public final fun disableDashedHighlightLine ()V
+	public final fun enableDashedHighlightLine (FFF)V
+	public fun getDashPathEffectHighlight ()Landroid/graphics/DashPathEffect;
+	public fun getHighlightLineWidth ()F
+	public fun getHorizontalHighlightIndicatorSpan ()Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+	public fun getVerticalHighlightIndicatorSpan ()Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+	public final fun isDashedHighlightLineEnabled ()Z
+	public fun isHorizontalHighlightIndicatorEnabled ()Z
+	public fun isVerticalHighlightIndicatorEnabled ()Z
+	protected fun setDashPathEffectHighlight (Landroid/graphics/DashPathEffect;)V
+	public final fun setDrawHighlightIndicators (Z)V
+	public fun setHighlightLineWidth (F)V
+	public fun setHorizontalHighlightIndicatorEnabled (Z)V
+	public fun setHorizontalHighlightIndicatorSpan (Lcom/github/mikephil/charting/highlight/HighlightLineSpan;)V
+	public fun setVerticalHighlightIndicatorEnabled (Z)V
+	public fun setVerticalHighlightIndicatorSpan (Lcom/github/mikephil/charting/highlight/HighlightLineSpan;)V
+}
+
+public class com/github/mikephil/charting/data/PieData : com/github/mikephil/charting/data/ChartData {
+	public fun <init> ()V
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/datasets/IPieDataSet;)V
+	public final fun getDataSet ()Lcom/github/mikephil/charting/interfaces/datasets/IPieDataSet;
+	public synthetic fun getDataSetByIndex (I)Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;
+	public fun getDataSetByIndex (I)Lcom/github/mikephil/charting/interfaces/datasets/IPieDataSet;
+	public synthetic fun getDataSetByLabel (Ljava/lang/String;Z)Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;
+	public fun getDataSetByLabel (Ljava/lang/String;Z)Lcom/github/mikephil/charting/interfaces/datasets/IPieDataSet;
+	public fun getEntryForHighlight (Lcom/github/mikephil/charting/highlight/Highlight;)Lcom/github/mikephil/charting/data/Entry;
+	public final fun getYValueSum ()F
+	public final fun setDataSet (Lcom/github/mikephil/charting/interfaces/datasets/IPieDataSet;)V
+}
+
+public class com/github/mikephil/charting/data/PieDataSet : com/github/mikephil/charting/data/DataSet, com/github/mikephil/charting/interfaces/datasets/IPieDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun calcMinMax (Lcom/github/mikephil/charting/data/Entry;)V
+	protected fun calcMinMax (Lcom/github/mikephil/charting/data/PieEntry;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/DataSet;
+	protected final fun copy (Lcom/github/mikephil/charting/data/PieDataSet;)V
+	public fun getHighlightColor ()Ljava/lang/Integer;
+	public fun getSelectionShift ()F
+	public fun getSliceSpace ()F
+	public fun getValueLineColor ()I
+	public fun getValueLinePart1Length ()F
+	public fun getValueLinePart1OffsetPercentage ()F
+	public fun getValueLinePart2Length ()F
+	public fun getValueLineWidth ()F
+	public fun getXValuePosition ()Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;
+	public fun getYValuePosition ()Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;
+	public fun isAutomaticallyDisableSliceSpacingEnabled ()Z
+	public fun isUseValueColorForLineEnabled ()Z
+	public fun isValueLineVariableLength ()Z
+	public fun setAutomaticallyDisableSliceSpacingEnabled (Z)V
+	public fun setHighlightColor (Ljava/lang/Integer;)V
+	public fun setSelectionShift (F)V
+	public fun setSliceSpace (F)V
+	public fun setUseValueColorForLineEnabled (Z)V
+	public fun setValueLineColor (I)V
+	public fun setValueLinePart1Length (F)V
+	public fun setValueLinePart1OffsetPercentage (F)V
+	public fun setValueLinePart2Length (F)V
+	public fun setValueLineVariableLength (Z)V
+	public fun setValueLineWidth (F)V
+	public fun setXValuePosition (Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;)V
+	public fun setYValuePosition (Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;)V
+}
+
+public final class com/github/mikephil/charting/data/PieDataSet$ValuePosition : java/lang/Enum {
+	public static final field INSIDE_SLICE Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;
+	public static final field OUTSIDE_SLICE Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;
+	public static fun values ()[Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;
+}
+
+public class com/github/mikephil/charting/data/PieEntry : com/github/mikephil/charting/data/Entry {
+	public fun <init> (FLjava/lang/String;Landroid/graphics/drawable/Drawable;Ljava/lang/Object;)V
+	public synthetic fun <init> (FLjava/lang/String;Landroid/graphics/drawable/Drawable;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun copy ()Lcom/github/mikephil/charting/data/Entry;
+	public fun copy ()Lcom/github/mikephil/charting/data/PieEntry;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getValue ()F
+	public final fun setLabel (Ljava/lang/String;)V
+}
+
+public final class com/github/mikephil/charting/data/PieEntryKt {
+	public static final fun PieEntry (FLjava/lang/String;Landroid/graphics/drawable/Drawable;)Lcom/github/mikephil/charting/data/PieEntry;
+	public static synthetic fun PieEntry$default (FLjava/lang/String;Landroid/graphics/drawable/Drawable;ILjava/lang/Object;)Lcom/github/mikephil/charting/data/PieEntry;
+}
+
+public class com/github/mikephil/charting/data/RadarData : com/github/mikephil/charting/data/ChartData {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/github/mikephil/charting/interfaces/datasets/IRadarDataSet;)V
+	public fun getEntryForHighlight (Lcom/github/mikephil/charting/highlight/Highlight;)Lcom/github/mikephil/charting/data/Entry;
+}
+
+public class com/github/mikephil/charting/data/RadarDataSet : com/github/mikephil/charting/data/LineRadarDataSet, com/github/mikephil/charting/interfaces/datasets/IRadarDataSet {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/DataSet;
+	protected final fun copy (Lcom/github/mikephil/charting/data/RadarDataSet;)V
+	public fun getCornerRadius ()F
+	public fun getHighlightCircleFillColor ()I
+	public fun getHighlightCircleInnerRadius ()F
+	public fun getHighlightCircleOuterRadius ()F
+	public fun getHighlightCircleStrokeAlpha ()I
+	public fun getHighlightCircleStrokeColor ()I
+	public fun getHighlightCircleStrokeWidth ()F
+	public fun isDrawHighlightCircleEnabled ()Z
+	public fun setCornerRadius (F)V
+	public fun setDrawHighlightCircleEnabled (Z)V
+	public fun setHighlightCircleFillColor (I)V
+	public fun setHighlightCircleInnerRadius (F)V
+	public fun setHighlightCircleOuterRadius (F)V
+	public fun setHighlightCircleStrokeAlpha (I)V
+	public fun setHighlightCircleStrokeColor (I)V
+	public fun setHighlightCircleStrokeWidth (F)V
+}
+
+public class com/github/mikephil/charting/data/RadarEntry : com/github/mikephil/charting/data/Entry {
+	public fun <init> (FLandroid/graphics/drawable/Drawable;Ljava/lang/Object;)V
+	public synthetic fun <init> (FLandroid/graphics/drawable/Drawable;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun copy ()Lcom/github/mikephil/charting/data/Entry;
+	public fun copy ()Lcom/github/mikephil/charting/data/RadarEntry;
+	public final fun getValue ()F
+}
+
+public final class com/github/mikephil/charting/data/RadarEntryKt {
+	public static final fun RadarEntry (FLandroid/graphics/drawable/Drawable;)Lcom/github/mikephil/charting/data/RadarEntry;
+	public static synthetic fun RadarEntry$default (FLandroid/graphics/drawable/Drawable;ILjava/lang/Object;)Lcom/github/mikephil/charting/data/RadarEntry;
+}
+
+public class com/github/mikephil/charting/data/ScatterData : com/github/mikephil/charting/data/BarLineScatterCandleBubbleData {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;)V
+	public final fun getGreatestShapeSize ()F
+}
+
+public class com/github/mikephil/charting/data/ScatterDataSet : com/github/mikephil/charting/data/LineScatterCandleRadarDataSet, com/github/mikephil/charting/interfaces/datasets/IScatterDataSet {
+	public static final field Companion Lcom/github/mikephil/charting/data/ScatterDataSet$Companion;
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public fun copy ()Lcom/github/mikephil/charting/data/DataSet;
+	protected final fun copy (Lcom/github/mikephil/charting/data/ScatterDataSet;)V
+	public fun getScatterShapeHoleColor ()I
+	public fun getScatterShapeHoleRadius ()F
+	public fun getScatterShapeSize ()F
+	public fun getShapeRenderer ()Lcom/github/mikephil/charting/renderer/scatter/IShapeRenderer;
+	public final fun setScatterShape (Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;)V
+	public fun setScatterShapeHoleColor (I)V
+	public fun setScatterShapeHoleRadius (F)V
+	public fun setScatterShapeSize (F)V
+	public fun setShapeRenderer (Lcom/github/mikephil/charting/renderer/scatter/IShapeRenderer;)V
+}
+
+public final class com/github/mikephil/charting/data/ScatterDataSet$Companion {
+	public final fun getRendererForShape (Lcom/github/mikephil/charting/charts/ScatterChart$ScatterShape;)Lcom/github/mikephil/charting/renderer/scatter/IShapeRenderer;
+}
+
+public final class com/github/mikephil/charting/data/filter/Approximator {
+	public fun <init> ()V
+	public final fun reduceWithDouglasPeucker ([FF)[F
+}
+
+public class com/github/mikephil/charting/formatter/DefaultAxisValueFormatter : com/github/mikephil/charting/formatter/IAxisValueFormatter {
+	public fun <init> (I)V
+	public final fun getDecimalDigits ()I
+	protected final fun getFormat ()Ljava/text/DecimalFormat;
+	public fun getFormattedValue (FLcom/github/mikephil/charting/components/AxisBase;)Ljava/lang/String;
+}
+
+public final class com/github/mikephil/charting/formatter/DefaultFillFormatter : com/github/mikephil/charting/formatter/IFillFormatter {
+	public fun <init> ()V
+	public fun getFillLinePosition (Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;Lcom/github/mikephil/charting/interfaces/dataprovider/LineDataProvider;)F
+}
+
+public class com/github/mikephil/charting/formatter/DefaultValueFormatter : com/github/mikephil/charting/formatter/IValueFormatter {
+	protected field format Ljava/text/DecimalFormat;
+	public fun <init> (I)V
+	public final fun getDecimalDigits ()I
+	protected final fun getFormat ()Ljava/text/DecimalFormat;
+	public fun getFormattedValue (FLcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+	public fun getStackedFormattedValue (FILcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+	protected final fun setDecimalDigits (I)V
+	protected final fun setFormat (Ljava/text/DecimalFormat;)V
+	public final fun setup (I)V
+}
+
+public abstract interface class com/github/mikephil/charting/formatter/IAxisValueFormatter {
+	public abstract fun getFormattedValue (FLcom/github/mikephil/charting/components/AxisBase;)Ljava/lang/String;
+}
+
+public abstract interface class com/github/mikephil/charting/formatter/IFillFormatter {
+	public abstract fun getFillLinePosition (Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;Lcom/github/mikephil/charting/interfaces/dataprovider/LineDataProvider;)F
+}
+
+public abstract interface class com/github/mikephil/charting/formatter/IValueFormatter {
+	public abstract fun getFormattedValue (FLcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+	public abstract fun getStackedFormattedValue (FILcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+}
+
+public final class com/github/mikephil/charting/formatter/IValueFormatter$DefaultImpls {
+	public static fun getStackedFormattedValue (Lcom/github/mikephil/charting/formatter/IValueFormatter;FILcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+}
+
+public class com/github/mikephil/charting/formatter/IndexAxisValueFormatter : com/github/mikephil/charting/formatter/IAxisValueFormatter {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getFormattedValue (FLcom/github/mikephil/charting/components/AxisBase;)Ljava/lang/String;
+	public final fun getValues ()Ljava/util/List;
+	public final fun setValues (Ljava/util/List;)V
+}
+
+public class com/github/mikephil/charting/formatter/LargeValueFormatter : com/github/mikephil/charting/formatter/IAxisValueFormatter, com/github/mikephil/charting/formatter/IValueFormatter {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAppendix ()Ljava/lang/String;
+	public final fun getDecimalDigits ()I
+	public fun getFormattedValue (FLcom/github/mikephil/charting/components/AxisBase;)Ljava/lang/String;
+	public fun getFormattedValue (FLcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+	public fun getStackedFormattedValue (FILcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+	public final fun getSuffix ()Ljava/util/List;
+	public final fun setAppendix (Ljava/lang/String;)V
+	public final fun setSuffix (Ljava/util/List;)V
+}
+
+public class com/github/mikephil/charting/formatter/PercentFormatter : com/github/mikephil/charting/formatter/IAxisValueFormatter, com/github/mikephil/charting/formatter/IValueFormatter {
+	public fun <init> ()V
+	public fun <init> (Ljava/text/DecimalFormat;)V
+	public synthetic fun <init> (Ljava/text/DecimalFormat;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getDecimalDigits ()I
+	protected final fun getFormat ()Ljava/text/DecimalFormat;
+	public fun getFormattedValue (FLcom/github/mikephil/charting/components/AxisBase;)Ljava/lang/String;
+	public fun getFormattedValue (FLcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+	public fun getStackedFormattedValue (FILcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+}
+
+public final class com/github/mikephil/charting/formatter/StackedValueFormatter : com/github/mikephil/charting/formatter/IValueFormatter {
+	public fun <init> (ZLjava/lang/String;I)V
+	public fun getFormattedValue (FLcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+	public fun getStackedFormattedValue (FILcom/github/mikephil/charting/data/Entry;ILcom/github/mikephil/charting/utils/ViewPortHandler;)Ljava/lang/String;
+}
+
+public class com/github/mikephil/charting/highlight/BarHighlighter : com/github/mikephil/charting/highlight/ChartHighlighter {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/BarDataProvider;)V
+	protected final fun getClosestStackIndex (Ljava/util/List;F)I
+	protected fun getData ()Lcom/github/mikephil/charting/data/BarLineScatterCandleBubbleData;
+	protected fun getDistance (FFFF)F
+	public fun getHighlight (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+	public final fun getStackedHighlight (Lcom/github/mikephil/charting/highlight/Highlight;Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;FF)Lcom/github/mikephil/charting/highlight/Highlight;
+}
+
+public class com/github/mikephil/charting/highlight/ChartHighlighter : com/github/mikephil/charting/highlight/IHighlighter {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider;)V
+	protected fun buildHighlights (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;IFLcom/github/mikephil/charting/data/DataSet$Rounding;)Ljava/util/List;
+	protected final fun getChart ()Lcom/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider;
+	public final fun getClosestHighlightByPixel (Ljava/util/List;FFLcom/github/mikephil/charting/components/YAxis$AxisDependency;F)Lcom/github/mikephil/charting/highlight/Highlight;
+	protected fun getData ()Lcom/github/mikephil/charting/data/BarLineScatterCandleBubbleData;
+	protected fun getDistance (FFFF)F
+	public fun getHighlight (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+	protected final fun getHighlightBuffer ()Ljava/util/List;
+	protected fun getHighlightForX (FFF)Lcom/github/mikephil/charting/highlight/Highlight;
+	protected fun getHighlightPos (Lcom/github/mikephil/charting/highlight/Highlight;)F
+	protected fun getHighlightsAtXValue (FFF)Ljava/util/List;
+	protected final fun getMinimumDistance (Ljava/util/List;FLcom/github/mikephil/charting/components/YAxis$AxisDependency;)F
+	protected final fun getValsForTouch (FF)Lcom/github/mikephil/charting/utils/MPPointD;
+}
+
+public class com/github/mikephil/charting/highlight/CombinedHighlighter : com/github/mikephil/charting/highlight/ChartHighlighter {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/CombinedDataProvider;Lcom/github/mikephil/charting/interfaces/dataprovider/BarDataProvider;)V
+	protected final fun getBarHighlighter ()Lcom/github/mikephil/charting/highlight/BarHighlighter;
+	protected fun getHighlightsAtXValue (FFF)Ljava/util/List;
+}
+
+public final class com/github/mikephil/charting/highlight/Highlight {
+	public fun <init> (FFFFIILcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public fun <init> (FFFFILcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public fun <init> (FFII)V
+	public synthetic fun <init> (FFIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (FII)V
+	public final fun equalTo (Lcom/github/mikephil/charting/highlight/Highlight;)Z
+	public final fun getAxis ()Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
+	public final fun getDataIndex ()I
+	public final fun getDataSetIndex ()I
+	public final fun getDrawX ()F
+	public final fun getDrawY ()F
+	public final fun getStackIndex ()I
+	public final fun getX ()F
+	public final fun getXPx ()F
+	public final fun getY ()F
+	public final fun getYPx ()F
+	public final fun isStacked ()Z
+	public final fun setDataIndex (I)V
+	public final fun setDraw (FF)V
+	public final fun setStackIndex (I)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/github/mikephil/charting/highlight/HighlightLineSpan : java/lang/Enum {
+	public static final field FROM_ENTRY Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+	public static final field FULL Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+	public static final field TO_ENTRY Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+	public static fun values ()[Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+}
+
+public final class com/github/mikephil/charting/highlight/HorizontalBarHighlighter : com/github/mikephil/charting/highlight/BarHighlighter {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/BarDataProvider;)V
+	public fun getHighlight (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+}
+
+public abstract interface class com/github/mikephil/charting/highlight/IHighlighter {
+	public abstract fun getHighlight (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+}
+
+public final class com/github/mikephil/charting/highlight/PieHighlighter : com/github/mikephil/charting/highlight/PieRadarHighlighter {
+	public fun <init> (Lcom/github/mikephil/charting/charts/PieChart;)V
+}
+
+public abstract class com/github/mikephil/charting/highlight/PieRadarHighlighter : com/github/mikephil/charting/highlight/IHighlighter {
+	public fun <init> (Lcom/github/mikephil/charting/charts/PieRadarChartBase;)V
+	protected final fun getChart ()Lcom/github/mikephil/charting/charts/PieRadarChartBase;
+	protected abstract fun getClosestHighlight (IFF)Lcom/github/mikephil/charting/highlight/Highlight;
+	public fun getHighlight (FF)Lcom/github/mikephil/charting/highlight/Highlight;
+	protected final fun getHighlightBuffer ()Ljava/util/List;
+}
+
+public final class com/github/mikephil/charting/highlight/RadarHighlighter : com/github/mikephil/charting/highlight/PieRadarHighlighter {
+	public fun <init> (Lcom/github/mikephil/charting/charts/RadarChart;)V
+}
+
+public final class com/github/mikephil/charting/highlight/Range {
+	public fun <init> (FF)V
+	public final fun contains (F)Z
+	public final fun getFrom ()F
+	public final fun getTo ()F
+	public final fun isLarger (F)Z
+	public final fun isSmaller (F)Z
+	public final fun setFrom (F)V
+	public final fun setTo (F)V
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/dataprovider/BarDataProvider : com/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider {
+	public abstract fun getBarData ()Lcom/github/mikephil/charting/data/BarData;
+	public abstract fun isDrawBarShadowEnabled ()Z
+	public abstract fun isDrawValueAboveBarEnabled ()Z
+	public abstract fun isHighlightFullBarEnabled ()Z
+}
+
+public final class com/github/mikephil/charting/interfaces/dataprovider/BarDataProvider$DefaultImpls {
+	public static fun isDecimationEnabled (Lcom/github/mikephil/charting/interfaces/dataprovider/BarDataProvider;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider : com/github/mikephil/charting/interfaces/dataprovider/ChartInterface {
+	public abstract fun getData ()Lcom/github/mikephil/charting/data/BarLineScatterCandleBubbleData;
+	public abstract fun getHighestVisibleX ()F
+	public abstract fun getLowestVisibleX ()F
+	public abstract fun getTransformer (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)Lcom/github/mikephil/charting/utils/Transformer;
+	public abstract fun isDecimationEnabled ()Z
+	public abstract fun isInverted (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)Z
+}
+
+public final class com/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider$DefaultImpls {
+	public static fun isDecimationEnabled (Lcom/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/dataprovider/BubbleDataProvider : com/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider {
+	public abstract fun getBubbleData ()Lcom/github/mikephil/charting/data/BubbleData;
+}
+
+public final class com/github/mikephil/charting/interfaces/dataprovider/BubbleDataProvider$DefaultImpls {
+	public static fun isDecimationEnabled (Lcom/github/mikephil/charting/interfaces/dataprovider/BubbleDataProvider;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/dataprovider/CandleDataProvider : com/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider {
+	public abstract fun getCandleData ()Lcom/github/mikephil/charting/data/CandleData;
+}
+
+public final class com/github/mikephil/charting/interfaces/dataprovider/CandleDataProvider$DefaultImpls {
+	public static fun isDecimationEnabled (Lcom/github/mikephil/charting/interfaces/dataprovider/CandleDataProvider;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/dataprovider/ChartInterface {
+	public abstract fun getCenterOfView ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public abstract fun getCenterOffsets ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public abstract fun getContentRect ()Landroid/graphics/RectF;
+	public abstract fun getData ()Lcom/github/mikephil/charting/data/ChartData;
+	public abstract fun getDefaultValueFormatter ()Lcom/github/mikephil/charting/formatter/IValueFormatter;
+	public abstract fun getMaxHighlightDistance ()F
+	public abstract fun getMaxVisibleCount ()I
+	public abstract fun getXChartMax ()F
+	public abstract fun getXChartMin ()F
+	public abstract fun getXRange ()F
+	public abstract fun getYChartMax ()F
+	public abstract fun getYChartMin ()F
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/dataprovider/CombinedDataProvider : com/github/mikephil/charting/interfaces/dataprovider/BarDataProvider, com/github/mikephil/charting/interfaces/dataprovider/BubbleDataProvider, com/github/mikephil/charting/interfaces/dataprovider/CandleDataProvider, com/github/mikephil/charting/interfaces/dataprovider/LineDataProvider, com/github/mikephil/charting/interfaces/dataprovider/ScatterDataProvider {
+	public abstract fun getCombinedData ()Lcom/github/mikephil/charting/data/CombinedData;
+}
+
+public final class com/github/mikephil/charting/interfaces/dataprovider/CombinedDataProvider$DefaultImpls {
+	public static fun isDecimationEnabled (Lcom/github/mikephil/charting/interfaces/dataprovider/CombinedDataProvider;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/dataprovider/LineDataProvider : com/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider {
+	public abstract fun getAxis (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)Lcom/github/mikephil/charting/components/YAxis;
+	public abstract fun getLineData ()Lcom/github/mikephil/charting/data/LineData;
+}
+
+public final class com/github/mikephil/charting/interfaces/dataprovider/LineDataProvider$DefaultImpls {
+	public static fun isDecimationEnabled (Lcom/github/mikephil/charting/interfaces/dataprovider/LineDataProvider;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/dataprovider/ScatterDataProvider : com/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider {
+	public abstract fun getScatterData ()Lcom/github/mikephil/charting/data/ScatterData;
+}
+
+public final class com/github/mikephil/charting/interfaces/dataprovider/ScatterDataProvider$DefaultImpls {
+	public static fun isDecimationEnabled (Lcom/github/mikephil/charting/interfaces/dataprovider/ScatterDataProvider;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/IBarDataSet : com/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet {
+	public abstract fun getBarBorderColor ()I
+	public abstract fun getBarBorderWidth ()F
+	public abstract fun getBarCornerRadius ()F
+	public abstract fun getBarShadowColor ()I
+	public abstract fun getFill (I)Lcom/github/mikephil/charting/utils/Fill;
+	public abstract fun getFills ()Ljava/util/List;
+	public abstract fun getHighlightAlpha ()I
+	public abstract fun getStackLabels ()Ljava/util/List;
+	public abstract fun getStackSize ()I
+	public abstract fun isStackSectionsRounded ()Z
+	public abstract fun isStacked ()Z
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/IBarDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet : com/github/mikephil/charting/interfaces/datasets/IDataSet {
+	public abstract fun getHighlightColor ()I
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/IBubbleDataSet : com/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet {
+	public abstract fun getHighlightCircleWidth ()F
+	public abstract fun getMaxSize ()F
+	public abstract fun isNormalizeSizeEnabled ()Z
+	public abstract fun setHighlightCircleWidth (F)V
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/IBubbleDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/IBubbleDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/ICandleDataSet : com/github/mikephil/charting/interfaces/datasets/ILineScatterCandleRadarDataSet {
+	public abstract fun getBarSpace ()F
+	public abstract fun getDecreasingColor ()I
+	public abstract fun getDecreasingPaintStyle ()Landroid/graphics/Paint$Style;
+	public abstract fun getIncreasingColor ()I
+	public abstract fun getIncreasingPaintStyle ()Landroid/graphics/Paint$Style;
+	public abstract fun getNeutralColor ()I
+	public abstract fun getShadowColor ()I
+	public abstract fun getShadowColorSameAsCandle ()Z
+	public abstract fun getShadowWidth ()F
+	public abstract fun getShowCandleBar ()Z
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/ICandleDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/ICandleDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/IDataSet {
+	public abstract fun addEntry (Lcom/github/mikephil/charting/data/Entry;)Z
+	public abstract fun addEntryOrdered (Lcom/github/mikephil/charting/data/Entry;)V
+	public abstract fun calcMinMax ()V
+	public abstract fun calcMinMaxY (FF)V
+	public abstract fun clear ()V
+	public abstract fun contains (Lcom/github/mikephil/charting/data/Entry;)Z
+	public abstract fun getAxisDependency ()Lcom/github/mikephil/charting/components/YAxis$AxisDependency;
+	public abstract fun getColor ()I
+	public abstract fun getColor (I)I
+	public abstract fun getColors ()Ljava/util/List;
+	public abstract fun getEntriesForXValue (F)Ljava/util/List;
+	public abstract fun getEntryCount ()I
+	public abstract fun getEntryForIndex (I)Lcom/github/mikephil/charting/data/Entry;
+	public abstract fun getEntryForXValue (FFLcom/github/mikephil/charting/data/DataSet$Rounding;)Lcom/github/mikephil/charting/data/Entry;
+	public abstract fun getEntryIndex (FFLcom/github/mikephil/charting/data/DataSet$Rounding;)I
+	public abstract fun getEntryIndex (Lcom/github/mikephil/charting/data/Entry;)I
+	public abstract fun getForm ()Lcom/github/mikephil/charting/components/Legend$LegendForm;
+	public abstract fun getFormLineDashEffect ()Landroid/graphics/DashPathEffect;
+	public abstract fun getFormLineWidth ()F
+	public abstract fun getFormSize ()F
+	public abstract fun getHasNonFiniteY ()Z
+	public abstract fun getIconsOffset ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public abstract fun getIndexInEntries (I)I
+	public abstract fun getLabel ()Ljava/lang/String;
+	public abstract fun getNeedsFormatter ()Z
+	public abstract fun getValueFormatter ()Lcom/github/mikephil/charting/formatter/IValueFormatter;
+	public abstract fun getValueTextColor ()I
+	public abstract fun getValueTextColor (I)I
+	public abstract fun getValueTextColors ()Ljava/util/List;
+	public abstract fun getValueTextSize ()F
+	public abstract fun getValueTypeface ()Landroid/graphics/Typeface;
+	public abstract fun getXMax ()F
+	public abstract fun getXMin ()F
+	public abstract fun getYMax ()F
+	public abstract fun getYMin ()F
+	public abstract fun isDrawIconsEnabled ()Z
+	public abstract fun isDrawValuesEnabled ()Z
+	public abstract fun isHighlightEnabled ()Z
+	public abstract fun isVisible ()Z
+	public abstract fun removeEntry (I)Z
+	public abstract fun removeEntry (Lcom/github/mikephil/charting/data/Entry;)Z
+	public abstract fun removeEntryByXValue (F)Z
+	public abstract fun removeFirst ()Z
+	public abstract fun removeLast ()Z
+	public abstract fun setAxisDependency (Lcom/github/mikephil/charting/components/YAxis$AxisDependency;)V
+	public abstract fun setDrawIconsEnabled (Z)V
+	public abstract fun setDrawValuesEnabled (Z)V
+	public abstract fun setHighlightEnabled (Z)V
+	public abstract fun setIconsOffset (Lcom/github/mikephil/charting/utils/MPPointF;)V
+	public abstract fun setLabel (Ljava/lang/String;)V
+	public abstract fun setValueFormatter (Lcom/github/mikephil/charting/formatter/IValueFormatter;)V
+	public abstract fun setValueTextColor (I)V
+	public abstract fun setValueTextColors (Ljava/util/List;)V
+	public abstract fun setValueTextSize (F)V
+	public abstract fun setValueTypeface (Landroid/graphics/Typeface;)V
+	public abstract fun setVisible (Z)V
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/IDataSet$DefaultImpls {
+	public static synthetic fun getEntryForXValue$default (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;FFLcom/github/mikephil/charting/data/DataSet$Rounding;ILjava/lang/Object;)Lcom/github/mikephil/charting/data/Entry;
+	public static synthetic fun getEntryIndex$default (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;FFLcom/github/mikephil/charting/data/DataSet$Rounding;ILjava/lang/Object;)I
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/ILineDataSet : com/github/mikephil/charting/interfaces/datasets/ILineRadarDataSet {
+	public abstract fun getCircleColor (I)I
+	public abstract fun getCircleColorCount ()I
+	public abstract fun getCircleHoleColor ()I
+	public abstract fun getCircleHoleRadius ()F
+	public abstract fun getCircleRadius ()F
+	public abstract fun getCubicIntensity ()F
+	public abstract fun getDashPathEffect ()Landroid/graphics/DashPathEffect;
+	public abstract fun getFillFormatter ()Lcom/github/mikephil/charting/formatter/IFillFormatter;
+	public abstract fun getHighlightCircleRadius ()F
+	public abstract fun getMode ()Lcom/github/mikephil/charting/data/LineDataSet$Mode;
+	public abstract fun isDashedLineEnabled ()Z
+	public abstract fun isDrawCircleHoleEnabled ()Z
+	public abstract fun isDrawCirclesEnabled ()Z
+	public abstract fun isDrawHighlightCircleEnabled ()Z
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/ILineDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/ILineRadarDataSet : com/github/mikephil/charting/interfaces/datasets/ILineScatterCandleRadarDataSet {
+	public abstract fun getFillAlpha ()I
+	public abstract fun getFillColor ()I
+	public abstract fun getFillDrawable ()Landroid/graphics/drawable/Drawable;
+	public abstract fun getLineWidth ()F
+	public abstract fun isDrawFilledEnabled ()Z
+	public abstract fun setDrawFilledEnabled (Z)V
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/ILineRadarDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/ILineRadarDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/ILineScatterCandleRadarDataSet : com/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet {
+	public abstract fun getDashPathEffectHighlight ()Landroid/graphics/DashPathEffect;
+	public abstract fun getHighlightLineWidth ()F
+	public abstract fun getHorizontalHighlightIndicatorSpan ()Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+	public abstract fun getVerticalHighlightIndicatorSpan ()Lcom/github/mikephil/charting/highlight/HighlightLineSpan;
+	public abstract fun isHorizontalHighlightIndicatorEnabled ()Z
+	public abstract fun isVerticalHighlightIndicatorEnabled ()Z
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/ILineScatterCandleRadarDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/ILineScatterCandleRadarDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/IPieDataSet : com/github/mikephil/charting/interfaces/datasets/IDataSet {
+	public abstract fun getHighlightColor ()Ljava/lang/Integer;
+	public abstract fun getSelectionShift ()F
+	public abstract fun getSliceSpace ()F
+	public abstract fun getValueLineColor ()I
+	public abstract fun getValueLinePart1Length ()F
+	public abstract fun getValueLinePart1OffsetPercentage ()F
+	public abstract fun getValueLinePart2Length ()F
+	public abstract fun getValueLineWidth ()F
+	public abstract fun getXValuePosition ()Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;
+	public abstract fun getYValuePosition ()Lcom/github/mikephil/charting/data/PieDataSet$ValuePosition;
+	public abstract fun isAutomaticallyDisableSliceSpacingEnabled ()Z
+	public abstract fun isUseValueColorForLineEnabled ()Z
+	public abstract fun isValueLineVariableLength ()Z
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/IPieDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/IPieDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/IRadarDataSet : com/github/mikephil/charting/interfaces/datasets/ILineRadarDataSet {
+	public abstract fun getCornerRadius ()F
+	public abstract fun getHighlightCircleFillColor ()I
+	public abstract fun getHighlightCircleInnerRadius ()F
+	public abstract fun getHighlightCircleOuterRadius ()F
+	public abstract fun getHighlightCircleStrokeAlpha ()I
+	public abstract fun getHighlightCircleStrokeColor ()I
+	public abstract fun getHighlightCircleStrokeWidth ()F
+	public abstract fun isDrawHighlightCircleEnabled ()Z
+	public abstract fun setDrawHighlightCircleEnabled (Z)V
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/IRadarDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/IRadarDataSet;)Z
+}
+
+public abstract interface class com/github/mikephil/charting/interfaces/datasets/IScatterDataSet : com/github/mikephil/charting/interfaces/datasets/ILineScatterCandleRadarDataSet {
+	public abstract fun getScatterShapeHoleColor ()I
+	public abstract fun getScatterShapeHoleRadius ()F
+	public abstract fun getScatterShapeSize ()F
+	public abstract fun getShapeRenderer ()Lcom/github/mikephil/charting/renderer/scatter/IShapeRenderer;
+}
+
+public final class com/github/mikephil/charting/interfaces/datasets/IScatterDataSet$DefaultImpls {
+	public static fun getHasNonFiniteY (Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;)Z
+}
+
+public final class com/github/mikephil/charting/jobs/AnimatedMoveViewJob : com/github/mikephil/charting/jobs/AnimatedViewPortJob {
+	public static final field Companion Lcom/github/mikephil/charting/jobs/AnimatedMoveViewJob$Companion;
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLcom/github/mikephil/charting/utils/Transformer;Landroid/view/View;FFJ)V
+	public fun instantiate ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+	public fun onAnimationUpdate (Landroid/animation/ValueAnimator;)V
+	public fun recycleSelf ()V
+}
+
+public final class com/github/mikephil/charting/jobs/AnimatedMoveViewJob$Companion {
+	public final fun getInstance (Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLcom/github/mikephil/charting/utils/Transformer;Landroid/view/View;FFJ)Lcom/github/mikephil/charting/jobs/AnimatedMoveViewJob;
+	public final fun recycleInstance (Lcom/github/mikephil/charting/jobs/AnimatedMoveViewJob;)V
+}
+
+public abstract class com/github/mikephil/charting/jobs/AnimatedViewPortJob : com/github/mikephil/charting/jobs/ViewPortJob, android/animation/Animator$AnimatorListener, android/animation/ValueAnimator$AnimatorUpdateListener {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLcom/github/mikephil/charting/utils/Transformer;Landroid/view/View;FFJ)V
+	protected final fun getAnimator ()Landroid/animation/ValueAnimator;
+	public final fun getPhase ()F
+	public final fun getXOrigin ()F
+	public final fun getYOrigin ()F
+	public fun onAnimationCancel (Landroid/animation/Animator;)V
+	public fun onAnimationEnd (Landroid/animation/Animator;)V
+	public fun onAnimationRepeat (Landroid/animation/Animator;)V
+	public fun onAnimationStart (Landroid/animation/Animator;)V
+	public fun onAnimationUpdate (Landroid/animation/ValueAnimator;)V
+	public abstract fun recycleSelf ()V
+	protected final fun resetAnimator ()V
+	public fun run ()V
+	public final fun setPhase (F)V
+	protected final fun setXOrigin (F)V
+	protected final fun setYOrigin (F)V
+}
+
+public final class com/github/mikephil/charting/jobs/AnimatedZoomJob : com/github/mikephil/charting/jobs/AnimatedViewPortJob {
+	public static final field Companion Lcom/github/mikephil/charting/jobs/AnimatedZoomJob$Companion;
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Landroid/view/View;Lcom/github/mikephil/charting/utils/Transformer;Lcom/github/mikephil/charting/components/YAxis;FFFFFFFFFJ)V
+	public fun instantiate ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+	public fun onAnimationCancel (Landroid/animation/Animator;)V
+	public fun onAnimationEnd (Landroid/animation/Animator;)V
+	public fun onAnimationRepeat (Landroid/animation/Animator;)V
+	public fun onAnimationStart (Landroid/animation/Animator;)V
+	public fun onAnimationUpdate (Landroid/animation/ValueAnimator;)V
+	public fun recycleSelf ()V
+}
+
+public final class com/github/mikephil/charting/jobs/AnimatedZoomJob$Companion {
+	public final fun getInstance (Lcom/github/mikephil/charting/utils/ViewPortHandler;Landroid/view/View;Lcom/github/mikephil/charting/utils/Transformer;Lcom/github/mikephil/charting/components/YAxis;FFFFFFFFFJ)Lcom/github/mikephil/charting/jobs/AnimatedZoomJob;
+}
+
+public final class com/github/mikephil/charting/jobs/MoveViewJob : com/github/mikephil/charting/jobs/ViewPortJob {
+	public static final field Companion Lcom/github/mikephil/charting/jobs/MoveViewJob$Companion;
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLcom/github/mikephil/charting/utils/Transformer;Landroid/view/View;)V
+	public fun instantiate ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+	public fun run ()V
+}
+
+public final class com/github/mikephil/charting/jobs/MoveViewJob$Companion {
+	public final fun getInstance (Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLcom/github/mikephil/charting/utils/Transformer;Landroid/view/View;)Lcom/github/mikephil/charting/jobs/MoveViewJob;
+	public final fun recycleInstance (Lcom/github/mikephil/charting/jobs/MoveViewJob;)V
+}
+
+public abstract class com/github/mikephil/charting/jobs/ViewPortJob : com/github/mikephil/charting/utils/ObjectPool$Poolable, java/lang/Runnable {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLcom/github/mikephil/charting/utils/Transformer;Landroid/view/View;)V
+	protected final fun getPts ()[F
+	protected final fun getTransformer ()Lcom/github/mikephil/charting/utils/Transformer;
+	protected final fun getView ()Landroid/view/View;
+	protected final fun getViewPortHandler ()Lcom/github/mikephil/charting/utils/ViewPortHandler;
+	public final fun getXValue ()F
+	public final fun getYValue ()F
+	protected final fun setTransformer (Lcom/github/mikephil/charting/utils/Transformer;)V
+	protected final fun setView (Landroid/view/View;)V
+	protected final fun setViewPortHandler (Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun setXValue (F)V
+	protected final fun setYValue (F)V
+}
+
+public final class com/github/mikephil/charting/jobs/ZoomJob : com/github/mikephil/charting/jobs/ViewPortJob {
+	public static final field Companion Lcom/github/mikephil/charting/jobs/ZoomJob$Companion;
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;FFFFLcom/github/mikephil/charting/utils/Transformer;Lcom/github/mikephil/charting/components/YAxis$AxisDependency;Landroid/view/View;)V
+	public fun instantiate ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+	public fun run ()V
+}
+
+public final class com/github/mikephil/charting/jobs/ZoomJob$Companion {
+	public final fun getInstance (Lcom/github/mikephil/charting/utils/ViewPortHandler;FFFFLcom/github/mikephil/charting/utils/Transformer;Lcom/github/mikephil/charting/components/YAxis$AxisDependency;Landroid/view/View;)Lcom/github/mikephil/charting/jobs/ZoomJob;
+	public final fun recycleInstance (Lcom/github/mikephil/charting/jobs/ZoomJob;)V
+}
+
+public class com/github/mikephil/charting/listener/BarLineChartTouchListener : com/github/mikephil/charting/listener/ChartTouchListener {
+	public fun <init> (Lcom/github/mikephil/charting/charts/BarLineChartBase;Landroid/graphics/Matrix;F)V
+	public final fun computeScroll ()V
+	public final fun getDragTriggerDist ()F
+	public final fun getMatrix ()Landroid/graphics/Matrix;
+	public final fun getTrans (FF)Lcom/github/mikephil/charting/utils/MPPointF;
+	public fun onDoubleTap (Landroid/view/MotionEvent;)Z
+	public fun onFling (Landroid/view/MotionEvent;Landroid/view/MotionEvent;FF)Z
+	public fun onLongPress (Landroid/view/MotionEvent;)V
+	public fun onSingleTapUp (Landroid/view/MotionEvent;)Z
+	public fun onTouch (Landroid/view/View;Landroid/view/MotionEvent;)Z
+	public final fun setDragTriggerDist (F)V
+	public final fun stopDeceleration ()V
+}
+
+public abstract class com/github/mikephil/charting/listener/ChartTouchListener : android/view/GestureDetector$SimpleOnGestureListener, android/view/View$OnTouchListener {
+	public static final field Companion Lcom/github/mikephil/charting/listener/ChartTouchListener$Companion;
+	public static final field DRAG I
+	public static final field NONE I
+	public static final field PINCH_ZOOM I
+	public static final field POST_ZOOM I
+	public static final field ROTATE I
+	public static final field X_ZOOM I
+	public static final field Y_ZOOM I
+	public fun <init> (Lcom/github/mikephil/charting/charts/Chart;)V
+	public final fun endAction (Landroid/view/MotionEvent;)V
+	protected final fun getChart ()Lcom/github/mikephil/charting/charts/Chart;
+	protected final fun getGestureDetector ()Landroid/view/GestureDetector;
+	public final fun getLastGesture ()Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public final fun getLastHighlighted ()Lcom/github/mikephil/charting/highlight/Highlight;
+	public final fun getTouchMode ()I
+	protected final fun performHighlight (Lcom/github/mikephil/charting/highlight/Highlight;Landroid/view/MotionEvent;)V
+	protected final fun setLastGesture (Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;)V
+	public final fun setLastHighlighted (Lcom/github/mikephil/charting/highlight/Highlight;)V
+	protected final fun setTouchMode (I)V
+	public final fun startAction (Landroid/view/MotionEvent;)V
+}
+
+public final class com/github/mikephil/charting/listener/ChartTouchListener$ChartGesture : java/lang/Enum {
+	public static final field DOUBLE_TAP Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field DRAG Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field FLING Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field LONG_PRESS Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field NONE Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field PINCH_ZOOM Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field ROTATE Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field SINGLE_TAP Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field X_ZOOM Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static final field Y_ZOOM Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+	public static fun values ()[Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;
+}
+
+public final class com/github/mikephil/charting/listener/ChartTouchListener$Companion {
+	public final fun distance (FFFF)F
+}
+
+public abstract interface class com/github/mikephil/charting/listener/OnChartGestureListener {
+	public abstract fun onChartDoubleTapped (Landroid/view/MotionEvent;)V
+	public abstract fun onChartFling (Landroid/view/MotionEvent;Landroid/view/MotionEvent;FF)V
+	public abstract fun onChartGestureEnd (Landroid/view/MotionEvent;Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;)V
+	public abstract fun onChartGestureStart (Landroid/view/MotionEvent;Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;)V
+	public abstract fun onChartLongPressed (Landroid/view/MotionEvent;)V
+	public abstract fun onChartScale (Landroid/view/MotionEvent;FF)V
+	public abstract fun onChartSingleTapped (Landroid/view/MotionEvent;)V
+	public abstract fun onChartTranslate (Landroid/view/MotionEvent;FF)V
+}
+
+public final class com/github/mikephil/charting/listener/OnChartGestureListener$DefaultImpls {
+	public static fun onChartDoubleTapped (Lcom/github/mikephil/charting/listener/OnChartGestureListener;Landroid/view/MotionEvent;)V
+	public static fun onChartFling (Lcom/github/mikephil/charting/listener/OnChartGestureListener;Landroid/view/MotionEvent;Landroid/view/MotionEvent;FF)V
+	public static fun onChartGestureEnd (Lcom/github/mikephil/charting/listener/OnChartGestureListener;Landroid/view/MotionEvent;Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;)V
+	public static fun onChartGestureStart (Lcom/github/mikephil/charting/listener/OnChartGestureListener;Landroid/view/MotionEvent;Lcom/github/mikephil/charting/listener/ChartTouchListener$ChartGesture;)V
+	public static fun onChartLongPressed (Lcom/github/mikephil/charting/listener/OnChartGestureListener;Landroid/view/MotionEvent;)V
+	public static fun onChartScale (Lcom/github/mikephil/charting/listener/OnChartGestureListener;Landroid/view/MotionEvent;FF)V
+	public static fun onChartSingleTapped (Lcom/github/mikephil/charting/listener/OnChartGestureListener;Landroid/view/MotionEvent;)V
+	public static fun onChartTranslate (Lcom/github/mikephil/charting/listener/OnChartGestureListener;Landroid/view/MotionEvent;FF)V
+}
+
+public abstract interface class com/github/mikephil/charting/listener/OnChartValueSelectedListener {
+	public abstract fun onNothingSelected ()V
+	public abstract fun onValueSelected (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/highlight/Highlight;)V
+}
+
+public class com/github/mikephil/charting/listener/PieRadarChartTouchListener : com/github/mikephil/charting/listener/ChartTouchListener {
+	public fun <init> (Lcom/github/mikephil/charting/charts/PieRadarChartBase;)V
+	public final fun computeScroll ()V
+	public fun onLongPress (Landroid/view/MotionEvent;)V
+	public fun onSingleTapConfirmed (Landroid/view/MotionEvent;)Z
+	public fun onSingleTapUp (Landroid/view/MotionEvent;)Z
+	public fun onTouch (Landroid/view/View;Landroid/view/MotionEvent;)Z
+	public final fun setGestureStartAngle (FF)V
+	public final fun stopDeceleration ()V
+	public final fun updateGestureRotation (FF)V
+}
+
+public abstract class com/github/mikephil/charting/renderer/AxisRenderer : com/github/mikephil/charting/renderer/Renderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Lcom/github/mikephil/charting/utils/Transformer;Lcom/github/mikephil/charting/components/AxisBase;)V
+	public fun computeAxis (FFZ)V
+	protected fun computeAxisValues (FF)V
+	protected final fun getAxis ()Lcom/github/mikephil/charting/components/AxisBase;
+	protected final fun getComputeAxisPoint1 ()Lcom/github/mikephil/charting/utils/MPPointD;
+	protected final fun getComputeAxisPoint2 ()Lcom/github/mikephil/charting/utils/MPPointD;
+	protected final fun getLimitLinePaint ()Landroid/graphics/Paint;
+	public final fun getPaintAxisLabels ()Landroid/graphics/Paint;
+	public final fun getPaintAxisLine ()Landroid/graphics/Paint;
+	public final fun getPaintGrid ()Landroid/graphics/Paint;
+	public final fun getTransformer ()Lcom/github/mikephil/charting/utils/Transformer;
+	protected fun minimumInterval (D)D
+	public abstract fun renderAxisLabels (Landroid/graphics/Canvas;)V
+	public abstract fun renderAxisLine (Landroid/graphics/Canvas;)V
+	public abstract fun renderGridLines (Landroid/graphics/Canvas;)V
+	public abstract fun renderLimitLines (Landroid/graphics/Canvas;)V
+}
+
+public class com/github/mikephil/charting/renderer/BarChartRenderer : com/github/mikephil/charting/renderer/BarLineScatterCandleBubbleRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/BarDataProvider;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun barCorners (Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;IILcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;)Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	public static synthetic fun barCorners$default (Lcom/github/mikephil/charting/renderer/BarChartRenderer;Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;IILcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;ILjava/lang/Object;)Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	protected final fun buffersFitData (Lcom/github/mikephil/charting/data/BarData;)Z
+	protected final fun drawBarShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;FFFFLcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;Lkotlin/jvm/functions/Function0;)V
+	public fun drawData (Landroid/graphics/Canvas;)V
+	protected fun drawDataSet (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;I)V
+	public fun drawExtras (Landroid/graphics/Canvas;)V
+	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected final fun getBarBorderPaint ()Landroid/graphics/Paint;
+	protected final fun getBarBuffers ()[Lcom/github/mikephil/charting/buffer/BarBuffer;
+	protected final fun getBarRect ()Landroid/graphics/RectF;
+	protected final fun getBarShadowRectBuffer ()Landroid/graphics/RectF;
+	protected final fun getBarShapePath ()Landroid/graphics/Path;
+	protected final fun getBarShapeRadii ()[F
+	protected final fun getChart ()Lcom/github/mikephil/charting/interfaces/dataprovider/BarDataProvider;
+	protected final fun getShadowPaint ()Landroid/graphics/Paint;
+	public fun initBuffers ()V
+	protected fun prepareBarHighlight (FFFFLcom/github/mikephil/charting/utils/Transformer;)V
+	protected final fun setBarBuffers ([Lcom/github/mikephil/charting/buffer/BarBuffer;)V
+	protected fun setHighlightDrawPos (Lcom/github/mikephil/charting/highlight/Highlight;Landroid/graphics/RectF;)V
+}
+
+protected final class com/github/mikephil/charting/renderer/BarChartRenderer$BarCorners : java/lang/Enum {
+	public static final field ALL Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	public static final field BOTTOM Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	public static final field LEFT Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	public static final field NONE Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	public static final field RIGHT Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	public static final field TOP Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+	public static fun values ()[Lcom/github/mikephil/charting/renderer/BarChartRenderer$BarCorners;
+}
+
+public abstract class com/github/mikephil/charting/renderer/BarLineScatterCandleBubbleRenderer : com/github/mikephil/charting/renderer/DataRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected fun getXAxisPixels ()F
+	protected final fun getXBounds ()Lcom/github/mikephil/charting/renderer/BarLineScatterCandleBubbleRenderer$XBounds;
+	protected final fun isInBoundsX (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;)Z
+	protected final fun shouldDrawValues (Lcom/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider;Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;)Z
+	protected final fun shouldDrawValues (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)Z
+	protected final fun visibleEntryCount (Lcom/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider;Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;)I
+}
+
+protected final class com/github/mikephil/charting/renderer/BarLineScatterCandleBubbleRenderer$XBounds {
+	public fun <init> (Lcom/github/mikephil/charting/renderer/BarLineScatterCandleBubbleRenderer;)V
+	public final fun getMax ()I
+	public final fun getMin ()I
+	public final fun getRange ()I
+	public final fun set (Lcom/github/mikephil/charting/interfaces/dataprovider/BarLineScatterCandleBubbleDataProvider;Lcom/github/mikephil/charting/interfaces/datasets/IBarLineScatterCandleBubbleDataSet;)V
+	public final fun setMax (I)V
+	public final fun setMin (I)V
+	public final fun setRange (I)V
+}
+
+public class com/github/mikephil/charting/renderer/BubbleChartRenderer : com/github/mikephil/charting/renderer/BarLineScatterCandleBubbleRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/BubbleDataProvider;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	public fun drawData (Landroid/graphics/Canvas;)V
+	protected final fun drawDataSet (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IBubbleDataSet;)V
+	public fun drawExtras (Landroid/graphics/Canvas;)V
+	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected final fun getChart ()Lcom/github/mikephil/charting/interfaces/dataprovider/BubbleDataProvider;
+	protected final fun getShapeSize (FFFZ)F
+	public fun initBuffers ()V
+}
+
+public class com/github/mikephil/charting/renderer/CandleStickChartRenderer : com/github/mikephil/charting/renderer/LineScatterCandleRadarRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/CandleDataProvider;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	public fun drawData (Landroid/graphics/Canvas;)V
+	protected fun drawDataSet (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/ICandleDataSet;)V
+	public fun drawExtras (Landroid/graphics/Canvas;)V
+	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected final fun getChart ()Lcom/github/mikephil/charting/interfaces/dataprovider/CandleDataProvider;
+	public fun initBuffers ()V
+}
+
+public class com/github/mikephil/charting/renderer/CombinedChartRenderer : com/github/mikephil/charting/renderer/DataRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/charts/CombinedChart;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	public fun createRenderers ()V
+	public fun drawData (Landroid/graphics/Canvas;)V
+	public fun drawExtras (Landroid/graphics/Canvas;)V
+	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected final fun getChart ()Ljava/lang/ref/WeakReference;
+	public final fun getSubRenderer (I)Lcom/github/mikephil/charting/renderer/DataRenderer;
+	public final fun getSubRenderers ()Ljava/util/List;
+	public fun initBuffers ()V
+	public final fun setSubRenderers (Ljava/util/List;)V
+}
+
+public abstract class com/github/mikephil/charting/renderer/DataRenderer : com/github/mikephil/charting/renderer/Renderer {
+	public fun <init> (Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun applyValueTextStyle (Lcom/github/mikephil/charting/interfaces/datasets/IDataSet;)V
+	public abstract fun drawData (Landroid/graphics/Canvas;)V
+	public abstract fun drawExtras (Landroid/graphics/Canvas;)V
+	public abstract fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	public fun drawValue (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/formatter/IValueFormatter;FILcom/github/mikephil/charting/data/Entry;IFFI)V
+	public fun drawValue (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/formatter/IValueFormatter;FLcom/github/mikephil/charting/data/Entry;IFFI)V
+	public abstract fun drawValues (Landroid/graphics/Canvas;)V
+	protected final fun getAnimator ()Lcom/github/mikephil/charting/animation/ChartAnimator;
+	protected final fun getHighlightPaint ()Landroid/graphics/Paint;
+	public final fun getPaintHighlight ()Landroid/graphics/Paint;
+	public final fun getPaintRender ()Landroid/graphics/Paint;
+	public final fun getPaintValues ()Landroid/graphics/Paint;
+	protected final fun getRenderPaint ()Landroid/graphics/Paint;
+	protected final fun getValuePaint ()Landroid/graphics/Paint;
+	public abstract fun initBuffers ()V
+}
+
+public class com/github/mikephil/charting/renderer/HorizontalBarChartRenderer : com/github/mikephil/charting/renderer/BarChartRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/BarDataProvider;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected fun drawDataSet (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IBarDataSet;I)V
+	protected fun drawValue (Landroid/graphics/Canvas;Ljava/lang/String;FFI)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected fun getXAxisPixels ()F
+	public fun initBuffers ()V
+	protected fun prepareBarHighlight (FFFFLcom/github/mikephil/charting/utils/Transformer;)V
+}
+
+public class com/github/mikephil/charting/renderer/LegendRenderer : com/github/mikephil/charting/renderer/Renderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Lcom/github/mikephil/charting/components/Legend;)V
+	public final fun computeLegend (Lcom/github/mikephil/charting/data/ChartData;)V
+	protected fun drawForm (Landroid/graphics/Canvas;FFLcom/github/mikephil/charting/components/LegendEntry;Lcom/github/mikephil/charting/components/Legend;)V
+	protected fun drawLabel (Landroid/graphics/Canvas;FFLjava/lang/String;)V
+	protected final fun getComputedEntries ()Ljava/util/List;
+	public final fun getFormPaint ()Landroid/graphics/Paint;
+	public final fun getLabelPaint ()Landroid/graphics/Paint;
+	protected final fun getLegend ()Lcom/github/mikephil/charting/components/Legend;
+	public final fun renderLegend (Landroid/graphics/Canvas;)V
+	public final fun setLabelPaint (Landroid/graphics/Paint;)V
+}
+
+public class com/github/mikephil/charting/renderer/LineChartRenderer : com/github/mikephil/charting/renderer/LineRadarRenderer {
+	public static final field MAX_LINE_FLOATS I
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/LineDataProvider;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected fun drawCircles (Landroid/graphics/Canvas;)V
+	protected fun drawCubicBezier (Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;)V
+	protected fun drawCubicFill (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;Landroid/graphics/Path;Lcom/github/mikephil/charting/utils/Transformer;)V
+	public fun drawData (Landroid/graphics/Canvas;)V
+	protected fun drawDataSet (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;)V
+	public fun drawExtras (Landroid/graphics/Canvas;)V
+	protected fun drawHighlightCircle (Landroid/graphics/Canvas;FFLcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;)V
+	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	protected fun drawHorizontalBezier (Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;)V
+	protected fun drawLinear (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;)V
+	protected fun drawLinearFill (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;Lcom/github/mikephil/charting/utils/Transformer;)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected final fun generateFilledPath (Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;IILandroid/graphics/Path;)V
+	protected final fun getBitmapCanvas ()Landroid/graphics/Canvas;
+	public final fun getBitmapConfig ()Landroid/graphics/Bitmap$Config;
+	protected final fun getChart ()Lcom/github/mikephil/charting/interfaces/dataprovider/LineDataProvider;
+	protected final fun getCirclePaintInner ()Landroid/graphics/Paint;
+	protected final fun getCubicFillPath ()Landroid/graphics/Path;
+	protected final fun getCubicPath ()Landroid/graphics/Path;
+	protected final fun getDrawBitmap ()Ljava/lang/ref/WeakReference;
+	protected final fun getGenerateFilledPathBuffer ()Landroid/graphics/Path;
+	public fun initBuffers ()V
+	protected final fun reducedEntry (Lcom/github/mikephil/charting/interfaces/datasets/ILineDataSet;I)Lcom/github/mikephil/charting/data/Entry;
+	public final fun releaseBitmap ()V
+	protected final fun setBitmapCanvas (Landroid/graphics/Canvas;)V
+	public final fun setBitmapConfig (Landroid/graphics/Bitmap$Config;)V
+	protected final fun setDrawBitmap (Ljava/lang/ref/WeakReference;)V
+}
+
+public abstract class com/github/mikephil/charting/renderer/LineRadarRenderer : com/github/mikephil/charting/renderer/LineScatterCandleRadarRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun drawFilledPath (Landroid/graphics/Canvas;Landroid/graphics/Path;II)V
+	protected final fun drawFilledPath (Landroid/graphics/Canvas;Landroid/graphics/Path;Landroid/graphics/drawable/Drawable;)V
+}
+
+public abstract class com/github/mikephil/charting/renderer/LineScatterCandleRadarRenderer : com/github/mikephil/charting/renderer/BarLineScatterCandleBubbleRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun drawHighlightLines (Landroid/graphics/Canvas;FFLcom/github/mikephil/charting/interfaces/datasets/ILineScatterCandleRadarDataSet;)V
+}
+
+public class com/github/mikephil/charting/renderer/PieChartRenderer : com/github/mikephil/charting/renderer/DataRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/charts/PieChart;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun calculateMinimumRadiusForSpacedSlice (Lcom/github/mikephil/charting/utils/MPPointF;FFFFFF)F
+	protected fun drawCenterText (Landroid/graphics/Canvas;)V
+	public fun drawData (Landroid/graphics/Canvas;)V
+	protected fun drawDataSet (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IPieDataSet;)V
+	protected fun drawEntryLabel (Landroid/graphics/Canvas;Ljava/lang/String;FF)V
+	public fun drawExtras (Landroid/graphics/Canvas;)V
+	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	protected fun drawHole (Landroid/graphics/Canvas;)V
+	protected fun drawRoundedSlices (Landroid/graphics/Canvas;)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected final fun getBitmapCanvas ()Landroid/graphics/Canvas;
+	protected final fun getChart ()Lcom/github/mikephil/charting/charts/PieChart;
+	protected final fun getDrawBitmap ()Ljava/lang/ref/WeakReference;
+	protected final fun getDrawCenterTextPathBuffer ()Landroid/graphics/Path;
+	protected final fun getDrawHighlightedRectF ()Landroid/graphics/RectF;
+	public final fun getPaintCenterText ()Landroid/text/TextPaint;
+	public final fun getPaintEntryLabels ()Landroid/graphics/Paint;
+	public final fun getPaintHole ()Landroid/graphics/Paint;
+	public final fun getPaintTransparentCircle ()Landroid/graphics/Paint;
+	protected final fun getSliceSpace (Lcom/github/mikephil/charting/interfaces/datasets/IPieDataSet;)F
+	protected final fun getValueLinePaint ()Landroid/graphics/Paint;
+	public fun initBuffers ()V
+	public final fun releaseBitmap ()V
+	protected final fun setBitmapCanvas (Landroid/graphics/Canvas;)V
+	protected final fun setDrawBitmap (Ljava/lang/ref/WeakReference;)V
+	public final fun setPaintCenterText (Landroid/text/TextPaint;)V
+	public final fun setPaintHole (Landroid/graphics/Paint;)V
+}
+
+public class com/github/mikephil/charting/renderer/RadarChartRenderer : com/github/mikephil/charting/renderer/LineRadarRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/charts/RadarChart;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	public fun drawData (Landroid/graphics/Canvas;)V
+	protected fun drawDataSet (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IRadarDataSet;I)V
+	public fun drawExtras (Landroid/graphics/Canvas;)V
+	public fun drawHighlightCircle (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/utils/MPPointF;FFIIF)V
+	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected fun drawWeb (Landroid/graphics/Canvas;)V
+	protected final fun getChart ()Lcom/github/mikephil/charting/charts/RadarChart;
+	protected final fun getHighlightCirclePaint ()Landroid/graphics/Paint;
+	public final fun getWebPaint ()Landroid/graphics/Paint;
+	public fun initBuffers ()V
+}
+
+public abstract class com/github/mikephil/charting/renderer/Renderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun getViewPortHandler ()Lcom/github/mikephil/charting/utils/ViewPortHandler;
+}
+
+public class com/github/mikephil/charting/renderer/ScatterChartRenderer : com/github/mikephil/charting/renderer/LineScatterCandleRadarRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/interfaces/dataprovider/ScatterDataProvider;Lcom/github/mikephil/charting/animation/ChartAnimator;Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	public fun drawData (Landroid/graphics/Canvas;)V
+	protected fun drawDataSet (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;)V
+	public fun drawExtras (Landroid/graphics/Canvas;)V
+	public fun drawHighlighted (Landroid/graphics/Canvas;Ljava/util/List;)V
+	public fun drawValues (Landroid/graphics/Canvas;)V
+	protected final fun getChart ()Lcom/github/mikephil/charting/interfaces/dataprovider/ScatterDataProvider;
+	public fun initBuffers ()V
+}
+
+public class com/github/mikephil/charting/renderer/XAxisRenderer : com/github/mikephil/charting/renderer/AxisRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Lcom/github/mikephil/charting/components/XAxis;Lcom/github/mikephil/charting/utils/Transformer;)V
+	public fun computeAxis (FFZ)V
+	protected fun computeAxisValues (FF)V
+	protected fun computeSize ()V
+	protected fun drawGridLine (Landroid/graphics/Canvas;FFLandroid/graphics/Path;)V
+	protected fun drawLabel (Landroid/graphics/Canvas;Ljava/lang/String;FFLcom/github/mikephil/charting/utils/MPPointF;F)V
+	protected fun drawLabels (Landroid/graphics/Canvas;FLcom/github/mikephil/charting/utils/MPPointF;)V
+	public fun getGridClippingRect ()Landroid/graphics/RectF;
+	protected final fun getGridClippingRectBuffer ()Landroid/graphics/RectF;
+	protected final fun getLimitLineClippingRect ()Landroid/graphics/RectF;
+	protected final fun getRenderGridLinesBuffer ()[F
+	protected final fun getRenderGridLinesPath ()Landroid/graphics/Path;
+	protected final fun getRenderLimitLinesBuffer ()[F
+	protected final fun getXAxis ()Lcom/github/mikephil/charting/components/XAxis;
+	protected fun minimumInterval (D)D
+	public fun renderAxisLabels (Landroid/graphics/Canvas;)V
+	public fun renderAxisLine (Landroid/graphics/Canvas;)V
+	public fun renderGridLines (Landroid/graphics/Canvas;)V
+	public final fun renderLimitLineLabel (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/components/LimitLine;[FF)V
+	public final fun renderLimitLineLine (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/components/LimitLine;[F)V
+	public fun renderLimitLines (Landroid/graphics/Canvas;)V
+	protected final fun setRenderGridLinesBuffer ([F)V
+	protected final fun setupGridPaint ()V
+}
+
+public class com/github/mikephil/charting/renderer/XAxisRendererHorizontalBarChart : com/github/mikephil/charting/renderer/XAxisRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Lcom/github/mikephil/charting/components/XAxis;Lcom/github/mikephil/charting/utils/Transformer;Lcom/github/mikephil/charting/charts/BarChart;)V
+	public fun computeAxis (FFZ)V
+	protected fun computeSize ()V
+	protected fun drawGridLine (Landroid/graphics/Canvas;FFLandroid/graphics/Path;)V
+	protected fun drawLabels (Landroid/graphics/Canvas;FLcom/github/mikephil/charting/utils/MPPointF;)V
+	protected final fun getChart ()Lcom/github/mikephil/charting/charts/BarChart;
+	public fun getGridClippingRect ()Landroid/graphics/RectF;
+	protected fun minimumInterval (D)D
+	public fun renderAxisLabels (Landroid/graphics/Canvas;)V
+	public fun renderAxisLine (Landroid/graphics/Canvas;)V
+	public fun renderLimitLines (Landroid/graphics/Canvas;)V
+}
+
+public class com/github/mikephil/charting/renderer/XAxisRendererRadarChart : com/github/mikephil/charting/renderer/XAxisRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Lcom/github/mikephil/charting/components/XAxis;Lcom/github/mikephil/charting/charts/RadarChart;)V
+	public fun renderAxisLabels (Landroid/graphics/Canvas;)V
+	public fun renderLimitLines (Landroid/graphics/Canvas;)V
+}
+
+public class com/github/mikephil/charting/renderer/YAxisRenderer : com/github/mikephil/charting/renderer/AxisRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Lcom/github/mikephil/charting/components/YAxis;Lcom/github/mikephil/charting/utils/Transformer;)V
+	protected fun drawYLabels (Landroid/graphics/Canvas;F[FF)V
+	protected fun drawZeroLine (Landroid/graphics/Canvas;)V
+	protected final fun getDrawZeroLinePath ()Landroid/graphics/Path;
+	protected final fun getGetTransformedPositionsBuffer ()[F
+	public fun getGridClippingRect ()Landroid/graphics/RectF;
+	protected final fun getGridClippingRectBuffer ()Landroid/graphics/RectF;
+	protected final fun getLimitLineClippingRect ()Landroid/graphics/RectF;
+	protected final fun getRenderGridLinesPath ()Landroid/graphics/Path;
+	protected final fun getRenderLimitLines ()Landroid/graphics/Path;
+	protected final fun getRenderLimitLinesBuffer ()[F
+	protected fun getTransformedPositions ()[F
+	protected final fun getYAxis ()Lcom/github/mikephil/charting/components/YAxis;
+	protected final fun getZeroLineClippingRect ()Landroid/graphics/RectF;
+	protected final fun getZeroLinePaint ()Landroid/graphics/Paint;
+	protected fun linePath (Landroid/graphics/Path;I[F)Landroid/graphics/Path;
+	public fun renderAxisLabels (Landroid/graphics/Canvas;)V
+	public fun renderAxisLine (Landroid/graphics/Canvas;)V
+	public fun renderGridLines (Landroid/graphics/Canvas;)V
+	public fun renderLimitLines (Landroid/graphics/Canvas;)V
+	protected final fun setGetTransformedPositionsBuffer ([F)V
+}
+
+public class com/github/mikephil/charting/renderer/YAxisRendererHorizontalBarChart : com/github/mikephil/charting/renderer/YAxisRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Lcom/github/mikephil/charting/components/YAxis;Lcom/github/mikephil/charting/utils/Transformer;)V
+	public fun computeAxis (FFZ)V
+	protected fun drawYLabels (Landroid/graphics/Canvas;F[FF)V
+	protected fun drawZeroLine (Landroid/graphics/Canvas;)V
+	public fun getGridClippingRect ()Landroid/graphics/RectF;
+	protected fun getTransformedPositions ()[F
+	protected fun linePath (Landroid/graphics/Path;I[F)Landroid/graphics/Path;
+	public fun renderAxisLabels (Landroid/graphics/Canvas;)V
+	public fun renderAxisLine (Landroid/graphics/Canvas;)V
+	public fun renderLimitLines (Landroid/graphics/Canvas;)V
+}
+
+public class com/github/mikephil/charting/renderer/YAxisRendererRadarChart : com/github/mikephil/charting/renderer/YAxisRenderer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;Lcom/github/mikephil/charting/components/YAxis;Lcom/github/mikephil/charting/charts/RadarChart;)V
+	protected fun computeAxisValues (FF)V
+	public fun renderAxisLabels (Landroid/graphics/Canvas;)V
+	public fun renderLimitLines (Landroid/graphics/Canvas;)V
+}
+
+public final class com/github/mikephil/charting/renderer/scatter/ChevronDownShapeRenderer : com/github/mikephil/charting/renderer/scatter/IShapeRenderer {
+	public fun <init> ()V
+	public fun renderShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLandroid/graphics/Paint;)V
+}
+
+public final class com/github/mikephil/charting/renderer/scatter/ChevronUpShapeRenderer : com/github/mikephil/charting/renderer/scatter/IShapeRenderer {
+	public fun <init> ()V
+	public fun renderShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLandroid/graphics/Paint;)V
+}
+
+public final class com/github/mikephil/charting/renderer/scatter/CircleShapeRenderer : com/github/mikephil/charting/renderer/scatter/IShapeRenderer {
+	public fun <init> ()V
+	public fun renderShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLandroid/graphics/Paint;)V
+}
+
+public final class com/github/mikephil/charting/renderer/scatter/CrossShapeRenderer : com/github/mikephil/charting/renderer/scatter/IShapeRenderer {
+	public fun <init> ()V
+	public fun renderShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLandroid/graphics/Paint;)V
+}
+
+public abstract interface class com/github/mikephil/charting/renderer/scatter/IShapeRenderer {
+	public abstract fun renderShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLandroid/graphics/Paint;)V
+}
+
+public final class com/github/mikephil/charting/renderer/scatter/SquareShapeRenderer : com/github/mikephil/charting/renderer/scatter/IShapeRenderer {
+	public fun <init> ()V
+	public fun renderShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLandroid/graphics/Paint;)V
+}
+
+public final class com/github/mikephil/charting/renderer/scatter/TriangleShapeRenderer : com/github/mikephil/charting/renderer/scatter/IShapeRenderer {
+	public fun <init> ()V
+	public fun renderShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLandroid/graphics/Paint;)V
+}
+
+public final class com/github/mikephil/charting/renderer/scatter/XShapeRenderer : com/github/mikephil/charting/renderer/scatter/IShapeRenderer {
+	public fun <init> ()V
+	public fun renderShape (Landroid/graphics/Canvas;Lcom/github/mikephil/charting/interfaces/datasets/IScatterDataSet;Lcom/github/mikephil/charting/utils/ViewPortHandler;FFLandroid/graphics/Paint;)V
+}
+
+public final class com/github/mikephil/charting/utils/ColorTemplate {
+	public static final field COLOR_NONE I
+	public static final field COLOR_SKIP I
+	public static final field INSTANCE Lcom/github/mikephil/charting/utils/ColorTemplate;
+	public final fun colorWithAlpha (II)I
+	public final fun createColors (Landroid/content/res/Resources;Ljava/util/List;)Ljava/util/List;
+	public final fun getCOLORFUL_COLORS ()Ljava/util/List;
+	public final fun getHoloBlue ()I
+	public final fun getJOYFUL_COLORS ()Ljava/util/List;
+	public final fun getLIBERTY_COLORS ()Ljava/util/List;
+	public final fun getMATERIAL_COLORS ()Ljava/util/List;
+	public final fun getPASTEL_COLORS ()Ljava/util/List;
+	public final fun getVORDIPLOM_COLORS ()Ljava/util/List;
+	public final fun rgb (Ljava/lang/String;)I
+}
+
+public final class com/github/mikephil/charting/utils/EntryXComparator : java/util/Comparator {
+	public fun <init> ()V
+	public fun compare (Lcom/github/mikephil/charting/data/Entry;Lcom/github/mikephil/charting/data/Entry;)I
+	public synthetic fun compare (Ljava/lang/Object;Ljava/lang/Object;)I
+}
+
+public final class com/github/mikephil/charting/utils/FSize : com/github/mikephil/charting/utils/ObjectPool$Poolable {
+	public static final field Companion Lcom/github/mikephil/charting/utils/FSize$Companion;
+	public field height F
+	public field width F
+	public fun <init> ()V
+	public fun <init> (FF)V
+	public synthetic fun <init> (FFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun instantiate ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/github/mikephil/charting/utils/FSize$Companion {
+	public final fun getInstance (FF)Lcom/github/mikephil/charting/utils/FSize;
+	public final fun recycleInstance (Lcom/github/mikephil/charting/utils/FSize;)V
+	public final fun recycleInstances (Ljava/util/List;)V
+}
+
+public final class com/github/mikephil/charting/utils/FileUtils {
+	public static final field INSTANCE Lcom/github/mikephil/charting/utils/FileUtils;
+	public final fun loadBarEntriesFromAssets (Landroid/content/res/AssetManager;Ljava/lang/String;)Ljava/util/List;
+	public final fun loadEntriesFromAssets (Landroid/content/res/AssetManager;Ljava/lang/String;)Ljava/util/List;
+	public final fun loadEntriesFromFile (Ljava/lang/String;)Ljava/util/List;
+	public final fun saveToSdCard (Ljava/util/List;Ljava/lang/String;)V
+}
+
+public class com/github/mikephil/charting/utils/Fill {
+	public fun <init> ()V
+	public fun <init> (I)V
+	public fun <init> (II)V
+	public fun <init> (Landroid/graphics/drawable/Drawable;)V
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public final fun fillPath (Landroid/graphics/Canvas;Landroid/graphics/Path;Landroid/graphics/Paint;Landroid/graphics/RectF;)V
+	public final fun fillRect (Landroid/graphics/Canvas;Landroid/graphics/Paint;FFFFLcom/github/mikephil/charting/utils/Fill$Direction;)V
+	public final fun getAlpha ()I
+	public final fun getColor ()Ljava/lang/Integer;
+	public final fun getDrawable ()Landroid/graphics/drawable/Drawable;
+	public final fun getGradientColors ()Ljava/util/List;
+	public final fun getGradientPositions ()Ljava/util/List;
+	public final fun getType ()Lcom/github/mikephil/charting/utils/Fill$Type;
+	public final fun setAlpha (I)V
+	public final fun setColor (Ljava/lang/Integer;)V
+	public final fun setDrawable (Landroid/graphics/drawable/Drawable;)V
+	public final fun setGradientColors (II)V
+	public final fun setGradientColors (Ljava/util/List;)V
+	public final fun setGradientPositions (Ljava/util/List;)V
+	public final fun setType (Lcom/github/mikephil/charting/utils/Fill$Type;)V
+}
+
+public final class com/github/mikephil/charting/utils/Fill$Direction : java/lang/Enum {
+	public static final field DOWN Lcom/github/mikephil/charting/utils/Fill$Direction;
+	public static final field LEFT Lcom/github/mikephil/charting/utils/Fill$Direction;
+	public static final field RIGHT Lcom/github/mikephil/charting/utils/Fill$Direction;
+	public static final field UP Lcom/github/mikephil/charting/utils/Fill$Direction;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/utils/Fill$Direction;
+	public static fun values ()[Lcom/github/mikephil/charting/utils/Fill$Direction;
+}
+
+public final class com/github/mikephil/charting/utils/Fill$Type : java/lang/Enum {
+	public static final field COLOR Lcom/github/mikephil/charting/utils/Fill$Type;
+	public static final field DRAWABLE Lcom/github/mikephil/charting/utils/Fill$Type;
+	public static final field EMPTY Lcom/github/mikephil/charting/utils/Fill$Type;
+	public static final field LINEAR_GRADIENT Lcom/github/mikephil/charting/utils/Fill$Type;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/github/mikephil/charting/utils/Fill$Type;
+	public static fun values ()[Lcom/github/mikephil/charting/utils/Fill$Type;
+}
+
+public final class com/github/mikephil/charting/utils/HorizontalViewPortHandler : com/github/mikephil/charting/utils/ViewPortHandler {
+	public fun <init> ()V
+}
+
+public final class com/github/mikephil/charting/utils/MPPointD : com/github/mikephil/charting/utils/ObjectPool$Poolable {
+	public static final field Companion Lcom/github/mikephil/charting/utils/MPPointD$Companion;
+	public field x D
+	public field y D
+	public fun <init> (DD)V
+	public fun instantiate ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/github/mikephil/charting/utils/MPPointD$Companion {
+	public final fun getInstance (DD)Lcom/github/mikephil/charting/utils/MPPointD;
+	public final fun recycleInstance (Lcom/github/mikephil/charting/utils/MPPointD;)V
+	public final fun recycleInstances (Ljava/util/List;)V
+}
+
+public final class com/github/mikephil/charting/utils/MPPointF : com/github/mikephil/charting/utils/ObjectPool$Poolable {
+	public static final field Companion Lcom/github/mikephil/charting/utils/MPPointF$Companion;
+	public field x F
+	public field y F
+	public fun <init> ()V
+	public fun <init> (FF)V
+	public synthetic fun <init> (FFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun instantiate ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+}
+
+public final class com/github/mikephil/charting/utils/MPPointF$Companion {
+	public final fun getInstance ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getInstance (FF)Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getInstance (Lcom/github/mikephil/charting/utils/MPPointF;)Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun recycleInstance (Lcom/github/mikephil/charting/utils/MPPointF;)V
+	public final fun recycleInstances (Ljava/util/List;)V
+}
+
+public final class com/github/mikephil/charting/utils/ObjectPool {
+	public static final field Companion Lcom/github/mikephil/charting/utils/ObjectPool$Companion;
+	public synthetic fun <init> (ILcom/github/mikephil/charting/utils/ObjectPool$Poolable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun get ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+	public final fun getMaxCapacity ()I
+	public final fun getPoolCapacity ()I
+	public final fun getPoolCount ()I
+	public final fun getPoolId ()I
+	public final fun getReplenishPercentage ()F
+	public final fun recycle (Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;)V
+	public final fun recycle (Ljava/util/List;)V
+	public final fun setMaxCapacity (I)V
+	public final fun setReplenishPercentage (F)V
+}
+
+public final class com/github/mikephil/charting/utils/ObjectPool$Companion {
+	public final fun create (ILcom/github/mikephil/charting/utils/ObjectPool$Poolable;)Lcom/github/mikephil/charting/utils/ObjectPool;
+}
+
+public abstract class com/github/mikephil/charting/utils/ObjectPool$Poolable {
+	public static final field Companion Lcom/github/mikephil/charting/utils/ObjectPool$Poolable$Companion;
+	public static final field NO_OWNER I
+	public fun <init> ()V
+	public abstract fun instantiate ()Lcom/github/mikephil/charting/utils/ObjectPool$Poolable;
+}
+
+public final class com/github/mikephil/charting/utils/ObjectPool$Poolable$Companion {
+}
+
+public class com/github/mikephil/charting/utils/Transformer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	protected final fun getMatrixOffset ()Landroid/graphics/Matrix;
+	protected final fun getMatrixValueToPx ()Landroid/graphics/Matrix;
+	public final fun getOffsetMatrix ()Landroid/graphics/Matrix;
+	public final fun getPixelForValues (FF)Lcom/github/mikephil/charting/utils/MPPointD;
+	public final fun getPixelToValueMatrix ()Landroid/graphics/Matrix;
+	public final fun getValueMatrix ()Landroid/graphics/Matrix;
+	public final fun getValueToPixelMatrix ()Landroid/graphics/Matrix;
+	public final fun getValuesByTouchPoint (FF)Lcom/github/mikephil/charting/utils/MPPointD;
+	public final fun getValuesByTouchPoint (FFLcom/github/mikephil/charting/utils/MPPointD;)V
+	protected final fun getViewPortHandler ()Lcom/github/mikephil/charting/utils/ViewPortHandler;
+	public final fun pathValueToPixel (Landroid/graphics/Path;)V
+	public final fun pathValuesToPixel (Ljava/util/List;)V
+	public final fun pixelsToValue ([F)V
+	public final fun pointValuesToPixel ([F)V
+	public final fun pointValuesToPixel ([FI)V
+	public fun prepareMatrixOffset (Z)V
+	public final fun prepareMatrixValuePx (FFFF)V
+	public final fun rectToPixelPhase (Landroid/graphics/RectF;F)V
+	public final fun rectToPixelPhaseHorizontal (Landroid/graphics/RectF;F)V
+	public final fun rectValueToPixel (Landroid/graphics/RectF;)V
+	public final fun rectValueToPixelHorizontal (Landroid/graphics/RectF;)V
+	public final fun rectValueToPixelHorizontal (Landroid/graphics/RectF;F)V
+	public final fun rectValuesToPixel (Ljava/util/List;)V
+}
+
+public final class com/github/mikephil/charting/utils/TransformerHorizontalBarChart : com/github/mikephil/charting/utils/Transformer {
+	public fun <init> (Lcom/github/mikephil/charting/utils/ViewPortHandler;)V
+	public fun prepareMatrixOffset (Z)V
+}
+
+public final class com/github/mikephil/charting/utils/Utils {
+	public static final field DEG2RAD D
+	public static final field DOUBLE_EPSILON D
+	public static final field FDEG2RAD F
+	public static final field FLOAT_EPSILON F
+	public static final field INSTANCE Lcom/github/mikephil/charting/utils/Utils;
+	public final fun calcTextHeight (Landroid/graphics/Paint;Ljava/lang/String;)I
+	public final fun calcTextSize (Landroid/graphics/Paint;Ljava/lang/String;)Lcom/github/mikephil/charting/utils/FSize;
+	public final fun calcTextSize (Landroid/graphics/Paint;Ljava/lang/String;Lcom/github/mikephil/charting/utils/FSize;)V
+	public final fun calcTextWidth (Landroid/graphics/Paint;Ljava/lang/String;)I
+	public final fun convertDpToPixel (F)F
+	public final fun convertPixelsToDp (F)F
+	public final fun drawImage (Landroid/graphics/Canvas;Landroid/graphics/drawable/Drawable;IIII)V
+	public final fun drawMultilineText (Landroid/graphics/Canvas;Landroid/text/StaticLayout;FFLandroid/text/TextPaint;Lcom/github/mikephil/charting/utils/MPPointF;F)V
+	public final fun drawMultilineText (Landroid/graphics/Canvas;Ljava/lang/String;FFLandroid/text/TextPaint;Lcom/github/mikephil/charting/utils/FSize;Lcom/github/mikephil/charting/utils/MPPointF;F)V
+	public final fun drawXAxisValue (Landroid/graphics/Canvas;Ljava/lang/String;FFLandroid/graphics/Paint;Lcom/github/mikephil/charting/utils/MPPointF;F)V
+	public final fun formatNumber (FIZC)Ljava/lang/String;
+	public static synthetic fun formatNumber$default (Lcom/github/mikephil/charting/utils/Utils;FIZCILjava/lang/Object;)Ljava/lang/String;
+	public final fun getDecimals (F)I
+	public final fun getDefaultValueFormatter ()Lcom/github/mikephil/charting/formatter/IValueFormatter;
+	public final fun getLineHeight (Landroid/graphics/Paint;Landroid/graphics/Paint$FontMetrics;)F
+	public static synthetic fun getLineHeight$default (Lcom/github/mikephil/charting/utils/Utils;Landroid/graphics/Paint;Landroid/graphics/Paint$FontMetrics;ILjava/lang/Object;)F
+	public final fun getLineSpacing (Landroid/graphics/Paint;Landroid/graphics/Paint$FontMetrics;)F
+	public static synthetic fun getLineSpacing$default (Lcom/github/mikephil/charting/utils/Utils;Landroid/graphics/Paint;Landroid/graphics/Paint$FontMetrics;ILjava/lang/Object;)F
+	public final fun getMaximumFlingVelocity ()I
+	public final fun getMinimumFlingVelocity ()I
+	public final fun getNormalizedAngle (F)F
+	public final fun getPosition (Lcom/github/mikephil/charting/utils/MPPointF;FF)Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getPosition (Lcom/github/mikephil/charting/utils/MPPointF;FFLcom/github/mikephil/charting/utils/MPPointF;)V
+	public final fun getSizeOfRotatedRectangleByDegrees (FFF)Lcom/github/mikephil/charting/utils/FSize;
+	public final fun getSizeOfRotatedRectangleByDegrees (Lcom/github/mikephil/charting/utils/FSize;F)Lcom/github/mikephil/charting/utils/FSize;
+	public final fun getSizeOfRotatedRectangleByRadians (FFF)Lcom/github/mikephil/charting/utils/FSize;
+	public final fun getSizeOfRotatedRectangleByRadians (Lcom/github/mikephil/charting/utils/FSize;F)Lcom/github/mikephil/charting/utils/FSize;
+	public final fun init (Landroid/content/Context;)V
+	public final fun nextUp (D)D
+	public final fun postInvalidateOnAnimation (Landroid/view/View;)V
+	public final fun roundToNextSignificant (D)F
+	public final fun velocityTrackerPointerUpCleanUpIfNecessary (Landroid/view/MotionEvent;Landroid/view/VelocityTracker;)V
+}
+
+public class com/github/mikephil/charting/utils/ViewPortHandler {
+	public fun <init> ()V
+	public final fun centerViewPort ([FLandroid/view/View;)V
+	public final fun fitScreen ()Landroid/graphics/Matrix;
+	public final fun fitScreen (Landroid/graphics/Matrix;)V
+	public final fun getCanZoomInMoreX ()Z
+	public final fun getCanZoomInMoreY ()Z
+	public final fun getCanZoomOutMoreX ()Z
+	public final fun getCanZoomOutMoreY ()Z
+	public final fun getChartHeight ()F
+	public final fun getChartWidth ()F
+	public final fun getContentBottom ()F
+	public final fun getContentCenter ()Lcom/github/mikephil/charting/utils/MPPointF;
+	public final fun getContentHeight ()F
+	public final fun getContentLeft ()F
+	public final fun getContentRect ()Landroid/graphics/RectF;
+	public final fun getContentRight ()F
+	public final fun getContentTop ()F
+	public final fun getContentWidth ()F
+	public final fun getDragOffsetX ()F
+	public final fun getDragOffsetY ()F
+	public final fun getHasNoDragOffset ()Z
+	public final fun getMatrixTouch ()Landroid/graphics/Matrix;
+	public final fun getMaxScaleX ()F
+	public final fun getMaxScaleY ()F
+	public final fun getMinScaleX ()F
+	public final fun getMinScaleY ()F
+	public final fun getOffsetBottom ()F
+	public final fun getOffsetLeft ()F
+	public final fun getOffsetRight ()F
+	public final fun getOffsetTop ()F
+	public final fun getScaleX ()F
+	public final fun getScaleY ()F
+	public final fun getSmallestContentExtension ()F
+	public final fun getTransX ()F
+	public final fun getTransY ()F
+	public final fun hasChartDimens ()Z
+	public final fun isFullyZoomedOut ()Z
+	public final fun isFullyZoomedOutX ()Z
+	public final fun isFullyZoomedOutY ()Z
+	public final fun isInBounds (FF)Z
+	public final fun isInBoundsBottom (F)Z
+	public final fun isInBoundsLeft (F)Z
+	public final fun isInBoundsRight (F)Z
+	public final fun isInBoundsTop (F)Z
+	public final fun isInBoundsX (F)Z
+	public final fun isInBoundsY (F)Z
+	public final fun limitTransAndScale (Landroid/graphics/Matrix;Landroid/graphics/RectF;)V
+	public final fun refresh (Landroid/graphics/Matrix;Landroid/view/View;Z)Landroid/graphics/Matrix;
+	public final fun resetZoom (Landroid/graphics/Matrix;)V
+	public final fun restrainViewPort (FFFF)V
+	public final fun setChartDimens (FF)V
+	protected final fun setChartHeight (F)V
+	protected final fun setChartWidth (F)V
+	public final fun setDragOffsetX (F)V
+	public final fun setDragOffsetY (F)V
+	public final fun setMaximumScaleX (F)V
+	public final fun setMaximumScaleY (F)V
+	public final fun setMinMaxScaleX (FF)V
+	public final fun setMinMaxScaleY (FF)V
+	public final fun setMinimumScaleX (F)V
+	public final fun setMinimumScaleY (F)V
+	public final fun setZoom (FF)Landroid/graphics/Matrix;
+	public final fun setZoom (FFFF)Landroid/graphics/Matrix;
+	public final fun setZoom (FFLandroid/graphics/Matrix;)V
+	public final fun translate ([F)Landroid/graphics/Matrix;
+	public final fun translate ([FLandroid/graphics/Matrix;)V
+	public final fun zoom (FF)Landroid/graphics/Matrix;
+	public final fun zoom (FFFF)Landroid/graphics/Matrix;
+	public final fun zoom (FFFFLandroid/graphics/Matrix;)V
+	public final fun zoom (FFLandroid/graphics/Matrix;)V
+	public final fun zoomIn (FF)Landroid/graphics/Matrix;
+	public final fun zoomIn (FFLandroid/graphics/Matrix;)V
+	public final fun zoomOut (FF)Landroid/graphics/Matrix;
+	public final fun zoomOut (FFLandroid/graphics/Matrix;)V
+}
+

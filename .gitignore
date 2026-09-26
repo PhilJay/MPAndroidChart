@@ -12,7 +12,6 @@
 bin/
 gen/
 generated/
-docs/
 finalOutput/
 projectFilesBackup/
 
@@ -45,3 +44,17 @@ build/
 target/
 
 .DS_Store
+docs/
+
+# Rendered decimation comparison images, not committed
+/decimation-images/
+
+# Kotlin compiler working directory
+.kotlin/
+
+# Timing harnesses, kept on this machine only: they measure the library and other
+# charting libraries against each other and are not part of what it ships.
+/MPChartBenchmark/
+/MPChartBenchmark3x/
+/MPChartBenchmarkVs/
+/settings.local.gradle.kts

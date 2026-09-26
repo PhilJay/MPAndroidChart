@@ -10,6 +10,10 @@
         android:title="@string/actionToggleBarBorders">
     </item>
     <item
+        android:id="@+id/actionToggleRoundedSections"
+        android:title="@string/actionToggleRoundedSections">
+    </item>
+    <item
         android:id="@+id/actionToggleValues"
         android:title="@string/actionToggleValues">
     </item>

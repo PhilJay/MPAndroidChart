@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 64" width="420" height="64" role="img" aria-label="MPAndroidChart">
+  <defs>
+    <linearGradient id="teal" gradientUnits="userSpaceOnUse" x1="34" y1="12" x2="52" y2="43">
+      <stop offset="0" stop-color="#5DD39E"/><stop offset="1" stop-color="#2FB4B6"/>
+    </linearGradient>
+    <linearGradient id="coral" gradientUnits="userSpaceOnUse" x1="48" y1="48" x2="16" y2="44">
+      <stop offset="0" stop-color="#F9845F"/><stop offset="1" stop-color="#F97066"/>
+    </linearGradient>
+    <linearGradient id="amber" gradientUnits="userSpaceOnUse" x1="12" y1="38" x2="23" y2="14">
+      <stop offset="0" stop-color="#F5B041"/><stop offset="1" stop-color="#F5C441"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(34 32)" fill="none" stroke-width="8.6" stroke-linecap="round">
+    <path d="M0 -20.6A20.6 20.6 0 0 1 17.8 10.3" stroke="url(#teal)"/>
+    <path d="M14.6 14.6A20.6 20.6 0 0 1 -17.8 10.3" stroke="url(#coral)"/>
+    <path d="M-20.6 5.2A20.6 20.6 0 0 1 -10.3 -17.8" stroke="url(#amber)"/>
+  </g>
+  <text x="70" y="42" font-family="Manrope, ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="29" font-weight="800" fill="#E2E8F0">MPAndroidChart</text>
+</svg>

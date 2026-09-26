@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xxmassdeveloper.mpchartexample.custom.TimedBarChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3" />
+
+    <TextView
+        android:id="@+id/readout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EEEEEE"
+        android:padding="8dp"
+        android:text="@string/perfWaiting"
+        android:textSize="13sp"
+        android:typeface="monospace" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/perfEntries"
+                android:textSize="13sp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <RadioGroup
+                    android:id="@+id/entryCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/count1k"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1k" />
+
+                    <RadioButton
+                        android:id="@+id/count10k"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="10k" />
+
+                    <RadioButton
+                        android:id="@+id/count50k"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50k" />
+
+                    <RadioButton
+                        android:id="@+id/count100k"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="100k" />
+
+                    <RadioButton
+                        android:id="@+id/count500k"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="500k" />
+                </RadioGroup>
+            </HorizontalScrollView>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/decimation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/perfDecimation" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/valueLabels"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfValueLabels" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfLabelLimit"
+                    android:textSize="13sp" />
+
+                <SeekBar
+                    android:id="@+id/labelLimit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="5000"
+                    android:progress="100" />
+
+                <TextView
+                    android:id="@+id/labelLimitValue"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@string/dash"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/stacked"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfStacked" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/roundedCorners"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfRoundedCorners" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/barShadows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfBarShadows" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
