@@ -883,14 +883,36 @@ public abstract class Chart<T : ChartData<out IDataSet<out Entry<*>>>> @JvmOverl
     }
 
 
-    /** Draws the chart into a new ARGB_8888 bitmap of the view size, over its background or white. A chart not laid out yet gives a 1x1 bitmap. */
-    public fun toBitmap(): Bitmap {
-        val returnedBitmap = Bitmap.createBitmap(width.coerceAtLeast(1), height.coerceAtLeast(1), Bitmap.Config.ARGB_8888)
+    /**
+     * Draws the chart into a new ARGB_8888 bitmap of [width] x [height] pixels, over its background or white.
+     *
+     * The size defaults to the chart's current size. When another size is asked for, the chart is laid out at that
+     * size for the drawing and put back to its previous size afterwards, so a chart that was never shown, for example
+     * one built in code only to export an image, can be drawn with `chart.toBitmap(1200, 800)`. A chart without a size
+     * and without an asked for size gives a 1x1 bitmap.
+     */
+    @JvmOverloads
+    public fun toBitmap(width: Int = this.width, height: Int = this.height): Bitmap {
+        val bitmapWidth = width.coerceAtLeast(1)
+        val bitmapHeight = height.coerceAtLeast(1)
+        val previousWidth = this.width
+        val previousHeight = this.height
+        val resize = bitmapWidth != previousWidth || bitmapHeight != previousHeight
+        if (resize) layoutAt(bitmapWidth, bitmapHeight)
+
+        val returnedBitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(returnedBitmap)
         val bgDrawable = background
         if (bgDrawable != null) bgDrawable.draw(canvas) else canvas.drawColor(Color.WHITE)
         draw(canvas)
+
+        if (resize && previousWidth > 0 && previousHeight > 0) layoutAt(previousWidth, previousHeight)
         return returnedBitmap
+    }
+
+    private fun layoutAt(width: Int, height: Int) {
+        measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY))
+        layout(left, top, left + width, top + height)
     }
 
     /**

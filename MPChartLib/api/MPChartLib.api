@@ -458,6 +458,9 @@ public abstract class com/github/mikephil/charting/charts/Chart : android/view/V
 	protected final fun setupDefaultFormatter (FF)V
 	public final fun stopAnimations ()V
 	public final fun toBitmap ()Landroid/graphics/Bitmap;
+	public final fun toBitmap (I)Landroid/graphics/Bitmap;
+	public final fun toBitmap (II)Landroid/graphics/Bitmap;
+	public static synthetic fun toBitmap$default (Lcom/github/mikephil/charting/charts/Chart;IIILjava/lang/Object;)Landroid/graphics/Bitmap;
 	public final fun valuesToHighlight ()Z
 }
 

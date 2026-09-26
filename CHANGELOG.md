@@ -1,5 +1,24 @@
 # Changelog
 
+## 4.0.1
+
+### Added
+
+- `YAxis.labelRotationAngle` rotates the y axis labels, like `XAxis.labelRotationAngle` does for the x axis. The chart reserves the width the rotated labels need.
+- `PieChart.isRoundedSlicesReversed` rounds the slice ends the other way around.
+- `PieChart.isTransparentCircleClippedToSlices` draws the translucent ring around the hole only over the slices, so the space between slices stays open.
+- Pie entry labels and values that contain a line break are drawn as several lines.
+- `chart.toBitmap(width, height)` draws the chart at any size, also a chart built only in code that was never laid out. A chart on screen is laid out at that size for the drawing and put back afterwards.
+
+### Fixed
+
+- A tap inside a bar of a combined chart selected a nearby line point instead of the bar.
+- In a bar chart whose grouped data sets use different y axes, a tap often selected the bar of the other axis.
+- Limit line labels at the edge of the content area were cut off. Labels of limit lines outside the visible area are no longer drawn.
+- Auto scaling skipped a y axis that was disabled, even when data sets depend on it.
+- Building a chart on a thread without a Looper, for example with an asynchronous layout inflater, crashed. The gesture detector is now created on the first touch.
+- The default value formatter rebuilt its number format on every data change, even when the number of decimals stayed the same.
+
 ## 4.0.0
 
 A rewrite of the library in Kotlin. Same class, package and interface names, so imports survive; the call sites change. [MIGRATION.md](MIGRATION.md) lists the changes that need edits in your code, and the guides at [philjay.cc/mpandroidchart/docs](https://philjay.cc/mpandroidchart/docs/) cover the whole library in 35 chapters.
