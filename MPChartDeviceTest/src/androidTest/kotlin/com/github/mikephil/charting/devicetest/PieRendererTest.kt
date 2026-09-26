@@ -8,6 +8,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.math.cos
@@ -74,5 +75,26 @@ class PieRendererTest {
         val reversed = roundedPie(true)
         assertEquals(Color.RED, pixelAt(reversed, 262f, 75f))
         assertEquals(Color.RED, pixelAt(reversed, 278f, 75f))
+    }
+
+    @Test
+    fun aClippedTransparentCircleLeavesTheSliceSpaceClear() {
+        fun spacedPie(clipped: Boolean) = pie(PieEntry(1f), PieEntry(1f)) { set ->
+            set.colors = listOf(Color.RED, Color.BLUE)
+            set.sliceSpace = 12f
+            set.isDrawValuesEnabled = false
+            isDrawEntryLabelsEnabled = false
+            transparentCircleRadius = 70f
+            isTransparentCircleClippedToSlices = clipped
+            rotationAngle = 270f
+        }
+
+        // The space between the slices runs straight down from the center.
+        assertNotEquals(0, Color.alpha(pixelAt(spacedPie(false), 90f, 60f)))
+
+        val clipped = spacedPie(true)
+        assertEquals(0, Color.alpha(pixelAt(clipped, 90f, 60f)))
+        assertNotEquals(Color.RED, pixelAt(clipped, 0f, 60f))
+        assertEquals(Color.RED, pixelAt(clipped, 0f, 85f))
     }
 }

@@ -5,6 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
 import android.text.Layout
 import android.text.StaticLayout
@@ -103,6 +105,7 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
     private val innerRectBuffer = RectF()
     private val roundedCircleBox = RectF()
     private val holeCirclePath = Path()
+    private val onSlicesOnly = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
     /**
      * Path used to clip the center text to the hole.
      */
@@ -653,7 +656,8 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
 
     /**
      * Draws the hole and the transparent circle onto the bitmap canvas when the chart enables the hole. The
-     * transparent circle is only drawn when its radius is larger than the hole radius.
+     * transparent circle is only drawn when its radius is larger than the hole radius, and only over the slices
+     * when [PieChart.isTransparentCircleClippedToSlices] is set.
      */
     protected open fun drawHole(c: Canvas) {
         val bitmapCanvas = bitmapCanvas ?: return
@@ -677,8 +681,11 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
             holeCirclePath.reset()
             holeCirclePath.addCircle(center.x, center.y, secondHoleRadius, Path.Direction.CW)
             holeCirclePath.addCircle(center.x, center.y, holeRadius, Path.Direction.CCW)
+            // the slices are already on the bitmap, so SRC_ATOP paints only where a slice is
+            if (chart.isTransparentCircleClippedToSlices) paintTransparentCircle.xfermode = onSlicesOnly
             bitmapCanvas.drawPath(holeCirclePath, paintTransparentCircle)
 
+            paintTransparentCircle.xfermode = null
             paintTransparentCircle.alpha = alpha
         }
         MPPointF.recycleInstance(center)

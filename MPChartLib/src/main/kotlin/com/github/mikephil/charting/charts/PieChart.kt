@@ -74,6 +74,12 @@ public open class PieChart @JvmOverloads constructor(
      */
     public var transparentCircleRadius: Float = 55f
 
+    /**
+     * Whether the translucent ring around the hole is drawn only over the slices, so that it tints each slice and
+     * leaves the slice space between them clear. Default false, which draws one closed ring.
+     */
+    public var isTransparentCircleClippedToSlices: Boolean = false
+
     /** Whether [centerText] is drawn. */
     public var isDrawCenterTextEnabled: Boolean = true
 
