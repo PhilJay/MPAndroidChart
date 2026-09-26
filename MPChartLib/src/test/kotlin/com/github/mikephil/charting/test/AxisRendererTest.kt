@@ -1,5 +1,6 @@
 package com.github.mikephil.charting.test
 
+import android.graphics.Paint
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.renderer.YAxisRenderer
 import com.github.mikephil.charting.utils.ViewPortHandler
@@ -86,5 +87,18 @@ class AxisRendererTest {
         assertEquals(-30f, entries[0], 0.0001f)
         assertEquals(30f, entries[2], 0.0001f)
         assertEquals(90f, entries[entries.size - 1], 0.0001f)
+    }
+
+    @Test
+    fun rotatedLabelsNeedTheWidthOfTheirRotatedBounds() {
+        val paint = object : Paint() {
+            override fun measureText(text: String): Float = 100f
+        }
+        val yAxis = YAxis()
+        yAxis.xOffset = 0f
+
+        assertEquals(100f, yAxis.getRequiredWidthSpace(paint), 0.01f)
+        yAxis.labelRotationAngle = 90f
+        assertEquals(0f, yAxis.getRequiredWidthSpace(paint), 0.01f)
     }
 }

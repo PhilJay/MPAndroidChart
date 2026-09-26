@@ -9,6 +9,7 @@ import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
+import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
@@ -88,8 +89,9 @@ public open class YAxisRenderer(viewPortHandler: ViewPortHandler, protected val 
     }
 
     /**
-     * Draws the axis labels at the horizontal pixel position [fixedPosition], plus the label x offset of the axis.
-     * Skips the first or last entry when the axis disables drawing the bottom or top label.
+     * Draws the axis labels at the horizontal pixel position [fixedPosition], plus the label x offset of the axis,
+     * rotated by the label rotation angle of the axis. Skips the first or last entry when the axis disables drawing
+     * the bottom or top label.
      *
      * @param positions pixel positions of the axis entries as x, y pairs, from [getTransformedPositions]
      * @param offset vertical pixel offset that centers the text on its grid line
@@ -100,11 +102,25 @@ public open class YAxisRenderer(viewPortHandler: ViewPortHandler, protected val 
         val to = minOf(if (yAxis.isDrawTopYLabelEntryEnabled) yAxis.entryCount else yAxis.entryCount - 1, positions.size / 2)
 
         val xOffset = Utils.convertDpToPixel(yAxis.labelXOffset)
+        val angle = yAxis.labelRotationAngle
+        val anchorX = when (paintAxisLabels.textAlign) {
+            Paint.Align.RIGHT -> 1f
+            Paint.Align.CENTER -> 0.5f
+            else -> 0f
+        }
+        val anchor = MPPointF.getInstance(anchorX, 0.5f)
+        val rotatedOffset = Utils.convertDpToPixel(yAxis.yOffset)
 
         for (i in from until to) {
             val text = yAxis.getFormattedLabel(i)
-            c.drawText(text, fixedPosition + xOffset, positions[i * 2 + 1] + offset, paintAxisLabels)
+            if (angle == 0f) {
+                c.drawText(text, fixedPosition + xOffset, positions[i * 2 + 1] + offset, paintAxisLabels)
+            } else {
+                Utils.drawXAxisValue(c, text, fixedPosition + xOffset, positions[i * 2 + 1] + rotatedOffset, paintAxisLabels, anchor, angle)
+            }
         }
+
+        MPPointF.recycleInstance(anchor)
     }
 
     /**

@@ -2,6 +2,7 @@ package com.github.mikephil.charting.components
 
 import android.graphics.Color
 import android.graphics.Paint
+import com.github.mikephil.charting.utils.FSize
 import com.github.mikephil.charting.utils.Utils
 import kotlin.math.abs
 import kotlin.math.max
@@ -45,6 +46,12 @@ public open class YAxis(public val axisDependency: AxisDependency = AxisDependen
     /** Horizontal shift in dp added to the label positions. Default 0. */
     public var labelXOffset: Float = 0f
 
+    /**
+     * Rotation of the labels in degrees, clockwise for positive values. The width reserved for the axis follows the
+     * rotated labels. Not used by horizontal bar and radar charts. Default 0.
+     */
+    public var labelRotationAngle: Float = 0f
+
     /** Smallest width in dp the chart reserves for this axis. Default 0. */
     public var minWidth: Float = 0f
 
@@ -66,15 +73,21 @@ public open class YAxis(public val axisDependency: AxisDependency = AxisDependen
     }
 
     /**
-     * Width in px this axis needs in a vertical chart: the widest label plus [xOffset] on both sides, clamped to
-     * [minWidth]..[maxWidth].
+     * Width in px this axis needs in a vertical chart: the widest label, rotated by [labelRotationAngle], plus
+     * [xOffset] on both sides, clamped to [minWidth]..[maxWidth].
      * @param p paint used to measure the labels; its text size is set to [textSize]
      */
     public fun getRequiredWidthSpace(p: Paint): Float {
         p.textSize = Utils.convertDpToPixel(textSize)
 
         val label = longestLabel
-        var width = Utils.calcTextWidth(p, label).toFloat() + Utils.convertDpToPixel(xOffset) * 2f
+        var width = Utils.calcTextWidth(p, label).toFloat()
+        if (labelRotationAngle != 0f) {
+            val rotated = Utils.getSizeOfRotatedRectangleByDegrees(width, Utils.getLineHeight(p), labelRotationAngle)
+            width = rotated.width
+            FSize.recycleInstance(rotated)
+        }
+        width += Utils.convertDpToPixel(xOffset) * 2f
 
         var minWidth = minWidth
         var maxWidth = maxWidth
