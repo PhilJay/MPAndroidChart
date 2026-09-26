@@ -38,9 +38,11 @@ class PieRendererTest {
     fun aLabelWithLineBreaksIsDrawnAsLinesCenteredOnTheSingleLineSpot() {
         val labelOnly: PieChart.(PieDataSet<Nothing>) -> Unit = { it.isDrawValuesEnabled = false }
         val single = texts(pie(PieEntry(1f, "Single"), configure = labelOnly)).single()
-        val lines = texts(pie(PieEntry(1f, "Top\nBottom"), configure = labelOnly))
+        val twoLines = pie(PieEntry(1f, "Top\nBottom"), configure = labelOnly)
+        val lines = texts(twoLines)
 
         assertEquals(listOf("Top", "Bottom"), lines.map { it.text })
+        assertEquals("Top Bottom", twoLines.legend.entries.first().label)
         assertEquals(single.x, lines[0].x, 0.01f)
         assertEquals(single.x, lines[1].x, 0.01f)
         assertEquals(single.y, (lines[0].y + lines[1].y) / 2f, 0.01f)

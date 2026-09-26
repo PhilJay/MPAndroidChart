@@ -79,7 +79,7 @@ public open class LegendRenderer(viewPortHandler: ViewPortHandler, protected val
                 } else if (dataSet is IPieDataSet<*>) {
                     var j = 0
                     while (j < clrs.size && j < entryCount) {
-                        computedEntries.add(LegendEntry(dataSet.getEntryForIndex(j).label, dataSet.form, dataSet.formSize, dataSet.formLineWidth, dataSet.formLineDashEffect, clrs[j]))
+                        computedEntries.add(LegendEntry(dataSet.getEntryForIndex(j).label?.replace('\n', ' '), dataSet.form, dataSet.formSize, dataSet.formLineWidth, dataSet.formLineDashEffect, clrs[j]))
                         j++
                     }
 

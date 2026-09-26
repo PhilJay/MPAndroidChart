@@ -7,7 +7,7 @@
 - `YAxis.labelRotationAngle` rotates the y axis labels, like `XAxis.labelRotationAngle` does for the x axis. The chart reserves the width the rotated labels need.
 - `PieChart.isRoundedSlicesReversed` rounds the slice ends the other way around.
 - `PieChart.isTransparentCircleClippedToSlices` draws the translucent ring around the hole only over the slices, so the space between slices stays open.
-- Pie entry labels and values that contain a line break are drawn as several lines.
+- Pie entry labels and values that contain a line break are drawn as several lines; the legend shows the line break as a space.
 - `chart.toBitmap(width, height)` draws the chart at any size, also a chart built only in code that was never laid out. A chart on screen is laid out at that size for the drawing and put back afterwards.
 
 ### Fixed
