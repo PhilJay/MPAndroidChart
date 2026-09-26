@@ -11,7 +11,9 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
@@ -547,7 +549,8 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
                         drawValue(c, formatter, value, entry, 0, labelPtx, labelPty, dataSet.getValueTextColor(j))
 
                         if (j < data.entryCount && entryLabel != null) {
-                            drawEntryLabel(c, entryLabel, labelPtx, labelPty + lineHeight)
+                            val labelY = labelPty + lineHeight + extraLineShift(formatter, value, entry, entryLabel)
+                            drawEntryLabel(c, entryLabel, labelPtx, labelY)
                         }
                     } else if (drawXOutside) {
                         if (j < data.entryCount && entryLabel != null) {
@@ -568,7 +571,7 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
                         drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j))
 
                         if (j < data.entryCount && entryLabel != null) {
-                            drawEntryLabel(c, entryLabel, x, y + lineHeight)
+                            drawEntryLabel(c, entryLabel, x, y + lineHeight + extraLineShift(formatter, value, entry, entryLabel))
                         }
                     } else if (drawXInside) {
                         if (j < data.entryCount && entryLabel != null) {
@@ -599,9 +602,42 @@ public open class PieChartRenderer(protected val chart: PieChart, animator: Char
 
     /**
      * Draws an entry label with [paintEntryLabels] at the pixel position ([x], [y]), where [y] is the text baseline.
+     * A label containing line breaks is drawn one line per part, with the lines centered vertically on [y].
      */
     protected open fun drawEntryLabel(c: Canvas, label: String, x: Float, y: Float) {
-        c.drawText(label, x, y, paintEntryLabels)
+        drawTextLines(c, label, x, y, paintEntryLabels)
+    }
+
+    /**
+     * Draws one value label with [valuePaint] in [color] at the pixel position ([x], [y]), where [y] is the text
+     * baseline. A formatted value containing line breaks is drawn one line per part, with the lines centered
+     * vertically on [y].
+     */
+    override fun drawValue(c: Canvas, formatter: IValueFormatter, value: Float, entry: Entry<*>, dataSetIndex: Int, x: Float, y: Float, color: Int) {
+        valuePaint.color = color
+        drawTextLines(c, formatter.getFormattedValue(value, entry, dataSetIndex, viewPortHandler), x, y, valuePaint)
+    }
+
+    private fun drawTextLines(c: Canvas, text: String, x: Float, y: Float, paint: Paint) {
+        if ('\n' !in text) {
+            c.drawText(text, x, y, paint)
+            return
+        }
+
+        val lines = text.split('\n')
+        val lineSpacing = paint.fontSpacing
+        var lineY = y - (lines.size - 1) * lineSpacing / 2f
+        for (line in lines) {
+            c.drawText(line, x, lineY, paint)
+            lineY += lineSpacing
+        }
+    }
+
+    /** How far a label below a value moves down so that the extra lines of both do not overlap. */
+    private fun extraLineShift(formatter: IValueFormatter, value: Float, entry: Entry<*>, label: String): Float {
+        val extraValueLines = formatter.getFormattedValue(value, entry, 0, viewPortHandler).count { it == '\n' }
+        val extraLabelLines = label.count { it == '\n' }
+        return (extraValueLines * valuePaint.fontSpacing + extraLabelLines * paintEntryLabels.fontSpacing) / 2f
     }
 
     /**
