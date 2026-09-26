@@ -8,11 +8,14 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.BubbleData
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CombinedData
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.highlight.BarHighlighter
+import com.github.mikephil.charting.highlight.CombinedHighlighter
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
@@ -61,5 +64,20 @@ class HighlighterTest {
         val high = BarHighlighter(chart).getHighlight(1.2f, 1f)
 
         assertEquals(1, high?.dataSetIndex)
+    }
+
+    @Test
+    fun tapInsideBarSelectsTheBarOverANearerLinePoint() {
+        val combined = CombinedData().apply {
+            lineData = LineData(LineDataSet(listOf(Entry(1f, 5f)), "line"))
+            barData = BarData(BarDataSet(listOf(BarEntry(1f, 10f)), "bar"))
+        }
+        val chart = FakeChart(combined)
+
+        val insideBar = CombinedHighlighter(chart, chart).getHighlight(1.1f, 4f)
+        val besideBar = CombinedHighlighter(chart, chart).getHighlight(1.6f, 5f)
+
+        assertEquals(combined.allData.indexOfFirst { it is BarData }, insideBar?.dataIndex)
+        assertEquals(combined.allData.indexOfFirst { it is LineData }, besideBar?.dataIndex)
     }
 }
