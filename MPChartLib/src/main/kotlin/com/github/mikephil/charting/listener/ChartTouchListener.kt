@@ -40,8 +40,11 @@ public abstract class ChartTouchListener<T : Chart<*>>(protected val chart: T) :
     /** The highlight selected by the last touch, null when nothing is selected by touch. */
     public var lastHighlighted: Highlight? = null
 
-    /** Detector that turns raw touch events into taps, long presses and flings. */
-    protected val gestureDetector: GestureDetector = GestureDetector(chart.context, this)
+    /**
+     * Detector that turns raw touch events into taps, long presses and flings. It is created on first use, on the
+     * thread that handles touches, so a chart can be built on a thread without a Looper.
+     */
+    protected val gestureDetector: GestureDetector by lazy(LazyThreadSafetyMode.NONE) { GestureDetector(chart.context, this) }
 
     /** Reports the start of a touch gesture to the chart's gesture listeners. */
     public fun startAction(me: MotionEvent) {
