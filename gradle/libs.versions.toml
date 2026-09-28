@@ -1,5 +1,5 @@
 [versions]
-mpandroidchart = "4.0.0"
+mpandroidchart = "4.0.1"
 agp = "9.4.1"
 kotlin = "2.2.20"
 dokka = "2.2.0"

@@ -25,7 +25,7 @@ The example app opens with every chart type in one consistent style, in a dark a
 
 ## Documentation
 
-The guides at [philjay.cc](https://philjay.cc/mpandroidchart/docs/) cover the library in 35 chapters, from a first chart to theming, Compose, custom renderers and troubleshooting. Every class, function and property also has KDoc, and the generated API reference is served by JitPack for each release: [MPChartLib](https://jitpack.io/com/github/PhilJay/MPAndroidChart/MPChartLib/v4.0.0/javadoc/) and [MPChartCompose](https://jitpack.io/com/github/PhilJay/MPAndroidChart/MPChartCompose/v4.0.0/javadoc/). To build it locally run `./gradlew dokkaGenerate` and open `build/dokka/html/index.html`.
+The guides at [philjay.cc](https://philjay.cc/mpandroidchart/docs/) cover the library in 35 chapters, from a first chart to theming, Compose, custom renderers and troubleshooting. Every class, function and property also has KDoc, and the generated API reference is served by JitPack for each release: [MPChartLib](https://jitpack.io/com/github/PhilJay/MPAndroidChart/MPChartLib/v4.0.1/javadoc/) and [MPChartCompose](https://jitpack.io/com/github/PhilJay/MPAndroidChart/MPChartCompose/v4.0.1/javadoc/). To build it locally run `./gradlew dokkaGenerate` and open `build/dokka/html/index.html`.
 
 ## Requirements
 
@@ -45,8 +45,8 @@ dependencyResolutionManagement {
 
 // build.gradle.kts
 dependencies {
-    implementation("com.github.PhilJay.MPAndroidChart:MPChartLib:v4.0.0")
-    implementation("com.github.PhilJay.MPAndroidChart:MPChartCompose:v4.0.0") // only for Compose
+    implementation("com.github.PhilJay.MPAndroidChart:MPChartLib:v4.0.1")
+    implementation("com.github.PhilJay.MPAndroidChart:MPChartCompose:v4.0.1") // only for Compose
 }
 ```
 
