@@ -9,7 +9,7 @@
 
 ## Support the project
 
-Support the project by downloading my other apps and leaving a rating, such as [Sightline](https://apps.apple.com/app/sightline/id6812521593), a fast screenshot and screen recording tool for macOS with one editor for pictures and clips, scrolling capture, text recognition and a built in MCP server for AI agents. All my apps and projects are on [philjay.cc](https://philjay.cc).
+Support the project by downloading my other apps and leaving a rating, such as [Sightline](https://sightlinemac.com), a fast screenshot and screen recording tool for macOS with one editor for pictures and clips, scrolling capture, text recognition and a built in MCP server for AI agents. All my apps and projects are on [philjay.cc](https://philjay.cc).
 
 If this library helps you, you can also support it by [sponsoring me on GitHub](https://github.com/sponsors/PhilJay) or with [a donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS).
 
